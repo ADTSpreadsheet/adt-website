@@ -23,9 +23,8 @@ a{color:inherit} img{display:block;max-width:100%}
 .topbar{padding:8px 16px;text-align:center;color:#fff;background:linear-gradient(90deg,#ef303b,#ff7f1e);font-size:.9rem;font-weight:700}
 header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .nav{min-height:94px;display:flex;align-items:center;justify-content:space-between;gap:28px}
-.brand{display:flex;align-items:center;gap:14px;flex:0 0 auto;text-decoration:none}
-.logo{width:54px;height:54px;display:grid;place-items:center;border-radius:15px;color:#fff;background:linear-gradient(145deg,var(--blue),#0c4ca5);font:800 1.08rem "Inter";box-shadow:0 10px 24px rgba(22,119,255,.24)}
-.brand strong{display:block;color:var(--navy);font-size:1.06rem;line-height:1.25}.brand small{display:block;margin-top:2px;color:var(--blue);font-size:.72rem;font-weight:700;letter-spacing:.09em}
+.brand{display:flex;align-items:center;flex:0 0 auto;text-decoration:none}
+.logo-full{width:250px;height:auto;display:block;object-fit:contain;max-height:62px}
 nav{display:flex;align-items:center;justify-content:flex-end;gap:30px;min-width:0}
 nav>a{text-decoration:none;color:#263650;font-size:1.06rem;font-weight:700;line-height:1.45;letter-spacing:.01em}
 nav>a:hover{color:var(--blue)}
@@ -153,17 +152,20 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
 .footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .footer p{margin:0;line-height:1.8;font-size:.86rem}
 .footer-links{display:flex;gap:14px;flex-wrap:wrap}.footer-links a{text-decoration:none;color:#d8e6f6;font-size:.86rem}
-@media(max-width:1220px){nav{display:none}.count-card,.status-layout,.product{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.articles{grid-template-columns:1fr 1fr}}
-@media(max-width:700px){.hero{aspect-ratio:auto;min-height:350px}.hero-slide img{min-height:350px}.hero-actions{position:static;padding:16px;background:#031025}.slider-dots{bottom:18px}.slider-arrow{display:none}.hero-actions,.hero-actions .btn{width:100%}.count-wrap{margin-top:0}.count-card{border-radius:0 0 var(--radius) var(--radius)}.count-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.count-item strong{font-size:1.3rem}.kpis,.two-grid,.features,.articles{grid-template-columns:1fr}.section{padding:56px 0}}
+@media(max-width:1220px){.logo-full{width:230px}nav{display:none}.count-card,.status-layout,.product{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.articles{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.logo-full{width:210px;max-height:54px}.hero{aspect-ratio:auto;min-height:350px}.hero-slide img{min-height:350px}.hero-actions{position:static;padding:16px;background:#031025}.slider-dots{bottom:18px}.slider-arrow{display:none}.hero-actions,.hero-actions .btn{width:100%}.count-wrap{margin-top:0}.count-card{border-radius:0 0 var(--radius) var(--radius)}.count-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.count-item strong{font-size:1.3rem}.kpis,.two-grid,.features,.articles{grid-template-columns:1fr}.section{padding:56px 0}}
 </style>
 </head>
 <body>
 <div class="topbar">ADT Spreadsheet — Engineering Software, Knowledge & Professional Workshop</div>
 <header>
   <div class="container nav">
-    <a class="brand" href="#top">
-      <span class="logo">ADT</span>
-      <span><strong>ADT Spreadsheet</strong><small>ENGINEERING SOFTWARE</small></span>
+    <a class="brand" href="#top" aria-label="ADTSpreadsheet หน้าแรก">
+      <img
+        class="logo-full"
+        src="/assets/images/logo-full.png"
+        alt="ADTSpreadsheet Engineering Software"
+      >
     </a>
     <nav aria-label="เมนูหลัก">
       <a href="/about/">เกี่ยวกับ ADTSpreadsheet</a>
