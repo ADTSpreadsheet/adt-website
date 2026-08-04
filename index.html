@@ -26,9 +26,35 @@ header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.94);backd
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none}
 .logo{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;color:#fff;background:linear-gradient(145deg,var(--blue),#0c4ca5);font:800 1rem "Inter";box-shadow:0 10px 24px rgba(22,119,255,.24)}
 .brand strong{display:block;color:var(--navy)} .brand small{display:block;color:var(--blue);font-size:.67rem;font-weight:700;letter-spacing:.08em}
-nav{display:flex;align-items:center;gap:22px}
-nav a{text-decoration:none;color:#324158;font-size:.92rem;font-weight:600}
-nav a:hover{color:var(--blue)}
+nav{display:flex;align-items:center;gap:20px}
+nav>a,.nav-dropdown>a{text-decoration:none;color:#324158;font-size:.92rem;font-weight:600}
+nav>a:hover,.nav-dropdown>a:hover{color:var(--blue)}
+.nav-dropdown{position:relative}
+.nav-dropdown>a{display:flex;align-items:center;gap:6px;padding:26px 0}
+.nav-dropdown>a::after{content:"▾";font-size:.72rem;transition:transform .2s ease}
+.nav-dropdown:hover>a::after{transform:rotate(180deg)}
+.dropdown-menu{
+  position:absolute;top:calc(100% - 8px);left:50%;z-index:1100;
+  width:300px;padding:10px;display:grid;gap:4px;
+  border:1px solid #e4ebf3;border-radius:16px;background:#fff;
+  box-shadow:0 18px 45px rgba(4,27,60,.16);
+  opacity:0;visibility:hidden;transform:translate(-50%,8px);
+  transition:opacity .18s ease,transform .18s ease,visibility .18s ease
+}
+.nav-dropdown:hover .dropdown-menu,
+.nav-dropdown:focus-within .dropdown-menu{
+  opacity:1;visibility:visible;transform:translate(-50%,0)
+}
+.dropdown-menu a{
+  padding:12px 13px;display:block;border-radius:11px;
+  color:#324158;text-decoration:none;font-size:.86rem;font-weight:600
+}
+.dropdown-menu a:hover{color:var(--blue);background:#eef6ff}
+.dropdown-menu small{
+  display:block;margin-top:3px;color:#7a899d;
+  font-size:.72rem;font-weight:400;line-height:1.45
+}
+.external-link::after{content:" ↗";color:var(--blue)}
 .nav-cta{padding:11px 18px;border-radius:999px;color:#fff!important;background:var(--blue)}
 .hero{position:relative;overflow:hidden;background:#031025}
 .hero img{width:100%;min-height:420px;object-fit:cover;object-position:center}
@@ -117,12 +143,43 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
       <span class="logo">ADT</span>
       <span><strong>ADT Spreadsheet</strong><small>ENGINEERING SOFTWARE</small></span>
     </a>
-    <nav>
-      <a href="#dashboard">สถานะล่าสุด</a>
-      <a href="#seminar">สัมมนา</a>
-      <a href="#pilefix">ADT-PILEFiX</a>
-      <a href="#articles">บทความ</a>
-      <a class="nav-cta" href="pilefix/">ดูรายละเอียดโปรแกรม</a>
+    <nav aria-label="เมนูหลัก">
+      <a href="/about/">เกี่ยวกับ ADT Spreadsheet</a>
+
+      <div class="nav-dropdown">
+        <a href="/seminar/">อบรมและสัมมนา</a>
+        <div class="dropdown-menu">
+          <a href="/seminar/adt-pilefix">
+            การอบรมวันที่ 9 สิงหาคม 2569
+            <small>Workshop การออกแบบฐานรากเสาเข็มเยื้องศูนย์ด้วย ADT-PILEFiX</small>
+          </a>
+          <a href="/seminar/">
+            โปรแกรมอบรมและสัมมนาทั้งหมด
+            <small>กิจกรรมที่กำลังเปิดรับสมัครและกิจกรรมที่ผ่านมา</small>
+          </a>
+        </div>
+      </div>
+
+      <div class="nav-dropdown">
+        <a href="/software/">โปรแกรม Spreadsheet</a>
+        <div class="dropdown-menu">
+          <a class="external-link"
+             href="https://www.tumcivil.com/"
+             target="_blank"
+             rel="noopener noreferrer">
+            ADT Spreadsheet
+            <small>เปิดหน้าจำหน่ายภายนอกบนเว็บไซต์ TumCivil</small>
+          </a>
+          <a href="/software/adt-pilefix/">
+            ADT-PILEFiX Professional
+            <small>โปรแกรมออกแบบฐานรากเสาเข็มเยื้องศูนย์</small>
+          </a>
+        </div>
+      </div>
+
+      <a href="/articles/">บทความวิศวกรรม</a>
+      <a href="/contact/">ติดต่อเรา</a>
+      <a class="nav-cta" href="/member/">สมัครสมาชิก</a>
     </nav>
   </div>
 </header>
@@ -131,8 +188,8 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
 <section class="hero">
   <img src="assets/images/hero/seminar-hero-banner.png" alt="สัมมนา ADT-PILEFiX วันที่ 9 สิงหาคม 2569">
   <div class="hero-actions container">
-    <a class="btn btn-yellow" href="#register">ลงทะเบียนสัมมนา</a>
-    <a class="btn btn-glass" href="#pilefix">ดู ADT-PILEFiX Professional</a>
+    <a class="btn btn-yellow" href="/seminar/adt-pilefix">ลงทะเบียนสัมมนา</a>
+    <a class="btn btn-glass" href="/software/adt-pilefix/">ดู ADT-PILEFiX Professional</a>
   </div>
 </section>
 
@@ -193,8 +250,8 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
       <article class="dark-card"><h3>ช่วงที่ 2 — วิเคราะห์และออกแบบ</h3><ul><li>การกระจายแรงลงเสาเข็ม</li><li>Moment และ Beam Shear</li><li>Punching Shear</li><li>Workshop ADT-PILEFiX</li></ul></article>
     </div>
     <div class="hero-actions" id="register" style="position:static;margin-top:28px">
-      <a class="btn btn-yellow" href="seminar/">ผู้ถือโปรแกรมเข้าร่วมฟรี</a>
-      <a class="btn btn-glass" href="seminar/general/">บุคคลทั่วไป 399 บาท</a>
+      <a class="btn btn-yellow" href="/seminar/adt-pilefix">ผู้ถือโปรแกรมเข้าร่วมฟรี</a>
+      <a class="btn btn-glass" href="/seminar/adt-pilefix">บุคคลทั่วไป 399 บาท</a>
     </div>
   </div>
 </section>
@@ -207,9 +264,9 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
         <h3>ลดเวลาคำนวณ เพิ่มความชัดเจนในการตรวจสอบ</h3>
         <p>วิเคราะห์จุดศูนย์ถ่วง แรงปฏิกิริยา Beam Shear, Punching Shear ออกแบบเหล็ก และจัดทำรายงาน</p>
         <div class="features"><div class="feature">✓ Pile Reaction</div><div class="feature">✓ CG / Ex / Ey</div><div class="feature">✓ Beam Shear</div><div class="feature">✓ Punching Shear</div><div class="feature">✓ Reinforcement</div><div class="feature">✓ Calculation Report</div></div>
-        <a class="btn btn-blue" href="pilefix/">ดูรายละเอียดโปรแกรม</a>
+        <a class="btn btn-blue" href="/software/adt-pilefix/">ดูรายละเอียดโปรแกรม</a>
       </article>
-      <aside class="price-card"><small>ADT-PILEFiX Professional v1.0</small><div class="price">4,999</div><small>บาท / Lifetime License</small><div style="height:18px"></div><a class="btn btn-yellow" href="pilefix/">ซื้อโปรแกรม</a></aside>
+      <aside class="price-card"><small>ADT-PILEFiX Professional v1.0</small><div class="price">4,999</div><small>บาท / Lifetime License</small><div style="height:18px"></div><a class="btn btn-yellow" href="/software/adt-pilefix/">ซื้อโปรแกรม</a></aside>
     </div>
   </div>
 </section>
@@ -226,7 +283,7 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
 </section>
 </main>
 
-<footer><div class="container footer"><p><strong>ADT Spreadsheet</strong><br>ซอฟต์แวร์ ความรู้ และเครื่องมือสำหรับวิศวกรไทย</p><div class="footer-links"><a href="#top">หน้าแรก</a><a href="pilefix/">ADT-PILEFiX</a><a href="seminar/">สัมมนา</a><a href="articles/">บทความ</a><a href="contact/">ติดต่อเรา</a></div></div></footer>
+<footer><div class="container footer"><p><strong>ADT Spreadsheet</strong><br>ซอฟต์แวร์ ความรู้ และเครื่องมือสำหรับวิศวกรไทย</p><div class="footer-links"><a href="#top">หน้าแรก</a><a href="/about/">เกี่ยวกับเรา</a><a href="/seminar/adt-pilefix">อบรม 9 สิงหาคม</a><a href="/software/adt-pilefix/">ADT-PILEFiX</a><a href="/member/">สมาชิก</a><a href="/articles/">บทความ</a><a href="/contact/">ติดต่อเรา</a></div></div></footer>
 
 <script>
 const API_BASE="https://adt-linebot-pilefix.onrender.com";
