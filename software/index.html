@@ -17,7 +17,7 @@
     content="รวมผลิตภัณฑ์ซอฟต์แวร์วิศวกรรมจาก ADTSpreadsheet"
   >
   <meta property="og:type" content="website">
-  <meta property="og:image" content="/assets/slides/slide-01.jpg">
+  <meta property="og:image" content="/software/adtspreadsheet-professional-banner-v1.jpg">
 
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
   <link rel="apple-touch-icon" href="/assets/images/logo-icon.png">
@@ -237,154 +237,81 @@
 
     .product-stack {
       display: grid;
-      gap: 34px;
+      gap: 44px;
     }
 
-    .product-banner {
-      position: relative;
-      min-height: 520px;
+    .product-card {
       overflow: hidden;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(460px, 0.9fr);
-      align-items: center;
-      gap: 40px;
-      padding: 54px;
+      border: 1px solid rgba(220, 229, 239, 0.92);
       border-radius: var(--radius-xl);
-      color: #ffffff;
+      background: var(--paper);
       box-shadow: var(--shadow-lg);
-      isolation: isolate;
     }
 
-    .product-banner::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      pointer-events: none;
-      background:
-        repeating-linear-gradient(
-          0deg,
-          rgba(255, 255, 255, 0.025) 0,
-          rgba(255, 255, 255, 0.025) 1px,
-          transparent 1px,
-          transparent 42px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0.025) 0,
-          rgba(255, 255, 255, 0.025) 1px,
-          transparent 1px,
-          transparent 42px
-        );
+    .product-media {
+      position: relative;
+      overflow: hidden;
+      background: var(--navy-950);
     }
 
-    .pilefix-banner {
-      background:
-        linear-gradient(90deg, rgba(3, 16, 37, 0.94), rgba(3, 16, 37, 0.48)),
-        url("/assets/slides/slide-02.jpg") center / cover no-repeat;
+    .product-media img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      transition: transform 0.5s ease;
     }
 
-    .spreadsheet-banner {
-      background:
-        radial-gradient(circle at 85% 15%, rgba(22, 119, 255, 0.30), transparent 25%),
-        linear-gradient(135deg, #071a3a, #0d3471);
+    .product-card:hover .product-media img {
+      transform: scale(1.012);
     }
 
-    .product-copy {
-      max-width: 690px;
-    }
-
-    .product-kicker {
-      margin: 0 0 14px;
-      color: var(--gold-400);
-      font: 800 0.78rem "Inter", sans-serif;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .product-banner h2 {
-      margin: 0;
-      font-size: clamp(2.5rem, 5vw, 4.8rem);
-      line-height: 1.04;
-      letter-spacing: -0.045em;
-    }
-
-    .product-banner h2 span {
-      color: #63a8ff;
-    }
-
-    .product-desc {
-      margin: 20px 0 0;
-      color: rgba(255, 255, 255, 0.80);
-      line-height: 1.85;
-    }
-
-    .feature-list {
-      margin: 24px 0 0;
-      padding: 0;
-      list-style: none;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .feature-list li {
+    .product-body {
+      padding: 30px 34px 34px;
       display: flex;
       align-items: center;
-      gap: 9px;
-      color: rgba(255, 255, 255, 0.88);
-      font-size: 0.86rem;
-      font-weight: 600;
-    }
-
-    .feature-check {
-      width: 23px;
-      height: 23px;
-      display: grid;
-      place-items: center;
-      flex: 0 0 auto;
-      border-radius: 50%;
-      color: #ffffff;
-      background: var(--green-600);
-      font-size: 0.68rem;
-      font-weight: 800;
-    }
-
-    .price-row {
-      margin-top: 28px;
-      display: flex;
-      align-items: end;
-      gap: 16px;
+      justify-content: space-between;
+      gap: 28px;
       flex-wrap: wrap;
     }
 
-    .price-label {
-      color: rgba(255, 255, 255, 0.62);
-      font-size: 0.76rem;
+    .product-info {
+      flex: 1 1 620px;
     }
 
-    .price {
-      margin-top: 4px;
-      font: 800 2.7rem "Inter", sans-serif;
-      line-height: 1;
+    .product-label {
+      margin: 0 0 7px;
+      color: var(--blue-600);
+      font: 800 0.78rem "Inter", sans-serif;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
     }
 
-    .price-note {
-      padding-bottom: 4px;
-      color: rgba(255, 255, 255, 0.66);
-      font-size: 0.78rem;
+    .product-title {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.75rem, 3vw, 2.65rem);
+      line-height: 1.18;
+      letter-spacing: -0.025em;
     }
 
-    .actions {
-      margin-top: 28px;
+    .product-summary {
+      max-width: 850px;
+      margin: 11px 0 0;
+      color: var(--ink-500);
+      line-height: 1.8;
+    }
+
+    .product-actions {
+      flex: 0 0 auto;
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
     }
 
     .btn {
-      min-height: 52px;
-      padding: 0 22px;
+      min-height: 54px;
+      padding: 0 23px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -403,132 +330,40 @@
       transform: translateY(-2px);
     }
 
+    .btn-primary {
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+      box-shadow: 0 14px 30px rgba(22, 119, 255, 0.24);
+    }
+
     .btn-gold {
       color: #231b00;
       background: linear-gradient(135deg, var(--gold-400), #ffb31f);
-      box-shadow: 0 15px 34px rgba(255, 201, 40, 0.24);
+      box-shadow: 0 14px 30px rgba(255, 201, 40, 0.22);
     }
 
-    .btn-outline {
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.28);
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
-    }
-
-    .product-visual {
-      min-height: 360px;
-      display: grid;
-      place-items: center;
-    }
-
-    .device-card {
-      width: 100%;
-      max-width: 520px;
-      padding: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.10);
-      backdrop-filter: blur(18px);
-      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
-    }
-
-    .window {
-      padding: 15px;
-      border-radius: 18px;
-      background: #ffffff;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.26);
-    }
-
-    .window-bar {
-      height: 30px;
+    .product-price {
+      margin-top: 14px;
       display: flex;
-      align-items: center;
-      gap: 7px;
-      border-bottom: 1px solid #e9eef4;
-    }
-
-    .window-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: #d7e2ef;
-    }
-
-    .window-body {
-      padding-top: 14px;
-      display: grid;
-      grid-template-columns: 0.75fr 1.25fr;
+      align-items: baseline;
       gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .window-side {
-      min-height: 220px;
-      border-radius: 12px;
-      background: linear-gradient(180deg, #0a2855, #06152d);
+    .current-price {
+      color: var(--navy-900);
+      font: 800 1.5rem "Inter", sans-serif;
     }
 
-    .window-sheet {
-      min-height: 220px;
-      padding: 13px;
-      border: 1px solid #dfe7f0;
-      border-radius: 12px;
-      background:
-        repeating-linear-gradient(
-          0deg,
-          #ffffff 0,
-          #ffffff 21px,
-          #eaf0f6 22px
-        );
+    .old-price {
+      color: #8b99ad;
+      font-size: 0.92rem;
+      text-decoration: line-through;
     }
 
-    .sheet-box {
-      height: 48px;
-      margin-bottom: 11px;
-      border: 1px solid #d6e7fb;
-      border-radius: 10px;
-      background: linear-gradient(90deg, #e8f3ff, #f7fbff);
-    }
-
-    .suite-visual {
-      width: 100%;
-      max-width: 500px;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .suite-card {
-      min-height: 150px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.10);
-      backdrop-filter: blur(12px);
-    }
-
-    .suite-card strong {
-      color: #ffffff;
-      font-size: 1.05rem;
-    }
-
-    .suite-card span {
-      color: rgba(255, 255, 255, 0.66);
-      font-size: 0.76rem;
-      line-height: 1.55;
-    }
-
-    .status-badge {
-      width: fit-content;
-      padding: 7px 10px;
-      border-radius: 999px;
-      color: #9a5f00;
-      background: #fff2c2;
-      font-size: 0.72rem;
-      font-weight: 800;
+    .price-note {
+      color: var(--ink-500);
+      font-size: 0.82rem;
     }
 
     .how-to-buy {
@@ -630,12 +465,8 @@
         display: none;
       }
 
-      .product-banner {
-        grid-template-columns: 1fr;
-      }
-
-      .product-visual {
-        order: -1;
+      .product-body {
+        align-items: flex-start;
       }
 
       .steps {
@@ -664,23 +495,21 @@
         padding: 66px 0;
       }
 
-      .product-banner {
-        min-height: 0;
-        padding: 28px 22px;
-        border-radius: 24px;
+      .product-card {
+        border-radius: 22px;
       }
 
-      .feature-list,
+      .product-body {
+        padding: 23px 20px 25px;
+      }
+
+      .product-actions,
+      .product-actions .btn {
+        width: 100%;
+      }
+
       .steps {
         grid-template-columns: 1fr;
-      }
-
-      .suite-visual {
-        grid-template-columns: 1fr;
-      }
-
-      .actions .btn {
-        width: 100%;
       }
 
       .how-to-buy {
@@ -752,185 +581,107 @@
         </div>
 
         <div class="product-stack">
-          <article class="product-banner pilefix-banner">
-            <div class="product-copy">
-              <p class="product-kicker">PROFESSIONAL SOFTWARE</p>
 
-              <h2>
-                ADT-PILEFiX<br>
-                <span>Professional v1.0</span>
-              </h2>
+          <article class="product-card">
+            <div class="product-media">
+              <img
+                src="/software/adtspreadsheet-professional-banner-v1.jpg"
+                alt="ADTSpreadsheet Professional v1.0 โปรแกรมออกแบบโครงสร้างอาคารทั้งหลัง"
+                width="1600"
+                height="900"
+                loading="eager"
+              >
+            </div>
 
-              <p class="product-desc">
-                โปรแกรมช่วยคำนวณ ตรวจสอบ และจัดทำรายงาน
-                สำหรับงานฐานรากเสาเข็มเยื้องศูนย์
-                ครอบคลุม Pile Reaction, Beam Shear,
-                Punching Shear, Strap Beam และ Calculation Report
-              </p>
+            <div class="product-body">
+              <div class="product-info">
+                <p class="product-label">COMPLETE STRUCTURAL DESIGN SUITE</p>
 
-              <ul class="feature-list">
-                <li>
-                  <span class="feature-check">✓</span>
-                  Pile Reaction Analysis
-                </li>
+                <h2 class="product-title">
+                  ADTSpreadsheet Professional v1.0
+                </h2>
 
-                <li>
-                  <span class="feature-check">✓</span>
-                  Beam Shear
-                </li>
+                <p class="product-summary">
+                  ชุดโปรแกรมออกแบบโครงสร้างอาคารทั้งหลังบน Microsoft Excel
+                  ครอบคลุมงานพื้น คาน เสา บันได ฐานราก
+                  โครงสร้างเหล็ก และรายการคำนวณทางวิศวกรรม
+                </p>
 
-                <li>
-                  <span class="feature-check">✓</span>
-                  Punching Shear
-                </li>
-
-                <li>
-                  <span class="feature-check">✓</span>
-                  Reinforcement Design
-                </li>
-
-                <li>
-                  <span class="feature-check">✓</span>
-                  Strap Beam Module
-                </li>
-
-                <li>
-                  <span class="feature-check">✓</span>
-                  Calculation Report
-                </li>
-              </ul>
-
-              <div class="price-row">
-                <div>
-                  <div class="price-label">ราคาจำหน่ายปัจจุบัน</div>
-                  <div class="price">4,999 บาท</div>
-                </div>
-
-                <div class="price-note">
-                  ซื้อครั้งเดียว · ไม่มีค่ารายเดือน
+                <div class="product-price">
+                  <span class="current-price">ราคาพิเศษ 5,500 บาท</span>
+                  <span class="old-price">ราคาปกติ 7,000 บาท</span>
+                  <span class="price-note">ซื้อครั้งเดียว · ไม่มีค่ารายเดือน</span>
                 </div>
               </div>
 
-              <div class="actions">
+              <div class="product-actions">
+                <a
+                  class="btn btn-primary"
+                  href="/software/adtspreadsheet/"
+                >
+                  ดูรายละเอียดโปรแกรม
+                </a>
+
                 <a
                   class="btn btn-gold"
+                  href="/purchase/adtspreadsheet/"
+                >
+                  สั่งซื้อ
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card">
+            <div class="product-media">
+              <img
+                src="/software/adt-pilefix-professional-banner-v3.jpg"
+                alt="ADT-PILEFiX Professional v1.0 โปรแกรมออกแบบฐานรากเสาเข็มเยื้องศูนย์"
+                width="1600"
+                height="900"
+                loading="lazy"
+              >
+            </div>
+
+            <div class="product-body">
+              <div class="product-info">
+                <p class="product-label">SPECIALIZED PILE FOUNDATION SOFTWARE</p>
+
+                <h2 class="product-title">
+                  ADT-PILEFiX Professional v1.0
+                </h2>
+
+                <p class="product-summary">
+                  โปรแกรมคำนวณ ตรวจสอบ และจัดทำรายงาน
+                  สำหรับงานฐานรากเสาเข็มเยื้องศูนย์
+                  ครอบคลุม Pile Reaction, Beam Shear,
+                  Punching Shear, Strap Beam และ Calculation Report
+                </p>
+
+                <div class="product-price">
+                  <span class="current-price">4,999 บาท</span>
+                  <span class="price-note">ซื้อครั้งเดียว · ไม่มีค่ารายเดือน</span>
+                </div>
+              </div>
+
+              <div class="product-actions">
+                <a
+                  class="btn btn-primary"
                   href="/software/adt-pilefix/"
                 >
                   ดูรายละเอียดโปรแกรม
                 </a>
 
                 <a
-                  class="btn btn-outline"
+                  class="btn btn-gold"
                   href="/purchase/adt-pilefix/"
                 >
                   สั่งซื้อ
                 </a>
               </div>
             </div>
-
-            <div class="product-visual">
-              <div class="device-card">
-                <div class="window">
-                  <div class="window-bar">
-                    <span class="window-dot"></span>
-                    <span class="window-dot"></span>
-                    <span class="window-dot"></span>
-                  </div>
-
-                  <div class="window-body">
-                    <div class="window-side"></div>
-
-                    <div class="window-sheet">
-                      <div class="sheet-box"></div>
-                      <div class="sheet-box"></div>
-                      <div class="sheet-box"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </article>
 
-          <article class="product-banner spreadsheet-banner">
-            <div class="product-copy">
-              <p class="product-kicker">ADT ENGINEERING SUITE</p>
-
-              <h2>
-                ADT Spreadsheet<br>
-                <span>Engineering Suite</span>
-              </h2>
-
-              <p class="product-desc">
-                ชุดโปรแกรม Spreadsheet สำหรับงานออกแบบโครงสร้าง
-                ที่รวมแนวคิดการคำนวณ การตรวจสอบ
-                และการจัดทำเอกสารวิศวกรรมไว้ในระบบเดียว
-              </p>
-
-              <ul class="feature-list">
-                <li>
-                  <span class="feature-check">✓</span>
-                  Structural Calculation
-                </li>
-
-                <li>
-                  <span class="feature-check">✓</span>
-                  Excel VBA Workflow
-                </li>
-
-                <li>
-                  <span class="feature-check">✓</span>
-                  Engineering Report
-                </li>
-
-                <li>
-                  <span class="feature-check">✓</span>
-                  Design Documentation
-                </li>
-              </ul>
-
-              <div class="actions">
-                <a class="btn btn-outline" href="/contact/">
-                  สอบถามรายละเอียด
-                </a>
-              </div>
-            </div>
-
-            <div class="product-visual">
-              <div class="suite-visual">
-                <div class="suite-card">
-                  <strong>ADT Structural</strong>
-                  <span>
-                    เครื่องมือช่วยคำนวณและตรวจสอบงานโครงสร้าง
-                  </span>
-                  <div class="status-badge">COMING SOON</div>
-                </div>
-
-                <div class="suite-card">
-                  <strong>ADT Foundation</strong>
-                  <span>
-                    ระบบงานฐานรากและองค์ประกอบใต้ดิน
-                  </span>
-                  <div class="status-badge">COMING SOON</div>
-                </div>
-
-                <div class="suite-card">
-                  <strong>ADT Steel</strong>
-                  <span>
-                    เครื่องมือออกแบบและตรวจสอบโครงสร้างเหล็ก
-                  </span>
-                  <div class="status-badge">COMING SOON</div>
-                </div>
-
-                <div class="suite-card">
-                  <strong>ADT Drawing</strong>
-                  <span>
-                    ระบบช่วยจัดทำแบบและเอกสารประกอบงานออกแบบ
-                  </span>
-                  <div class="status-badge">COMING SOON</div>
-                </div>
-              </div>
-            </div>
-          </article>
         </div>
 
         <section class="how-to-buy" aria-labelledby="howToBuyTitle">
@@ -980,8 +731,8 @@
           </div>
 
           <div class="purchase-note">
-            ขณะนี้ ADT-PILEFiX Professional
-            เป็นผลิตภัณฑ์หลักที่เปิดจำหน่ายในราคา 4,999 บาท
+            กรุณาตรวจสอบชื่อโปรแกรมและยอดชำระ
+            ก่อนยืนยันรายการสั่งซื้อทุกครั้ง
           </div>
         </section>
       </div>
