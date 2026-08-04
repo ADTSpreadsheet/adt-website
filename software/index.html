@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ADT Software | ADTSpreadsheet</title>
+
+  <meta
+    name="description"
+    content="รวมซอฟต์แวร์วิศวกรรมจาก ADTSpreadsheet พัฒนาโดยวิศวกรไทย เพื่อวิศวกรไทย"
+  >
+
+  <meta property="og:title" content="ADT Software | ADTSpreadsheet">
+  <meta
+    property="og:description"
+    content="รวมผลิตภัณฑ์ซอฟต์แวร์วิศวกรรมจาก ADTSpreadsheet"
+  >
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/slides/slide-01.jpg">
+
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --navy-950: #031025;
+      --navy-900: #06152d;
+      --navy-800: #0a2855;
+      --blue-700: #0d57bf;
+      --blue-600: #1677ff;
+      --blue-500: #2d8cff;
+      --gold-500: #d9a61a;
+      --gold-400: #ffc928;
+      --orange-600: #f79009;
+      --green-600: #17b26a;
+      --ink-900: #142033;
+      --ink-700: #40506a;
+      --ink-500: #6c7a90;
+      --line: #dce5ef;
+      --paper: #ffffff;
+      --surface: #f4f7fb;
+      --shadow-lg: 0 28px 80px rgba(3, 16, 37, 0.18);
+      --shadow-md: 0 18px 50px rgba(3, 16, 37, 0.12);
+      --radius-xl: 32px;
+      --radius-lg: 22px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Prompt", sans-serif;
+      color: var(--ink-900);
+      background: var(--surface);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: min(1380px, calc(100% - 40px));
+      margin: auto;
+    }
+
+    .topbar {
+      padding: 8px 16px;
+      color: #ffffff;
+      background: linear-gradient(90deg, #ef303b, #ff7f1e);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+      border-bottom: 1px solid rgba(220, 229, 239, 0.9);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      min-height: 94px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 250px;
+      height: auto;
+      max-height: 62px;
+      object-fit: contain;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 30px;
+    }
+
+    .main-nav a {
+      color: #263650;
+      font-size: 1.04rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a.active {
+      color: var(--blue-600);
+    }
+
+    .nav-cta {
+      padding: 14px 24px;
+      border-radius: 999px;
+      color: #ffffff !important;
+      background: var(--blue-600);
+      box-shadow: 0 10px 24px rgba(22, 119, 255, 0.22);
+    }
+
+    .page-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 110px 0 90px;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(45, 140, 255, 0.25), transparent 28%),
+        radial-gradient(circle at 10% 80%, rgba(255, 201, 40, 0.12), transparent 25%),
+        linear-gradient(135deg, var(--navy-950), var(--navy-800));
+      isolation: isolate;
+    }
+
+    .page-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.18;
+      background:
+        linear-gradient(rgba(3, 16, 37, 0.55), rgba(3, 16, 37, 0.82)),
+        url("/assets/slides/slide-01.jpg") center / cover no-repeat;
+    }
+
+    .hero-copy {
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--gold-400);
+      font: 800 0.8rem "Inter", sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .page-hero h1 {
+      margin: 0;
+      font-size: clamp(3rem, 7vw, 6rem);
+      line-height: 1;
+      letter-spacing: -0.045em;
+    }
+
+    .page-hero h1 span {
+      color: #63a8ff;
+    }
+
+    .page-hero p {
+      max-width: 760px;
+      margin: 22px auto 0;
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.04rem;
+      line-height: 1.9;
+    }
+
+    .section {
+      padding: 88px 0;
+    }
+
+    .section-head {
+      max-width: 820px;
+      margin: 0 auto 42px;
+      text-align: center;
+    }
+
+    .section-head .eyebrow {
+      color: var(--blue-600);
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.16;
+      letter-spacing: -0.035em;
+    }
+
+    .section-head p {
+      margin: 15px 0 0;
+      color: var(--ink-500);
+      line-height: 1.8;
+    }
+
+    .product-stack {
+      display: grid;
+      gap: 34px;
+    }
+
+    .product-banner {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(460px, 0.9fr);
+      align-items: center;
+      gap: 40px;
+      padding: 54px;
+      border-radius: var(--radius-xl);
+      color: #ffffff;
+      box-shadow: var(--shadow-lg);
+      isolation: isolate;
+    }
+
+    .product-banner::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          rgba(255, 255, 255, 0.025) 0,
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px,
+          transparent 42px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.025) 0,
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px,
+          transparent 42px
+        );
+    }
+
+    .pilefix-banner {
+      background:
+        linear-gradient(90deg, rgba(3, 16, 37, 0.94), rgba(3, 16, 37, 0.48)),
+        url("/assets/slides/slide-02.jpg") center / cover no-repeat;
+    }
+
+    .spreadsheet-banner {
+      background:
+        radial-gradient(circle at 85% 15%, rgba(22, 119, 255, 0.30), transparent 25%),
+        linear-gradient(135deg, #071a3a, #0d3471);
+    }
+
+    .product-copy {
+      max-width: 690px;
+    }
+
+    .product-kicker {
+      margin: 0 0 14px;
+      color: var(--gold-400);
+      font: 800 0.78rem "Inter", sans-serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .product-banner h2 {
+      margin: 0;
+      font-size: clamp(2.5rem, 5vw, 4.8rem);
+      line-height: 1.04;
+      letter-spacing: -0.045em;
+    }
+
+    .product-banner h2 span {
+      color: #63a8ff;
+    }
+
+    .product-desc {
+      margin: 20px 0 0;
+      color: rgba(255, 255, 255, 0.80);
+      line-height: 1.85;
+    }
+
+    .feature-list {
+      margin: 24px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 0.86rem;
+      font-weight: 600;
+    }
+
+    .feature-check {
+      width: 23px;
+      height: 23px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      color: #ffffff;
+      background: var(--green-600);
+      font-size: 0.68rem;
+      font-weight: 800;
+    }
+
+    .price-row {
+      margin-top: 28px;
+      display: flex;
+      align-items: end;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .price-label {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 0.76rem;
+    }
+
+    .price {
+      margin-top: 4px;
+      font: 800 2.7rem "Inter", sans-serif;
+      line-height: 1;
+    }
+
+    .price-note {
+      padding-bottom: 4px;
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 0.78rem;
+    }
+
+    .actions {
+      margin-top: 28px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-height: 52px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-gold {
+      color: #231b00;
+      background: linear-gradient(135deg, var(--gold-400), #ffb31f);
+      box-shadow: 0 15px 34px rgba(255, 201, 40, 0.24);
+    }
+
+    .btn-outline {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .product-visual {
+      min-height: 360px;
+      display: grid;
+      place-items: center;
+    }
+
+    .device-card {
+      width: 100%;
+      max-width: 520px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+    }
+
+    .window {
+      padding: 15px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.26);
+    }
+
+    .window-bar {
+      height: 30px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border-bottom: 1px solid #e9eef4;
+    }
+
+    .window-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #d7e2ef;
+    }
+
+    .window-body {
+      padding-top: 14px;
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: 12px;
+    }
+
+    .window-side {
+      min-height: 220px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #0a2855, #06152d);
+    }
+
+    .window-sheet {
+      min-height: 220px;
+      padding: 13px;
+      border: 1px solid #dfe7f0;
+      border-radius: 12px;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          #ffffff 0,
+          #ffffff 21px,
+          #eaf0f6 22px
+        );
+    }
+
+    .sheet-box {
+      height: 48px;
+      margin-bottom: 11px;
+      border: 1px solid #d6e7fb;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #e8f3ff, #f7fbff);
+    }
+
+    .suite-visual {
+      width: 100%;
+      max-width: 500px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .suite-card {
+      min-height: 150px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(12px);
+    }
+
+    .suite-card strong {
+      color: #ffffff;
+      font-size: 1.05rem;
+    }
+
+    .suite-card span {
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 0.76rem;
+      line-height: 1.55;
+    }
+
+    .status-badge {
+      width: fit-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #9a5f00;
+      background: #fff2c2;
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .how-to-buy {
+      margin-top: 58px;
+      padding: 34px;
+      border: 1px solid #e2e9f1;
+      border-radius: var(--radius-xl);
+      background: #ffffff;
+      box-shadow: var(--shadow-md);
+    }
+
+    .how-to-buy h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      text-align: center;
+    }
+
+    .how-to-buy > p {
+      max-width: 720px;
+      margin: 12px auto 0;
+      color: var(--ink-500);
+      line-height: 1.8;
+      text-align: center;
+    }
+
+    .steps {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .step {
+      padding: 22px;
+      border: 1px solid #e4ebf3;
+      border-radius: 18px;
+      background: #f8fbff;
+    }
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+      font: 800 0.92rem "Inter", sans-serif;
+    }
+
+    .step h3 {
+      margin: 16px 0 7px;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--ink-500);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    .purchase-note {
+      margin-top: 22px;
+      padding: 14px 16px;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      color: #1d4ed8;
+      background: #eff6ff;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .site-footer {
+      padding: 36px 0;
+      color: rgba(255, 255, 255, 0.64);
+      background: var(--navy-950);
+      font-size: 0.8rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-grid a {
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+    }
+
+    @media (max-width: 1220px) {
+      .main-nav {
+        display: none;
+      }
+
+      .product-banner {
+        grid-template-columns: 1fr;
+      }
+
+      .product-visual {
+        order: -1;
+      }
+
+      .steps {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        width: min(100% - 24px, 1380px);
+      }
+
+      .nav {
+        min-height: 76px;
+      }
+
+      .brand img {
+        width: 210px;
+      }
+
+      .page-hero {
+        padding: 72px 0 62px;
+      }
+
+      .section {
+        padding: 66px 0;
+      }
+
+      .product-banner {
+        min-height: 0;
+        padding: 28px 22px;
+        border-radius: 24px;
+      }
+
+      .feature-list,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .suite-visual {
+        grid-template-columns: 1fr;
+      }
+
+      .actions .btn {
+        width: 100%;
+      }
+
+      .how-to-buy {
+        padding: 28px 20px;
+      }
+
+      .footer-grid {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    ADT Software — Engineering Software Developed in Thailand
+  </div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/" aria-label="ADTSpreadsheet หน้าแรก">
+        <img
+          src="/assets/images/logo-full.png"
+          alt="ADTSpreadsheet Engineering Software"
+        >
+      </a>
+
+      <nav class="main-nav" aria-label="เมนูหลัก">
+        <a href="/about/">เกี่ยวกับ ADTSpreadsheet</a>
+        <a href="/seminar/">อบรมและสัมมนา</a>
+        <a class="active" href="/software/">ADT Software</a>
+        <a href="/portfolio/">ผลงานออกแบบ</a>
+        <a href="/articles/">บทความวิศวกรรม</a>
+        <a href="/contact/">ติดต่อเรา</a>
+        <a class="nav-cta" href="/member/">สมัครสมาชิก</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container hero-copy">
+        <p class="eyebrow">ADT SOFTWARE PRODUCTS</p>
+
+        <h1>
+          ซอฟต์แวร์วิศวกรรม<br>
+          <span>โดยวิศวกรไทย</span>
+        </h1>
+
+        <p>
+          รวมผลิตภัณฑ์ซอฟต์แวร์จาก ADTSpreadsheet
+          ที่พัฒนาขึ้นจากประสบการณ์งานออกแบบจริง
+          เพื่อช่วยลดเวลา เพิ่มความแม่นยำ
+          และทำให้งานวิศวกรรมตรวจสอบได้ชัดเจนยิ่งขึ้น
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">OUR PRODUCTS</p>
+          <h2>เลือกโปรแกรมที่เหมาะกับงานของคุณ</h2>
+          <p>
+            แต่ละผลิตภัณฑ์ถูกพัฒนาให้ทำงานเฉพาะด้านอย่างชัดเจน
+            พร้อมระบบสนับสนุนและคู่มือจาก ADTSpreadsheet
+          </p>
+        </div>
+
+        <div class="product-stack">
+          <article class="product-banner pilefix-banner">
+            <div class="product-copy">
+              <p class="product-kicker">PROFESSIONAL SOFTWARE</p>
+
+              <h2>
+                ADT-PILEFiX<br>
+                <span>Professional v1.0</span>
+              </h2>
+
+              <p class="product-desc">
+                โปรแกรมช่วยคำนวณ ตรวจสอบ และจัดทำรายงาน
+                สำหรับงานฐานรากเสาเข็มเยื้องศูนย์
+                ครอบคลุม Pile Reaction, Beam Shear,
+                Punching Shear, Strap Beam และ Calculation Report
+              </p>
+
+              <ul class="feature-list">
+                <li>
+                  <span class="feature-check">✓</span>
+                  Pile Reaction Analysis
+                </li>
+
+                <li>
+                  <span class="feature-check">✓</span>
+                  Beam Shear
+                </li>
+
+                <li>
+                  <span class="feature-check">✓</span>
+                  Punching Shear
+                </li>
+
+                <li>
+                  <span class="feature-check">✓</span>
+                  Reinforcement Design
+                </li>
+
+                <li>
+                  <span class="feature-check">✓</span>
+                  Strap Beam Module
+                </li>
+
+                <li>
+                  <span class="feature-check">✓</span>
+                  Calculation Report
+                </li>
+              </ul>
+
+              <div class="price-row">
+                <div>
+                  <div class="price-label">ราคาจำหน่ายปัจจุบัน</div>
+                  <div class="price">4,999 บาท</div>
+                </div>
+
+                <div class="price-note">
+                  ซื้อครั้งเดียว · ไม่มีค่ารายเดือน
+                </div>
+              </div>
+
+              <div class="actions">
+                <a
+                  class="btn btn-gold"
+                  href="/software/adt-pilefix/"
+                >
+                  ดูรายละเอียดโปรแกรม
+                </a>
+
+                <a
+                  class="btn btn-outline"
+                  href="/purchase/adt-pilefix/"
+                >
+                  สั่งซื้อ
+                </a>
+              </div>
+            </div>
+
+            <div class="product-visual">
+              <div class="device-card">
+                <div class="window">
+                  <div class="window-bar">
+                    <span class="window-dot"></span>
+                    <span class="window-dot"></span>
+                    <span class="window-dot"></span>
+                  </div>
+
+                  <div class="window-body">
+                    <div class="window-side"></div>
+
+                    <div class="window-sheet">
+                      <div class="sheet-box"></div>
+                      <div class="sheet-box"></div>
+                      <div class="sheet-box"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-banner spreadsheet-banner">
+            <div class="product-copy">
+              <p class="product-kicker">ADT ENGINEERING SUITE</p>
+
+              <h2>
+                ADT Spreadsheet<br>
+                <span>Engineering Suite</span>
+              </h2>
+
+              <p class="product-desc">
+                ชุดโปรแกรม Spreadsheet สำหรับงานออกแบบโครงสร้าง
+                ที่รวมแนวคิดการคำนวณ การตรวจสอบ
+                และการจัดทำเอกสารวิศวกรรมไว้ในระบบเดียว
+              </p>
+
+              <ul class="feature-list">
+                <li>
+                  <span class="feature-check">✓</span>
+                  Structural Calculation
+                </li>
+
+                <li>
+                  <span class="feature-check">✓</span>
+                  Excel VBA Workflow
+                </li>
+
+                <li>
+                  <span class="feature-check">✓</span>
+                  Engineering Report
+                </li>
+
+                <li>
+                  <span class="feature-check">✓</span>
+                  Design Documentation
+                </li>
+              </ul>
+
+              <div class="actions">
+                <a class="btn btn-outline" href="/contact/">
+                  สอบถามรายละเอียด
+                </a>
+              </div>
+            </div>
+
+            <div class="product-visual">
+              <div class="suite-visual">
+                <div class="suite-card">
+                  <strong>ADT Structural</strong>
+                  <span>
+                    เครื่องมือช่วยคำนวณและตรวจสอบงานโครงสร้าง
+                  </span>
+                  <div class="status-badge">COMING SOON</div>
+                </div>
+
+                <div class="suite-card">
+                  <strong>ADT Foundation</strong>
+                  <span>
+                    ระบบงานฐานรากและองค์ประกอบใต้ดิน
+                  </span>
+                  <div class="status-badge">COMING SOON</div>
+                </div>
+
+                <div class="suite-card">
+                  <strong>ADT Steel</strong>
+                  <span>
+                    เครื่องมือออกแบบและตรวจสอบโครงสร้างเหล็ก
+                  </span>
+                  <div class="status-badge">COMING SOON</div>
+                </div>
+
+                <div class="suite-card">
+                  <strong>ADT Drawing</strong>
+                  <span>
+                    ระบบช่วยจัดทำแบบและเอกสารประกอบงานออกแบบ
+                  </span>
+                  <div class="status-badge">COMING SOON</div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <section class="how-to-buy" aria-labelledby="howToBuyTitle">
+          <h2 id="howToBuyTitle">วิธีการสั่งซื้อโปรแกรม</h2>
+
+          <p>
+            ขั้นตอนสั่งซื้อออกแบบให้สั้นและตรวจสอบได้
+            ตั้งแต่เลือกรายการจนถึงรับไฟล์และเปิดใช้งานโปรแกรม
+          </p>
+
+          <div class="steps">
+            <article class="step">
+              <div class="step-number">01</div>
+              <h3>เลือกโปรแกรม</h3>
+              <p>
+                เปิดหน้ารายละเอียดและตรวจสอบคุณสมบัติ
+                ราคา และเงื่อนไขการใช้งาน
+              </p>
+            </article>
+
+            <article class="step">
+              <div class="step-number">02</div>
+              <h3>กรอกข้อมูลสั่งซื้อ</h3>
+              <p>
+                ระบุชื่อ เบอร์โทร อีเมล
+                และข้อมูลที่ระบบต้องใช้สำหรับสร้างบัญชี
+              </p>
+            </article>
+
+            <article class="step">
+              <div class="step-number">03</div>
+              <h3>ชำระเงินและแนบสลิป</h3>
+              <p>
+                ชำระเงินตามยอดที่แสดง
+                แล้วแนบหลักฐานผ่านหน้าชำระเงิน
+              </p>
+            </article>
+
+            <article class="step">
+              <div class="step-number">04</div>
+              <h3>รับไฟล์และ Activate</h3>
+              <p>
+                หลังอนุมัติ ระบบจะส่งลิงก์ดาวน์โหลด
+                และข้อมูลสำหรับเปิดใช้งานโปรแกรม
+              </p>
+            </article>
+          </div>
+
+          <div class="purchase-note">
+            ขณะนี้ ADT-PILEFiX Professional
+            เป็นผลิตภัณฑ์หลักที่เปิดจำหน่ายในราคา 4,999 บาท
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        © 2026 ADTSpreadsheet — Engineering Software
+      </div>
+
+      <div>
+        <a href="/contact/">ติดต่อเรา</a>
+        &nbsp;·&nbsp;
+        <a href="/privacy/">นโยบายความเป็นส่วนตัว</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
