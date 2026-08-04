@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ADT-PILEFiX Professional | ADTSpreadsheet</title>
+
+  <meta
+    name="description"
+    content="ADT-PILEFiX Professional โปรแกรมช่วยคำนวณและตรวจสอบฐานรากเสาเข็มเยื้องศูนย์ สำหรับวิศวกรโครงสร้าง ราคา 4,999 บาท"
+  >
+
+  <meta property="og:title" content="ADT-PILEFiX Professional">
+  <meta
+    property="og:description"
+    content="โปรแกรมช่วยคำนวณและตรวจสอบฐานรากเสาเข็มเยื้องศูนย์ สำหรับวิศวกรโครงสร้าง"
+  >
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="/assets/slides/slide-02.jpg">
+
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --navy-950: #031025;
+      --navy-900: #06152d;
+      --navy-800: #0a2855;
+      --blue-700: #0d57bf;
+      --blue-600: #1677ff;
+      --blue-500: #2d8cff;
+      --blue-100: #eaf3ff;
+      --gold-500: #d9a61a;
+      --gold-400: #ffc928;
+      --green-600: #17b26a;
+      --green-100: #eafaf3;
+      --orange-600: #f79009;
+      --orange-100: #fff4e5;
+      --red-600: #ef3d48;
+      --ink-900: #142033;
+      --ink-700: #40506a;
+      --ink-500: #6c7a90;
+      --ink-400: #8f9caf;
+      --line: #dce5ef;
+      --paper: #ffffff;
+      --surface: #f4f7fb;
+      --surface-2: #edf3f9;
+      --shadow-sm: 0 10px 30px rgba(4, 27, 60, 0.08);
+      --shadow-md: 0 24px 70px rgba(4, 27, 60, 0.14);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Prompt", sans-serif;
+      color: var(--ink-900);
+      background: var(--surface);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1380px, calc(100% - 40px));
+      margin: auto;
+    }
+
+    .topbar {
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+      color: #ffffff;
+      background: linear-gradient(90deg, #ef303b, #ff7f1e);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1200;
+      border-bottom: 1px solid rgba(220, 229, 239, 0.9);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav {
+      min-height: 94px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      text-decoration: none;
+    }
+
+    .brand img {
+      width: 250px;
+      height: auto;
+      max-height: 58px;
+      object-fit: contain;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 30px;
+    }
+
+    .main-nav a {
+      color: #263650;
+      font-size: 1.04rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.2s ease;
+    }
+
+    .main-nav a:hover,
+    .main-nav a.active {
+      color: var(--blue-600);
+    }
+
+    .nav-cta {
+      padding: 14px 24px;
+      border-radius: 999px;
+      color: #ffffff !important;
+      background: var(--blue-600);
+      box-shadow: 0 10px 24px rgba(22, 119, 255, 0.22);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 85% 10%, rgba(45, 140, 255, 0.30), transparent 26%),
+        radial-gradient(circle at 10% 90%, rgba(255, 201, 40, 0.14), transparent 24%),
+        linear-gradient(135deg, var(--navy-950), var(--navy-800));
+      isolation: isolate;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(rgba(3, 16, 37, 0.52), rgba(3, 16, 37, 0.76)),
+        url("/assets/slides/slide-02.jpg") center / cover no-repeat;
+      opacity: 0.34;
+    }
+
+    .hero-grid {
+      min-height: 720px;
+      padding: 80px 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(440px, 0.95fr);
+      align-items: center;
+      gap: 54px;
+    }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--gold-400);
+      font: 800 0.78rem "Inter", sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(2.8rem, 6vw, 5.7rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+    }
+
+    .hero h1 span {
+      color: #63a8ff;
+    }
+
+    .hero-lead {
+      max-width: 720px;
+      margin: 24px 0 0;
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 1.08rem;
+      line-height: 1.9;
+    }
+
+    .hero-badges {
+      margin-top: 28px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badge {
+      padding: 9px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.07);
+      font-size: 0.78rem;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-actions {
+      margin-top: 32px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      min-height: 54px;
+      padding: 0 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid transparent;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: 700;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+      box-shadow: 0 16px 36px rgba(22, 119, 255, 0.28);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 20px 42px rgba(22, 119, 255, 0.34);
+    }
+
+    .btn-gold {
+      color: #231b00;
+      background: linear-gradient(135deg, var(--gold-400), #ffb31f);
+      box-shadow: 0 16px 36px rgba(255, 201, 40, 0.22);
+    }
+
+    .btn-outline {
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.28);
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+    }
+
+    .product-card {
+      padding: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 32px 90px rgba(0, 0, 0, 0.28);
+    }
+
+    .product-visual {
+      min-height: 380px;
+      padding: 22px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-radius: 24px;
+      background:
+        radial-gradient(circle at 80% 20%, rgba(22, 119, 255, 0.32), transparent 26%),
+        linear-gradient(145deg, #071a3a, #0c2b61);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+    }
+
+    .software-window {
+      width: 100%;
+      padding: 18px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28);
+      transform: perspective(1200px) rotateY(-6deg) rotateX(2deg);
+    }
+
+    .window-bar {
+      height: 32px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border-bottom: 1px solid #e8eef5;
+    }
+
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #d8e2ef;
+    }
+
+    .software-grid {
+      padding-top: 16px;
+      display: grid;
+      grid-template-columns: 0.75fr 1.25fr;
+      gap: 14px;
+    }
+
+    .software-sidebar {
+      min-height: 220px;
+      border-radius: 12px;
+      background:
+        linear-gradient(180deg, #0a2855, #06152d);
+    }
+
+    .software-sheet {
+      min-height: 220px;
+      padding: 14px;
+      border-radius: 12px;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          #ffffff 0,
+          #ffffff 21px,
+          #eaf0f6 22px
+        );
+      border: 1px solid #dfe7f0;
+    }
+
+    .sheet-box {
+      height: 52px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #e8f3ff, #f7fbff);
+      border: 1px solid #d6e7fb;
+    }
+
+    .price-card {
+      margin-top: 18px;
+      padding: 20px;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      border-radius: 18px;
+      color: var(--ink-900);
+      background: #ffffff;
+    }
+
+    .price-card small {
+      display: block;
+      color: var(--ink-500);
+      font-size: 0.72rem;
+    }
+
+    .price-card strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--navy-900);
+      font: 800 2rem "Inter", sans-serif;
+    }
+
+    .price-card span {
+      color: var(--ink-500);
+      font-size: 0.76rem;
+    }
+
+    .section {
+      padding: 90px 0;
+    }
+
+    .section.white {
+      background: #ffffff;
+    }
+
+    .section-head {
+      max-width: 800px;
+      margin: 0 auto 44px;
+      text-align: center;
+    }
+
+    .section-head .eyebrow {
+      color: var(--blue-600);
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    .section-head p {
+      margin: 16px 0 0;
+      color: var(--ink-500);
+      line-height: 1.8;
+    }
+
+    .problem-grid,
+    .feature-grid,
+    .included-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .problem-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .feature-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .included-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      padding: 24px;
+      border: 1px solid #e1e9f2;
+      border-radius: var(--radius-lg);
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      color: var(--blue-600);
+      background: var(--blue-100);
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .card h3 {
+      margin: 18px 0 8px;
+      color: var(--navy-900);
+      font-size: 1.05rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--ink-500);
+      font-size: 0.86rem;
+      line-height: 1.75;
+    }
+
+    .feature-card {
+      min-height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::after {
+      content: "";
+      position: absolute;
+      right: -40px;
+      bottom: -40px;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(22, 119, 255, 0.06);
+    }
+
+    .showcase {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(420px, 0.9fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .showcase-visual {
+      min-height: 520px;
+      padding: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius-xl);
+      background:
+        radial-gradient(circle at 80% 20%, rgba(22, 119, 255, 0.22), transparent 25%),
+        linear-gradient(145deg, #071a3a, #0c2b61);
+      box-shadow: var(--shadow-md);
+    }
+
+    .showcase-copy h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+    }
+
+    .showcase-copy p {
+      margin: 18px 0 0;
+      color: var(--ink-500);
+      line-height: 1.85;
+    }
+
+    .check-list {
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 13px;
+    }
+
+    .check-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      color: var(--ink-700);
+      line-height: 1.65;
+    }
+
+    .check {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      color: #ffffff;
+      background: var(--green-600);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    .comparison-wrap {
+      overflow-x: auto;
+      border: 1px solid #e1e9f2;
+      border-radius: var(--radius-xl);
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .comparison {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+    }
+
+    .comparison th,
+    .comparison td {
+      padding: 18px 20px;
+      border-bottom: 1px solid #edf2f7;
+      text-align: left;
+    }
+
+    .comparison th {
+      color: var(--navy-900);
+      background: #f7fbff;
+      font-size: 0.84rem;
+    }
+
+    .comparison td {
+      color: var(--ink-700);
+      font-size: 0.84rem;
+    }
+
+    .comparison th:nth-child(2),
+    .comparison td:nth-child(2),
+    .comparison th:nth-child(3),
+    .comparison td:nth-child(3) {
+      text-align: center;
+    }
+
+    .yes {
+      color: var(--green-600);
+      font-weight: 800;
+    }
+
+    .no {
+      color: var(--ink-400);
+      font-weight: 700;
+    }
+
+    .pricing {
+      position: relative;
+      overflow: hidden;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(22, 119, 255, 0.30), transparent 24%),
+        linear-gradient(135deg, var(--navy-950), var(--navy-800));
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(420px, 0.75fr);
+      gap: 36px;
+      align-items: center;
+    }
+
+    .pricing-copy h2 {
+      margin: 0;
+      font-size: clamp(2.2rem, 5vw, 4.2rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .pricing-copy p {
+      max-width: 720px;
+      margin: 18px 0 0;
+      color: rgba(255, 255, 255, 0.76);
+      line-height: 1.85;
+    }
+
+    .pricing-box {
+      padding: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: var(--radius-xl);
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.24);
+    }
+
+    .pricing-box small {
+      color: rgba(255, 255, 255, 0.62);
+      font-size: 0.76rem;
+    }
+
+    .big-price {
+      margin-top: 8px;
+      color: #ffffff;
+      font: 800 clamp(3rem, 7vw, 5.4rem) "Inter", sans-serif;
+      line-height: 1;
+    }
+
+    .pricing-box .note {
+      margin-top: 10px;
+      color: rgba(255, 255, 255, 0.74);
+      font-size: 0.84rem;
+    }
+
+    .pricing-actions {
+      margin-top: 24px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .seminar-banner {
+      padding: 30px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 30px;
+      align-items: center;
+      border-radius: var(--radius-xl);
+      color: #ffffff;
+      background:
+        linear-gradient(90deg, rgba(3, 16, 37, 0.84), rgba(3, 16, 37, 0.45)),
+        url("/assets/slides/slide-03.jpg") center / cover no-repeat;
+      box-shadow: var(--shadow-md);
+    }
+
+    .seminar-banner h2 {
+      margin: 0;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.18;
+    }
+
+    .seminar-banner p {
+      margin: 14px 0 0;
+      color: rgba(255, 255, 255, 0.78);
+      line-height: 1.75;
+    }
+
+    .seminar-box {
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 18px;
+      background: rgba(3, 16, 37, 0.58);
+      backdrop-filter: blur(10px);
+    }
+
+    .seminar-box strong {
+      display: block;
+      font: 800 2rem "Inter", sans-serif;
+      color: var(--gold-400);
+    }
+
+    .seminar-box span {
+      display: block;
+      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.76);
+      font-size: 0.8rem;
+      line-height: 1.55;
+    }
+
+    .faq {
+      display: grid;
+      gap: 12px;
+    }
+
+    details {
+      padding: 18px 20px;
+      border: 1px solid #e1e9f2;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+    }
+
+    summary {
+      color: var(--navy-900);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    details p {
+      margin: 14px 0 0;
+      color: var(--ink-500);
+      line-height: 1.75;
+    }
+
+    .final-cta {
+      padding: 34px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      border-radius: var(--radius-xl);
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 85% 15%, rgba(22, 119, 255, 0.26), transparent 24%),
+        linear-gradient(135deg, var(--navy-950), var(--navy-800));
+      box-shadow: var(--shadow-md);
+    }
+
+    .final-cta h2 {
+      margin: 0;
+      font-size: clamp(1.9rem, 4vw, 3.2rem);
+      line-height: 1.15;
+    }
+
+    .final-cta p {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.74);
+    }
+
+    .site-footer {
+      padding: 34px 0;
+      color: rgba(255, 255, 255, 0.64);
+      background: var(--navy-950);
+      font-size: 0.8rem;
+    }
+
+    .footer-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-grid a {
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+    }
+
+    .floating-buy {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 1100;
+      min-height: 52px;
+      padding: 0 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      border-radius: 999px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), var(--blue-700));
+      box-shadow: 0 18px 42px rgba(22, 119, 255, 0.34);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1220px) {
+      .main-nav {
+        display: none;
+      }
+
+      .hero-grid,
+      .showcase,
+      .pricing-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .problem-grid,
+      .included-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 780px) {
+      .container {
+        width: min(100% - 24px, 1380px);
+      }
+
+      .topbar {
+        font-size: 0.78rem;
+      }
+
+      .nav {
+        min-height: 76px;
+      }
+
+      .brand img {
+        width: 210px;
+      }
+
+      .hero-grid {
+        min-height: 0;
+        padding: 56px 0;
+      }
+
+      .product-visual {
+        min-height: 300px;
+      }
+
+      .software-window {
+        transform: none;
+      }
+
+      .problem-grid,
+      .feature-grid,
+      .included-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 68px 0;
+      }
+
+      .seminar-banner,
+      .final-cta {
+        grid-template-columns: 1fr;
+      }
+
+      .floating-buy {
+        left: 12px;
+        right: 12px;
+        justify-content: center;
+      }
+
+      .footer-grid {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    ADT-PILEFiX Professional — Engineering Software for Structural Engineers
+  </div>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/">
+        <img
+          src="/assets/images/logo-full.png"
+          alt="ADTSpreadsheet Engineering Software"
+        >
+      </a>
+
+      <nav class="main-nav" aria-label="เมนูหลัก">
+        <a href="/about/">เกี่ยวกับ ADTSpreadsheet</a>
+        <a href="/seminar/">อบรมและสัมมนา</a>
+        <a class="active" href="/software/adt-pilefix/">ADT Software</a>
+        <a href="/portfolio/">ผลงานออกแบบ</a>
+        <a href="/articles/">บทความวิศวกรรม</a>
+        <a href="/contact/">ติดต่อเรา</a>
+        <a class="nav-cta" href="/member/">สมัครสมาชิก</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">ADT SOFTWARE · PROFESSIONAL VERSION</p>
+
+          <h1>
+            ADT-PILEFiX<br>
+            <span>Professional v1.0</span>
+          </h1>
+
+          <p class="hero-lead">
+            โปรแกรมช่วยคำนวณ ตรวจสอบ และจัดทำรายงาน
+            สำหรับงานฐานรากเสาเข็มเยื้องศูนย์
+            พัฒนาโดยวิศวกรโครงสร้าง เพื่อการใช้งานจริงในงานออกแบบ
+          </p>
+
+          <div class="hero-badges">
+            <span class="hero-badge">Pile Reaction</span>
+            <span class="hero-badge">Beam Shear</span>
+            <span class="hero-badge">Punching Shear</span>
+            <span class="hero-badge">Strap Beam</span>
+            <span class="hero-badge">Calculation Report</span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn btn-gold" href="#buy">
+              ซื้อโปรแกรม 4,999 บาท
+            </a>
+
+            <a class="btn btn-outline" href="#trial">
+              ดาวน์โหลดทดลองใช้ฟรี
+            </a>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <div class="product-visual">
+            <div class="software-window">
+              <div class="window-bar">
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+                <span class="window-dot"></span>
+              </div>
+
+              <div class="software-grid">
+                <div class="software-sidebar"></div>
+
+                <div class="software-sheet">
+                  <div class="sheet-box"></div>
+                  <div class="sheet-box"></div>
+                  <div class="sheet-box"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-card">
+            <div>
+              <small>ราคาจำหน่ายปัจจุบัน</small>
+              <strong>4,999 บาท</strong>
+            </div>
+
+            <span>ซื้อครั้งเดียว<br>ไม่มีค่ารายเดือน</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">THE PROBLEM</p>
+          <h2>งานฐานรากเยื้องศูนย์ ไม่ควรเสียเวลาไปกับการคำนวณซ้ำ</h2>
+          <p>
+            ADT-PILEFiX ถูกพัฒนาขึ้นจากปัญหาที่วิศวกรเจอจริง
+            ทั้งการวางตำแหน่งเสาเข็ม ตรวจแรงปฏิกิริยา
+            ตรวจแรงเฉือน และจัดทำรายงานประกอบการออกแบบ
+          </p>
+        </div>
+
+        <div class="problem-grid">
+          <article class="card">
+            <div class="card-icon">01</div>
+            <h3>คำนวณหลายขั้นตอน</h3>
+            <p>
+              ลดการคำนวณซ้ำและการไล่ตรวจสมการหลายตำแหน่ง
+              ภายในฐานรากชุดเดียว
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">02</div>
+            <h3>เสี่ยงกรอกข้อมูลผิด</h3>
+            <p>
+              ลดความผิดพลาดจากการคัดลอกค่า
+              เปลี่ยนตำแหน่งเสาเข็ม และคำนวณระยะเยื้องศูนย์
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">03</div>
+            <h3>ตรวจหลาย Limit State</h3>
+            <p>
+              รวมการตรวจแรงปฏิกิริยา Beam Shear
+              และ Punching Shear ไว้ในกระบวนการเดียว
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">04</div>
+            <h3>ทำรายงานใช้เวลานาน</h3>
+            <p>
+              ลดเวลาจัดหน้า Calculation
+              และรวมข้อมูลที่จำเป็นต่อการตรวจสอบแบบ
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">CORE FEATURES</p>
+          <h2>ฟังก์ชันหลักที่ออกแบบมาเพื่อวิศวกรโครงสร้าง</h2>
+          <p>
+            ระบบภายในโปรแกรมเน้นการทำงานที่ตรวจสอบย้อนกลับได้
+            และแสดงผลให้เห็นพฤติกรรมของฐานรากอย่างชัดเจน
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="card feature-card">
+            <div class="card-icon">R</div>
+            <h3>Pile Reaction Analysis</h3>
+            <p>
+              วิเคราะห์แรงปฏิกิริยาเสาเข็มจากตำแหน่งจริง
+              จุดศูนย์กลางกลุ่มเสาเข็ม และแรงเยื้องศูนย์
+            </p>
+          </article>
+
+          <article class="card feature-card">
+            <div class="card-icon">CG</div>
+            <h3>Center of Pile Group</h3>
+            <p>
+              แสดงตำแหน่งศูนย์กลางกลุ่มเสาเข็ม
+              และระยะ Xi / Yi เทียบกับตำแหน่งเสา
+            </p>
+          </article>
+
+          <article class="card feature-card">
+            <div class="card-icon">V</div>
+            <h3>One-way Shear</h3>
+            <p>
+              ตรวจสอบ Beam Shear ตามแนววิกฤต
+              และแสดงเสาเข็มที่อยู่นอกแนวตรวจสอบ
+            </p>
+          </article>
+
+          <article class="card feature-card">
+            <div class="card-icon">P</div>
+            <h3>Punching Shear</h3>
+            <p>
+              ตรวจแนววิกฤตรอบตอม่อ
+              พร้อมแสดงความสัมพันธ์กับขอบฐานรากและเสาเข็ม
+            </p>
+          </article>
+
+          <article class="card feature-card">
+            <div class="card-icon">SB</div>
+            <h3>Strap Beam Module</h3>
+            <p>
+              รองรับการวิเคราะห์แรงลัพธ์
+              การถ่ายแรง และแรงภายในของคานรัดฐานราก
+            </p>
+          </article>
+
+          <article class="card feature-card">
+            <div class="card-icon">PDF</div>
+            <h3>Calculation Output</h3>
+            <p>
+              จัดเตรียมข้อมูลสำหรับรายงานคำนวณ
+              และเอกสารประกอบงานออกแบบอย่างเป็นระบบ
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="container showcase">
+        <div class="showcase-visual">
+          <div class="software-window">
+            <div class="window-bar">
+              <span class="window-dot"></span>
+              <span class="window-dot"></span>
+              <span class="window-dot"></span>
+            </div>
+
+            <div class="software-grid">
+              <div class="software-sidebar"></div>
+
+              <div class="software-sheet">
+                <div class="sheet-box"></div>
+                <div class="sheet-box"></div>
+                <div class="sheet-box"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-copy">
+          <p class="eyebrow">WORKFLOW</p>
+          <h2>เห็นตำแหน่งเสาเข็ม แรง และแนววิกฤตในหน้าเดียว</h2>
+          <p>
+            โปรแกรมออกแบบให้ผู้ใช้งานเห็นภาพของระบบฐานราก
+            ไม่ใช่เพียงตัวเลขผลลัพธ์ เพื่อช่วยให้วิศวกรตรวจสอบ
+            ความสมเหตุสมผลก่อนนำไปใช้งานจริง
+          </p>
+
+          <ul class="check-list">
+            <li>
+              <span class="check">✓</span>
+              กำหนดตำแหน่งตอม่อและเสาเข็มตามพิกัด
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              ตรวจสอบแรงปฏิกิริยารายต้น
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              แสดงทิศทางโมเมนต์และระยะเยื้องศูนย์
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              แสดงแนว Beam Shear และ Punching Shear
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              รองรับการเพิ่มเสาเข็มเพื่อปรับแก้ฐานราก
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="trial">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">TRIAL VS PROFESSIONAL</p>
+          <h2>ทดลองใช้งานก่อน แล้วค่อยตัดสินใจ</h2>
+          <p>
+            เวอร์ชันทดลองเหมาะสำหรับศึกษารูปแบบการทำงาน
+            ส่วน Professional รองรับการใช้งานเต็มระบบ
+          </p>
+        </div>
+
+        <div class="comparison-wrap">
+          <table class="comparison">
+            <thead>
+              <tr>
+                <th>รายการ</th>
+                <th>Trial</th>
+                <th>Professional</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>ระยะเวลาใช้งาน</td>
+                <td>1 วัน</td>
+                <td>ใช้งานตามสิทธิ์ Professional</td>
+              </tr>
+
+              <tr>
+                <td>ฐานราก F1 / F2</td>
+                <td><span class="yes">✓</span></td>
+                <td><span class="yes">✓</span></td>
+              </tr>
+
+              <tr>
+                <td>ฟังก์ชัน Professional เต็มระบบ</td>
+                <td><span class="no">—</span></td>
+                <td><span class="yes">✓</span></td>
+              </tr>
+
+              <tr>
+                <td>ระบบ Activation</td>
+                <td><span class="no">—</span></td>
+                <td><span class="yes">✓</span></td>
+              </tr>
+
+              <tr>
+                <td>ข่าวสารและศูนย์สนับสนุนในโปรแกรม</td>
+                <td><span class="no">—</span></td>
+                <td><span class="yes">✓</span></td>
+              </tr>
+
+              <tr>
+                <td>การสนับสนุนจากผู้พัฒนา</td>
+                <td>เบื้องต้น</td>
+                <td><span class="yes">✓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pricing" id="buy">
+      <div class="container pricing-grid">
+        <div class="pricing-copy">
+          <p class="eyebrow">CURRENT PRICE</p>
+          <h2>ADT-PILEFiX Professional ราคา 4,999 บาท</h2>
+          <p>
+            ซื้อครั้งเดียว ไม่มีค่ารายเดือน
+            เหมาะสำหรับวิศวกร ผู้ออกแบบ ผู้ตรวจสอบ
+            และสำนักงานวิศวกรรมที่ต้องการลดเวลาการทำงาน
+            ในงานฐานรากเสาเข็มเยื้องศูนย์
+          </p>
+
+          <ul class="check-list">
+            <li>
+              <span class="check">✓</span>
+              Professional Version 1.0
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              ระบบ Activation และบัญชีผู้ใช้งาน
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              คู่มือและวิดีโอแนะนำการใช้งาน
+            </li>
+
+            <li>
+              <span class="check">✓</span>
+              การสนับสนุนจาก ADTSpreadsheet
+            </li>
+          </ul>
+        </div>
+
+        <div class="pricing-box">
+          <small>ราคาจำหน่าย</small>
+          <div class="big-price">4,999</div>
+          <div class="note">บาท · ซื้อครั้งเดียว · ไม่มีค่ารายเดือน</div>
+
+          <div class="pricing-actions">
+            <!-- เปลี่ยน URL นี้เป็นหน้าชำระเงินจริงภายหลัง -->
+            <a class="btn btn-gold" href="/purchase/adt-pilefix/">
+              สั่งซื้อ ADT-PILEFiX
+            </a>
+
+            <a class="btn btn-outline" href="/contact/">
+              สอบถามก่อนสั่งซื้อ
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">WHAT YOU RECEIVE</p>
+          <h2>สิ่งที่ได้รับหลังสั่งซื้อ</h2>
+        </div>
+
+        <div class="included-grid">
+          <article class="card">
+            <div class="card-icon">01</div>
+            <h3>ไฟล์โปรแกรม Professional</h3>
+            <p>
+              ดาวน์โหลดไฟล์โปรแกรมผ่านระบบของ ADTSpreadsheet
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">02</div>
+            <h3>บัญชีผู้ใช้งาน</h3>
+            <p>
+              ใช้ Username และ Password สำหรับเข้าใช้งานโปรแกรม
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">03</div>
+            <h3>คู่มือและวิดีโอ</h3>
+            <p>
+              เรียนรู้การ Activate เปิด Macro และเริ่มใช้งานระบบ
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="card-icon">04</div>
+            <h3>ระบบสนับสนุน</h3>
+            <p>
+              ติดต่อผู้พัฒนาและส่งรายละเอียดปัญหาผ่านระบบ Support
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container seminar-banner">
+        <div>
+          <p class="eyebrow">ONLINE WORKSHOP</p>
+          <h2>สัมมนาออนไลน์การออกแบบฐานรากเสาเข็มเยื้องศูนย์</h2>
+          <p>
+            วันที่ 9 สิงหาคม 2569 เวลา 19:00–21:00 น.
+            เจ้าของโปรแกรมเข้าร่วมฟรี
+            บุคคลทั่วไปลงทะเบียน 399 บาท
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-gold" href="/seminar/adt-pilefix/">
+              ลงทะเบียนสัมมนา
+            </a>
+          </div>
+        </div>
+
+        <div class="seminar-box">
+          <strong>6 CPD</strong>
+          <span>
+            โฟกัสการออกแบบ ตรวจสอบ และใช้งาน
+            ADT-PILEFiX กับกรณีงานจริง
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section white">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">FAQ</p>
+          <h2>คำถามที่พบบ่อย</h2>
+        </div>
+
+        <div class="faq">
+          <details>
+            <summary>ADT-PILEFiX ใช้กับงานประเภทใด?</summary>
+            <p>
+              โปรแกรมเน้นงานฐานรากเสาเข็มเยื้องศูนย์
+              รวมถึงการตรวจแรงปฏิกิริยา Beam Shear
+              Punching Shear และระบบที่เกี่ยวข้อง
+            </p>
+          </details>
+
+          <details>
+            <summary>ต้องต่ออินเทอร์เน็ตตลอดเวลาหรือไม่?</summary>
+            <p>
+              โปรแกรมรองรับกระบวนการ Login และ Activation
+              ตามระบบสิทธิ์ของ Professional Version
+              รายละเอียดการใช้งานออนไลน์และออฟไลน์
+              จะระบุในคู่มือเวอร์ชันที่จัดส่ง
+            </p>
+          </details>
+
+          <details>
+            <summary>ซื้อแล้วมีค่ารายเดือนหรือไม่?</summary>
+            <p>
+              ราคาปัจจุบัน 4,999 บาท เป็นราคาซื้อโปรแกรม
+              ไม่มีค่ารายเดือน
+            </p>
+          </details>
+
+          <details>
+            <summary>มีเวอร์ชันทดลองหรือไม่?</summary>
+            <p>
+              มีเวอร์ชันทดลองใช้งาน 1 วัน
+              สำหรับศึกษารูปแบบและขั้นตอนการทำงานก่อนตัดสินใจ
+            </p>
+          </details>
+
+          <details>
+            <summary>บุคคลทั่วไปสมัครสัมมนาได้หรือไม่?</summary>
+            <p>
+              สมัครได้ในราคา 399 บาท
+              ส่วนเจ้าของ ADT-PILEFiX Professional
+              เข้าร่วมตามสิทธิ์ที่ประกาศในหน้าสัมมนา
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container final-cta">
+        <div>
+          <h2>พร้อมลดเวลาการทำงานฐานรากเยื้องศูนย์หรือยัง?</h2>
+          <p>
+            เริ่มต้นใช้งาน ADT-PILEFiX Professional
+            ในราคา 4,999 บาท
+          </p>
+        </div>
+
+        <a class="btn btn-gold" href="#buy">
+          ซื้อโปรแกรม
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        © 2026 ADTSpreadsheet — Engineering Software
+      </div>
+
+      <div>
+        <a href="/contact/">ติดต่อเรา</a>
+        &nbsp;·&nbsp;
+        <a href="/privacy/">นโยบายความเป็นส่วนตัว</a>
+      </div>
+    </div>
+  </footer>
+
+  <a class="floating-buy" href="#buy">
+    ซื้อ ADT-PILEFiX · 4,999 บาท
+  </a>
+</body>
+</html>
