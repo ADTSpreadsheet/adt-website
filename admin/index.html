@@ -558,9 +558,8 @@
                 id="username"
                 name="username"
                 type="text"
-                inputmode="email"
                 autocomplete="username"
-                placeholder="กรอก Username หรือ Email"
+                placeholder="กรอก Username"
                 required
               >
             </div>
@@ -632,7 +631,8 @@
           <span aria-hidden="true">🛡️</span>
           <span>
             หน้านี้สำหรับผู้ดูแลระบบที่ได้รับอนุญาตเท่านั้น
-            ระบบจะตรวจสอบบัญชีและสิทธิ์กับ Supabase ก่อนอนุญาตให้เข้าสู่ Dashboard
+            ระบบจะตรวจสอบ Username และ Password ผ่าน ADTWebsite API
+            ก่อนอนุญาตให้เข้าสู่ Dashboard
           </span>
         </div>
 
@@ -645,10 +645,13 @@
 
   <script>
     const ADMIN_LOGIN_API =
-      "https://adt-linebot-pilefix.onrender.com/api/admin/login";
+      "https://adt-website-api.onrender.com/api/admin/login";
 
     const DASHBOARD_URL =
       "/admin/dashboard/";
+
+    const ADMIN_STORAGE_KEY =
+      "adt_admin";
 
     const form =
       document.getElementById("adminLoginForm");
@@ -695,6 +698,38 @@
         isLoading
           ? "<span>กำลังตรวจสอบ...</span>"
           : "<span>เข้าสู่ระบบ</span><span aria-hidden='true'>→</span>";
+    }
+
+    function clearOldAdminData() {
+      localStorage.removeItem(
+        ADMIN_STORAGE_KEY
+      );
+
+      sessionStorage.removeItem(
+        ADMIN_STORAGE_KEY
+      );
+
+      localStorage.removeItem(
+        "adt_admin_access_token"
+      );
+
+      sessionStorage.removeItem(
+        "adt_admin_access_token"
+      );
+    }
+
+    function saveAdminData(admin, rememberMe) {
+      clearOldAdminData();
+
+      const storage =
+        rememberMe
+          ? localStorage
+          : sessionStorage;
+
+      storage.setItem(
+        ADMIN_STORAGE_KEY,
+        JSON.stringify(admin)
+      );
     }
 
     passwordToggle.addEventListener(
@@ -754,11 +789,9 @@
                   "Accept":
                     "application/json"
                 },
-                credentials: "include",
                 body: JSON.stringify({
                   username,
-                  password,
-                  remember_me: rememberMe
+                  password
                 })
               }
             );
@@ -767,25 +800,26 @@
             await response.json()
               .catch(() => ({}));
 
-          if (!response.ok ||
-              result.success !== true) {
+          if (
+            !response.ok ||
+            result.success !== true
+          ) {
             throw new Error(
               result.message ||
               "Username หรือ Password ไม่ถูกต้อง"
             );
           }
 
-          if (result.access_token) {
-            const storage =
-              rememberMe
-                ? localStorage
-                : sessionStorage;
-
-            storage.setItem(
-              "adt_admin_access_token",
-              result.access_token
+          if (!result.admin) {
+            throw new Error(
+              "API ไม่ได้ส่งข้อมูลผู้ดูแลกลับมา"
             );
           }
+
+          saveAdminData(
+            result.admin,
+            rememberMe
+          );
 
           setStatus(
             "success",
@@ -794,8 +828,9 @@
 
           window.setTimeout(
             () => {
-              window.location.href =
-                DASHBOARD_URL;
+              window.location.replace(
+                DASHBOARD_URL
+              );
             },
             700
           );
