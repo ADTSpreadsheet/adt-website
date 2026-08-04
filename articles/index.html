@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>บทความวิศวกรรม | ADTSpreadsheet</title>
+  <meta name="description" content="ศูนย์รวมบทความวิศวกรรมจาก ADTSpreadsheet ครอบคลุมงานโครงสร้าง ฐานราก เสาเข็ม คอนกรีต เหล็ก และซอฟต์แวร์วิศวกรรม">
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --navy:#06152d;--navy2:#0a2855;--blue:#1677ff;--blue2:#0d57bf;
+      --gold:#ffc928;--red:#e53935;--ink:#142033;--muted:#6c7a90;
+      --line:#dce5ef;--paper:#fff;--surface:#f4f7fb;
+      --shadow:0 20px 55px rgba(3,16,37,.13)
+    }
+    *{box-sizing:border-box}html{scroll-behavior:smooth}
+    body{margin:0;font-family:"Prompt",sans-serif;color:var(--ink);background:var(--surface)}
+    a{color:inherit}img{display:block;max-width:100%}button,input,select{font:inherit}
+    .container{width:min(1420px,calc(100% - 40px));margin:auto}
+    .topbar{padding:8px 16px;color:#fff;background:linear-gradient(90deg,#ef303b,#ff7f1e);font-size:.86rem;font-weight:700;text-align:center}
+    .site-header{position:sticky;top:0;z-index:1000;border-bottom:1px solid var(--line);background:rgba(255,255,255,.96);backdrop-filter:blur(18px)}
+    .nav{min-height:94px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+    .brand img{width:245px;max-height:62px;object-fit:contain}
+    .main-nav{display:flex;align-items:center;gap:29px}.main-nav a{font-size:1.02rem;font-weight:700;text-decoration:none;color:#263650}.main-nav a:hover,.main-nav a.active{color:var(--blue)}
+    .nav-cta{padding:14px 24px;border-radius:999px;color:#fff!important;background:var(--blue);box-shadow:0 10px 24px rgba(22,119,255,.22)}
+    .hero{position:relative;overflow:hidden;padding:96px 0 84px;color:#fff;background:radial-gradient(circle at 85% 18%,rgba(45,140,255,.25),transparent 28%),linear-gradient(135deg,#031025,var(--navy2))}
+    .hero-copy{max-width:900px;margin:auto;text-align:center}.eyebrow{margin:0 0 14px;color:var(--gold);font:800 .8rem Inter,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+    .hero h1{margin:0;font-size:clamp(2.8rem,7vw,5.6rem);line-height:1.04;letter-spacing:-.04em}.hero h1 span{color:#63a8ff}.hero p{max-width:760px;margin:20px auto 0;color:rgba(255,255,255,.82);line-height:1.9}
+    .catalog{padding:0 0 90px}.toolbar{margin-top:-34px;position:relative;z-index:5;padding:24px;display:grid;grid-template-columns:minmax(260px,1fr) auto;gap:18px;border:1px solid var(--line);border-radius:24px;background:#fff;box-shadow:var(--shadow)}
+    .search{position:relative}.search input{width:100%;min-height:54px;padding:0 18px;border:1px solid #cfdae6;border-radius:15px;outline:none;background:#f9fbfe}.search input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(22,119,255,.1)}
+    .month-select{min-height:54px;padding:0 16px;border:1px solid #cfdae6;border-radius:15px;background:#fff;font-weight:600}
+    .filters{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}.filter-btn{min-height:44px;padding:0 17px;border:1px solid #d5e0eb;border-radius:999px;background:#fff;color:#40506a;font-weight:700;cursor:pointer}.filter-btn.active{color:#fff;border-color:var(--blue);background:var(--blue)}
+    .section-head{margin:54px 0 28px;display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap}.section-head h2{margin:0;color:var(--navy);font-size:clamp(2rem,4vw,3rem)}.section-head p{margin:8px 0 0;color:var(--muted)}
+    .count{padding:10px 14px;border-radius:999px;color:var(--blue2);background:#eaf3ff;font-size:.86rem;font-weight:800}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}
+    .card{position:relative;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:22px;background:#fff;box-shadow:var(--shadow);transition:.24s}.card:hover{transform:translateY(-6px)}.card.is-new{border:2px solid rgba(229,57,53,.8);box-shadow:0 18px 46px rgba(229,57,53,.13)}
+    .cover{position:relative;overflow:hidden;aspect-ratio:16/9;background:#dbe7f3}.cover img{width:100%;height:100%;object-fit:cover;transition:.5s}.card:hover .cover img{transform:scale(1.04)}
+    .new-badge{position:absolute;top:14px;right:14px;padding:8px 13px;border-radius:999px;color:#fff;background:var(--red);font:800 .73rem Inter,sans-serif;letter-spacing:.08em;box-shadow:0 9px 24px rgba(229,57,53,.32)}
+    .category{position:absolute;left:14px;bottom:14px;padding:8px 12px;border-radius:999px;color:#fff;background:rgba(3,16,37,.82);font-size:.75rem;font-weight:700}
+    .body{flex:1;padding:23px;display:flex;flex-direction:column}.title{margin:0;color:var(--navy);font-size:1.22rem;line-height:1.55}.excerpt{margin:11px 0 0;color:var(--muted);font-size:.89rem;line-height:1.78}.meta{margin-top:auto;padding-top:18px;display:flex;gap:12px;flex-wrap:wrap;color:#8190a5;font-size:.76rem}
+    .footer{padding:0 23px 23px}.read{min-height:46px;padding:0 18px;display:inline-flex;align-items:center;border-radius:13px;color:#fff;background:linear-gradient(135deg,var(--blue),var(--blue2));text-decoration:none;font-weight:700}
+    .empty{display:none;padding:58px 26px;border:1px dashed #bfd0e2;border-radius:22px;background:#fff;color:var(--muted);text-align:center}.empty.show{display:block}
+    .note{margin-top:44px;padding:20px 22px;border:1px solid #bfdbfe;border-radius:17px;color:#1d4ed8;background:#eff6ff;text-align:center}
+    .site-footer{padding:36px 0;color:rgba(255,255,255,.66);background:#031025;font-size:.8rem}.footer-grid{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer-grid a{color:rgba(255,255,255,.75);text-decoration:none}
+    @media(max-width:1180px){.main-nav{display:none}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:760px){.container{width:min(100% - 24px,1420px)}.nav{min-height:76px}.brand img{width:210px}.hero{padding:70px 0 62px}.toolbar{margin-top:-22px;padding:17px;grid-template-columns:1fr}.month-select{width:100%}.grid{grid-template-columns:1fr}.footer-grid{justify-content:center;text-align:center}}
+  </style>
+</head>
+<body>
+  <div class="topbar">ADTSpreadsheet — Engineering Knowledge & Professional Workshop</div>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="/"><img src="/assets/images/logo-full.png" alt="ADTSpreadsheet"></a>
+      <nav class="main-nav">
+        <a href="/about/">เกี่ยวกับ ADTSpreadsheet</a><a href="/seminar/">อบรมและสัมมนา</a><a href="/software/">ADT Software</a><a href="/portfolio/">ผลงานออกแบบ</a><a class="active" href="/articles/">บทความวิศวกรรม</a><a href="/contact/">ติดต่อเรา</a><a class="nav-cta" href="/member/">สมัครสมาชิก</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-copy">
+        <p class="eyebrow">ADT ENGINEERING KNOWLEDGE CENTER</p>
+        <h1>ศูนย์รวม<span>บทความวิศวกรรม</span></h1>
+        <p>คลังความรู้ที่เรียบเรียงจากประสบการณ์ทำงานจริง เลือกอ่านได้ตามหมวดหมู่และเดือนที่เผยแพร่</p>
+      </div>
+    </section>
+
+    <section class="catalog">
+      <div class="container">
+        <div class="toolbar">
+          <div class="search"><input id="searchInput" type="search" placeholder="ค้นหาชื่อบทความ หมวดหมู่ หรือคำสำคัญ..."></div>
+          <select id="monthSelect" class="month-select"><option value="all">ทุกช่วงเวลา</option></select>
+        </div>
+
+        <div class="filters" id="filters">
+          <button class="filter-btn active" data-filter="all">บทความทั้งหมด</button>
+          <button class="filter-btn" data-filter="latest">บทความล่าสุด</button>
+          <button class="filter-btn" data-filter="this-month">เดือนนี้</button>
+          <button class="filter-btn" data-filter="last-month">เดือนก่อน</button>
+          <button class="filter-btn" data-filter="ฐานราก">ฐานราก</button>
+          <button class="filter-btn" data-filter="เสาเข็ม">เสาเข็ม</button>
+          <button class="filter-btn" data-filter="คอนกรีต">คอนกรีต</button>
+          <button class="filter-btn" data-filter="โครงสร้างเหล็ก">โครงสร้างเหล็ก</button>
+          <button class="filter-btn" data-filter="ซอฟต์แวร์">ซอฟต์แวร์</button>
+        </div>
+
+        <div class="section-head">
+          <div><h2 id="catalogTitle">บทความทั้งหมด</h2><p id="catalogDesc">เลือกอ่านตามหมวดหมู่หรือช่วงเวลาที่สนใจ</p></div>
+          <div class="count" id="resultCount">0 บทความ</div>
+        </div>
+
+        <div class="grid" id="articleGrid"></div>
+        <div class="empty" id="emptyState"><h3>ยังไม่พบบทความ</h3><p>ลองเปลี่ยนคำค้น หมวดหมู่ หรือช่วงเวลาอีกครั้งครับ</p></div>
+        <div class="note">บทความที่เผยแพร่ไม่เกิน 7 วันจะแสดงป้าย <strong>NEW</strong> และกรอบสีแดงโดยอัตโนมัติ</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="container footer-grid"><div>© 2026 ADTSpreadsheet — Engineering Knowledge Center</div><div><a href="/contact/">ติดต่อเรา</a> · <a href="/privacy/">นโยบายความเป็นส่วนตัว</a></div></div></footer>
+
+  <script>
+    /* ข้อมูลตัวอย่าง — ระบบจริงเปลี่ยนเป็น fetch จาก API */
+    const articles = [
+      {id:1,title:"หลักการตรวจสอบ Punching Shear ของฐานรากเสาเข็ม",slug:"punching-shear-pile-foundation",excerpt:"อธิบายแนววิกฤต แรงปฏิกิริยาเสาเข็ม และหลักการตรวจสอบแรงเฉือนทะลุ",cover_image:"/assets/articles/punching-shear-cover.jpg",category:"ฐานราก",published_at:"2026-08-05T00:00:00+07:00",reading_time:9,view_count:128},
+      {id:2,title:"Pile Reaction เมื่อกลุ่มเสาเข็มเกิดการเยื้องศูนย์",slug:"pile-reaction-eccentric-foundation",excerpt:"ทำความเข้าใจตำแหน่งศูนย์กลางกลุ่มเสาเข็มและการกระจายแรงลงสู่เสาเข็มแต่ละต้น",cover_image:"/assets/articles/pile-reaction-cover.jpg",category:"เสาเข็ม",published_at:"2026-08-02T00:00:00+07:00",reading_time:8,view_count:96},
+      {id:3,title:"Beam Shear ของฐานราก ตรวจตรงไหนและรวมแรงอย่างไร",slug:"beam-shear-pile-cap",excerpt:"สรุปตำแหน่งหน้าตัดวิกฤต ระยะ d และการรวมแรงปฏิกิริยาเสาเข็ม",cover_image:"/assets/articles/beam-shear-cover.jpg",category:"ฐานราก",published_at:"2026-07-28T00:00:00+07:00",reading_time:7,view_count:145},
+      {id:4,title:"การออกแบบเหล็กเสริมฐานรากและการตรวจ As",slug:"pile-cap-reinforcement-design",excerpt:"ทบทวนหลักการหาพื้นที่เหล็กเสริมและการตรวจสอบปริมาณเหล็ก",cover_image:"/assets/articles/reinforcement-cover.jpg",category:"คอนกรีต",published_at:"2026-07-18T00:00:00+07:00",reading_time:10,view_count:81},
+      {id:5,title:"ใช้ ADT-PILEFiX ตรวจฐานรากเสาเข็มเยื้องศูนย์อย่างเป็นระบบ",slug:"adt-pilefix-workflow",excerpt:"แนะนำลำดับการกรอกข้อมูล วิเคราะห์แรง และจัดทำรายงานจากโปรแกรม",cover_image:"/assets/articles/pilefix-workflow-cover.jpg",category:"ซอฟต์แวร์",published_at:"2026-06-14T00:00:00+07:00",reading_time:6,view_count:210}
+    ];
+
+    const grid=document.getElementById("articleGrid"),search=document.getElementById("searchInput"),month=document.getElementById("monthSelect"),filters=document.getElementById("filters"),count=document.getElementById("resultCount"),title=document.getElementById("catalogTitle"),desc=document.getElementById("catalogDesc"),empty=document.getElementById("emptyState");
+    let activeFilter="all";
+    const parseDate=v=>{const d=new Date(v);return Number.isNaN(d.getTime())?null:d};
+    const monthKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
+    const thaiDate=v=>{const d=parseDate(v);return d?d.toLocaleDateString("th-TH",{day:"numeric",month:"long",year:"numeric"}):"-"};
+    const thaiMonth=v=>{const d=parseDate(`${v}-01T00:00:00+07:00`);return d?d.toLocaleDateString("th-TH",{month:"long",year:"numeric"}):v};
+    const isNew=v=>{const d=parseDate(v);if(!d)return false;const days=Math.floor((Date.now()-d.getTime())/86400000);return days>=0&&days<=7};
+    const isThisMonth=v=>{const d=parseDate(v),n=new Date();return d&&d.getFullYear()===n.getFullYear()&&d.getMonth()===n.getMonth()};
+    const isLastMonth=v=>{const d=parseDate(v),n=new Date(),l=new Date(n.getFullYear(),n.getMonth()-1,1);return d&&d.getFullYear()===l.getFullYear()&&d.getMonth()===l.getMonth()};
+
+    [...new Set(articles.map(a=>parseDate(a.published_at)).filter(Boolean).map(monthKey))].sort().reverse().forEach(k=>{const o=document.createElement("option");o.value=k;o.textContent=thaiMonth(k);month.appendChild(o)});
+
+    function getList(){
+      let list=[...articles];
+      if(activeFilter==="latest") list=list.sort((a,b)=>new Date(b.published_at)-new Date(a.published_at)).slice(0,6);
+      else if(activeFilter==="this-month") list=list.filter(a=>isThisMonth(a.published_at));
+      else if(activeFilter==="last-month") list=list.filter(a=>isLastMonth(a.published_at));
+      else if(activeFilter!=="all") list=list.filter(a=>a.category===activeFilter);
+      if(month.value!=="all") list=list.filter(a=>{const d=parseDate(a.published_at);return d&&monthKey(d)===month.value});
+      const q=search.value.trim().toLowerCase();
+      if(q) list=list.filter(a=>[a.title,a.excerpt,a.category,a.slug].join(" ").toLowerCase().includes(q));
+      return list.sort((a,b)=>new Date(b.published_at)-new Date(a.published_at));
+    }
+
+    function updateHeading(){
+      if(month.value!=="all"){title.textContent=`บทความประจำเดือน ${thaiMonth(month.value)}`;desc.textContent="บทความที่เผยแพร่ภายในช่วงเวลาที่เลือก";return}
+      const map={all:["บทความทั้งหมด","เลือกอ่านตามหมวดหมู่หรือช่วงเวลาที่สนใจ"],latest:["บทความล่าสุด","บทความที่เพิ่งเผยแพร่และอัปเดตล่าสุด"],"this-month":["บทความในเดือนนี้","เนื้อหาใหม่ที่เผยแพร่ภายในเดือนปัจจุบัน"],"last-month":["บทความเดือนก่อน","ย้อนอ่านบทความที่เผยแพร่ในเดือนที่ผ่านมา"]};
+      const h=map[activeFilter];if(h){title.textContent=h[0];desc.textContent=h[1]}else{title.textContent=`หมวด ${activeFilter}`;desc.textContent="บทความทั้งหมดในหมวดหมู่ที่เลือก"}
+    }
+
+    function render(){
+      const list=getList();grid.innerHTML="";count.textContent=`${list.length} บทความ`;empty.classList.toggle("show",list.length===0);
+      list.forEach(a=>{const card=document.createElement("article"),newFlag=isNew(a.published_at);card.className=`card${newFlag?" is-new":""}`;card.innerHTML=`
+        <div class="cover"><img src="${a.cover_image}" alt="${a.title}" width="1600" height="900" loading="lazy">${newFlag?'<span class="new-badge">NEW</span>':""}<span class="category">${a.category}</span></div>
+        <div class="body"><h3 class="title">${a.title}</h3><p class="excerpt">${a.excerpt}</p><div class="meta"><span>${thaiDate(a.published_at)}</span><span>${a.reading_time} นาที</span><span>${Number(a.view_count).toLocaleString("th-TH")} ครั้ง</span></div></div>
+        <div class="footer"><a class="read" href="/articles/${encodeURIComponent(a.slug)}/">อ่านบทความ →</a></div>`;grid.appendChild(card)});
+      updateHeading();
+    }
+
+    filters.addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(!b)return;activeFilter=b.dataset.filter;filters.querySelectorAll(".filter-btn").forEach(x=>x.classList.toggle("active",x===b));month.value="all";render()});
+    search.addEventListener("input",render);month.addEventListener("change",render);render();
+  </script>
+</body>
+</html>
