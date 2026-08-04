@@ -3,8 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADT Spreadsheet | Engineering Software</title>
-<meta name="description" content="เว็บไซต์หลัก ADT Spreadsheet ซอฟต์แวร์ ความรู้ และสัมมนาสำหรับวิศวกรไทย">
+<title>ADTSpreadsheet | Engineering Software</title>
+<meta name="description" content="เว็บไซต์หลัก ADTSpreadsheet ซอฟต์แวร์ ความรู้ และสัมมนาสำหรับวิศวกรไทย">
+<link rel="icon" type="image/png" sizes="256x256" href="/assets/images/favicon.png">
+<link rel="shortcut icon" href="/assets/images/favicon.png">
+<link rel="apple-touch-icon" href="/assets/images/logo-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -20,12 +23,13 @@ html{scroll-behavior:smooth}
 body{margin:0;font-family:"Prompt",sans-serif;color:var(--ink);background:var(--surface)}
 a{color:inherit} img{display:block;max-width:100%}
 .container{width:min(1220px,calc(100% - 32px));margin:auto}
-.topbar{padding:8px 16px;text-align:center;color:#fff;background:linear-gradient(90deg,#ef303b,#ff7f1e);font-size:.9rem;font-weight:700}
+.topbar{padding:8px 16px;display:flex;align-items:center;justify-content:center;gap:18px;color:#fff;background:linear-gradient(90deg,#ef303b,#ff7f1e);font-size:.9rem;font-weight:700}
 header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
 .nav{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px}
-.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo{width:48px;height:48px;display:grid;place-items:center;border-radius:14px;color:#fff;background:linear-gradient(145deg,var(--blue),#0c4ca5);font:800 1rem "Inter";box-shadow:0 10px 24px rgba(22,119,255,.24)}
-.brand strong{display:block;color:var(--navy)} .brand small{display:block;color:var(--blue);font-size:.67rem;font-weight:700;letter-spacing:.08em}
+.brand{display:flex;align-items:center;text-decoration:none;flex:0 0 auto}
+.brand-logo{width:250px;height:auto;max-height:58px;object-fit:contain}
+.admin-link{margin-left:auto;color:#fff;text-decoration:none;font-size:.78rem;font-weight:700;opacity:.92}
+.admin-link:hover{opacity:1;text-decoration:underline}
 nav{display:flex;align-items:center;gap:20px}
 nav>a,.nav-dropdown>a{text-decoration:none;color:#324158;font-size:.92rem;font-weight:600}
 nav>a:hover,.nav-dropdown>a:hover{color:var(--blue)}
@@ -57,8 +61,18 @@ nav>a:hover,.nav-dropdown>a:hover{color:var(--blue)}
 .external-link::after{content:" ↗";color:var(--blue)}
 .nav-cta{padding:11px 18px;border-radius:999px;color:#fff!important;background:var(--blue)}
 .hero{position:relative;overflow:hidden;background:#031025}
-.hero img{width:100%;min-height:420px;object-fit:cover;object-position:center}
-.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(3,16,37,.72),transparent 43%);pointer-events:none}
+.hero-slider{position:relative;width:100%;aspect-ratio:12/5;min-height:420px}
+.hero-slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .75s ease,visibility .75s ease}
+.hero-slide.active{opacity:1;visibility:visible;z-index:1}
+.hero-slide a{display:block;width:100%;height:100%}
+.hero-slide img{width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-arrow{position:absolute;top:50%;z-index:4;width:46px;height:46px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.35);border-radius:50%;color:#fff;background:rgba(3,16,37,.48);backdrop-filter:blur(8px);cursor:pointer;transform:translateY(-50%);font-size:1.45rem;transition:.2s}
+.hero-arrow:hover{background:rgba(22,119,255,.86)}
+.hero-prev{left:18px}.hero-next{right:18px}
+.hero-dots{position:absolute;left:50%;bottom:18px;z-index:4;display:flex;gap:9px;transform:translateX(-50%)}
+.hero-dot{width:10px;height:10px;padding:0;border:0;border-radius:999px;background:rgba(255,255,255,.45);cursor:pointer;transition:.25s}
+.hero-dot.active{width:30px;background:var(--yellow)}
+.hero-progress{position:absolute;left:0;bottom:0;z-index:4;height:4px;width:0;background:linear-gradient(90deg,var(--yellow),#ff8a1f)}
 .hero-actions{position:absolute;z-index:2;left:0;right:0;bottom:26px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 .btn{min-height:50px;padding:0 22px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:14px;text-decoration:none;font-weight:700;transition:.2s}
 .btn:hover{transform:translateY(-2px)}
@@ -131,20 +145,22 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
 .footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .footer p{margin:0;line-height:1.8;font-size:.86rem}
 .footer-links{display:flex;gap:14px;flex-wrap:wrap}.footer-links a{text-decoration:none;color:#d8e6f6;font-size:.86rem}
-@media(max-width:1000px){nav{display:none}.count-card,.status-layout,.product{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.articles{grid-template-columns:1fr 1fr}}
-@media(max-width:700px){.hero img{min-height:350px}.hero-actions{position:static;padding:16px;background:#031025}.hero-actions,.hero-actions .btn{width:100%}.count-wrap{margin-top:0}.count-card{border-radius:0 0 var(--radius) var(--radius)}.count-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.count-item strong{font-size:1.3rem}.kpis,.two-grid,.features,.articles{grid-template-columns:1fr}.section{padding:56px 0}}
+@media(max-width:1120px){nav{display:none}.brand-logo{width:220px}.count-card,.status-layout,.product{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.articles{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.brand-logo{width:190px}.hero-slider{min-height:0;aspect-ratio:12/5}.hero-arrow{width:38px;height:38px}.hero-prev{left:8px}.hero-next{right:8px}.hero-dots{bottom:10px}.hero-actions{position:static;padding:16px;background:#031025}.hero-actions,.hero-actions .btn{width:100%}.count-wrap{margin-top:0}.count-card{border-radius:0 0 var(--radius) var(--radius)}.count-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.count-item strong{font-size:1.3rem}.kpis,.two-grid,.features,.articles{grid-template-columns:1fr}.section{padding:56px 0}}
 </style>
 </head>
 <body>
-<div class="topbar">ADT Spreadsheet — Engineering Software, Knowledge & Professional Workshop</div>
+<div class="topbar"><span>ADTSpreadsheet — Engineering Software, Knowledge & Professional Workshop</span><a class="admin-link" href="/admin/">Admin เข้าระบบ</a></div>
 <header>
   <div class="container nav">
-    <a class="brand" href="#top">
-      <span class="logo">ADT</span>
-      <span><strong>ADT Spreadsheet</strong><small>ENGINEERING SOFTWARE</small></span>
+    <a class="brand" href="/" aria-label="ADTSpreadsheet หน้าแรก">
+      <picture>
+        <source media="(max-width:700px)" srcset="/assets/images/logo-header.png">
+        <img class="brand-logo" src="/assets/images/logo-full.png" alt="ADTSpreadsheet Engineering Software">
+      </picture>
     </a>
     <nav aria-label="เมนูหลัก">
-      <a href="/about/">เกี่ยวกับ ADT Spreadsheet</a>
+      <a href="/about/">เกี่ยวกับ ADTSpreadsheet</a>
 
       <div class="nav-dropdown">
         <a href="/seminar/">อบรมและสัมมนา</a>
@@ -167,7 +183,7 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
              href="https://www.tumcivil.com/"
              target="_blank"
              rel="noopener noreferrer">
-            ADT Spreadsheet
+            ADTSpreadsheet
             <small>เปิดหน้าจำหน่ายภายนอกบนเว็บไซต์ TumCivil</small>
           </a>
           <a href="/software/adt-pilefix/">
@@ -177,6 +193,7 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
         </div>
       </div>
 
+      <a href="/portfolio/">ผลงานออกแบบ</a>
       <a href="/articles/">บทความวิศวกรรม</a>
       <a href="/contact/">ติดต่อเรา</a>
       <a class="nav-cta" href="/member/">สมัครสมาชิก</a>
@@ -185,11 +202,31 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
 </header>
 
 <main id="top">
-<section class="hero">
-  <img src="assets/images/hero/seminar-hero-banner.png" alt="สัมมนา ADT-PILEFiX วันที่ 9 สิงหาคม 2569">
-  <div class="hero-actions container">
-    <a class="btn btn-yellow" href="/seminar/adt-pilefix">ลงทะเบียนสัมมนา</a>
-    <a class="btn btn-glass" href="/software/adt-pilefix/">ดู ADT-PILEFiX Professional</a>
+<section class="hero" aria-label="ข่าวสารและผลิตภัณฑ์เด่น">
+  <div class="hero-slider" id="heroSlider">
+    <article class="hero-slide active">
+      <a href="/software/" aria-label="ดูโปรแกรมทั้งหมดของ ADTSpreadsheet">
+        <img src="/assets/slides/slide-01.jpg" alt="ADTSpreadsheet Engineering Software">
+      </a>
+    </article>
+    <article class="hero-slide">
+      <a href="/software/adt-pilefix/" aria-label="ดูรายละเอียด ADT-PILEFiX Professional">
+        <img src="/assets/slides/slide-02.jpg" alt="ADT-PILEFiX Professional">
+      </a>
+    </article>
+    <article class="hero-slide">
+      <a href="/seminar/adt-pilefix" aria-label="ลงทะเบียน Workshop ADT-PILEFiX">
+        <img src="/assets/slides/slide-03.jpg" alt="Workshop Online ADT-PILEFiX วันที่ 9 สิงหาคม 2569">
+      </a>
+    </article>
+    <button class="hero-arrow hero-prev" type="button" aria-label="สไลด์ก่อนหน้า">‹</button>
+    <button class="hero-arrow hero-next" type="button" aria-label="สไลด์ถัดไป">›</button>
+    <div class="hero-dots" aria-label="เลือกสไลด์">
+      <button class="hero-dot active" type="button" aria-label="สไลด์ที่ 1"></button>
+      <button class="hero-dot" type="button" aria-label="สไลด์ที่ 2"></button>
+      <button class="hero-dot" type="button" aria-label="สไลด์ที่ 3"></button>
+    </div>
+    <div class="hero-progress" id="heroProgress"></div>
   </div>
 </section>
 
@@ -283,7 +320,7 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
 </section>
 </main>
 
-<footer><div class="container footer"><p><strong>ADT Spreadsheet</strong><br>ซอฟต์แวร์ ความรู้ และเครื่องมือสำหรับวิศวกรไทย</p><div class="footer-links"><a href="#top">หน้าแรก</a><a href="/about/">เกี่ยวกับเรา</a><a href="/seminar/adt-pilefix">อบรม 9 สิงหาคม</a><a href="/software/adt-pilefix/">ADT-PILEFiX</a><a href="/member/">สมาชิก</a><a href="/articles/">บทความ</a><a href="/contact/">ติดต่อเรา</a></div></div></footer>
+<footer><div class="container footer"><p><strong>ADTSpreadsheet</strong><br>ซอฟต์แวร์ ความรู้ และเครื่องมือสำหรับวิศวกรไทย</p><div class="footer-links"><a href="#top">หน้าแรก</a><a href="/about/">เกี่ยวกับเรา</a><a href="/seminar/adt-pilefix">อบรม 9 สิงหาคม</a><a href="/software/adt-pilefix/">ADT-PILEFiX</a><a href="/portfolio/">ผลงานออกแบบ</a><a href="/member/">สมาชิก</a><a href="/articles/">บทความ</a><a href="/contact/">ติดต่อเรา</a></div></div></footer>
 
 <script>
 const API_BASE="https://adt-linebot-pilefix.onrender.com";
@@ -349,6 +386,57 @@ async function loadDashboard(){
     document.getElementById("pfEmpty").textContent="รอเชื่อมต่อ Public Dashboard API";
   }
 }
+
+function initHeroSlider(){
+  const slider=document.getElementById("heroSlider");
+  if(!slider)return;
+  const slides=[...slider.querySelectorAll(".hero-slide")];
+  const dots=[...slider.querySelectorAll(".hero-dot")];
+  const prev=slider.querySelector(".hero-prev");
+  const next=slider.querySelector(".hero-next");
+  const progress=document.getElementById("heroProgress");
+  const delay=6500;
+  let index=0,timer=null,progressFrame=null,startedAt=0;
+
+  const paintProgress=()=>{
+    if(!progress)return;
+    const percent=Math.min(((performance.now()-startedAt)/delay)*100,100);
+    progress.style.width=`${percent}%`;
+    if(percent<100)progressFrame=requestAnimationFrame(paintProgress);
+  };
+
+  const restartTimer=()=>{
+    clearInterval(timer);
+    cancelAnimationFrame(progressFrame);
+    startedAt=performance.now();
+    if(progress)progress.style.width="0%";
+    progressFrame=requestAnimationFrame(paintProgress);
+    timer=setInterval(()=>show(index+1),delay);
+  };
+
+  const show=i=>{
+    index=(i+slides.length)%slides.length;
+    slides.forEach((slide,n)=>slide.classList.toggle("active",n===index));
+    dots.forEach((dot,n)=>dot.classList.toggle("active",n===index));
+    restartTimer();
+  };
+
+  prev?.addEventListener("click",()=>show(index-1));
+  next?.addEventListener("click",()=>show(index+1));
+  dots.forEach((dot,n)=>dot.addEventListener("click",()=>show(n)));
+  slider.addEventListener("mouseenter",()=>{clearInterval(timer);cancelAnimationFrame(progressFrame)});
+  slider.addEventListener("mouseleave",restartTimer);
+
+  let touchStartX=0;
+  slider.addEventListener("touchstart",e=>{touchStartX=e.changedTouches[0].clientX},{passive:true});
+  slider.addEventListener("touchend",e=>{
+    const diff=e.changedTouches[0].clientX-touchStartX;
+    if(Math.abs(diff)>45)show(index+(diff<0?1:-1));
+  },{passive:true});
+
+  restartTimer();
+}
+
 function countdown(){
   const target=new Date("2026-08-09T19:00:00+07:00");
   const update=()=>{
@@ -361,7 +449,7 @@ function countdown(){
   };
   update();setInterval(update,1000);
 }
-document.addEventListener("DOMContentLoaded",()=>{countdown();loadDashboard();setInterval(loadDashboard,60000)});
+document.addEventListener("DOMContentLoaded",()=>{initHeroSlider();countdown();loadDashboard();setInterval(loadDashboard,60000)});
 </script>
 </body>
 </html>
