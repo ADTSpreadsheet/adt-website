@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ADT Control Center | Dashboard</title>
+
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="description" content="ADTSpreadsheet Control Center Dashboard">
+
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --navy-950: #031025;
+      --navy-900: #06152d;
+      --navy-850: #081d3f;
+      --navy-800: #0a2855;
+      --blue-600: #1677ff;
+      --blue-500: #2d8cff;
+      --blue-100: #eaf3ff;
+      --gold-500: #d9a61a;
+      --gold-400: #ffc928;
+      --green-600: #17b26a;
+      --green-100: #eafaf3;
+      --orange-600: #f79009;
+      --orange-100: #fff4e5;
+      --red-600: #ef3d48;
+      --red-100: #fff0f1;
+      --violet-600: #7c3aed;
+      --violet-100: #f3edff;
+      --ink-900: #142033;
+      --ink-700: #40506a;
+      --ink-500: #6c7a90;
+      --ink-400: #8f9caf;
+      --line: #dce5ef;
+      --paper: #ffffff;
+      --surface: #f4f7fb;
+      --surface-2: #eef3f8;
+      --shadow-sm: 0 8px 24px rgba(4, 27, 60, 0.08);
+      --shadow-md: 0 18px 50px rgba(4, 27, 60, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --sidebar-width: 286px;
+      --topbar-height: 74px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Prompt", sans-serif;
+      color: var(--ink-900);
+      background: var(--surface);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 20px 16px;
+      overflow-y: auto;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 0 0, rgba(22, 119, 255, 0.24), transparent 26%),
+        linear-gradient(180deg, var(--navy-950), var(--navy-850));
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 1200;
+    }
+
+    .sidebar-brand {
+      padding: 8px 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .sidebar-brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .sidebar-brand strong {
+      display: block;
+      font-family: "Inter", sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-brand span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    .workspace {
+      margin: 0 8px 18px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .workspace small {
+      display: block;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 0.67rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .workspace strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.86rem;
+    }
+
+    .nav-label {
+      margin: 22px 10px 8px;
+      color: rgba(255, 255, 255, 0.38);
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .nav-menu {
+      display: grid;
+      gap: 5px;
+    }
+
+    .nav-item {
+      min-height: 46px;
+      padding: 0 13px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-radius: 12px;
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: 0.18s ease;
+    }
+
+    .nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .nav-item.active {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(22, 119, 255, 0.85), rgba(13, 87, 191, 0.85));
+      box-shadow: 0 10px 26px rgba(22, 119, 255, 0.20);
+    }
+
+    .nav-icon {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+      flex: 0 0 auto;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--red-600);
+      font: 700 0.68rem "Inter", sans-serif;
+    }
+
+    .sidebar-footer {
+      margin: 24px 8px 0;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .sidebar-footer a {
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 0.75rem;
+      text-decoration: none;
+    }
+
+    .main-shell {
+      min-width: 0;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      height: var(--topbar-height);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mobile-menu {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .topbar-title {
+      min-width: 0;
+    }
+
+    .topbar-title strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .topbar-title span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.74rem;
+    }
+
+    .topbar-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar-button {
+      height: 42px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink-700);
+      background: #ffffff;
+      text-decoration: none;
+      font-size: 0.79rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .topbar-button:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .admin-profile {
+      padding-left: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), var(--navy-800));
+      font: 800 0.82rem "Inter", sans-serif;
+    }
+
+    .admin-profile strong {
+      display: block;
+      font-size: 0.78rem;
+    }
+
+    .admin-profile span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    .page-head {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.85rem, 3vw, 2.65rem);
+      letter-spacing: -0.035em;
+    }
+
+    .page-head p {
+      margin: 8px 0 0;
+      color: var(--ink-500);
+      line-height: 1.7;
+    }
+
+    .demo-badge {
+      padding: 8px 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      color: #8a5600;
+      background: #fff4cf;
+      border: 1px solid #f7d772;
+      font-size: 0.73rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .metric-card {
+      padding: 20px;
+      border: 1px solid #e3ebf4;
+      border-radius: var(--radius-lg);
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .metric-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 1.05rem;
+    }
+
+    .metric-icon.blue {
+      color: var(--blue-600);
+      background: var(--blue-100);
+    }
+
+    .metric-icon.green {
+      color: var(--green-600);
+      background: var(--green-100);
+    }
+
+    .metric-icon.violet {
+      color: var(--violet-600);
+      background: var(--violet-100);
+    }
+
+    .metric-icon.orange {
+      color: var(--orange-600);
+      background: var(--orange-100);
+    }
+
+    .trend {
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: #087545;
+      background: #eafaf3;
+      font: 700 0.68rem "Inter", sans-serif;
+    }
+
+    .metric-value {
+      margin-top: 18px;
+      color: var(--navy-900);
+      font: 800 2rem "Inter", sans-serif;
+      line-height: 1;
+    }
+
+    .metric-title {
+      margin-top: 8px;
+      color: var(--ink-700);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .metric-note {
+      margin-top: 5px;
+      color: var(--ink-400);
+      font-size: 0.72rem;
+    }
+
+    .grid-2 {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.55fr);
+      gap: 18px;
+    }
+
+    .grid-equal {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid #e3ebf4;
+      border-radius: var(--radius-xl);
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 70px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.72rem;
+    }
+
+    .panel-link {
+      color: var(--blue-600);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .chart-wrap {
+      min-height: 280px;
+      position: relative;
+    }
+
+    .chart-grid {
+      position: absolute;
+      inset: 14px 0 34px;
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+    }
+
+    .chart-grid span {
+      border-top: 1px dashed #e5ebf2;
+    }
+
+    .bars {
+      position: absolute;
+      inset: 14px 4px 34px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      align-items: end;
+      gap: 16px;
+    }
+
+    .bar-column {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .bar {
+      width: min(34px, 72%);
+      min-height: 8px;
+      border-radius: 10px 10px 4px 4px;
+      background: linear-gradient(180deg, var(--blue-500), var(--blue-600));
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+    }
+
+    .bar-label {
+      position: absolute;
+      bottom: 4px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .chart-summary {
+      padding-top: 10px;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      border-top: 1px solid #edf2f7;
+    }
+
+    .chart-summary-item strong {
+      display: block;
+      color: var(--navy-900);
+      font: 800 1.05rem "Inter", sans-serif;
+    }
+
+    .chart-summary-item span {
+      color: var(--ink-500);
+      font-size: 0.7rem;
+    }
+
+    .device-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .device-row {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr) 52px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .device-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink-700);
+      font-size: 0.79rem;
+      font-weight: 600;
+    }
+
+    .progress {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #edf2f7;
+    }
+
+    .progress > span {
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue-600), #54a4ff);
+    }
+
+    .device-value {
+      color: var(--navy-900);
+      font: 700 0.78rem "Inter", sans-serif;
+      text-align: right;
+    }
+
+    .bot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .bot-card {
+      padding: 15px;
+      border: 1px solid #e7edf5;
+      border-radius: 15px;
+      background: #fbfdff;
+    }
+
+    .bot-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .bot-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--ink-900);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .bot-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--violet-600), #5b21b6);
+      font-size: 0.82rem;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green-600);
+      box-shadow: 0 0 0 4px rgba(23, 178, 106, 0.10);
+    }
+
+    .bot-number {
+      margin-top: 12px;
+      color: var(--navy-900);
+      font: 800 1.28rem "Inter", sans-serif;
+    }
+
+    .bot-meta {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+      line-height: 1.55;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px 16px;
+      text-align: left;
+      border-bottom: 1px solid #edf2f7;
+      font-size: 0.75rem;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--ink-500);
+      background: #f8fbff;
+      font-size: 0.67rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      padding: 6px 9px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .badge.blue {
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .badge.orange {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .badge.red {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .badge.gray {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .task-item {
+      padding: 13px 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #e8eef5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .task-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--orange-600);
+      background: var(--orange-100);
+    }
+
+    .task-item strong {
+      display: block;
+      color: var(--ink-900);
+      font-size: 0.77rem;
+    }
+
+    .task-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .task-action {
+      color: var(--blue-600);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .line-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .line-stat {
+      padding: 15px;
+      border: 1px solid #e8eef5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .line-stat strong {
+      display: block;
+      color: var(--navy-900);
+      font: 800 1.25rem "Inter", sans-serif;
+    }
+
+    .line-stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .system-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .system-row {
+      min-height: 48px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border: 1px solid #e8eef5;
+      border-radius: 13px;
+      background: #fbfdff;
+    }
+
+    .system-row strong {
+      font-size: 0.76rem;
+    }
+
+    .system-row span {
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      color: #8a5600;
+      background: #fff8df;
+      border: 1px solid #f5df8c;
+      font-size: 0.72rem;
+      line-height: 1.65;
+    }
+
+    .sidebar-overlay {
+      display: none;
+    }
+
+    @media (max-width: 1240px) {
+      .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-2,
+      .grid-equal {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: var(--sidebar-width);
+        transform: translateX(-100%);
+        transition: transform 0.22s ease;
+      }
+
+      body.sidebar-open .sidebar {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1150;
+        background: rgba(3, 16, 37, 0.48);
+      }
+
+      body.sidebar-open .sidebar-overlay {
+        display: block;
+      }
+
+      .mobile-menu {
+        display: grid;
+        place-items: center;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 22px 18px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topbar-button.hide-mobile,
+      .admin-profile > div {
+        display: none;
+      }
+
+      .bot-grid,
+      .line-summary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .device-row {
+        grid-template-columns: 94px minmax(0, 1fr) 44px;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .bot-grid,
+      .line-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        padding: 18px 12px;
+      }
+
+      .topbar {
+        padding: 0 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="/admin/dashboard/">
+        <img src="/assets/images/logo-icon.png" alt="ADTSpreadsheet">
+        <span>
+          <strong>ADT Control Center</strong>
+          <span>ADMINISTRATION SYSTEM</span>
+        </span>
+      </a>
+
+      <div class="workspace">
+        <small>Workspace</small>
+        <strong>ADTSpreadsheet</strong>
+      </div>
+
+      <div class="nav-label">ภาพรวม</div>
+      <nav class="nav-menu" aria-label="เมนูผู้ดูแล">
+        <a class="nav-item active" href="/admin/dashboard/">
+          <span class="nav-icon">▦</span>
+          Dashboard
+        </a>
+
+        <a class="nav-item" href="/admin/tasks/">
+          <span class="nav-icon">✓</span>
+          งานที่ต้องดำเนินการ
+          <span class="nav-badge">9</span>
+        </a>
+      </nav>
+
+      <div class="nav-label">เว็บไซต์และการค้นหา</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/analytics/">
+          <span class="nav-icon">◫</span>
+          Website Analytics
+        </a>
+
+        <a class="nav-item" href="/admin/search-ai/">
+          <span class="nav-icon">AI</span>
+          Search & AI Center
+        </a>
+
+        <a class="nav-item" href="/admin/system-logs/">
+          <span class="nav-icon">⌁</span>
+          System Logs
+        </a>
+      </nav>
+
+      <div class="nav-label">ธุรกิจ</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/products/">
+          <span class="nav-icon">▣</span>
+          Products
+        </a>
+
+        <a class="nav-item" href="/admin/sales/">
+          <span class="nav-icon">฿</span>
+          Sales & Payments
+        </a>
+
+        <a class="nav-item" href="/admin/members/">
+          <span class="nav-icon">◎</span>
+          Members
+        </a>
+
+        <a class="nav-item" href="/admin/seminars/">
+          <span class="nav-icon">◉</span>
+          Seminars
+        </a>
+      </nav>
+
+      <div class="nav-label">สื่อและการสนับสนุน</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/line-oa/">
+          <span class="nav-icon">L</span>
+          LINE OA Center
+        </a>
+
+        <a class="nav-item" href="/admin/articles/">
+          <span class="nav-icon">✎</span>
+          Articles
+        </a>
+
+        <a class="nav-item" href="/admin/portfolio/">
+          <span class="nav-icon">▤</span>
+          Design Portfolio
+        </a>
+
+        <a class="nav-item" href="/admin/support/">
+          <span class="nav-icon">?</span>
+          Support Center
+        </a>
+      </nav>
+
+      <div class="nav-label">ระบบ</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/settings/">
+          <span class="nav-icon">⚙</span>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/">← กลับเว็บไซต์หลัก</a>
+      </div>
+    </aside>
+
+    <div class="main-shell">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">
+          ☰
+        </button>
+
+        <div class="topbar-title">
+          <strong>Dashboard</strong>
+          <span>ADTSpreadsheet Control Center</span>
+        </div>
+
+        <div class="topbar-actions">
+          <a class="topbar-button hide-mobile" href="/" target="_blank" rel="noopener">
+            ดูเว็บไซต์
+          </a>
+
+          <button class="topbar-button" type="button" id="refreshButton">
+            ↻ รีเฟรช
+          </button>
+
+          <div class="admin-profile">
+            <div class="avatar">AK</div>
+            <div>
+              <strong>อ.เก่ง</strong>
+              <span>SUPER ADMIN</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page-head">
+          <div>
+            <h1>สวัสดีครับ อ.เก่ง 👋</h1>
+            <p>
+              ภาพรวมเว็บไซต์ Search Engine, AI Bot, ADT-LINE Bot
+              และงานสำคัญที่ต้องดำเนินการวันนี้
+            </p>
+          </div>
+
+          <span class="demo-badge">
+            ● DEMO DATA — รอเชื่อม API
+          </span>
+        </section>
+
+        <section class="overview-grid" aria-label="ตัวเลขภาพรวม">
+          <article class="metric-card">
+            <div class="metric-head">
+              <div class="metric-icon blue">👥</div>
+              <span class="trend">+12.4%</span>
+            </div>
+            <div class="metric-value" data-counter="126">0</div>
+            <div class="metric-title">ผู้เยี่ยมชมวันนี้</div>
+            <div class="metric-note">รวมผู้เข้าชมแบบไม่ระบุตัวตน</div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-head">
+              <div class="metric-icon green">◉</div>
+              <span class="trend">Online</span>
+            </div>
+            <div class="metric-value" data-counter="8">0</div>
+            <div class="metric-title">กำลังออนไลน์</div>
+            <div class="metric-note">Active ภายใน 5 นาทีล่าสุด</div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-head">
+              <div class="metric-icon violet">AI</div>
+              <span class="trend">+5</span>
+            </div>
+            <div class="metric-value" data-counter="24">0</div>
+            <div class="metric-title">AI Bot Requests</div>
+            <div class="metric-note">Request ที่ตรวจพบวันนี้</div>
+          </article>
+
+          <article class="metric-card">
+            <div class="metric-head">
+              <div class="metric-icon orange">L</div>
+              <span class="trend">99.2%</span>
+            </div>
+            <div class="metric-value" data-counter="224">0</div>
+            <div class="metric-title">LINE OA Friends</div>
+            <div class="metric-note">ผู้ติดตามทั้งหมดในระบบ</div>
+          </article>
+        </section>
+
+        <section class="grid-2">
+          <article class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Website Visitors</h2>
+                <p>จำนวนผู้เยี่ยมชมย้อนหลัง 7 วัน</p>
+              </div>
+              <a class="panel-link" href="/admin/analytics/">ดู Analytics →</a>
+            </header>
+
+            <div class="panel-body">
+              <div class="chart-wrap" aria-label="กราฟผู้เยี่ยมชม">
+                <div class="chart-grid">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+
+                <div class="bars">
+                  <div class="bar-column">
+                    <div class="bar" style="height:45%"></div>
+                    <span class="bar-label">จ.</span>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar" style="height:62%"></div>
+                    <span class="bar-label">อ.</span>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar" style="height:52%"></div>
+                    <span class="bar-label">พ.</span>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar" style="height:74%"></div>
+                    <span class="bar-label">พฤ.</span>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar" style="height:66%"></div>
+                    <span class="bar-label">ศ.</span>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar" style="height:86%"></div>
+                    <span class="bar-label">ส.</span>
+                  </div>
+                  <div class="bar-column">
+                    <div class="bar" style="height:72%"></div>
+                    <span class="bar-label">อา.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="chart-summary">
+                <div class="chart-summary-item">
+                  <strong>782</strong>
+                  <span>Visitors 7 วัน</span>
+                </div>
+
+                <div class="chart-summary-item">
+                  <strong>2,946</strong>
+                  <span>Page Views</span>
+                </div>
+
+                <div class="chart-summary-item">
+                  <strong>3:42</strong>
+                  <span>เวลาเฉลี่ย</span>
+                </div>
+
+                <div class="chart-summary-item">
+                  <strong>41.8%</strong>
+                  <span>Returning Visitors</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>อุปกรณ์ที่ใช้เข้าชม</h2>
+                <p>Device Distribution วันนี้</p>
+              </div>
+            </header>
+
+            <div class="panel-body">
+              <div class="device-list">
+                <div class="device-row">
+                  <div class="device-name">🖥 Desktop</div>
+                  <div class="progress"><span style="width:63%"></span></div>
+                  <div class="device-value">63%</div>
+                </div>
+
+                <div class="device-row">
+                  <div class="device-name">📱 Mobile</div>
+                  <div class="progress"><span style="width:32%"></span></div>
+                  <div class="device-value">32%</div>
+                </div>
+
+                <div class="device-row">
+                  <div class="device-name">▭ Tablet</div>
+                  <div class="progress"><span style="width:5%"></span></div>
+                  <div class="device-value">5%</div>
+                </div>
+              </div>
+
+              <div class="footer-note">
+                ภายหลังจะเชื่อมข้อมูล Device, Browser และ Operating System
+                จากระบบ Analytics จริง
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="grid-equal">
+          <article class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Search & AI Bot Center</h2>
+                <p>Bot ที่ตรวจพบบนเว็บไซต์วันนี้</p>
+              </div>
+              <a class="panel-link" href="/admin/search-ai/">ดูทั้งหมด →</a>
+            </header>
+
+            <div class="panel-body">
+              <div class="bot-grid">
+                <div class="bot-card">
+                  <div class="bot-top">
+                    <div class="bot-name">
+                      <span class="bot-mark">G</span>
+                      Googlebot
+                    </div>
+                    <span class="status-dot"></span>
+                  </div>
+                  <div class="bot-number">16</div>
+                  <div class="bot-meta">Last crawl 16:18 · 7 URLs</div>
+                </div>
+
+                <div class="bot-card">
+                  <div class="bot-top">
+                    <div class="bot-name">
+                      <span class="bot-mark">B</span>
+                      Bingbot
+                    </div>
+                    <span class="status-dot"></span>
+                  </div>
+                  <div class="bot-number">5</div>
+                  <div class="bot-meta">Last crawl 15:42 · 3 URLs</div>
+                </div>
+
+                <div class="bot-card">
+                  <div class="bot-top">
+                    <div class="bot-name">
+                      <span class="bot-mark">O</span>
+                      OpenAI Bot
+                    </div>
+                    <span class="status-dot"></span>
+                  </div>
+                  <div class="bot-number">9</div>
+                  <div class="bot-meta">Last request 14:06 · 4 URLs</div>
+                </div>
+
+                <div class="bot-card">
+                  <div class="bot-top">
+                    <div class="bot-name">
+                      <span class="bot-mark">P</span>
+                      Perplexity
+                    </div>
+                    <span class="status-dot"></span>
+                  </div>
+                  <div class="bot-number">4</div>
+                  <div class="bot-meta">Last request 12:31 · 2 URLs</div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>งานที่ต้องดำเนินการวันนี้</h2>
+                <p>รายการที่ระบบควรพาพี่ไปจัดการทันที</p>
+              </div>
+              <a class="panel-link" href="/admin/tasks/">ดูทั้งหมด →</a>
+            </header>
+
+            <div class="panel-body">
+              <div class="task-list">
+                <div class="task-item">
+                  <div class="task-icon">฿</div>
+                  <div>
+                    <strong>สลิปรอตรวจสอบ 4 รายการ</strong>
+                    <span>ADT-PILEFiX Payment Review</span>
+                  </div>
+                  <a class="task-action" href="/admin/sales/">ดำเนินการ</a>
+                </div>
+
+                <div class="task-item">
+                  <div class="task-icon">👕</div>
+                  <div>
+                    <strong>จ่ายแล้วแต่ยังไม่เลือกเสื้อ 3 รายการ</strong>
+                    <span>Jacket Selection Pending</span>
+                  </div>
+                  <a class="task-action" href="/admin/products/">ตรวจสอบ</a>
+                </div>
+
+                <div class="task-item">
+                  <div class="task-icon">⚡</div>
+                  <div>
+                    <strong>ชำระแล้วแต่ยังไม่ Activate 7 รายการ</strong>
+                    <span>Professional Activation Pending</span>
+                  </div>
+                  <a class="task-action" href="/admin/products/">ติดตาม</a>
+                </div>
+
+                <div class="task-item">
+                  <div class="task-icon">!</div>
+                  <div>
+                    <strong>LINE ส่งไม่สำเร็จ 2 รายการ</strong>
+                    <span>ต้อง Retry ข้อความ</span>
+                  </div>
+                  <a class="task-action" href="/admin/line-oa/">Retry</a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="grid-equal">
+          <article class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>ADT-LINE Bot Summary</h2>
+                <p>ภาพรวม LINE OA และข้อความระบบ</p>
+              </div>
+              <a class="panel-link" href="/admin/line-oa/">เปิด LINE Center →</a>
+            </header>
+
+            <div class="panel-body">
+              <div class="line-summary">
+                <div class="line-stat">
+                  <strong>224</strong>
+                  <span>Friends</span>
+                </div>
+
+                <div class="line-stat">
+                  <strong>9</strong>
+                  <span>Blocked</span>
+                </div>
+
+                <div class="line-stat">
+                  <strong>138</strong>
+                  <span>ส่งวันนี้</span>
+                </div>
+
+                <div class="line-stat">
+                  <strong>2</strong>
+                  <span>Failed</span>
+                </div>
+              </div>
+
+              <div class="footer-note">
+                ต่อไปจะเชื่อม Message Quota, Webhook Status, Rich Menu
+                และประวัติ Broadcast จาก API จริง
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>System Health</h2>
+                <p>สถานะระบบหลักที่ ADT Control Center ใช้งาน</p>
+              </div>
+              <a class="panel-link" href="/admin/system-logs/">ดู Logs →</a>
+            </header>
+
+            <div class="panel-body">
+              <div class="system-list">
+                <div class="system-row">
+                  <div>
+                    <strong>ADTSpreadsheet Website</strong>
+                    <span>Cloudflare Worker</span>
+                  </div>
+                  <span class="badge green">ONLINE</span>
+                </div>
+
+                <div class="system-row">
+                  <div>
+                    <strong>ADT API</strong>
+                    <span>Render API Server</span>
+                  </div>
+                  <span class="badge green">ONLINE</span>
+                </div>
+
+                <div class="system-row">
+                  <div>
+                    <strong>Supabase Database</strong>
+                    <span>Database & Auth</span>
+                  </div>
+                  <span class="badge green">ONLINE</span>
+                </div>
+
+                <div class="system-row">
+                  <div>
+                    <strong>LINE Webhook</strong>
+                    <span>Messaging API</span>
+                  </div>
+                  <span class="badge orange">CHECK</span>
+                </div>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <section class="panel" style="margin-top:18px">
+          <header class="panel-head">
+            <div>
+              <h2>Recent Search & AI Requests</h2>
+              <p>ตัวอย่างตาราง Log ที่จะเชื่อมจาก Cloudflare และ API</p>
+            </div>
+            <a class="panel-link" href="/admin/search-ai/">เปิด Search & AI Center →</a>
+          </header>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>เวลา</th>
+                  <th>Bot / Source</th>
+                  <th>URL</th>
+                  <th>ประเภท</th>
+                  <th>Status</th>
+                  <th>Verification</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>16:18:42</td>
+                  <td><strong>Googlebot</strong></td>
+                  <td>/software/adt-pilefix/</td>
+                  <td><span class="badge blue">Search Crawler</span></td>
+                  <td><span class="badge green">200</span></td>
+                  <td><span class="badge green">Verified</span></td>
+                </tr>
+
+                <tr>
+                  <td>14:06:11</td>
+                  <td><strong>OAI-SearchBot</strong></td>
+                  <td>/articles/punching-shear/</td>
+                  <td><span class="badge orange">AI Search</span></td>
+                  <td><span class="badge green">200</span></td>
+                  <td><span class="badge green">Verified</span></td>
+                </tr>
+
+                <tr>
+                  <td>12:31:09</td>
+                  <td><strong>PerplexityBot</strong></td>
+                  <td>/articles/beam-shear/</td>
+                  <td><span class="badge orange">AI Crawler</span></td>
+                  <td><span class="badge green">200</span></td>
+                  <td><span class="badge gray">Pending</span></td>
+                </tr>
+
+                <tr>
+                  <td>11:48:25</td>
+                  <td><strong>Bingbot</strong></td>
+                  <td>/seminar/adt-pilefix/</td>
+                  <td><span class="badge blue">Search Crawler</span></td>
+                  <td><span class="badge green">200</span></td>
+                  <td><span class="badge green">Verified</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="footer-note">
+          หน้านี้เป็นโครง UI/UX พร้อมข้อมูลตัวอย่างเท่านั้น
+          ขั้นต่อไปจะเชื่อม Supabase Auth, Website Analytics,
+          Cloudflare Logs, Search/AI Bot Detection และ ADT-LINE Bot API ทีละส่วน
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    /*
+      ============================================================
+      DEVELOPMENT MODE
+      ============================================================
+      ตอนนี้ยังไม่บังคับตรวจ Token เพื่อให้เปิดดูหน้า Dashboard
+      และพัฒนา UI ได้ก่อน
+
+      เมื่อสร้าง API Login และ Supabase Auth เสร็จ ให้เปลี่ยนเป็น true
+    */
+    const AUTH_REQUIRED = false;
+
+    const LOGIN_URL = "/admin/";
+    const TOKEN_KEY = "adt_admin_access_token";
+
+    if (AUTH_REQUIRED) {
+      const token =
+        sessionStorage.getItem(TOKEN_KEY) ||
+        localStorage.getItem(TOKEN_KEY);
+
+      if (!token) {
+        window.location.replace(LOGIN_URL);
+      }
+    }
+
+    const body = document.body;
+    const mobileMenu = document.getElementById("mobileMenu");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const refreshButton = document.getElementById("refreshButton");
+
+    mobileMenu?.addEventListener("click", () => {
+      body.classList.toggle("sidebar-open");
+    });
+
+    sidebarOverlay?.addEventListener("click", () => {
+      body.classList.remove("sidebar-open");
+    });
+
+    refreshButton?.addEventListener("click", () => {
+      refreshButton.disabled = true;
+      refreshButton.textContent = "↻ กำลังรีเฟรช...";
+
+      window.setTimeout(() => {
+        refreshButton.disabled = false;
+        refreshButton.textContent = "↻ รีเฟรช";
+      }, 700);
+    });
+
+    function animateCounter(element, target, duration = 900) {
+      const start = performance.now();
+
+      function frame(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        element.textContent =
+          Math.round(target * eased).toLocaleString("th-TH");
+
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document
+        .querySelectorAll("[data-counter]")
+        .forEach((element) => {
+          animateCounter(
+            element,
+            Number(element.dataset.counter || 0)
+          );
+        });
+    });
+  </script>
+</body>
+</html>
