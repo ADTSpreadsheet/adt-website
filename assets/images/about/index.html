@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>เกี่ยวกับ ADTSpreadsheet | Engineering Software, Knowledge & Training</title>
+<meta name="description" content="รู้จัก ADTSpreadsheet แพลตฟอร์มซอฟต์แวร์ ความรู้ การอบรม และชุมชนวิชาชีพสำหรับวิศวกรไทย">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --navy:#06152d;
+  --navy2:#0a2855;
+  --blue:#1677ff;
+  --yellow:#ffc928;
+  --green:#17b26a;
+  --orange:#ff8a1f;
+  --red:#ef3d48;
+  --ink:#142033;
+  --muted:#6c7a90;
+  --line:#dce5ef;
+  --paper:#ffffff;
+  --surface:#f4f7fb;
+  --shadow:0 18px 50px rgba(4,27,60,.12);
+  --radius:24px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Prompt",sans-serif;
+  color:var(--ink);
+  background:var(--surface);
+}
+a{color:inherit}
+img{display:block;max-width:100%}
+.container{width:min(1380px,calc(100% - 40px));margin:auto}
+
+.topbar{
+  padding:8px 16px;
+  text-align:center;
+  color:#fff;
+  background:linear-gradient(90deg,#ef303b,#ff7f1e);
+  font-size:.9rem;
+  font-weight:700;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+
+.nav{
+  min-height:94px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  flex:0 0 auto;
+  text-decoration:none;
+}
+
+.logo-full{
+  width:250px;
+  height:auto;
+  object-fit:contain;
+  max-height:62px;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:30px;
+  min-width:0;
+}
+
+nav>a{
+  text-decoration:none;
+  color:#263650;
+  font-size:1.02rem;
+  font-weight:700;
+  line-height:1.45;
+}
+
+nav>a:hover,
+nav>a.current{color:var(--blue)}
+
+.nav-cta{
+  padding:14px 24px;
+  border-radius:999px;
+  color:#fff!important;
+  background:var(--blue);
+  box-shadow:0 10px 24px rgba(22,119,255,.22);
+}
+
+.hero{
+  position:relative;
+  min-height:680px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  color:#fff;
+  background:#031025;
+}
+
+.hero-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,rgba(3,16,37,.94) 0%,rgba(3,16,37,.76) 42%,rgba(3,16,37,.20) 100%),
+    linear-gradient(to top,rgba(3,16,37,.60),transparent 55%);
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+  max-width:760px;
+  padding:90px 0;
+}
+
+.eyebrow{
+  margin:0 0 14px;
+  color:var(--yellow);
+  font:800 .84rem "Inter";
+  letter-spacing:.16em;
+}
+
+.hero h1{
+  margin:0;
+  max-width:760px;
+  font-size:clamp(2.4rem,6vw,5.25rem);
+  line-height:1.08;
+}
+
+.hero h1 span{color:var(--yellow)}
+
+.hero .lead{
+  margin:24px 0 0;
+  max-width:680px;
+  color:#dbe8f7;
+  font-size:clamp(1rem,2vw,1.25rem);
+  line-height:1.9;
+}
+
+.hero-actions{
+  margin-top:32px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+.btn{
+  min-height:50px;
+  padding:0 22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:700;
+  transition:.2s;
+}
+
+.btn:hover{transform:translateY(-2px)}
+.btn-yellow{background:var(--yellow);color:#10213f;box-shadow:0 14px 30px rgba(255,201,40,.26)}
+.btn-white{background:#fff;color:var(--navy)}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-outline{color:#fff;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08)}
+
+.section{padding:88px 0}
+.section-white{background:#fff}
+.section-dark{
+  color:#fff;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(22,119,255,.26),transparent 30%),
+    linear-gradient(135deg,#031025,var(--navy2));
+}
+
+.head{
+  max-width:840px;
+  margin:0 auto 40px;
+  text-align:center;
+}
+
+.kicker{
+  margin:0 0 8px;
+  color:var(--blue);
+  font-size:.82rem;
+  font-weight:800;
+  letter-spacing:.14em;
+}
+
+.section-dark .kicker{color:var(--yellow)}
+
+.head h2{
+  margin:0;
+  color:var(--navy);
+  font-size:clamp(2rem,4.5vw,3.5rem);
+  line-height:1.2;
+}
+
+.section-dark .head h2{color:#fff}
+
+.head p:last-child{
+  margin:16px 0 0;
+  color:var(--muted);
+  line-height:1.9;
+}
+
+.section-dark .head p:last-child{color:#d5e3f3}
+
+.story-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:46px;
+  align-items:center;
+}
+
+.story-image,
+.full-image,
+.founder-image,
+.closing-image{
+  overflow:hidden;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  background:#dfe7f1;
+}
+
+.story-image img{
+  width:100%;
+  aspect-ratio:3/2;
+  object-fit:cover;
+}
+
+.story-copy h2{
+  margin:0 0 16px;
+  color:var(--navy);
+  font-size:clamp(2rem,4vw,3.2rem);
+  line-height:1.2;
+}
+
+.story-copy p{
+  margin:0 0 16px;
+  color:var(--muted);
+  line-height:1.95;
+}
+
+.story-note{
+  margin-top:24px;
+  padding:20px 22px;
+  border-left:5px solid var(--blue);
+  border-radius:0 16px 16px 0;
+  background:#edf5ff;
+  color:#19406f;
+  line-height:1.8;
+  font-weight:600;
+}
+
+.pillars{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:20px;
+}
+
+.pillar{
+  padding:30px 22px;
+  border-radius:var(--radius);
+  background:#fff;
+  border:1px solid #e7edf5;
+  box-shadow:var(--shadow);
+}
+
+.pillar-no{
+  display:inline-grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  margin-bottom:18px;
+  border-radius:14px;
+  color:#fff;
+  background:linear-gradient(145deg,var(--navy2),var(--blue));
+  font:800 1rem "Inter";
+}
+
+.pillar h3{
+  margin:0 0 10px;
+  color:var(--navy);
+}
+
+.pillar p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.75;
+  font-size:.9rem;
+}
+
+.workshop-layout{
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:30px;
+  align-items:stretch;
+}
+
+.full-image img{
+  width:100%;
+  height:100%;
+  min-height:470px;
+  object-fit:cover;
+}
+
+.workshop-copy{
+  padding:34px;
+  border-radius:var(--radius);
+  color:#fff;
+  background:
+    radial-gradient(circle at 80% 20%,rgba(255,201,40,.18),transparent 28%),
+    linear-gradient(145deg,var(--navy),var(--navy2));
+  box-shadow:var(--shadow);
+}
+
+.workshop-copy h2{
+  margin:0 0 16px;
+  color:#fff;
+  font-size:clamp(1.9rem,4vw,3rem);
+}
+
+.workshop-copy p{
+  margin:0 0 18px;
+  color:#d6e4f5;
+  line-height:1.9;
+}
+
+.check-list{
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+
+.check-list li{
+  position:relative;
+  padding:12px 0 12px 32px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  color:#edf4fc;
+}
+
+.check-list li:before{
+  content:"✓";
+  position:absolute;
+  left:0;
+  color:var(--yellow);
+  font-weight:800;
+}
+
+.evidence-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:22px;
+}
+
+.evidence-card{
+  overflow:hidden;
+  border-radius:var(--radius);
+  background:#fff;
+  border:1px solid #e7edf5;
+  box-shadow:var(--shadow);
+}
+
+.evidence-card img{
+  width:100%;
+  aspect-ratio:3/2;
+  object-fit:cover;
+}
+
+.evidence-copy{padding:24px}
+.evidence-copy h3{margin:0 0 8px;color:var(--navy)}
+.evidence-copy p{margin:0;color:var(--muted);line-height:1.75;font-size:.9rem}
+
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+
+.gallery figure{
+  margin:0;
+  position:relative;
+  overflow:hidden;
+  border-radius:22px;
+  background:#dfe7f1;
+  box-shadow:var(--shadow);
+}
+
+.gallery img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  transition:transform .35s ease;
+}
+
+.gallery figure:hover img{transform:scale(1.04)}
+
+.gallery figcaption{
+  position:absolute;
+  left:14px;
+  right:14px;
+  bottom:14px;
+  padding:10px 12px;
+  border-radius:12px;
+  color:#fff;
+  background:rgba(3,16,37,.72);
+  backdrop-filter:blur(8px);
+  font-size:.82rem;
+}
+
+.founder-grid{
+  display:grid;
+  grid-template-columns:.82fr 1.18fr;
+  gap:42px;
+  align-items:center;
+}
+
+.founder-image img{
+  width:100%;
+  aspect-ratio:3/4;
+  object-fit:cover;
+}
+
+.founder-copy h2{
+  margin:0 0 10px;
+  color:var(--navy);
+  font-size:clamp(2rem,4vw,3.2rem);
+}
+
+.founder-role{
+  margin:0 0 20px;
+  color:var(--blue);
+  font-weight:800;
+}
+
+.founder-copy p{
+  margin:0 0 16px;
+  color:var(--muted);
+  line-height:1.9;
+}
+
+.quote{
+  margin-top:26px;
+  padding:24px 26px;
+  border-radius:20px;
+  color:#fff;
+  background:linear-gradient(145deg,var(--navy),var(--navy2));
+  box-shadow:var(--shadow);
+  font-size:1.05rem;
+  line-height:1.9;
+}
+
+.quote strong{color:var(--yellow)}
+
+.vision-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:18px;
+}
+
+.vision-card{
+  padding:28px 22px;
+  border-radius:22px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+}
+
+.vision-card h3{
+  margin:0 0 10px;
+  color:var(--yellow);
+}
+
+.vision-card p{
+  margin:0;
+  color:#d8e5f4;
+  line-height:1.75;
+  font-size:.9rem;
+}
+
+.closing{
+  position:relative;
+  min-height:520px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  color:#fff;
+  background:#031025;
+}
+
+.closing-image{
+  position:absolute;
+  inset:0;
+  border-radius:0;
+  box-shadow:none;
+}
+
+.closing-image img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.closing:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(3,16,37,.95),rgba(3,16,37,.58),rgba(3,16,37,.30));
+}
+
+.closing-content{
+  position:relative;
+  z-index:2;
+  max-width:760px;
+  padding:80px 0;
+}
+
+.closing-content h2{
+  margin:0;
+  font-size:clamp(2rem,5vw,4.2rem);
+  line-height:1.2;
+}
+
+.closing-content p{
+  margin:20px 0 0;
+  max-width:650px;
+  color:#dce8f6;
+  line-height:1.9;
+}
+
+footer{
+  padding:42px 0;
+  color:#cbd8e7;
+  background:#031025;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+
+.footer{
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.footer p{
+  margin:0;
+  line-height:1.8;
+  font-size:.86rem;
+}
+
+.footer-links{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+
+.footer-links a{
+  text-decoration:none;
+  color:#d8e6f6;
+  font-size:.86rem;
+}
+
+.placeholder-note{
+  position:absolute;
+  left:12px;
+  top:12px;
+  z-index:3;
+  padding:7px 10px;
+  border-radius:10px;
+  background:rgba(239,61,72,.92);
+  color:#fff;
+  font-size:.72rem;
+  font-weight:700;
+}
+
+@media(max-width:1220px){
+  .logo-full{width:230px}
+  nav{display:none}
+  .pillars,.vision-grid{grid-template-columns:repeat(2,1fr)}
+  .story-grid,.workshop-layout,.founder-grid{grid-template-columns:1fr}
+  .founder-image{max-width:620px;margin:auto}
+}
+
+@media(max-width:760px){
+  .container{width:min(100% - 28px,1380px)}
+  .logo-full{width:210px;max-height:54px}
+  .hero{min-height:580px}
+  .hero:after{background:linear-gradient(to top,rgba(3,16,37,.96),rgba(3,16,37,.48))}
+  .hero-content{padding:76px 0 54px}
+  .hero-actions,.hero-actions .btn{width:100%}
+  .section{padding:60px 0}
+  .pillars,.vision-grid,.evidence-grid,.gallery{grid-template-columns:1fr}
+  .workshop-copy{padding:26px}
+  .full-image img{min-height:320px}
+  .closing{min-height:560px}
+  .closing:after{background:linear-gradient(to top,rgba(3,16,37,.97),rgba(3,16,37,.38))}
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  ADT Spreadsheet — Engineering Software, Knowledge & Professional Workshop
+</div>
+
+<header>
+  <div class="container nav">
+
+    <a class="brand" href="/" aria-label="ADTSpreadsheet หน้าแรก">
+      <img
+        class="logo-full"
+        src="/assets/images/logo-full.png"
+        alt="ADTSpreadsheet Engineering Software"
+      >
+    </a>
+
+    <nav aria-label="เมนูหลัก">
+      <a class="current" href="/about/">เกี่ยวกับ ADTSpreadsheet</a>
+      <a href="/seminar/">อบรมและสัมมนา</a>
+      <a href="/software/">ADT Software</a>
+      <a href="/portfolio/">ผลงานออกแบบ</a>
+      <a href="/articles/">บทความวิศวกรรม</a>
+      <a href="/contact/">ติดต่อเรา</a>
+      <a class="nav-cta" href="/member/">สมัครสมาชิก</a>
+    </nav>
+
+  </div>
+</header>
+
+<main>
+
+<!-- =========================================================
+     IMAGE 01
+     FILE: /assets/images/about/about-hero.jpg
+     RECOMMENDED SIZE: 1920 x 1080 px
+     IMAGE IDEA: อ.เก่งยืนชี้ป้าย TUMCIVIL.COM
+========================================================= -->
+<section class="hero">
+
+  <img
+    class="hero-bg"
+    src="/assets/images/about/about-hero.jpg"
+    alt="อาจารย์เก่ง วิทยากร ADTSpreadsheet บนเวทีสัมมนาวิศวกรรม"
+  >
+
+  <div class="container">
+    <div class="hero-content">
+
+      <p class="eyebrow">ABOUT ADTSPREADSHEET</p>
+
+      <h1>
+        เครื่องมือวิศวกรรม<br>
+        ที่เกิดจาก<span>งานจริง</span>
+      </h1>
+
+      <p class="lead">
+        ADTSpreadsheet พัฒนาซอฟต์แวร์ เครื่องมือคำนวณ
+        บทความวิชาการ และการอบรมสำหรับวิศวกรไทย
+        โดยเชื่อมโยงประสบการณ์จากงานออกแบบ งานคำนวณ
+        และปัญหาที่พบในโครงการจริงเข้าด้วยกัน
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-yellow" href="#our-story">รู้จักเรื่องราวของเรา</a>
+        <a class="btn btn-outline" href="/software/">สำรวจ ADT Software</a>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<!-- =========================================================
+     IMAGE 02
+     FILE: /assets/images/about/about-story.jpg
+     RECOMMENDED SIZE: 1200 x 800 px
+     IMAGE IDEA: อ.เก่งกำลังบรรยายหรืออธิบายหน้าห้อง
+========================================================= -->
+<section class="section section-white" id="our-story">
+  <div class="container story-grid">
+
+    <div class="story-image">
+      <img
+        src="/assets/images/about/about-story.jpg"
+        alt="การบรรยายและถ่ายทอดความรู้ด้านวิศวกรรมโดย ADTSpreadsheet"
+        loading="lazy"
+      >
+    </div>
+
+    <div class="story-copy">
+
+      <p class="kicker">OUR STORY</p>
+
+      <h2>จากวิศวกรผู้ใช้งาน Excel สู่ผู้พัฒนาซอฟต์แวร์วิศวกรรม</h2>
+
+      <p>
+        ADTSpreadsheet เริ่มต้นจากการพัฒนาไฟล์ Excel
+        เพื่อใช้ช่วยคำนวณและตรวจสอบงานวิศวกรรมโยธา
+        ลดงานที่ต้องทำซ้ำ และทำให้ผลลัพธ์สามารถตรวจสอบย้อนกลับได้ง่ายขึ้น
+      </p>
+
+      <p>
+        จากเครื่องมือที่สร้างขึ้นเพื่อแก้ปัญหาในการทำงานจริง
+        เราพัฒนาต่อยอดเป็นระบบซอฟต์แวร์ที่มีทั้งส่วนคำนวณ
+        การจัดทำรายงาน ระบบสมาชิก การเปิดใช้งาน
+        และการเชื่อมต่อฐานข้อมูลออนไลน์
+      </p>
+
+      <p>
+        วันนี้ ADTSpreadsheet ไม่ได้หยุดอยู่เพียงไฟล์คำนวณ
+        แต่กำลังเติบโตเป็นแพลตฟอร์มที่เชื่อมโยงซอฟต์แวร์
+        องค์ความรู้ การอบรม และชุมชนวิชาชีพเข้าไว้ด้วยกัน
+      </p>
+
+      <div class="story-note">
+        เราไม่ได้ต้องการให้วิศวกรเห็นเพียงคำตอบสุดท้าย
+        แต่ต้องการให้เข้าใจที่มา ตรวจสอบขั้นตอน
+        และนำผลลัพธ์ไปใช้กับงานจริงได้อย่างมั่นใจ
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="head">
+      <p class="kicker">WHAT WE DO</p>
+      <h2>สิ่งที่ ADTSpreadsheet กำลังสร้าง</h2>
+      <p>
+        เราพัฒนาเครื่องมือและพื้นที่การเรียนรู้ที่ช่วยให้วิศวกร
+        ทำงานได้รวดเร็วขึ้น เข้าใจหลักการมากขึ้น
+        และเชื่อมต่อกับองค์ความรู้จากผู้มีประสบการณ์จริง
+      </p>
+    </div>
+
+    <div class="pillars">
+
+      <article class="pillar">
+        <div class="pillar-no">01</div>
+        <h3>ADT Software</h3>
+        <p>
+          ซอฟต์แวร์และเครื่องมือคำนวณสำหรับงานวิศวกรรมโยธา
+          ที่ออกแบบให้ใช้งานง่ายและตรวจสอบผลลัพธ์ได้
+        </p>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-no">02</div>
+        <h3>Engineering Knowledge</h3>
+        <p>
+          บทความ เทคนิค และกรณีศึกษาที่เรียบเรียงจากหลักวิศวกรรม
+          และประสบการณ์จากงานจริง
+        </p>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-no">03</div>
+        <h3>Training & Workshop</h3>
+        <p>
+          การอบรม สัมมนา และ Workshop
+          ที่เชื่อมโยงหลักการคำนวณเข้ากับการประยุกต์ใช้งาน
+        </p>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-no">04</div>
+        <h3>Engineering Community</h3>
+        <p>
+          พื้นที่แลกเปลี่ยนความรู้และคำตอบทางวิศวกรรม
+          จากผู้มีประสบการณ์และผู้ประกอบวิชาชีพ
+        </p>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     IMAGE 03
+     FILE: /assets/images/about/about-workshop.jpg
+     RECOMMENDED SIZE: 1200 x 800 px
+     IMAGE IDEA: ภาพห้องอบรมมุมกว้าง เห็นผู้เข้าอบรมและโน้ตบุ๊ก
+========================================================= -->
+<section class="section section-white">
+  <div class="container workshop-layout">
+
+    <div class="full-image">
+      <img
+        src="/assets/images/about/about-workshop.jpg"
+        alt="บรรยากาศการอบรมและ Workshop ของ ADTSpreadsheet"
+        loading="lazy"
+      >
+    </div>
+
+    <div class="workshop-copy">
+
+      <p class="eyebrow">REAL EXPERIENCE</p>
+
+      <h2>ความรู้ที่ส่งต่อจากประสบการณ์จริง</h2>
+
+      <p>
+        การพัฒนาซอฟต์แวร์ของเราไม่ได้แยกออกจากการถ่ายทอดความรู้
+        เพราะเครื่องมือที่ดีจะมีคุณค่ามากขึ้น
+        เมื่อผู้ใช้งานเข้าใจหลักการและข้อจำกัดของมัน
+      </p>
+
+      <ul class="check-list">
+        <li>บรรยายหลักการด้านวิศวกรรมโครงสร้างและฐานราก</li>
+        <li>สาธิตการใช้ซอฟต์แวร์กับโจทย์และกรณีศึกษาจริง</li>
+        <li>เปิดพื้นที่สำหรับคำถาม การตรวจสอบ และแลกเปลี่ยนประสบการณ์</li>
+        <li>นำข้อเสนอแนะจากผู้ใช้งานกลับมาพัฒนาโปรแกรมอย่างต่อเนื่อง</li>
+      </ul>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+
+    <div class="head">
+      <p class="kicker">SOFTWARE IN ACTION</p>
+      <h2>จากองค์ความรู้สู่เครื่องมือที่ใช้งานได้จริง</h2>
+      <p>
+        ซอฟต์แวร์ของ ADTSpreadsheet ถูกพัฒนาจากขั้นตอนการทำงานจริง
+        และปรับปรุงผ่านการใช้งาน การสาธิต และข้อเสนอแนะจากวิศวกร
+      </p>
+    </div>
+
+    <div class="evidence-grid">
+
+      <!-- =====================================================
+           IMAGE 04
+           FILE: /assets/images/about/about-demo.jpg
+           RECOMMENDED SIZE: 1200 x 800 px
+           IMAGE IDEA: อ.เก่งกำลัง Demo โปรแกรมบนจอ
+      ====================================================== -->
+      <article class="evidence-card">
+        <img
+          src="/assets/images/about/about-demo.jpg"
+          alt="การสาธิตซอฟต์แวร์ ADTSpreadsheet"
+          loading="lazy"
+        >
+        <div class="evidence-copy">
+          <h3>สาธิตและตรวจสอบกระบวนการทำงาน</h3>
+          <p>
+            ผู้ใช้งานได้เห็นทั้งข้อมูลนำเข้า ขั้นตอนการวิเคราะห์
+            และผลลัพธ์ที่สามารถตรวจสอบย้อนกลับได้
+          </p>
+        </div>
+      </article>
+
+      <!-- =====================================================
+           IMAGE 05
+           FILE: /assets/images/about/about-qa.jpg
+           RECOMMENDED SIZE: 1200 x 800 px
+           IMAGE IDEA: อ.เก่งกำลังตอบคำถามหรือพูดคุยกับผู้เข้าอบรม
+      ====================================================== -->
+      <article class="evidence-card">
+        <img
+          src="/assets/images/about/about-qa.jpg"
+          alt="การตอบคำถามและแลกเปลี่ยนความรู้ในงานอบรม"
+          loading="lazy"
+        >
+        <div class="evidence-copy">
+          <h3>เรียนรู้จากคำถามและปัญหาจริง</h3>
+          <p>
+            คำถามจากผู้ใช้งานช่วยให้เราเห็นข้อจำกัด
+            และพัฒนาทั้งซอฟต์แวร์และเนื้อหาให้ตอบโจทย์มากขึ้น
+          </p>
+        </div>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="section section-dark">
+  <div class="container">
+
+    <div class="head">
+      <p class="kicker">OUR ACTIVITIES</p>
+      <h2>ภาพจากกิจกรรมและการถ่ายทอดความรู้</h2>
+      <p>
+        ทุกภาพคือส่วนหนึ่งของการเดินทาง
+        จากเครื่องมือคำนวณเล็ก ๆ สู่แพลตฟอร์มวิศวกรรมที่มีผู้ใช้งานจริง
+      </p>
+    </div>
+
+    <div class="gallery">
+
+      <!-- =====================================================
+           IMAGE 06
+           FILE: /assets/images/about/gallery-01.jpg
+           RECOMMENDED SIZE: 900 x 900 px
+           IMAGE IDEA: รูปหมู่ผู้เข้าอบรม
+      ====================================================== -->
+      <figure>
+        <img
+          src="/assets/images/about/gallery-01.jpg"
+          alt="ภาพหมู่ผู้เข้าร่วมอบรม ADTSpreadsheet"
+          loading="lazy"
+        >
+        <figcaption>ผู้เข้าร่วมอบรมและกิจกรรมวิชาชีพ</figcaption>
+      </figure>
+
+      <!-- =====================================================
+           IMAGE 07
+           FILE: /assets/images/about/gallery-02.jpg
+           RECOMMENDED SIZE: 900 x 900 px
+           IMAGE IDEA: บรรยากาศผู้เข้าอบรมใช้โน้ตบุ๊ก
+      ====================================================== -->
+      <figure>
+        <img
+          src="/assets/images/about/gallery-02.jpg"
+          alt="ผู้เข้าอบรมกำลังทดลองใช้เครื่องมือ ADTSpreadsheet"
+          loading="lazy"
+        >
+        <figcaption>การทดลองใช้งานและเรียนรู้ร่วมกัน</figcaption>
+      </figure>
+
+      <!-- =====================================================
+           IMAGE 08
+           FILE: /assets/images/about/gallery-03.jpg
+           RECOMMENDED SIZE: 900 x 900 px
+           IMAGE IDEA: ภาพเบื้องหลังหรือภาพพูดคุยอย่างเป็นกันเอง
+      ====================================================== -->
+      <figure>
+        <img
+          src="/assets/images/about/gallery-03.jpg"
+          alt="บรรยากาศเบื้องหลังงานอบรม ADTSpreadsheet"
+          loading="lazy"
+        >
+        <figcaption>เบื้องหลังการเตรียมงานและการแลกเปลี่ยนประสบการณ์</figcaption>
+      </figure>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     IMAGE 09
+     FILE: /assets/images/about/founder.jpg
+     RECOMMENDED SIZE: 900 x 1200 px
+     IMAGE IDEA: รูปเดี่ยว อ.เก่ง แนวตั้ง ดูเป็นทางการ
+========================================================= -->
+<section class="section section-white">
+  <div class="container founder-grid">
+
+    <div class="founder-image">
+      <img
+        src="/assets/images/about/founder.jpg"
+        alt="นายช่างอานนท์ แซ้นสีดา ผู้ก่อตั้ง ADTSpreadsheet"
+        loading="lazy"
+      >
+    </div>
+
+    <div class="founder-copy">
+
+      <p class="kicker">FOUNDER</p>
+
+      <h2>นายช่างอานนท์ แซ้นสีดา (อ.เก่ง)</h2>
+
+      <p class="founder-role">
+        ผู้ก่อตั้ง ADTSpreadsheet และผู้พัฒนา ADT Software
+      </p>
+
+      <p>
+        วิศวกรโยธาผู้มีประสบการณ์ด้านการออกแบบโครงสร้าง
+        การพัฒนาเครื่องมือคำนวณด้วย Excel VBA
+        และการประยุกต์ใช้ระบบฐานข้อมูลออนไลน์กับซอฟต์แวร์วิศวกรรม
+      </p>
+
+      <p>
+        แนวทางการพัฒนาของ ADTSpreadsheet
+        มุ่งให้วิศวกรสามารถทำงานได้รวดเร็วขึ้น
+        โดยยังคงมองเห็นสมการ ขั้นตอน และเหตุผลทางวิศวกรรม
+        ที่อยู่เบื้องหลังผลลัพธ์ทุกครั้ง
+      </p>
+
+      <p>
+        นอกจากการพัฒนาซอฟต์แวร์
+        ยังให้ความสำคัญกับการถ่ายทอดความรู้ผ่านบทความ
+        การอบรม และ Workshop เพื่อให้เครื่องมือและองค์ความรู้
+        เติบโตไปพร้อมกับผู้ใช้งาน
+      </p>
+
+      <div class="quote">
+        <strong>“เราไม่ได้พัฒนาโปรแกรมเพื่อแทนที่วิศวกร</strong><br>
+        แต่พัฒนาเครื่องมือ เพื่อให้วิศวกรคิด วิเคราะห์
+        และตัดสินใจได้อย่างมั่นใจมากขึ้น”
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<section class="section section-dark">
+  <div class="container">
+
+    <div class="head">
+      <p class="kicker">OUR VISION</p>
+      <h2>มากกว่าเว็บไซต์ขายโปรแกรม</h2>
+      <p>
+        วิสัยทัศน์ของ ADTSpreadsheet คือการเป็นพื้นที่กลาง
+        ที่เชื่อมโยงเครื่องมือ ความรู้ ผู้สอน ผู้เชี่ยวชาญ
+        และวิศวกรรุ่นใหม่เข้าไว้ด้วยกัน
+      </p>
+    </div>
+
+    <div class="vision-grid">
+
+      <article class="vision-card">
+        <h3>Software</h3>
+        <p>
+          พัฒนาเครื่องมือวิศวกรรมที่ใช้งานจริง
+          โปร่งใส และตรวจสอบผลลัพธ์ได้
+        </p>
+      </article>
+
+      <article class="vision-card">
+        <h3>Knowledge</h3>
+        <p>
+          สร้างคลังความรู้ที่อธิบายหลักการ
+          ไม่ใช่เพียงบอกคำตอบหรือแจกสูตร
+        </p>
+      </article>
+
+      <article class="vision-card">
+        <h3>Training</h3>
+        <p>
+          เปิดพื้นที่เรียนรู้ทั้งออนไลน์และออนไซต์
+          จากผู้มีประสบการณ์ในสายงานจริง
+        </p>
+      </article>
+
+      <article class="vision-card">
+        <h3>Community</h3>
+        <p>
+          เชื่อมโยงคำถามทางวิศวกรรม
+          เข้ากับคำตอบที่มีเหตุผลและตรวจสอบได้
+        </p>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     IMAGE 10
+     FILE: /assets/images/about/about-footer.jpg
+     RECOMMENDED SIZE: 1920 x 700 px
+     IMAGE IDEA: อ.เก่งกำลังบรรยายบนเวทีหรือยืนหน้าผู้เข้าอบรม
+========================================================= -->
+<section class="closing">
+
+  <div class="closing-image">
+    <img
+      src="/assets/images/about/about-footer.jpg"
+      alt="ADTSpreadsheet มุ่งพัฒนาซอฟต์แวร์และความรู้สำหรับวิศวกรไทย"
+      loading="lazy"
+    >
+  </div>
+
+  <div class="container">
+    <div class="closing-content">
+
+      <p class="eyebrow">THE NEXT CHAPTER</p>
+
+      <h2>ก้าวต่อไปของ ADTSpreadsheet</h2>
+
+      <p>
+        เราจะเดินหน้าพัฒนาซอฟต์แวร์วิศวกรรม
+        ขยายคลังบทความ เปิดหลักสูตรอบรม
+        และสร้างชุมชนที่ช่วยให้ความรู้ทางวิศวกรรม
+        เข้าถึงง่ายขึ้น โดยยังคงยึดหลักความถูกต้อง
+        ความรับผิดชอบ และจรรยาบรรณวิชาชีพ
+      </p>
+
+      <div class="hero-actions">
+        <a class="btn btn-yellow" href="/software/">สำรวจ ADT Software</a>
+        <a class="btn btn-white" href="/contact/">ติดต่อ ADTSpreadsheet</a>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <div class="container footer">
+
+    <p>
+      <strong>ADT Spreadsheet</strong><br>
+      ซอฟต์แวร์ ความรู้ และเครื่องมือสำหรับวิศวกรไทย
+    </p>
+
+    <div class="footer-links">
+      <a href="/">หน้าแรก</a>
+      <a href="/about/">เกี่ยวกับเรา</a>
+      <a href="/seminar/">อบรมและสัมมนา</a>
+      <a href="/software/">ADT Software</a>
+      <a href="/portfolio/">ผลงานออกแบบ</a>
+      <a href="/articles/">บทความ</a>
+      <a href="/contact/">ติดต่อเรา</a>
+      <a href="/admin/">Admin เข้าระบบ</a>
+    </div>
+
+  </div>
+</footer>
+
+</body>
+</html>
