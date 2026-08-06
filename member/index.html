@@ -725,127 +725,297 @@ button,input{font:inherit}
 </div>
 
 <script>
-/*
-  ============================================================
-  ADT MEMBER LOGIN — FRONTEND TEMPLATE v1.0
-  ------------------------------------------------------------
-  เวอร์ชันนี้เป็นหน้า Design + Demo Login ก่อน
+"use strict";
 
-  ขั้นเชื่อมระบบจริง:
-  1. ส่ง username และ password ไปยัง API หรือ Supabase Auth
-  2. ตรวจสอบสมาชิกและสถานะบัญชี
-  3. บันทึก session/token อย่างปลอดภัย
-  4. redirect ไป /member/dashboard/
-  ============================================================
-*/
+/* ============================================================
+   ADT MEMBER LOGIN — REAL API LOGIN
+   POST https://adt-website-api.onrender.com/api/member/login
+   ============================================================ */
 
-const loginForm = document.getElementById("loginForm");
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
-const passwordToggle = document.getElementById("passwordToggle");
-const loginButton = document.getElementById("loginButton");
-const errorAlert = document.getElementById("errorAlert");
-const successAlert = document.getElementById("successAlert");
+const MEMBER_API_BASE_URL =
+  "https://adt-website-api.onrender.com";
 
-function showAlert(element, message){
+const LOGIN_ENDPOINT =
+  `${MEMBER_API_BASE_URL}/api/member/login`;
+
+const DASHBOARD_URL =
+  "/member/dashboard/";
+
+const TOKEN_KEYS = {
+  accessToken: "adt_access_token",
+  refreshToken: "adt_refresh_token",
+  expiresAt: "adt_token_expires_at",
+  member: "adt_member_profile"
+};
+
+const loginForm =
+  document.getElementById("loginForm");
+
+const usernameInput =
+  document.getElementById("username");
+
+const passwordInput =
+  document.getElementById("password");
+
+const passwordToggle =
+  document.getElementById("passwordToggle");
+
+const rememberMeInput =
+  document.getElementById("rememberMe");
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const errorAlert =
+  document.getElementById("errorAlert");
+
+const successAlert =
+  document.getElementById("successAlert");
+
+function showAlert(element, message) {
   errorAlert.classList.remove("show");
   successAlert.classList.remove("show");
+
   element.textContent = message;
   element.classList.add("show");
 }
 
-function clearAlerts(){
+function clearAlerts() {
   errorAlert.classList.remove("show");
   successAlert.classList.remove("show");
 }
 
-function setLoading(isLoading){
+function setLoading(isLoading) {
   loginButton.disabled = isLoading;
-  loginButton.classList.toggle("loading", isLoading);
+  loginButton.classList.toggle(
+    "loading",
+    isLoading
+  );
 }
 
-passwordToggle.addEventListener("click", () => {
-  const isPassword = passwordInput.type === "password";
-  passwordInput.type = isPassword ? "text" : "password";
-  passwordToggle.textContent = isPassword ? "🙈" : "👁️";
-  passwordToggle.setAttribute(
-    "aria-label",
-    isPassword ? "ซ่อนรหัสผ่าน" : "แสดงรหัสผ่าน"
+function clearOldSession() {
+  Object.values(TOKEN_KEYS).forEach(key => {
+    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
+  });
+}
+
+function saveLoginSession(result, remember) {
+  const storage =
+    remember
+      ? localStorage
+      : sessionStorage;
+
+  clearOldSession();
+
+  storage.setItem(
+    TOKEN_KEYS.accessToken,
+    result.session.access_token
   );
-});
 
-loginForm.addEventListener("submit", async event => {
-  event.preventDefault();
-  clearAlerts();
+  storage.setItem(
+    TOKEN_KEYS.refreshToken,
+    result.session.refresh_token
+  );
 
-  const username = usernameInput.value.trim();
-  const password = passwordInput.value;
+  storage.setItem(
+    TOKEN_KEYS.expiresAt,
+    String(
+      result.session.expires_at || ""
+    )
+  );
 
-  if(!username){
-    showAlert(errorAlert, "กรุณากรอก Username");
-    usernameInput.focus();
-    return;
-  }
+  storage.setItem(
+    TOKEN_KEYS.member,
+    JSON.stringify(
+      result.member || {}
+    )
+  );
+}
 
-  if(!password){
-    showAlert(errorAlert, "กรุณากรอก Password");
-    passwordInput.focus();
-    return;
-  }
-
-  if(password.length < 6){
-    showAlert(errorAlert, "Password ต้องมีอย่างน้อย 6 ตัวอักษร");
-    passwordInput.focus();
-    return;
-  }
-
-  setLoading(true);
-
-  try{
-    /*
-      ตัวอย่างสำหรับเชื่อม API จริง:
-
-      const response = await fetch("/api/member/login", {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        credentials: "include",
-        body: JSON.stringify({
-          username,
-          password,
-          remember: document.getElementById("rememberMe").checked
-        })
-      });
-
-      const result = await response.json();
-
-      if(!response.ok){
-        throw new Error(result.message || "Username หรือ Password ไม่ถูกต้อง");
-      }
-
-      window.location.href = "/member/dashboard/";
-    */
-
-    // Demo mode เพื่อทดสอบหน้าตา
-    await new Promise(resolve => setTimeout(resolve, 850));
-
-    showAlert(
-      successAlert,
-      "ตรวจสอบข้อมูลสำเร็จ กำลังเข้าสู่ Dashboard สมาชิก..."
-    );
-
-    setTimeout(() => {
-      window.location.href = "/member/dashboard/";
-    }, 900);
-
-  }catch(error){
+function validateInputs(username, password) {
+  if (!username) {
     showAlert(
       errorAlert,
-      error.message || "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง"
+      "กรุณากรอก Username"
     );
-  }finally{
-    setLoading(false);
+
+    usernameInput.focus();
+    return false;
   }
-});
+
+  if (
+    !/^[A-Za-z0-9._-]{4,40}$/.test(
+      username
+    )
+  ) {
+    showAlert(
+      errorAlert,
+      "Username ไม่ถูกต้อง"
+    );
+
+    usernameInput.focus();
+    return false;
+  }
+
+  if (!password) {
+    showAlert(
+      errorAlert,
+      "กรุณากรอก Password"
+    );
+
+    passwordInput.focus();
+    return false;
+  }
+
+  if (password.length < 8) {
+    showAlert(
+      errorAlert,
+      "Password ต้องมีอย่างน้อย 8 ตัวอักษร"
+    );
+
+    passwordInput.focus();
+    return false;
+  }
+
+  return true;
+}
+
+passwordToggle.addEventListener(
+  "click",
+  () => {
+    const isPassword =
+      passwordInput.type ===
+      "password";
+
+    passwordInput.type =
+      isPassword
+        ? "text"
+        : "password";
+
+    passwordToggle.textContent =
+      isPassword
+        ? "🙈"
+        : "👁️";
+
+    passwordToggle.setAttribute(
+      "aria-label",
+      isPassword
+        ? "ซ่อนรหัสผ่าน"
+        : "แสดงรหัสผ่าน"
+    );
+  }
+);
+
+loginForm.addEventListener(
+  "submit",
+  async event => {
+    event.preventDefault();
+    clearAlerts();
+
+    const username =
+      usernameInput.value.trim();
+
+    const password =
+      passwordInput.value;
+
+    const remember =
+      rememberMeInput.checked;
+
+    if (
+      !validateInputs(
+        username,
+        password
+      )
+    ) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response =
+        await fetch(
+          LOGIN_ENDPOINT,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body: JSON.stringify({
+              username,
+              password,
+              remember
+            })
+          }
+        );
+
+      let result = {};
+
+      try {
+        result =
+          await response.json();
+      } catch {
+        result = {};
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+          "Username หรือ Password ไม่ถูกต้อง"
+        );
+      }
+
+      if (
+        !result.success ||
+        !result.session
+          ?.access_token ||
+        !result.session
+          ?.refresh_token ||
+        !result.member
+      ) {
+        throw new Error(
+          "ข้อมูลตอบกลับจากระบบเข้าสู่ระบบไม่สมบูรณ์"
+        );
+      }
+
+      saveLoginSession(
+        result,
+        remember
+      );
+
+      showAlert(
+        successAlert,
+        "เข้าสู่ระบบสำเร็จ กำลังเปิด Dashboard สมาชิก..."
+      );
+
+      window.setTimeout(
+        () => {
+          window.location.href =
+            result.next_url ||
+            DASHBOARD_URL;
+        },
+        650
+      );
+
+    } catch (error) {
+      clearOldSession();
+
+      showAlert(
+        errorAlert,
+        error.message ||
+        "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง"
+      );
+
+      passwordInput.value = "";
+      passwordInput.focus();
+
+    } finally {
+      setLoading(false);
+    }
+  }
+);
 </script>
 </body>
 </html>
