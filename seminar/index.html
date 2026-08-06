@@ -24,11 +24,24 @@ header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.95);backd
 .history-list{display:grid;gap:30px}.history-card{display:grid;grid-template-columns:.82fr 1.18fr;overflow:hidden;border-radius:var(--radius);background:#fff;border:1px solid #e6edf5;box-shadow:var(--shadow)}.history-image{min-height:360px;background:#dfe7f1}.history-image img{width:100%;height:100%;object-fit:cover}.history-copy{padding:34px;display:flex;flex-direction:column;justify-content:center}.history-date{margin:0 0 10px;color:var(--blue);font:800 .82rem "Inter";letter-spacing:.06em}.history-copy h3{margin:0;color:var(--navy);font-size:clamp(1.6rem,3vw,2.35rem);line-height:1.35}.history-copy p{margin:15px 0 0;color:var(--muted);line-height:1.85}.history-facts{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}.fact{padding:8px 11px;border-radius:999px;color:#19406f;background:#edf5ff;border:1px solid #d8eaff;font-size:.76rem;font-weight:700}
 .gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:repeat(2,230px);gap:16px}.gallery figure{margin:0;overflow:hidden;position:relative;border-radius:20px;background:#dfe7f1;box-shadow:var(--shadow)}.gallery figure:first-child{grid-row:1/span 2}.gallery img{width:100%;height:100%;object-fit:cover;transition:.35s}.gallery figure:hover img{transform:scale(1.04)}.gallery figcaption{position:absolute;left:12px;right:12px;bottom:12px;padding:9px 11px;border-radius:11px;color:#fff;background:rgba(3,16,37,.72);font-size:.78rem}
 .speaker-divider{margin:42px 0 24px;display:flex;align-items:center;gap:18px;color:var(--yellow);font-weight:800;text-align:center}.speaker-divider:before,.speaker-divider:after{content:"";height:1px;flex:1;background:rgba(255,255,255,.18)}.section-dark .speaker{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);box-shadow:none}.section-dark .speaker-copy h3{color:#fff}.section-dark .speaker-role{color:var(--yellow)}.section-dark .speaker-copy p{color:#dfeaf7}.speakers{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}.speaker{display:grid;grid-template-columns:180px 1fr;overflow:hidden;border-radius:var(--radius);background:#fff;border:1px solid #e6edf5;box-shadow:var(--shadow)}.speaker img{width:100%;height:100%;min-height:250px;object-fit:cover}.speaker-copy{padding:26px;display:flex;flex-direction:column;justify-content:center}.speaker-copy h3{margin:0;color:var(--navy);font-size:1.35rem}.speaker-role{margin:7px 0 12px;color:var(--blue);font-weight:800;font-size:.9rem}.speaker-copy p{margin:0;color:var(--muted);line-height:1.75;font-size:.88rem}
+
+.speaker-topic-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.speaker-topic-card{overflow:hidden;display:grid;grid-template-columns:220px 1fr;min-height:390px;border-radius:var(--radius);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);box-shadow:0 18px 45px rgba(0,0,0,.12)}
+.speaker-topic-image{position:relative;min-height:390px;background:#10284d}
+.speaker-topic-image img{width:100%;height:100%;object-fit:cover}
+.topic-number{position:absolute;left:16px;top:16px;display:grid;place-items:center;width:46px;height:46px;border-radius:14px;color:var(--navy);background:var(--yellow);font:800 .95rem "Inter"}
+.speaker-topic-copy{padding:30px;display:flex;flex-direction:column;justify-content:center}
+.topic-label{margin:0 0 8px;color:var(--yellow);font:800 .72rem "Inter";letter-spacing:.09em}
+.speaker-topic-copy h3{margin:0;color:#fff;font-size:1.45rem;line-height:1.35}
+.speaker-topic-role{margin:8px 0 15px;color:#9fc8ff;font-size:.88rem;font-weight:800;line-height:1.55}
+.speaker-topic-summary{margin:0;color:#dfeaf7;font-size:.88rem;line-height:1.85}
+.topic-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.topic-tags span{padding:7px 10px;border-radius:999px;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font-size:.72rem;font-weight:700}
 .faq{max-width:920px;margin:auto;display:grid;gap:12px}.faq details{overflow:hidden;border-radius:16px;background:#fff;border:1px solid #e2eaf3;box-shadow:0 8px 24px rgba(4,27,60,.06)}.faq summary{padding:18px 20px;cursor:pointer;color:var(--navy);font-weight:800;list-style:none}.faq summary::-webkit-details-marker{display:none}.faq summary:after{content:"+";float:right;color:var(--blue);font-size:1.25rem}.faq details[open] summary:after{content:"−"}.answer{padding:0 20px 20px;color:var(--muted);line-height:1.8}
 .cta{padding:74px 0;color:#fff;background:radial-gradient(circle at 80% 20%,rgba(255,201,40,.18),transparent 26%),linear-gradient(135deg,#031025,var(--navy2))}.cta-grid{display:flex;align-items:center;justify-content:space-between;gap:30px}.cta h2{margin:0;font-size:clamp(2rem,4vw,3.4rem)}.cta p{max-width:700px;margin:12px 0 0;color:#d6e4f5;line-height:1.85}.cta-actions{display:flex;gap:12px;flex-wrap:wrap;flex:0 0 auto}
 footer{padding:42px 0;color:#cbd8e7;background:#031025;border-top:1px solid rgba(255,255,255,.08)}.footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}.footer p{margin:0;line-height:1.8;font-size:.86rem}.footer-links{display:flex;gap:14px;flex-wrap:wrap}.footer-links a{text-decoration:none;color:#d8e6f6;font-size:.86rem}
 @media(max-width:1240px){.logo-full{width:225px}nav{display:none}.current-event,.history-card{grid-template-columns:1fr}.current-image{min-height:430px}.upcoming-grid{grid-template-columns:repeat(2,1fr)}.speakers{grid-template-columns:1fr}}
-@media(max-width:820px){.container{width:min(100% - 28px,1380px)}.section{padding:60px 0}.hero{min-height:600px}.hero:after{background:linear-gradient(to top,rgba(3,16,37,.97),rgba(3,16,37,.48))}.hero-content{padding:70px 0 80px}.hero-actions,.hero-actions .btn,.current-actions,.current-actions .btn{width:100%}.current-wrap{margin-top:-35px}.current-copy{padding:27px}.event-meta,.program-grid,.upcoming-grid{grid-template-columns:1fr}.countdown{grid-template-columns:repeat(4,minmax(0,1fr))}.count-item strong{font-size:1.3rem}.gallery{grid-template-columns:1fr;grid-template-rows:auto}.gallery figure,.gallery figure:first-child{grid-row:auto;min-height:260px}.speaker{grid-template-columns:1fr}.speaker img{height:330px}.cta-grid{display:block}.cta-actions{margin-top:26px}.cta-actions,.cta-actions .btn{width:100%}}
+@media(max-width:820px){.container{width:min(100% - 28px,1380px)}.section{padding:60px 0}.hero{min-height:600px}.hero:after{background:linear-gradient(to top,rgba(3,16,37,.97),rgba(3,16,37,.48))}.hero-content{padding:70px 0 80px}.hero-actions,.hero-actions .btn,.current-actions,.current-actions .btn{width:100%}.current-wrap{margin-top:-35px}.current-copy{padding:27px}.event-meta,.program-grid,.upcoming-grid{grid-template-columns:1fr}.countdown{grid-template-columns:repeat(4,minmax(0,1fr))}.count-item strong{font-size:1.3rem}.gallery{grid-template-columns:1fr;grid-template-rows:auto}.gallery figure,.gallery figure:first-child{grid-row:auto;min-height:260px}.speaker{grid-template-columns:1fr}.speaker img{height:330px}.speaker-topic-grid{grid-template-columns:1fr}.speaker-topic-card{grid-template-columns:1fr;min-height:0}.speaker-topic-image{min-height:420px}.speaker-topic-copy{padding:25px}.cta-grid{display:block}.cta-actions{margin-top:26px}.cta-actions,.cta-actions .btn{width:100%}}
 </style>
 </head>
 <body>
@@ -39,11 +52,56 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025;border-top:1px solid rgba
 <section class="hero"><img class="hero-bg" src="/assets/images/seminar/seminar-hero.jpg" alt="อบรม สัมมนา และ Workshop ด้านวิศวกรรมโดย ADTSpreadsheet"><div class="container"><div class="hero-content"><div class="hero-tag">TRAINING • SEMINAR • WORKSHOP</div><h1>เรียนรู้จาก<span>งานจริง</span><br>นำไปใช้ได้จริง</h1><p>รวมหลักสูตรอบรมด้านวิศวกรรมโครงสร้าง ฐานราก เสาเข็ม ซอฟต์แวร์วิศวกรรม และการประยุกต์ใช้ Excel สำหรับวิศวกรที่ต้องการพัฒนาทักษะอย่างเป็นระบบ</p><div class="hero-actions"><a class="btn btn-yellow" href="#current-event">ดูสัมมนาที่เปิดรับสมัคร</a><a class="btn btn-outline" href="#training-history">กิจกรรมที่ผ่านมา</a></div></div></div></section>
 <!-- IMAGE 02: /assets/images/seminar/current-adt-pilefix.jpg | 1200x900 | โปสเตอร์สัมมนาปัจจุบัน -->
 <section class="current-wrap" id="current-event"><div class="container"><article class="current-event"><div class="current-image"><img src="/assets/images/seminar/current-adt-pilefix.jpg" alt="สัมมนาออนไลน์การออกแบบฐานรากเสาเข็มเยื้องศูนย์ด้วย ADT-PILEFiX"><span class="live-badge">กำลังเปิดรับสมัคร</span></div><div class="current-copy"><p class="kicker">CURRENT SEMINAR</p><h2>การออกแบบฐานรากเสาเข็มเยื้องศูนย์ และ Workshop ADT-PILEFiX</h2><p class="summary">เรียนรู้ตั้งแต่พฤติกรรมการรับแรงของเสาเข็ม การกระจายแรงปฏิกิริยา Beam Shear, Punching Shear ไปจนถึงการสาธิตใช้งาน ADT-PILEFiX Professional กับโจทย์จริง</p><div class="event-meta"><div class="meta-item"><span class="meta-label">วันที่จัด</span><span class="meta-value">วันอาทิตย์ที่ 9 สิงหาคม 2569</span></div><div class="meta-item"><span class="meta-label">เวลา</span><span class="meta-value">19:00–21:00 น.</span></div><div class="meta-item"><span class="meta-label">รูปแบบ</span><span class="meta-value">ออนไลน์ผ่าน Zoom</span></div><div class="meta-item"><span class="meta-label">สิทธิ์เข้าร่วม</span><span class="meta-value">ผู้ถือโปรแกรมฟรี</span></div></div><div class="price-line"><span class="price">399 บาท</span><span class="price-note">สำหรับบุคคลทั่วไป<br>ผู้ถือ ADT-PILEFiX เข้าร่วมฟรี</span></div><div class="current-actions"><a class="btn btn-blue" href="/seminar/adt-pilefix/">ดูรายละเอียดและสมัคร</a><a class="btn btn-yellow" href="/software/adt-pilefix/">ดูโปรแกรม ADT-PILEFiX</a></div><div class="countdown"><div class="count-item"><strong id="days">--</strong><span>วัน</span></div><div class="count-item"><strong id="hours">--</strong><span>ชั่วโมง</span></div><div class="count-item"><strong id="minutes">--</strong><span>นาที</span></div><div class="count-item"><strong id="seconds">--</strong><span>วินาที</span></div></div></div></article></div></section>
-<section class="section section-dark"><div class="container"><div class="head"><p class="kicker">SEMINAR PROGRAM &amp; SPEAKERS</p><h2>เนื้อหาการสัมมนาและวิทยากร</h2><p>เรียนรู้ทั้งประสบการณ์งานเสาเข็มจากหน้างาน หลักการวิเคราะห์ออกแบบฐานราก และการใช้งาน ADT-PILEFiX กับโจทย์จริง โดยวิทยากรผู้มีประสบการณ์ตรง</p></div><div class="program-grid"><article class="program-card"><div class="program-no">01</div><h3>ความรู้ด้านเสาเข็มและปัญหาหน้างาน</h3><ul><li>ประเภทเสาเข็ม ข้อดี และข้อจำกัด</li><li>การเลือกเสาเข็มให้เหมาะสมกับโครงการ</li><li>แรงที่เสาเข็มรับและปัญหาที่พบบ่อย</li><li>กรณีศึกษาจากงานก่อสร้างจริง</li></ul></article><article class="program-card"><div class="program-no">02</div><h3>วิเคราะห์และออกแบบด้วย ADT-PILEFiX</h3><ul><li>จุดศูนย์ถ่วงและระยะเยื้องศูนย์ของกลุ่มเสาเข็ม</li><li>การกระจายแรงปฏิกิริยาลงเสาเข็ม</li><li>Beam Shear และ Punching Shear</li><li>Workshop และการตรวจสอบผลลัพธ์จากโปรแกรม</li></ul></article></div><div class="speaker-divider"><span>วิทยากรผู้ถ่ายทอดประสบการณ์</span></div><div class="speakers">
-<!-- IMAGE 13: speaker-kriangsak.jpg | 900x1200 --><article class="speaker"><img src="/assets/images/seminar/speaker-kriangsak.jpg" alt="นายช่างเกรียงศักดิ์ แก้วเจริญ"><div class="speaker-copy"><h3>นายช่างเกรียงศักดิ์ แก้วเจริญ</h3><p class="speaker-role">ผู้เชี่ยวชาญด้านเสาเข็มและงานก่อสร้าง</p><p>ถ่ายทอดประสบการณ์เกี่ยวกับประเภทเสาเข็ม การเลือกใช้งาน ปัญหาหน้างาน และกรณีศึกษาจากโครงการจริง</p></div></article>
-<!-- IMAGE 14: speaker-anon.jpg | 900x1200 --><article class="speaker"><img src="/assets/images/seminar/speaker-anon.jpg" alt="นายช่างอานนท์ แซ้นสีดา"><div class="speaker-copy"><h3>นายช่างอานนท์ แซ้นสีดา (อ.เก่ง)</h3><p class="speaker-role">ผู้ก่อตั้ง ADTSpreadsheet และผู้พัฒนา ADT Software</p><p>ถ่ายทอดหลักการวิเคราะห์ออกแบบโครงสร้าง การพัฒนาเครื่องมือด้วย Excel VBA และการประยุกต์ใช้ซอฟต์แวร์กับงานวิศวกรรมจริง</p></div></article>
-</div></div></section>
 
+<section class="section section-dark">
+  <div class="container">
+    <div class="head">
+      <p class="kicker">SPEAKERS &amp; TOPICS</p>
+      <h2>หัวข้อบรรยายและวิทยากร</h2>
+      <p>เนื้อหาถูกจัดตามประสบการณ์และความเชี่ยวชาญของวิทยากรแต่ละท่าน เพื่อให้ผู้เข้าร่วมเห็นภาพตั้งแต่งานเสาเข็มจริงในสนาม ไปจนถึงการวิเคราะห์ออกแบบและตรวจสอบผลด้วย ADT-PILEFiX</p>
+    </div>
+
+    <div class="speaker-topic-grid">
+      <article class="speaker-topic-card">
+        <div class="speaker-topic-image">
+          <img src="/assets/images/seminar/speaker-kriangsak.jpg" alt="นายช่างเกรียงศักดิ์ แก้วเจริญ">
+          <span class="topic-number">01</span>
+        </div>
+        <div class="speaker-topic-copy">
+          <p class="topic-label">PILE &amp; SITE EXPERIENCE</p>
+          <h3>นายช่างเกรียงศักดิ์ แก้วเจริญ</h3>
+          <p class="speaker-topic-role">ผู้เชี่ยวชาญด้านเสาเข็มและงานก่อสร้าง</p>
+          <p class="speaker-topic-summary">ถ่ายทอดประสบการณ์จากหน้างานจริง ครอบคลุมประเภทเสาเข็ม ข้อดีและข้อจำกัด การเลือกเสาเข็มให้เหมาะสมกับลักษณะโครงการ แรงที่เสาเข็มต้องรับ ปัญหาที่พบบ่อยระหว่างก่อสร้าง และกรณีศึกษาที่ช่วยให้วิศวกรตัดสินใจได้อย่างเหมาะสมมากขึ้น</p>
+          <div class="topic-tags">
+            <span>ประเภทเสาเข็ม</span>
+            <span>การเลือกใช้งาน</span>
+            <span>ปัญหาหน้างาน</span>
+            <span>กรณีศึกษาจริง</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="speaker-topic-card">
+        <div class="speaker-topic-image">
+          <img src="/assets/images/seminar/speaker-anon.jpg" alt="นายช่างอานนท์ แซ้นสีดา">
+          <span class="topic-number">02</span>
+        </div>
+        <div class="speaker-topic-copy">
+          <p class="topic-label">ANALYSIS &amp; ADT-PILEFiX WORKSHOP</p>
+          <h3>นายช่างอานนท์ แซ้นสีดา (อ.เก่ง)</h3>
+          <p class="speaker-topic-role">ผู้ก่อตั้ง ADTSpreadsheet และผู้พัฒนา ADT Software</p>
+          <p class="speaker-topic-summary">อธิบายหลักการวิเคราะห์ฐานรากเสาเข็มเยื้องศูนย์ ตั้งแต่การหาจุดศูนย์ถ่วงและระยะเยื้องศูนย์ของกลุ่มเสาเข็ม การกระจายแรงปฏิกิริยาลงเสาเข็ม การตรวจสอบ Beam Shear และ Punching Shear ไปจนถึง Workshop การใช้งาน ADT-PILEFiX และแนวทางตรวจสอบผลลัพธ์จากโปรแกรมอย่างเป็นระบบ</p>
+          <div class="topic-tags">
+            <span>จุดศูนย์ถ่วง</span>
+            <span>แรงปฏิกิริยา</span>
+            <span>Shear Check</span>
+            <span>ADT-PILEFiX Workshop</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
 <section class="section"><div class="container"><div class="head"><p class="kicker">UPCOMING PROGRAMS</p><h2>หลักสูตรที่กำลังเตรียมเปิด</h2><p>หลักสูตรใหม่จะทยอยประกาศวัน เวลา และรายละเอียดการสมัครผ่านเว็บไซต์และช่องทางของ ADTSpreadsheet</p></div><div class="upcoming-grid">
 <!-- IMAGE 03: upcoming-foundation.jpg | 1200x800 --><article class="event-card"><div class="event-cover"><img src="/assets/images/seminar/upcoming-foundation.jpg" alt="หลักสูตรการออกแบบฐานราก"><div class="event-cover-content"><span class="status">COMING SOON</span><h3>การออกแบบฐานรากและการตรวจสอบแรงเฉือน</h3></div></div><div class="event-body"><p>ทบทวนแนวคิดฐานราก การถ่ายแรง Beam Shear, Punching Shear และการจัดทำ Calculation Note</p><div class="mini-meta"><span>Online</span><span>เร็ว ๆ นี้</span></div></div></article>
 <!-- IMAGE 04: upcoming-excel.jpg | 1200x800 --><article class="event-card"><div class="event-cover"><img src="/assets/images/seminar/upcoming-excel.jpg" alt="หลักสูตร Excel สำหรับวิศวกร"><div class="event-cover-content"><span class="status">COMING SOON</span><h3>Excel สำหรับวิศวกร จากสูตรสู่ระบบงานจริง</h3></div></div><div class="event-body"><p>ใช้สูตร ตาราง เครื่องมือวิเคราะห์ และแนวคิดการสร้าง Spreadsheet ที่ลดข้อผิดพลาดและตรวจสอบได้</p><div class="mini-meta"><span>Online</span><span>เร็ว ๆ นี้</span></div></div></article>
@@ -53,13 +111,6 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025;border-top:1px solid rgba
 <section class="section section-white" id="training-history"><div class="container"><div class="head"><p class="kicker">TRAINING HISTORY</p><h2>กิจกรรมและการอบรมที่ผ่านมา</h2><p>ประสบการณ์การถ่ายทอดความรู้และการใช้งานเครื่องมือวิศวกรรมที่เกิดขึ้นจริงร่วมกับวิศวกรจากหลากหลายสายงาน</p></div><div class="history-list">
 <!-- IMAGE 06: past-tumcivil-2567.jpg | 1600x1000 | ภาพยืนชี้ป้ายเปิดตัว --><article class="history-card"><div class="history-image"><img src="/assets/images/seminar/past-tumcivil-2567.jpg" alt="การเปิดตัวและสอนการใช้ ADT Spreadsheets ที่ TUMCIVIL.COM"></div><div class="history-copy"><p class="history-date">1 มิถุนายน 2567 • โรงแรมรอยัลริเวอร์ กรุงเทพมหานคร</p><h3>การเปิดตัวและสอนการใช้ ADT Spreadsheets คำนวณออกแบบบ้านทั้งหลัง</h3><p>การอบรมเชิงปฏิบัติการร่วมกับ TUMCIVIL.COM โดยผู้เข้าอบรมนำคอมพิวเตอร์มาทดลองใช้ Spreadsheet เรียนรู้ขั้นตอนการคำนวณออกแบบโครงสร้างด้วยวิธีหน่วยแรงใช้งาน พร้อมแลกเปลี่ยนคำถามและประสบการณ์จากงานจริง</p><div class="history-facts"><span class="fact">On-site Workshop</span><span class="fact">ทดลองใช้โปรแกรมจริง</span><span class="fact">TUMCIVIL.COM</span><span class="fact">วิศวกรเข้าร่วมเต็มห้อง</span></div></div></article>
 <!-- IMAGE 07: past-certificate.jpg | 1600x1000 | ภาพรับเกียรติบัตร --><article class="history-card"><div class="history-image"><img src="/assets/images/seminar/past-certificate.jpg" alt="กิจกรรมวิทยากรและการรับเกียรติบัตร"></div><div class="history-copy"><p class="history-date">กิจกรรมวิทยากร • การถ่ายทอดความรู้ด้านวิศวกรรม</p><h3>แบ่งปันองค์ความรู้จากงานออกแบบและการพัฒนาเครื่องมือคำนวณ</h3><p>การบรรยายและ Workshop มุ่งเน้นให้ผู้เข้าอบรมเข้าใจที่มาของสมการ ขั้นตอนการตรวจสอบ และข้อจำกัดของเครื่องมือ เพื่อให้สามารถนำความรู้กลับไปใช้กับงานได้อย่างรับผิดชอบ</p><div class="history-facts"><span class="fact">Engineering Training</span><span class="fact">Software Demonstration</span><span class="fact">Professional Knowledge</span></div></div></article>
-</div></div></section>
-<section class="section section-dark"><div class="container"><div class="head"><p class="kicker">ACTIVITY GALLERY</p><h2>บรรยากาศการอบรมและ Workshop</h2><p>ภาพจากการเรียนรู้ การสาธิตโปรแกรม การตอบคำถาม และการแลกเปลี่ยนประสบการณ์ระหว่างวิศวกร</p></div><div class="gallery">
-<figure><img src="/assets/images/seminar/seminar-gallery-01.jpg" alt="ภาพหมู่ผู้เข้าร่วมอบรม"><figcaption>ผู้เข้าร่วมอบรมและกิจกรรมวิชาชีพ</figcaption></figure>
-<figure><img src="/assets/images/seminar/seminar-gallery-02.jpg" alt="บรรยากาศผู้เข้าอบรมใช้คอมพิวเตอร์"><figcaption>Workshop และการทดลองใช้เครื่องมือ</figcaption></figure>
-<figure><img src="/assets/images/seminar/seminar-gallery-03.jpg" alt="การสาธิตซอฟต์แวร์ในงานอบรม"><figcaption>การสาธิตโปรแกรมและขั้นตอนคำนวณ</figcaption></figure>
-<figure><img src="/assets/images/seminar/seminar-gallery-04.jpg" alt="การตอบคำถามผู้เข้าร่วมอบรม"><figcaption>ถาม–ตอบจากปัญหางานจริง</figcaption></figure>
-<figure><img src="/assets/images/seminar/seminar-gallery-05.jpg" alt="วิทยากรบรรยายด้านวิศวกรรม"><figcaption>ถ่ายทอดความรู้โดยผู้มีประสบการณ์</figcaption></figure>
 </div></div></section>
 <section class="cta"><div class="container cta-grid"><div><h2>พร้อมพัฒนาทักษะวิศวกรรมไปกับเราหรือยัง?</h2><p>ติดตามหลักสูตรใหม่ สัมมนาออนไลน์ และ Workshop ที่เชื่อมโยงหลักการทางวิศวกรรมกับการทำงานจริง</p></div><div class="cta-actions"><a class="btn btn-yellow" href="/seminar/adt-pilefix/">สมัครสัมมนาปัจจุบัน</a><a class="btn btn-white" href="/contact/">ติดต่อจัดอบรมภายในองค์กร</a></div></div></section>
 </main>
