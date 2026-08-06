@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>เข้าสู่ระบบสมาชิก | ADTSpreadsheet</title>
-<meta name="description" content="เข้าสู่ระบบสมาชิก ADTSpreadsheet เพื่อใช้งานโปรแกรม การอบรม Knowledge Center Community และบริการสมาชิก">
+<meta name="description" content="เข้าสู่ระบบสมาชิก ADTSpreadsheet เพื่อเข้าถึงโปรแกรมทดลอง บทความ PDF ตัวอย่างงานออกแบบ Community การอบรม และบริการสำหรับสมาชิก">
 <link rel="icon" type="image/png" href="/assets/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -433,6 +433,106 @@ button,input{font:inherit}
     gap:10px;
   }
 }
+
+/* MEMBERSHIP BENEFITS */
+.brand-content{
+  width:min(760px,100%);
+  padding:42px 0;
+}
+.brand-content h1{
+  font-size:clamp(2.55rem,5vw,4.9rem);
+}
+.brand-content>p{
+  max-width:720px;
+  margin-top:20px;
+  font-size:clamp(.95rem,1.35vw,1.1rem);
+}
+.feature-grid{
+  margin-top:28px;
+}
+.feature{
+  min-height:116px;
+  padding:16px;
+}
+.feature strong{
+  font-size:.84rem;
+  line-height:1.45;
+}
+.feature span{
+  margin-top:5px;
+  font-size:.68rem;
+}
+.member-benefits{
+  margin-top:16px;
+  padding:18px;
+  border-radius:20px;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.12);
+}
+.member-benefits-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+.member-benefits-head strong{
+  color:#fff;
+  font-size:.86rem;
+}
+.member-benefits-head span{
+  padding:6px 9px;
+  border-radius:999px;
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.61rem;
+  font-weight:800;
+}
+.member-benefits-list{
+  margin-top:13px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px 14px;
+}
+.member-benefit-item{
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+  color:#d8e6f6;
+  font-size:.66rem;
+  line-height:1.55;
+}
+.member-benefit-item b{
+  color:#64e5a2;
+}
+.member-value-note{
+  margin-top:14px;
+  padding:12px 14px;
+  border-radius:15px;
+  color:#c8d9ec;
+  background:rgba(3,16,37,.28);
+  border:1px solid rgba(255,255,255,.08);
+  font-size:.65rem;
+  line-height:1.65;
+}
+.member-value-note strong{color:var(--yellow)}
+@media(max-width:1350px){
+  .brand-content h1{
+    font-size:clamp(2.3rem,4.4vw,4.2rem);
+  }
+  .feature-grid{gap:11px}
+  .feature{min-height:108px}
+}
+@media(max-height:850px) and (min-width:1101px){
+  .brand-panel{padding-top:24px;padding-bottom:28px}
+  .brand-content{padding:25px 0}
+  .feature-grid{margin-top:20px}
+  .member-benefits{margin-top:12px}
+  .member-value-note{display:none}
+}
+@media(max-width:640px){
+  .member-benefits-list{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 
@@ -452,44 +552,78 @@ button,input{font:inherit}
 
     <div class="brand-content">
       <p class="eyebrow">ADT MEMBERSHIP</p>
-      <h1>พื้นที่เดียว<br>สำหรับ<span>ทุกกิจกรรม</span><br>ของสมาชิก ADTSpreadsheet.com</h1>
-      <p>เข้าสู่ระบบเพื่อจัดการโปรแกรม การอบรม เอกสาร ใบประกาศ Community และบริการสนับสนุนทั้งหมดจาก Dashboard เดียว</p>
+
+      <h1>
+        ปลดล็อก<br>
+        <span>เครื่องมือ ความรู้</span><br>
+        และโอกาสสำหรับวิศวกร
+      </h1>
+
+      <p>
+        บัญชีสมาชิก ADT เพียงบัญชีเดียว ช่วยให้คุณเข้าถึงโปรแกรมทดลอง
+        คลังบทความ เอกสารตัวอย่างงานออกแบบ Community การอบรม
+        และบริการสำหรับสมาชิกทั้งหมด
+      </p>
 
       <div class="feature-grid">
         <article class="feature">
           <div class="feature-icon">💻</div>
           <div>
-            <strong>โปรแกรมของฉัน</strong>
-            <span>ตรวจสอบ License ดาวน์โหลดเวอร์ชันล่าสุด และจัดการสิทธิ์การใช้งาน</span>
+            <strong>ทดลองใช้ทุกโปรแกรมของ ADT</strong>
+            <span>ดาวน์โหลดเวอร์ชันทดลองของทุกโปรแกรมที่ ADT มีจำหน่าย เพื่อทดลองก่อนตัดสินใจ</span>
           </div>
         </article>
+
         <article class="feature">
-          <div class="feature-icon">🎓</div>
+          <div class="feature-icon">📚</div>
           <div>
-            <strong>การอบรมและกิจกรรม</strong>
-            <span>ลงทะเบียน เข้าร่วมกิจกรรม และติดตามประวัติการเรียนรู้</span>
+            <strong>บทความวิศวกรรมแบบ PDF</strong>
+            <span>อ่านบทความทั้งหมดของ ADT และดาวน์โหลดเก็บเป็นไฟล์ PDF สำหรับศึกษาและอ้างอิง</span>
           </div>
         </article>
+
         <article class="feature">
-          <div class="feature-icon">💬</div>
+          <div class="feature-icon">📂</div>
           <div>
-            <strong>Community</strong>
-            <span>พูดคุย แลกเปลี่ยนความรู้ และติดตามความเคลื่อนไหวของสมาชิก</span>
+            <strong>คลังตัวอย่างงานออกแบบ</strong>
+            <span>ดาวน์โหลดแบบก่อสร้าง DWG/PDF รายการคำนวณ และตัวอย่าง BOQ Excel จากผลงานของ อ.เก่ง</span>
           </div>
         </article>
+
         <article class="feature">
-          <div class="feature-icon">🎫</div>
+          <div class="feature-icon">✍️</div>
           <div>
-            <strong>Support</strong>
-            <span>แจ้งปัญหา ติดตามสถานะ และรับความช่วยเหลือจากทีม ADT</span>
+            <strong>เผยแพร่บทความของคุณ</strong>
+            <span>เขียนบทความทางวิศวกรรม แบ่งปันความรู้ และสร้างผลงานบนโปรไฟล์สมาชิกของคุณ</span>
           </div>
         </article>
       </div>
+
+      <section class="member-benefits">
+        <div class="member-benefits-head">
+          <strong>สิทธิพิเศษสำหรับสมาชิก ADT</strong>
+          <span>สมัครฟรี</span>
+        </div>
+
+        <div class="member-benefits-list">
+          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลดโปรแกรมทดลองทุกโปรแกรม</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลดบทความทั้งหมดเป็น PDF</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลด DWG / PDF / BOQ Excel</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>เขียนและเผยแพร่บทความวิศวกรรม</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>เข้าร่วม Community วิศวกร</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>ติดตามการอบรม กิจกรรม และบริการ Support</span></div>
+        </div>
+
+        <div class="member-value-note">
+          <strong>บัญชีเดียว เข้าถึงทุกบริการของ ADT</strong><br>
+          โปรแกรม • ความรู้ • เอกสารตัวอย่าง • การอบรม • Community • Support
+        </div>
+      </section>
     </div>
 
     <div class="brand-foot">
       <span>ADTSpreadsheet Member System</span>
-      <span>Engineering Software • Knowledge • Community</span>
+      <span>Software • Knowledge • Training • Community • Support</span>
     </div>
   </section>
 
@@ -504,7 +638,7 @@ button,input{font:inherit}
         <div class="login-head">
           <p class="label">MEMBER LOGIN</p>
           <h2>เข้าสู่ระบบสมาชิก</h2>
-          <p>กรอก Username และ Password ที่ลงทะเบียนไว้ เพื่อเข้าสู่พื้นที่สมาชิก ADT</p>
+          <p>เข้าสู่ระบบด้วยบัญชี ADT ID เพื่อใช้สิทธิ์สมาชิกและเข้าถึงบริการทั้งหมดของคุณ</p>
         </div>
 
         <div class="alert alert-error" id="errorAlert" role="alert"></div>
