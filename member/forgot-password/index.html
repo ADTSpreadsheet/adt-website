@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ลืมรหัสผ่าน | ADTSpreadsheet</title>
+
+<meta name="description"
+      content="กู้คืนบัญชีสมาชิก ADTSpreadsheet ด้วย Username และรหัส OTP ผ่าน LINE">
+
+<link rel="icon"
+      type="image/png"
+      href="/assets/images/favicon.png">
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet">
+
+<style>
+:root{
+  --navy:#06152d;
+  --navy2:#0a2855;
+  --blue:#1677ff;
+  --yellow:#ffc928;
+  --green:#17b26a;
+  --red:#ef3d48;
+  --ink:#142033;
+  --muted:#6c7a90;
+  --line:#dce5ef;
+  --surface:#f4f7fb;
+  --white:#fff;
+  --shadow:0 24px 70px rgba(4,27,60,.16);
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  min-height:100%;
+}
+
+body{
+  margin:0;
+  font-family:"Prompt",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 14% 10%,rgba(22,119,255,.15),transparent 27%),
+    radial-gradient(circle at 86% 88%,rgba(255,201,40,.13),transparent 25%),
+    var(--surface);
+}
+
+button,
+input{
+  font:inherit;
+}
+
+a{
+  color:inherit;
+}
+
+.page{
+  min-height:100vh;
+  display:grid;
+  grid-template-columns:minmax(0,1.04fr) minmax(500px,.96fr);
+}
+
+/* =========================================================
+   LEFT PANEL
+========================================================= */
+
+.brand-panel{
+  position:relative;
+  overflow:hidden;
+  min-height:100vh;
+  padding:34px 42px 42px;
+  display:flex;
+  flex-direction:column;
+  color:#fff;
+  background:
+    radial-gradient(circle at 18% 16%,rgba(22,119,255,.35),transparent 28%),
+    radial-gradient(circle at 88% 82%,rgba(255,201,40,.18),transparent 24%),
+    linear-gradient(145deg,#031025 0%,#06152d 48%,#0a2855 100%);
+}
+
+.brand-panel::before,
+.brand-panel::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.07);
+}
+
+.brand-panel::before{
+  width:430px;
+  height:430px;
+  right:-170px;
+  top:-140px;
+  box-shadow:
+    0 0 0 70px rgba(255,255,255,.025),
+    0 0 0 140px rgba(255,255,255,.018);
+}
+
+.brand-panel::after{
+  width:280px;
+  height:280px;
+  left:-120px;
+  bottom:-110px;
+  box-shadow:0 0 0 55px rgba(255,255,255,.025);
+}
+
+.brand-top{
+  position:relative;
+  z-index:2;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.logo{
+  width:260px;
+  max-height:68px;
+  object-fit:contain;
+  object-position:left center;
+}
+
+.back-login{
+  padding:10px 14px;
+  border-radius:999px;
+  color:#dce8f6;
+  text-decoration:none;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.12);
+  font-size:.76rem;
+  font-weight:700;
+}
+
+.brand-content{
+  position:relative;
+  z-index:2;
+  width:min(700px,100%);
+  margin:auto 0;
+  padding:45px 0;
+}
+
+.eyebrow{
+  margin:0 0 14px;
+  color:var(--yellow);
+  font:800 .75rem "Inter";
+  letter-spacing:.13em;
+}
+
+.brand-content h1{
+  margin:0;
+  max-width:700px;
+  font-size:clamp(2.8rem,5.5vw,5.2rem);
+  line-height:1.05;
+  letter-spacing:-.03em;
+}
+
+.brand-content h1 span{
+  color:var(--yellow);
+}
+
+.brand-content>p{
+  max-width:650px;
+  margin:24px 0 0;
+  color:#d7e5f5;
+  font-size:clamp(1rem,1.4vw,1.15rem);
+  line-height:1.9;
+}
+
+.info-grid{
+  margin-top:34px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.info-card{
+  padding:17px;
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  border-radius:18px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.11);
+}
+
+.info-icon{
+  flex:0 0 42px;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  color:var(--navy);
+  background:var(--yellow);
+}
+
+.info-card strong{
+  display:block;
+  font-size:.84rem;
+}
+
+.info-card span{
+  display:block;
+  margin-top:4px;
+  color:#bcd0e7;
+  font-size:.69rem;
+  line-height:1.55;
+}
+
+.brand-foot{
+  position:relative;
+  z-index:2;
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  color:#91abc8;
+  font-size:.68rem;
+}
+
+/* =========================================================
+   RESET PANEL
+========================================================= */
+
+.reset-panel{
+  min-height:100vh;
+  padding:32px;
+  display:grid;
+  place-items:center;
+}
+
+.reset-wrap{
+  width:min(580px,100%);
+}
+
+.mobile-logo{
+  display:none;
+  width:240px;
+  margin:0 auto 24px;
+}
+
+.reset-card{
+  padding:34px;
+  border-radius:28px;
+  background:rgba(255,255,255,.97);
+  border:1px solid rgba(220,229,239,.95);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(15px);
+}
+
+.reset-head{
+  margin-bottom:24px;
+}
+
+.reset-head .label{
+  margin:0 0 8px;
+  color:var(--blue);
+  font:800 .72rem "Inter";
+  letter-spacing:.12em;
+}
+
+.reset-head h2{
+  margin:0;
+  color:var(--navy);
+  font-size:clamp(1.9rem,4vw,2.65rem);
+  line-height:1.2;
+}
+
+.reset-head p{
+  margin:12px 0 0;
+  color:var(--muted);
+  line-height:1.75;
+  font-size:.84rem;
+}
+
+/* =========================================================
+   STEPS
+========================================================= */
+
+.steps{
+  margin-bottom:24px;
+  padding:14px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  border-radius:17px;
+  background:#f5f8fc;
+  border:1px solid var(--line);
+}
+
+.step{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  color:#93a1b2;
+  font-size:.67rem;
+  font-weight:800;
+}
+
+.step-number{
+  width:27px;
+  height:27px;
+  display:grid;
+  place-items:center;
+  border-radius:9px;
+  background:#e7edf4;
+  color:#8291a4;
+  font:800 .7rem "Inter";
+}
+
+.step.active{
+  color:var(--blue);
+}
+
+.step.active .step-number{
+  color:#fff;
+  background:var(--blue);
+}
+
+.step.done{
+  color:#087443;
+}
+
+.step.done .step-number{
+  color:#fff;
+  background:var(--green);
+}
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.section{
+  display:none;
+}
+
+.section.active{
+  display:block;
+}
+
+.form-group{
+  margin-bottom:18px;
+}
+
+.form-label{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:8px;
+  color:var(--navy);
+  font-size:.78rem;
+  font-weight:800;
+}
+
+.field{
+  position:relative;
+}
+
+.field-icon{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#7b8ba1;
+  pointer-events:none;
+}
+
+.form-control{
+  width:100%;
+  height:54px;
+  padding:0 48px 0 46px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  outline:none;
+  color:var(--ink);
+  background:#f9fbfd;
+  transition:.2s;
+}
+
+.form-control:focus{
+  border-color:#94c3ff;
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(22,119,255,.09);
+}
+
+.password-toggle{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border:0;
+  border-radius:10px;
+  background:transparent;
+  cursor:pointer;
+}
+
+.hint{
+  margin-top:7px;
+  color:#8795a7;
+  font-size:.66rem;
+  line-height:1.55;
+}
+
+.actions{
+  margin-top:22px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+}
+
+.btn{
+  min-height:50px;
+  padding:0 20px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:0;
+  border-radius:14px;
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.btn-primary{
+  color:#fff;
+  background:linear-gradient(135deg,var(--blue),#0d5fd1);
+  box-shadow:0 14px 28px rgba(22,119,255,.22);
+}
+
+.btn-secondary{
+  color:var(--navy);
+  background:#edf2f7;
+}
+
+.btn-line{
+  color:#fff;
+  background:#06c755;
+}
+
+/* =========================================================
+   ALERTS
+========================================================= */
+
+.alert{
+  display:none;
+  margin-bottom:18px;
+  padding:12px 14px;
+  border-radius:13px;
+  font-size:.74rem;
+  line-height:1.6;
+}
+
+.alert.show{
+  display:block;
+}
+
+.alert-error{
+  color:#9f1d2c;
+  background:#fff0f2;
+  border:1px solid #ffd1d7;
+}
+
+.alert-success{
+  color:#087443;
+  background:#eaf9f2;
+  border:1px solid #c9efdd;
+}
+
+/* =========================================================
+   LINE OTP
+========================================================= */
+
+.line-card{
+  overflow:hidden;
+  border-radius:20px;
+  border:1px solid #ccefd9;
+  background:#fff;
+}
+
+.line-head{
+  padding:17px 18px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  color:#fff;
+  background:linear-gradient(135deg,#04b84f,#06c755);
+}
+
+.line-head img{
+  width:48px;
+  height:48px;
+  object-fit:cover;
+  border-radius:14px;
+  background:#fff;
+}
+
+.line-head strong{
+  display:block;
+  font-size:.95rem;
+}
+
+.line-head span{
+  display:block;
+  margin-top:3px;
+  color:rgba(255,255,255,.86);
+  font-size:.67rem;
+}
+
+.line-body{
+  padding:18px;
+}
+
+.command-box{
+  padding:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-radius:15px;
+  color:#fff;
+  background:var(--navy);
+}
+
+.command-box strong{
+  font-size:1rem;
+}
+
+.command-box button{
+  padding:9px 12px;
+  border:0;
+  border-radius:10px;
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.68rem;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.line-note{
+  margin-top:13px;
+  color:var(--muted);
+  font-size:.69rem;
+  line-height:1.7;
+}
+
+.countdown{
+  margin-top:16px;
+  padding:17px;
+  text-align:center;
+  border-radius:17px;
+  background:#fff8ec;
+  border:1px solid #f2d49c;
+}
+
+.countdown-label{
+  color:#885612;
+  font-size:.68rem;
+  font-weight:800;
+}
+
+.countdown-time{
+  margin-top:4px;
+  color:#e15300;
+  font:800 2.7rem "Inter";
+  letter-spacing:.06em;
+}
+
+.countdown.expired{
+  background:#fff0f2;
+  border-color:#ffc9d0;
+}
+
+.countdown.expired .countdown-time,
+.countdown.expired .countdown-label{
+  color:#c62839;
+}
+
+.otp-input{
+  text-align:center;
+  letter-spacing:.55em;
+  font:800 1.45rem "Inter";
+  padding-left:48px;
+}
+
+/* =========================================================
+   PASSWORD MATCH
+========================================================= */
+
+.password-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.password-message{
+  min-height:20px;
+  margin-top:7px;
+  font-size:.66rem;
+  font-weight:800;
+}
+
+.match-error .form-control{
+  color:#b42332;
+  background:#fff0f2;
+  border-color:#f4a7b0;
+}
+
+.match-error .password-message{
+  color:#b42332;
+}
+
+.match-success .form-control{
+  color:#087443;
+  background:#eaf9f2;
+  border-color:#8ed8b7;
+}
+
+.match-success .password-message{
+  color:#087443;
+}
+
+/* =========================================================
+   SUCCESS
+========================================================= */
+
+.success-box{
+  padding:30px 10px 12px;
+  text-align:center;
+}
+
+.success-icon{
+  width:70px;
+  height:70px;
+  margin:0 auto 18px;
+  display:grid;
+  place-items:center;
+  border-radius:22px;
+  color:#fff;
+  background:var(--green);
+  font-size:2rem;
+  box-shadow:0 18px 36px rgba(23,178,106,.24);
+}
+
+.success-box h3{
+  margin:0;
+  color:var(--navy);
+  font-size:1.7rem;
+}
+
+.success-box p{
+  margin:10px auto 0;
+  max-width:440px;
+  color:var(--muted);
+  line-height:1.75;
+  font-size:.82rem;
+}
+
+.success-box .btn{
+  margin-top:24px;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.page-footer{
+  margin-top:18px;
+  text-align:center;
+  color:#8c99a9;
+  font-size:.67rem;
+}
+
+.page-footer a{
+  color:#60738c;
+  text-decoration:none;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1100px){
+  .page{
+    grid-template-columns:1fr;
+  }
+
+  .brand-panel{
+    display:none;
+  }
+
+  .reset-panel{
+    min-height:100vh;
+    padding:28px 20px;
+  }
+
+  .mobile-logo{
+    display:block;
+  }
+}
+
+@media(max-width:620px){
+  .reset-panel{
+    padding:20px 13px;
+  }
+
+  .reset-card{
+    padding:25px 18px;
+    border-radius:22px;
+  }
+
+  .steps{
+    padding:10px 8px;
+  }
+
+  .step{
+    flex-direction:column;
+    text-align:center;
+    font-size:.6rem;
+  }
+
+  .password-grid{
+    grid-template-columns:1fr;
+  }
+
+  .actions{
+    flex-direction:column-reverse;
+  }
+
+  .actions .btn{
+    width:100%;
+  }
+
+  .command-box{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .command-box button{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <section class="brand-panel">
+    <div class="brand-top">
+      <a href="/" aria-label="ADTSpreadsheet หน้าแรก">
+        <img class="logo"
+             src="/assets/images/logo-header.png"
+             onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
+             alt="ADTSpreadsheet">
+      </a>
+
+      <a class="back-login"
+         href="/member/">
+        ← กลับหน้าเข้าสู่ระบบ
+      </a>
+    </div>
+
+    <div class="brand-content">
+      <p class="eyebrow">ACCOUNT RECOVERY</p>
+
+      <h1>
+        กู้คืนบัญชี<br>
+        อย่าง<span>ปลอดภัย</span><br>
+        ผ่าน LINE OTP
+      </h1>
+
+      <p>
+        ระบบจะตรวจสอบ Username กับข้อมูลสมาชิกใน ADT
+        แล้วส่งรหัส OTP ไปยัง LINE ที่เชื่อมกับบัญชี
+        ก่อนอนุญาตให้ตั้ง Password ใหม่
+      </p>
+
+      <div class="info-grid">
+        <article class="info-card">
+          <div class="info-icon">👤</div>
+          <div>
+            <strong>ตรวจสอบ Username</strong>
+            <span>ค้นหาบัญชีจากตารางสมาชิก ADT โดยไม่เปิดเผยข้อมูลส่วนตัว</span>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <div class="info-icon">💬</div>
+          <div>
+            <strong>ยืนยันผ่าน LINE</strong>
+            <span>ส่งรหัส OTP ไปยัง LINE ที่ผูกกับบัญชีสมาชิกเท่านั้น</span>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <div class="info-icon">🔐</div>
+          <div>
+            <strong>ตั้ง Password ใหม่</strong>
+            <span>รหัสเดิมไม่สามารถอ่านกลับได้ ระบบจึงให้สร้างรหัสใหม่แทน</span>
+          </div>
+        </article>
+
+        <article class="info-card">
+          <div class="info-icon">🛡️</div>
+          <div>
+            <strong>OTP ใช้ครั้งเดียว</strong>
+            <span>รหัสมีอายุ 5 นาที และหมดอายุทันทีหลังยืนยันสำเร็จ</span>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="brand-foot">
+      <span>ADTSpreadsheet Member System</span>
+      <span>Secure Account Recovery</span>
+    </div>
+  </section>
+
+  <main class="reset-panel">
+    <div class="reset-wrap">
+
+      <img class="mobile-logo"
+           src="/assets/images/logo-header.png"
+           onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
+           alt="ADTSpreadsheet">
+
+      <section class="reset-card">
+
+        <div class="reset-head">
+          <p class="label">FORGOT PASSWORD</p>
+          <h2>ลืมรหัสผ่าน</h2>
+          <p>
+            ระบุ Username ของบัญชีสมาชิก
+            จากนั้นยืนยันตัวตนผ่าน LINE เพื่อสร้าง Password ใหม่
+          </p>
+        </div>
+
+        <div class="steps">
+          <div class="step active" id="stepIndicator1">
+            <span class="step-number">1</span>
+            <span>ระบุบัญชี</span>
+          </div>
+
+          <div class="step" id="stepIndicator2">
+            <span class="step-number">2</span>
+            <span>ยืนยัน LINE</span>
+          </div>
+
+          <div class="step" id="stepIndicator3">
+            <span class="step-number">3</span>
+            <span>ตั้งรหัสใหม่</span>
+          </div>
+        </div>
+
+        <div class="alert alert-error"
+             id="errorAlert"
+             role="alert"></div>
+
+        <div class="alert alert-success"
+             id="successAlert"
+             role="status"></div>
+
+        <!-- STEP 1 -->
+        <section class="section active"
+                 id="step1">
+
+          <form id="requestForm"
+                novalidate>
+
+            <div class="form-group">
+              <label class="form-label"
+                     for="username">
+                Username
+              </label>
+
+              <div class="field">
+                <span class="field-icon">👤</span>
+
+                <input class="form-control"
+                       id="username"
+                       type="text"
+                       autocomplete="username"
+                       placeholder="กรอก Username"
+                       maxlength="40"
+                       required>
+              </div>
+
+              <div class="hint">
+                ระบบจะไม่แสดงอีเมลหรือข้อมูล LINE ของบัญชีบนหน้าเว็บ
+              </div>
+            </div>
+
+            <div class="actions">
+              <a class="btn btn-secondary"
+                 href="/member/">
+                ← กลับหน้า Login
+              </a>
+
+              <button class="btn btn-primary"
+                      id="requestButton"
+                      type="submit">
+                ตรวจสอบบัญชี
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- STEP 2 -->
+        <section class="section"
+                 id="step2">
+
+          <div class="line-card">
+            <div class="line-head">
+              <img src="/assets/line/line-oa-logo.png"
+                   onerror="this.onerror=null;this.src='/assets/images/favicon.png';"
+                   alt="ADT Bot">
+
+              <div>
+                <strong>ยืนยันตัวตนผ่าน ADT Bot</strong>
+                <span>ระบบส่งคำขอ OTP ไปยัง LINE ที่เชื่อมกับบัญชีแล้ว</span>
+              </div>
+            </div>
+
+            <div class="line-body">
+              <div class="command-box">
+                <strong>รีเซ็ตรหัสผ่าน ADT</strong>
+
+                <button id="openBotButton"
+                        type="button">
+                  เปิด ADT Bot
+                </button>
+              </div>
+
+              <div class="line-note">
+                เปิด LINE และกดยืนยันคำขอรีเซ็ตรหัสผ่านจากข้อความของ ADT Bot
+                จากนั้นนำ OTP 6 หลักกลับมากรอกในหน้านี้
+              </div>
+            </div>
+          </div>
+
+          <div class="countdown"
+               id="countdownCard">
+            <div class="countdown-label"
+                 id="countdownLabel">
+              รหัส OTP มีอายุ
+            </div>
+
+            <div class="countdown-time"
+                 id="countdownTime">
+              05:00
+            </div>
+          </div>
+
+          <div class="form-group"
+               style="margin-top:18px">
+            <label class="form-label"
+                   for="otpInput">
+              รหัส OTP 6 หลัก
+            </label>
+
+            <input class="form-control otp-input"
+                   id="otpInput"
+                   type="text"
+                   inputmode="numeric"
+                   autocomplete="one-time-code"
+                   maxlength="6"
+                   placeholder="••••••">
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-secondary"
+                    id="backToStep1"
+                    type="button">
+              ← เปลี่ยน Username
+            </button>
+
+            <button class="btn btn-primary"
+                    id="verifyButton"
+                    type="button">
+              ตรวจสอบ OTP
+            </button>
+          </div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section class="section"
+                 id="step3">
+
+          <div class="password-grid">
+
+            <div class="form-group">
+              <label class="form-label"
+                     for="newPassword">
+                Password ใหม่
+              </label>
+
+              <div class="field">
+                <span class="field-icon">🔒</span>
+
+                <input class="form-control"
+                       id="newPassword"
+                       type="password"
+                       autocomplete="new-password"
+                       placeholder="อย่างน้อย 8 ตัวอักษร"
+                       maxlength="200">
+
+                <button class="password-toggle"
+                        id="toggleNewPassword"
+                        type="button"
+                        aria-label="แสดงรหัสผ่าน">
+                  👁️
+                </button>
+              </div>
+
+              <div class="hint">
+                ควรมีตัวอักษร ตัวเลข และสัญลักษณ์
+              </div>
+            </div>
+
+            <div class="form-group"
+                 id="confirmPasswordGroup">
+              <label class="form-label"
+                     for="confirmPassword">
+                ยืนยัน Password
+              </label>
+
+              <div class="field">
+                <span class="field-icon">🔒</span>
+
+                <input class="form-control"
+                       id="confirmPassword"
+                       type="password"
+                       autocomplete="new-password"
+                       placeholder="กรอก Password อีกครั้ง"
+                       maxlength="200">
+
+                <button class="password-toggle"
+                        id="toggleConfirmPassword"
+                        type="button"
+                        aria-label="แสดงรหัสผ่าน">
+                  👁️
+                </button>
+              </div>
+
+              <div class="password-message"
+                   id="passwordMatchMessage"></div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-secondary"
+                    id="backToStep2"
+                    type="button">
+              ← กลับ
+            </button>
+
+            <button class="btn btn-primary"
+                    id="resetButton"
+                    type="button">
+              บันทึก Password ใหม่
+            </button>
+          </div>
+        </section>
+
+        <!-- SUCCESS -->
+        <section class="section"
+                 id="successSection">
+          <div class="success-box">
+            <div class="success-icon">✓</div>
+
+            <h3>เปลี่ยนรหัสผ่านสำเร็จ</h3>
+
+            <p>
+              บัญชีของคุณพร้อมใช้งานแล้ว
+              กรุณากลับไปเข้าสู่ระบบด้วย Username
+              และ Password ใหม่
+            </p>
+
+            <a class="btn btn-primary"
+               href="/member/">
+              กลับไปเข้าสู่ระบบ
+            </a>
+          </div>
+        </section>
+
+      </section>
+
+      <div class="page-footer">
+        <a href="/privacy/">
+          นโยบายความเป็นส่วนตัว
+        </a>
+        &nbsp;•&nbsp;
+        <a href="/terms/">
+          ข้อกำหนดการใช้งาน
+        </a>
+        <br>
+        © 2026 ADTSpreadsheet
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   ADT FORGOT PASSWORD — FRONTEND v1.0
+
+   Required API endpoints:
+   POST /api/member/forgot-password/request
+   POST /api/member/forgot-password/verify
+   POST /api/member/forgot-password/reset
+   ============================================================ */
+
+const API_BASE_URL =
+  "https://adt-website-api.onrender.com";
+
+const LINE_BOT_URL =
+  "https://line.ee/uAB5K0W";
+
+const OTP_DURATION_SECONDS =
+  5 * 60;
+
+const sections = {
+  1: document.getElementById("step1"),
+  2: document.getElementById("step2"),
+  3: document.getElementById("step3")
+};
+
+const indicators = {
+  1: document.getElementById("stepIndicator1"),
+  2: document.getElementById("stepIndicator2"),
+  3: document.getElementById("stepIndicator3")
+};
+
+const errorAlert =
+  document.getElementById("errorAlert");
+
+const successAlert =
+  document.getElementById("successAlert");
+
+const requestForm =
+  document.getElementById("requestForm");
+
+const usernameInput =
+  document.getElementById("username");
+
+const requestButton =
+  document.getElementById("requestButton");
+
+const otpInput =
+  document.getElementById("otpInput");
+
+const verifyButton =
+  document.getElementById("verifyButton");
+
+const resetButton =
+  document.getElementById("resetButton");
+
+const countdownCard =
+  document.getElementById("countdownCard");
+
+const countdownLabel =
+  document.getElementById("countdownLabel");
+
+const countdownTime =
+  document.getElementById("countdownTime");
+
+const newPassword =
+  document.getElementById("newPassword");
+
+const confirmPassword =
+  document.getElementById("confirmPassword");
+
+const confirmPasswordGroup =
+  document.getElementById("confirmPasswordGroup");
+
+const passwordMatchMessage =
+  document.getElementById("passwordMatchMessage");
+
+let resetRequestId = "";
+let resetToken = "";
+let countdownInterval = null;
+let otpStartedAt = 0;
+
+function showAlert(
+  element,
+  message
+){
+  errorAlert.classList.remove("show");
+  successAlert.classList.remove("show");
+
+  element.textContent = message;
+  element.classList.add("show");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+function clearAlerts(){
+  errorAlert.classList.remove("show");
+  successAlert.classList.remove("show");
+}
+
+function setButtonLoading(
+  button,
+  loading,
+  loadingText
+){
+  if(loading){
+    button.dataset.originalText =
+      button.textContent;
+
+    button.textContent =
+      loadingText;
+
+    button.disabled = true;
+  }else{
+    button.textContent =
+      button.dataset.originalText ||
+      button.textContent;
+
+    button.disabled = false;
+  }
+}
+
+function showStep(step){
+  clearAlerts();
+
+  Object.values(sections)
+    .forEach(section => {
+      section.classList.remove("active");
+    });
+
+  document
+    .getElementById("successSection")
+    .classList.remove("active");
+
+  sections[step]
+    .classList.add("active");
+
+  Object.entries(indicators)
+    .forEach(([number,indicator]) => {
+      const current =
+        Number(number);
+
+      indicator.classList.toggle(
+        "active",
+        current === step
+      );
+
+      indicator.classList.toggle(
+        "done",
+        current < step
+      );
+    });
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+async function apiRequest(
+  path,
+  options = {}
+){
+  let response;
+
+  try{
+    response = await fetch(
+      `${API_BASE_URL}${path}`,
+      {
+        ...options,
+        headers:{
+          "Content-Type":"application/json",
+          ...(options.headers || {})
+        }
+      }
+    );
+  }catch{
+    throw new Error(
+      "ไม่สามารถเชื่อมต่อระบบได้ กรุณาตรวจสอบอินเทอร์เน็ต"
+    );
+  }
+
+  let result = {};
+
+  try{
+    result = await response.json();
+  }catch{
+    result = {};
+  }
+
+  if(!response.ok){
+    throw new Error(
+      result.message ||
+      "ระบบไม่สามารถดำเนินการได้"
+    );
+  }
+
+  return result;
+}
+
+function formatTime(seconds){
+  const safe =
+    Math.max(0,seconds);
+
+  const minutes =
+    String(
+      Math.floor(safe / 60)
+    ).padStart(2,"0");
+
+  const remain =
+    String(
+      safe % 60
+    ).padStart(2,"0");
+
+  return `${minutes}:${remain}`;
+}
+
+function startCountdown(){
+  if(countdownInterval){
+    clearInterval(countdownInterval);
+  }
+
+  otpStartedAt =
+    Date.now();
+
+  countdownCard.classList.remove("expired");
+  countdownLabel.textContent =
+    "รหัส OTP มีอายุ";
+
+  otpInput.disabled = false;
+  verifyButton.disabled = false;
+
+  const tick = () => {
+    const elapsed =
+      Math.floor(
+        (Date.now() - otpStartedAt) / 1000
+      );
+
+    const remaining =
+      OTP_DURATION_SECONDS - elapsed;
+
+    if(remaining <= 0){
+      clearInterval(countdownInterval);
+      countdownInterval = null;
+
+      countdownCard.classList.add("expired");
+      countdownLabel.textContent =
+        "รหัส OTP หมดอายุแล้ว";
+
+      countdownTime.textContent =
+        "00:00";
+
+      otpInput.disabled = true;
+      verifyButton.disabled = true;
+      return;
+    }
+
+    countdownTime.textContent =
+      formatTime(remaining);
+  };
+
+  tick();
+
+  countdownInterval =
+    setInterval(tick,1000);
+}
+
+function setupPasswordToggle(
+  buttonId,
+  inputId
+){
+  const button =
+    document.getElementById(buttonId);
+
+  const input =
+    document.getElementById(inputId);
+
+  button.addEventListener(
+    "click",
+    () => {
+      const hidden =
+        input.type === "password";
+
+      input.type =
+        hidden
+          ? "text"
+          : "password";
+
+      button.textContent =
+        hidden
+          ? "🙈"
+          : "👁️";
+    }
+  );
+}
+
+function updatePasswordMatch(){
+  confirmPasswordGroup.classList.remove(
+    "match-error",
+    "match-success"
+  );
+
+  if(!confirmPassword.value){
+    passwordMatchMessage.textContent = "";
+    return false;
+  }
+
+  if(
+    newPassword.value ===
+    confirmPassword.value
+  ){
+    confirmPasswordGroup.classList.add(
+      "match-success"
+    );
+
+    passwordMatchMessage.textContent =
+      "Password ตรงกัน";
+
+    return true;
+  }
+
+  confirmPasswordGroup.classList.add(
+    "match-error"
+  );
+
+  passwordMatchMessage.textContent =
+    "Password ทั้งสองช่องไม่ตรงกัน";
+
+  return false;
+}
+
+setupPasswordToggle(
+  "toggleNewPassword",
+  "newPassword"
+);
+
+setupPasswordToggle(
+  "toggleConfirmPassword",
+  "confirmPassword"
+);
+
+newPassword.addEventListener(
+  "input",
+  updatePasswordMatch
+);
+
+confirmPassword.addEventListener(
+  "input",
+  updatePasswordMatch
+);
+
+otpInput.addEventListener(
+  "input",
+  event => {
+    event.target.value =
+      event.target.value
+        .replace(/\D/g,"")
+        .slice(0,6);
+  }
+);
+
+document
+  .getElementById("openBotButton")
+  .addEventListener(
+    "click",
+    () => {
+      window.open(
+        LINE_BOT_URL,
+        "_blank",
+        "noopener,noreferrer"
+      );
+    }
+  );
+
+/* ============================================================
+   STEP 1 — REQUEST RESET
+============================================================ */
+
+requestForm.addEventListener(
+  "submit",
+  async event => {
+    event.preventDefault();
+    clearAlerts();
+
+    const username =
+      usernameInput.value.trim();
+
+    if(
+      !/^[A-Za-z0-9._-]{4,40}$/.test(
+        username
+      )
+    ){
+      showAlert(
+        errorAlert,
+        "กรุณากรอก Username ให้ถูกต้อง"
+      );
+
+      usernameInput.focus();
+      return;
+    }
+
+    setButtonLoading(
+      requestButton,
+      true,
+      "กำลังตรวจสอบ..."
+    );
+
+    try{
+      const result =
+        await apiRequest(
+          "/api/member/forgot-password/request",
+          {
+            method:"POST",
+            body:JSON.stringify({
+              username
+            })
+          }
+        );
+
+      resetRequestId =
+        result.reset_request_id || "";
+
+      if(!resetRequestId){
+        throw new Error(
+          "ระบบไม่ส่งรหัสคำขอกู้คืนบัญชีกลับมา"
+        );
+      }
+
+      showStep(2);
+      startCountdown();
+
+      showAlert(
+        successAlert,
+        result.message ||
+        "ส่งคำขอ OTP ไปยัง LINE ที่เชื่อมกับบัญชีแล้ว"
+      );
+
+    }catch(error){
+      showAlert(
+        errorAlert,
+        error.message
+      );
+    }finally{
+      setButtonLoading(
+        requestButton,
+        false
+      );
+    }
+  }
+);
+
+/* ============================================================
+   STEP 2 — VERIFY OTP
+============================================================ */
+
+verifyButton.addEventListener(
+  "click",
+  async () => {
+    clearAlerts();
+
+    const otp =
+      otpInput.value.trim();
+
+    if(
+      !/^\d{6}$/.test(otp)
+    ){
+      showAlert(
+        errorAlert,
+        "กรุณากรอกรหัส OTP ตัวเลข 6 หลัก"
+      );
+
+      otpInput.focus();
+      return;
+    }
+
+    if(!resetRequestId){
+      showAlert(
+        errorAlert,
+        "ไม่พบคำขอกู้คืนบัญชี กรุณาเริ่มใหม่"
+      );
+      return;
+    }
+
+    setButtonLoading(
+      verifyButton,
+      true,
+      "กำลังตรวจสอบ..."
+    );
+
+    try{
+      const result =
+        await apiRequest(
+          "/api/member/forgot-password/verify",
+          {
+            method:"POST",
+            body:JSON.stringify({
+              reset_request_id:
+                resetRequestId,
+              otp
+            })
+          }
+        );
+
+      resetToken =
+        result.reset_token || "";
+
+      if(!resetToken){
+        throw new Error(
+          "ระบบไม่ส่งสิทธิ์ตั้งรหัสผ่านใหม่กลับมา"
+        );
+      }
+
+      if(countdownInterval){
+        clearInterval(
+          countdownInterval
+        );
+
+        countdownInterval = null;
+      }
+
+      showStep(3);
+
+      showAlert(
+        successAlert,
+        "ยืนยันตัวตนสำเร็จ กรุณาตั้ง Password ใหม่"
+      );
+
+    }catch(error){
+      showAlert(
+        errorAlert,
+        error.message
+      );
+    }finally{
+      setButtonLoading(
+        verifyButton,
+        false
+      );
+    }
+  }
+);
+
+/* ============================================================
+   STEP 3 — RESET PASSWORD
+============================================================ */
+
+resetButton.addEventListener(
+  "click",
+  async () => {
+    clearAlerts();
+
+    const password =
+      newPassword.value;
+
+    const confirm =
+      confirmPassword.value;
+
+    if(
+      password.length < 8 ||
+      password.length > 200
+    ){
+      showAlert(
+        errorAlert,
+        "Password ใหม่ต้องมีอย่างน้อย 8 ตัวอักษร"
+      );
+
+      newPassword.focus();
+      return;
+    }
+
+    if(
+      !confirm ||
+      password !== confirm
+    ){
+      updatePasswordMatch();
+
+      showAlert(
+        errorAlert,
+        "Password ทั้งสองช่องไม่ตรงกัน"
+      );
+
+      confirmPassword.focus();
+      return;
+    }
+
+    if(!resetToken){
+      showAlert(
+        errorAlert,
+        "ไม่พบสิทธิ์ตั้งรหัสผ่านใหม่ กรุณาเริ่มใหม่"
+      );
+      return;
+    }
+
+    setButtonLoading(
+      resetButton,
+      true,
+      "กำลังบันทึก..."
+    );
+
+    try{
+      await apiRequest(
+        "/api/member/forgot-password/reset",
+        {
+          method:"POST",
+          body:JSON.stringify({
+            reset_token:
+              resetToken,
+            password
+          })
+        }
+      );
+
+      Object.values(sections)
+        .forEach(section => {
+          section.classList.remove("active");
+        });
+
+      Object.values(indicators)
+        .forEach(indicator => {
+          indicator.classList.remove("active");
+          indicator.classList.add("done");
+        });
+
+      document
+        .getElementById("successSection")
+        .classList.add("active");
+
+      resetRequestId = "";
+      resetToken = "";
+
+      clearAlerts();
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+
+    }catch(error){
+      showAlert(
+        errorAlert,
+        error.message
+      );
+    }finally{
+      setButtonLoading(
+        resetButton,
+        false
+      );
+    }
+  }
+);
+
+document
+  .getElementById("backToStep1")
+  .addEventListener(
+    "click",
+    () => {
+      resetRequestId = "";
+      resetToken = "";
+      otpInput.value = "";
+
+      if(countdownInterval){
+        clearInterval(
+          countdownInterval
+        );
+      }
+
+      showStep(1);
+    }
+  );
+
+document
+  .getElementById("backToStep2")
+  .addEventListener(
+    "click",
+    () => showStep(2)
+  );
+</script>
+</body>
+</html>
