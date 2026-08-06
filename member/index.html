@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>สมัครสมาชิก | ADTSpreadsheet</title>
-<meta name="description" content="สมัครสมาชิก ADTSpreadsheet ฟรี เพื่อเข้าถึงโปรแกรม การอบรม Knowledge Center Community และบริการสำหรับสมาชิก">
+<title>เข้าสู่ระบบสมาชิก | ADTSpreadsheet</title>
+<meta name="description" content="เข้าสู่ระบบสมาชิก ADTSpreadsheet เพื่อเข้าถึงโปรแกรมทดลอง บทความ PDF ตัวอย่างงานออกแบบ Community การอบรม และบริการสำหรับสมาชิก">
 <link rel="icon" type="image/png" href="/assets/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,882 +23,514 @@
   --line:#dce5ef;
   --surface:#f4f7fb;
   --white:#fff;
-  --shadow:0 24px 70px rgba(4,27,60,.15);
+  --shadow:0 24px 70px rgba(4,27,60,.16);
   --radius:28px;
 }
+
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html,body{min-height:100%}
 body{
   margin:0;
   font-family:"Prompt",sans-serif;
   color:var(--ink);
   background:
-    radial-gradient(circle at 10% 10%,rgba(22,119,255,.14),transparent 25%),
-    radial-gradient(circle at 90% 90%,rgba(255,201,40,.12),transparent 22%),
+    radial-gradient(circle at 15% 10%,rgba(22,119,255,.16),transparent 26%),
+    radial-gradient(circle at 85% 90%,rgba(255,201,40,.13),transparent 24%),
     var(--surface);
 }
 a{color:inherit}
 img{display:block;max-width:100%}
-button,input,textarea{font:inherit}
-button{cursor:pointer}
+button,input{font:inherit}
 
 .page{
   min-height:100vh;
   display:grid;
-  grid-template-columns:minmax(340px,.78fr) minmax(620px,1.22fr);
+  grid-template-columns:minmax(0,1.1fr) minmax(520px,.9fr);
 }
 
-/* LEFT */
-.side{
-  position:sticky;
-  top:0;
+/* LEFT PANEL */
+.brand-panel{
+  position:relative;
+  overflow:hidden;
   min-height:100vh;
-  padding:32px 36px;
+  padding:34px 42px 44px;
   display:flex;
   flex-direction:column;
   color:#fff;
   background:
-    radial-gradient(circle at 18% 12%,rgba(22,119,255,.34),transparent 28%),
-    radial-gradient(circle at 84% 82%,rgba(255,201,40,.18),transparent 24%),
-    linear-gradient(150deg,#031025,#06152d 48%,#0a2855);
-  overflow:hidden;
+    radial-gradient(circle at 18% 16%,rgba(22,119,255,.35),transparent 28%),
+    radial-gradient(circle at 88% 82%,rgba(255,201,40,.18),transparent 24%),
+    linear-gradient(145deg,#031025 0%,#06152d 48%,#0a2855 100%);
 }
-.side:before,.side:after{
+.brand-panel:before,
+.brand-panel:after{
   content:"";
   position:absolute;
   border-radius:50%;
-  border:1px solid rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.07);
 }
-.side:before{
-  width:390px;height:390px;right:-170px;top:-120px;
-  box-shadow:0 0 0 70px rgba(255,255,255,.022),0 0 0 140px rgba(255,255,255,.015);
+.brand-panel:before{
+  width:430px;
+  height:430px;
+  right:-170px;
+  top:-140px;
+  box-shadow:0 0 0 70px rgba(255,255,255,.025),0 0 0 140px rgba(255,255,255,.018);
 }
-.side:after{
-  width:250px;height:250px;left:-110px;bottom:-90px;
-  box-shadow:0 0 0 50px rgba(255,255,255,.02);
+.brand-panel:after{
+  width:280px;
+  height:280px;
+  left:-120px;
+  bottom:-110px;
+  box-shadow:0 0 0 55px rgba(255,255,255,.025);
 }
-.side-top,.side-content,.side-foot{position:relative;z-index:2}
-.side-top{
-  display:flex;align-items:center;justify-content:space-between;gap:18px;
+.brand-top{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
 }
 .logo{
-  width:250px;max-height:66px;object-fit:contain;object-position:left center;
+  width:260px;
+  max-height:68px;
+  object-fit:contain;
+  object-position:left center;
 }
-.back-link{
-  padding:10px 13px;
+.back-home{
+  padding:10px 14px;
   border-radius:999px;
   text-decoration:none;
   color:#dce8f6;
   background:rgba(255,255,255,.07);
   border:1px solid rgba(255,255,255,.12);
-  font-size:.72rem;font-weight:700;
+  font-size:.76rem;
+  font-weight:700;
 }
-.side-content{margin:auto 0;padding:50px 0}
-.kicker{
-  margin:0 0 12px;
+.brand-content{
+  position:relative;
+  z-index:2;
+  width:min(720px,100%);
+  margin:auto 0;
+  padding:54px 0;
+}
+.eyebrow{
+  margin:0 0 14px;
   color:var(--yellow);
-  font:800 .74rem "Inter";
+  font:800 .75rem "Inter";
   letter-spacing:.13em;
 }
-.side h1{
+.brand-content h1{
+  max-width:740px;
   margin:0;
-  font-size:clamp(2.5rem,5.2vw,5rem);
-  line-height:1.06;
+  font-size:clamp(2.8rem,6vw,5.6rem);
+  line-height:1.05;
   letter-spacing:-.03em;
 }
-.side h1 span{color:var(--yellow)}
-.side-copy{
-  max-width:620px;
-  margin:22px 0 0;
-  color:#d8e6f6;
+.brand-content h1 span{color:var(--yellow)}
+.brand-content>p{
+  max-width:690px;
+  margin:24px 0 0;
+  color:#d7e5f5;
+  font-size:clamp(1rem,1.5vw,1.18rem);
   line-height:1.9;
 }
-.promise{
-  margin-top:30px;
+.feature-grid{
+  margin-top:34px;
   display:grid;
-  gap:12px;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
 }
-.promise-item{
-  padding:15px 16px;
+.feature{
+  padding:17px;
   display:flex;
   gap:12px;
   align-items:flex-start;
-  border-radius:17px;
+  border-radius:18px;
   background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.10);
+  border:1px solid rgba(255,255,255,.11);
 }
-.promise-icon{
-  flex:0 0 40px;
-  width:40px;height:40px;
-  display:grid;place-items:center;
-  border-radius:12px;
+.feature-icon{
+  flex:0 0 42px;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
   color:var(--navy);
   background:var(--yellow);
+  font-size:1rem;
 }
-.promise-item strong{display:block;font-size:.82rem}
-.promise-item span{
-  display:block;margin-top:4px;color:#bad0e8;font-size:.68rem;line-height:1.55;
+.feature strong{display:block;font-size:.86rem}
+.feature span{
+  display:block;
+  margin-top:4px;
+  color:#bcd0e7;
+  font-size:.69rem;
+  line-height:1.55;
 }
-.side-foot{
-  display:flex;justify-content:space-between;gap:14px;
-  color:#8ea8c5;font-size:.65rem;
+.brand-foot{
+  position:relative;
+  z-index:2;
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  color:#91abc8;
+  font-size:.68rem;
 }
 
-/* MAIN */
-.main{
-  padding:30px;
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
+/* LOGIN PANEL */
+.login-panel{
+  min-height:100vh;
+  padding:32px;
+  display:grid;
+  place-items:center;
 }
-.wrap{width:min(860px,100%)}
-.mobile-logo{display:none;width:240px;margin:0 auto 24px}
-.card{
-  overflow:hidden;
+.login-wrap{
+  width:min(520px,100%);
+}
+.mobile-logo{
+  display:none;
+  width:240px;
+  margin:0 auto 24px;
+}
+.login-card{
+  padding:38px;
   border-radius:var(--radius);
-  background:rgba(255,255,255,.97);
-  border:1px solid rgba(220,229,239,.95);
+  background:rgba(255,255,255,.96);
+  border:1px solid rgba(220,229,239,.92);
   box-shadow:var(--shadow);
+  backdrop-filter:blur(15px);
 }
-.card-head{
-  padding:34px 36px 26px;
-  border-bottom:1px solid var(--line);
+.login-head{
+  margin-bottom:28px;
 }
-.card-head .label{
+.login-head .label{
   margin:0 0 8px;
   color:var(--blue);
   font:800 .72rem "Inter";
   letter-spacing:.12em;
 }
-.card-head h2{
-  margin:0;color:var(--navy);
-  font-size:clamp(2rem,4vw,2.9rem);
-}
-.card-head p{
-  margin:12px 0 0;color:var(--muted);font-size:.84rem;line-height:1.75;
-}
-
-.steps{
-  padding:20px 36px;
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  background:#f8fbff;
-  border-bottom:1px solid var(--line);
-}
-.step{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  color:#93a0b0;
-  font-size:.72rem;
-  font-weight:700;
-}
-.step:not(:last-child):after{
-  content:"";
-  position:absolute;
-  right:-5px;top:50%;
-  width:10px;height:1px;
-  background:#d5dfeb;
-}
-.step-no{
-  flex:0 0 34px;
-  width:34px;height:34px;
-  display:grid;place-items:center;
-  border-radius:11px;
-  color:#7d8ca0;
-  background:#edf2f7;
-  font:800 .75rem "Inter";
-}
-.step.active{color:var(--navy)}
-.step.active .step-no{color:#fff;background:var(--blue)}
-.step.done{color:#087443}
-.step.done .step-no{color:#fff;background:var(--green)}
-
-.form-body{padding:30px 36px 36px}
-.section{display:none}
-.section.active{display:block}
-.section-title{
-  margin-bottom:22px;
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:18px;
-}
-.section-title h3{margin:0;color:var(--navy);font-size:1.35rem}
-.section-title p{margin:6px 0 0;color:var(--muted);font-size:.78rem;line-height:1.7}
-.badge{
-  flex:0 0 auto;
-  padding:7px 10px;
-  border-radius:999px;
-  font-size:.64rem;
-  font-weight:800;
-}
-.badge-free{color:#087443;background:#e8f8f0}
-.badge-verified{color:#087443;background:#e8f8f0}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:16px;
-}
-.full{grid-column:1/-1}
-.group{display:grid;gap:8px}
-.label{
+.login-head h2{
+  margin:0;
   color:var(--navy);
-  font-size:.76rem;
+  font-size:clamp(2rem,4vw,2.8rem);
+  line-height:1.2;
+}
+.login-head p{
+  margin:12px 0 0;
+  color:var(--muted);
+  line-height:1.75;
+  font-size:.86rem;
+}
+.form-group{margin-bottom:18px}
+.form-label{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:8px;
+  color:var(--navy);
+  font-size:.78rem;
   font-weight:800;
 }
-.required{color:var(--red)}
-.control{
+.field{
+  position:relative;
+}
+.field-icon{
+  position:absolute;
+  left:15px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#7b8ba1;
+  font-size:1rem;
+  pointer-events:none;
+}
+.form-control{
   width:100%;
-  min-height:52px;
-  padding:0 15px;
+  height:54px;
+  padding:0 48px 0 46px;
   border:1px solid var(--line);
-  border-radius:14px;
+  border-radius:15px;
   outline:none;
   color:var(--ink);
   background:#f9fbfd;
   transition:.2s;
 }
-textarea.control{min-height:106px;padding:13px 15px;resize:vertical;line-height:1.65}
-.control:focus{
+.form-control:focus{
+  border-color:#94c3ff;
   background:#fff;
-  border-color:#93c3ff;
-  box-shadow:0 0 0 4px rgba(22,119,255,.08);
+  box-shadow:0 0 0 4px rgba(22,119,255,.09);
 }
-.hint{color:#8a98aa;font-size:.64rem;line-height:1.55}
-.error-text{display:none;color:#b42332;font-size:.65rem}
-.group.error .control{border-color:#ef9aa4;background:#fff7f8}
-.group.error .error-text{display:block}
-
-.actions{
-  margin-top:26px;
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.btn{
-  min-height:50px;
-  padding:0 20px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:9px;
-  border:0;
-  border-radius:14px;
-  text-decoration:none;
-  font-weight:800;
-}
-.btn-primary{
-  color:#fff;
-  background:linear-gradient(135deg,var(--blue),#0d5fd1);
-  box-shadow:0 14px 28px rgba(22,119,255,.22);
-}
-.btn-secondary{color:var(--navy);background:#edf3fa}
-.btn-line{color:#fff;background:#06c755}
-.btn:disabled{opacity:.55;cursor:not-allowed}
-
-.bot-box{
-  padding:24px;
-  text-align:center;
-  border-radius:20px;
-  background:linear-gradient(145deg,#f6fff9,#effbf4);
-  border:1px solid #ccefd9;
-}
-.bot-icon{
-  width:72px;height:72px;
-  margin:0 auto 16px;
-  display:grid;place-items:center;
-  border-radius:22px;
-  color:#fff;background:#06c755;
-  font-size:2rem;
-}
-.bot-box h4{margin:0;color:var(--navy);font-size:1.2rem}
-.bot-box p{margin:10px auto 0;max-width:600px;color:var(--muted);font-size:.78rem;line-height:1.75}
-.otp-wrap{
-  margin-top:24px;
-  padding:20px;
-  border-radius:18px;
-  background:#f8fbff;
-  border:1px solid #deebf7;
-}
-.otp-label{
-  text-align:center;
-  color:var(--navy);
-  font-size:.78rem;
-  font-weight:800;
-}
-.otp-input{
-  width:min(360px,100%);
-  height:62px;
-  margin:12px auto 0;
-  display:block;
-  text-align:center;
-  letter-spacing:.45em;
-  font:800 1.4rem "Inter";
-  padding-left:.45em;
-}
-.timer{
-  margin-top:10px;
-  text-align:center;
-  color:var(--muted);
-  font-size:.68rem;
-}
-.member-banner{
-  padding:22px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-  border-radius:20px;
-  color:#fff;
-  background:
-    radial-gradient(circle at 85% 20%,rgba(255,201,40,.22),transparent 26%),
-    linear-gradient(135deg,#031025,#0a2855);
-}
-.member-banner span{display:block;color:#bcd0e7;font-size:.68rem}
-.member-banner strong{
-  display:block;margin-top:5px;
-  color:var(--yellow);
-  font:800 1.8rem "Inter";
-  letter-spacing:.03em;
-}
-.verified-mark{
-  flex:0 0 48px;
-  width:48px;height:48px;
-  display:grid;place-items:center;
-  border-radius:15px;
-  color:#fff;background:var(--green);
-  font-size:1.3rem;
-}
-.password-field{position:relative}
-.password-field .control{padding-right:50px}
-.toggle{
+.password-toggle{
   position:absolute;
-  right:9px;top:50%;
+  right:10px;
+  top:50%;
   transform:translateY(-50%);
-  width:38px;height:38px;
-  border:0;border-radius:10px;
-  background:transparent;
-}
-.strength{
-  height:7px;
-  overflow:hidden;
-  border-radius:999px;
-  background:#edf2f7;
-}
-.strength span{
-  display:block;width:0;height:100%;
-  border-radius:inherit;
-  background:var(--red);
-  transition:.2s;
-}
-.checks{
-  margin-top:22px;
+  width:38px;
+  height:38px;
   display:grid;
-  gap:12px;
+  place-items:center;
+  border:0;
+  border-radius:10px;
+  color:#64748b;
+  background:transparent;
+  cursor:pointer;
 }
-.check{
-  padding:14px 15px;
+.form-row{
+  margin:2px 0 22px;
   display:flex;
-  gap:10px;
-  align-items:flex-start;
-  border-radius:15px;
-  background:#f8fafc;
-  border:1px solid var(--line);
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
 }
-.check input{
-  flex:0 0 18px;
-  width:18px;height:18px;
-  margin-top:2px;
+.remember{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#52627a;
+  font-size:.74rem;
+}
+.remember input{
+  width:17px;
+  height:17px;
   accent-color:var(--blue);
 }
-.check label{color:#53657b;font-size:.72rem;line-height:1.65}
-.check a{color:var(--blue);font-weight:800;text-decoration:none}
-.privacy-note{
-  margin-top:16px;
-  padding:14px 15px;
+.text-link{
+  color:var(--blue);
+  text-decoration:none;
+  font-size:.74rem;
+  font-weight:800;
+}
+.login-button{
+  width:100%;
+  min-height:54px;
   display:flex;
+  align-items:center;
+  justify-content:center;
   gap:10px;
+  border:0;
   border-radius:15px;
-  color:#53657b;
-  background:#f1f7ff;
-  border:1px solid #dcecff;
-  font-size:.7rem;
-  line-height:1.65;
+  color:#fff;
+  background:linear-gradient(135deg,var(--blue),#0d5fd1);
+  box-shadow:0 15px 30px rgba(22,119,255,.23);
+  font-weight:800;
+  cursor:pointer;
+  transition:.2s;
 }
-.success{
-  padding:30px 10px;
-  text-align:center;
+.login-button:hover{transform:translateY(-2px)}
+.login-button:disabled{
+  opacity:.7;
+  cursor:not-allowed;
+  transform:none;
 }
-.success-icon{
-  width:82px;height:82px;
-  margin:0 auto 18px;
-  display:grid;place-items:center;
-  border-radius:24px;
-  color:#fff;background:var(--green);
-  font-size:2.2rem;
+.spinner{
+  display:none;
+  width:18px;
+  height:18px;
+  border:2px solid rgba(255,255,255,.35);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .75s linear infinite;
 }
-.success h3{margin:0;color:var(--navy);font-size:1.8rem}
-.success p{max-width:560px;margin:12px auto 0;color:var(--muted);line-height:1.75}
-.success-id{
-  width:min(430px,100%);
-  margin:22px auto;
-  padding:19px;
-  border-radius:18px;
-  color:var(--navy);
-  background:#fff8d9;
-  border:1px solid #f2db7b;
-}
-.success-id span{display:block;font-size:.68rem}
-.success-id strong{display:block;margin-top:5px;font:800 1.8rem "Inter"}
+.login-button.loading .spinner{display:block}
+.login-button.loading .button-text{opacity:.85}
+@keyframes spin{to{transform:rotate(360deg)}}
+
 .alert{
   display:none;
   margin-bottom:18px;
   padding:12px 14px;
   border-radius:13px;
-  font-size:.72rem;
+  font-size:.74rem;
   line-height:1.6;
 }
 .alert.show{display:block}
-.alert-error{color:#9f1d2c;background:#fff0f2;border:1px solid #ffd1d7}
-.alert-success{color:#087443;background:#eaf9f2;border:1px solid #c9efdd}
-
-.footer{
+.alert-error{
+  color:#9f1d2c;
+  background:#fff0f2;
+  border:1px solid #ffd1d7;
+}
+.alert-success{
+  color:#087443;
+  background:#eaf9f2;
+  border:1px solid #c9efdd;
+}
+.divider{
+  margin:25px 0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  color:#9aa7b7;
+  font-size:.68rem;
+}
+.divider:before,
+.divider:after{
+  content:"";
+  height:1px;
+  flex:1;
+  background:var(--line);
+}
+.register-box{
+  padding:17px;
+  border-radius:16px;
+  text-align:center;
+  background:#f5f9ff;
+  border:1px solid #dfeeff;
+}
+.register-box p{
+  margin:0;
+  color:#617188;
+  font-size:.76rem;
+  line-height:1.65;
+}
+.register-box a{
+  color:var(--blue);
+  font-weight:800;
+  text-decoration:none;
+}
+.security-note{
+  margin-top:17px;
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
+  color:#8795a7;
+  font-size:.66rem;
+  line-height:1.55;
+}
+.security-note span:first-child{
+  color:var(--green);
+}
+.login-footer{
   margin-top:18px;
   text-align:center;
-  color:#8b98a8;
-  font-size:.66rem;
+  color:#8c99a9;
+  font-size:.67rem;
 }
-.footer a{color:#60738c;text-decoration:none}
+.login-footer a{
+  color:#60738c;
+  text-decoration:none;
+}
 
-@media(max-width:1120px){
+/* RESPONSIVE */
+@media(max-width:1100px){
   .page{grid-template-columns:1fr}
-  .side{display:none}
-  .main{min-height:100vh;padding:24px 18px}
+  .brand-panel{display:none}
+  .login-panel{
+    min-height:100vh;
+    padding:28px 20px;
+  }
   .mobile-logo{display:block}
 }
-@media(max-width:700px){
-  .main{padding:16px 12px}
-  .card{border-radius:22px}
-  .card-head,.form-body{padding-left:20px;padding-right:20px}
-  .steps{padding:16px 20px;grid-template-columns:1fr;gap:8px}
-  .step:not(:last-child):after{display:none}
-  .grid{grid-template-columns:1fr}
-  .full{grid-column:auto}
-  .section-title{display:block}
-  .badge{display:inline-flex;margin-top:10px}
-  .member-banner{align-items:flex-start}
-  .actions .btn{width:100%}
+@media(max-width:560px){
+  .login-panel{padding:20px 14px}
+  .login-card{
+    padding:26px 20px;
+    border-radius:22px;
+  }
+  .form-row{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:10px;
+  }
 }
 
-/* LINE VERIFICATION — NEW FLOW */
-.line-verify-card{
-  overflow:hidden;
-  border-radius:22px;
-  border:1px solid #ccefd9;
-  background:#fff;
-  box-shadow:0 16px 38px rgba(6,21,45,.08);
-}
-.line-verify-head{
-  padding:18px 20px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  color:#fff;
-  background:linear-gradient(135deg,#04b84f,#06c755);
-}
-.line-verify-logo{
-  width:54px;
-  height:54px;
-  flex:0 0 54px;
-  border-radius:16px;
-  object-fit:cover;
-  background:#fff;
-  border:3px solid rgba(255,255,255,.7);
-}
-.line-verify-head strong{display:block;font-size:1.05rem}
-.line-verify-head span{
-  display:block;
-  margin-top:3px;
-  font-size:.7rem;
-  color:rgba(255,255,255,.86);
-}
-.line-verify-body{padding:22px}
-.line-steps{
-  display:grid;
-  grid-template-columns:180px minmax(0,1fr);
-  gap:22px;
-  align-items:center;
-}
-.line-qr-card{
-  padding:14px;
-  border-radius:18px;
-  background:#f7fff9;
-  border:1px solid #d4f2df;
-  text-align:center;
-}
-.line-qr-card img{
-  width:150px;
-  height:150px;
-  margin:0 auto;
-  object-fit:contain;
-}
-.line-qr-card small{
-  display:block;
-  margin-top:10px;
-  color:#5f7185;
-  font-size:.65rem;
-  line-height:1.5;
-}
-.line-instruction{display:grid;gap:12px}
-.instruction-item{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-}
-.instruction-no{
-  width:32px;
-  height:32px;
-  flex:0 0 32px;
-  display:grid;
-  place-items:center;
-  border-radius:10px;
-  color:#fff;
-  background:#06c755;
-  font:800 .75rem "Inter";
-}
-.instruction-item strong{
-  display:block;
-  color:var(--navy);
-  font-size:.8rem;
-}
-.instruction-item p{
-  margin:4px 0 0;
-  color:var(--muted);
-  font-size:.7rem;
-  line-height:1.6;
-}
-.command-box{
-  margin-top:8px;
-  padding:16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  border-radius:16px;
-  background:#06152d;
-  color:#fff;
-}
-.command-box span{
-  font:800 1.15rem "Prompt";
-  letter-spacing:.02em;
-}
-.copy-command{
-  min-height:40px;
-  padding:0 14px;
-  border:0;
-  border-radius:11px;
-  color:#06152d;
-  background:#ffc928;
-  font-size:.7rem;
-  font-weight:800;
-}
-.countdown-card{
-  margin-top:20px;
-  padding:20px;
-  text-align:center;
-  border-radius:18px;
-  background:linear-gradient(145deg,#fff8ec,#fff);
-  border:1px solid #f4d7a3;
-}
-.countdown-label{
-  color:#8b5a10;
-  font-size:.72rem;
-  font-weight:800;
-}
-.countdown-time{
-  margin-top:4px;
-  color:#e15300;
-  font:800 clamp(2.4rem,7vw,4rem) "Inter";
-  letter-spacing:.06em;
-  line-height:1.05;
-}
-.countdown-note{
-  margin-top:8px;
-  color:#8a6a43;
-  font-size:.66rem;
-}
-.countdown-card.expired{
-  background:#fff3f4;
-  border-color:#ffc9ce;
-}
-.countdown-card.expired .countdown-time,
-.countdown-card.expired .countdown-label{color:#c62839}
-.otp-input:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-}
-@media(max-width:700px){
-  .line-steps{grid-template-columns:1fr}
-  .line-qr-card{width:min(260px,100%);margin:0 auto}
-  .command-box{align-items:flex-start;flex-direction:column}
-  .copy-command{width:100%}
-}
-
-
-/* =========================================================
-   CONSENT DOCUMENT CARDS + MODAL
-========================================================= */
-.consent-list{
-  margin-top:22px;
-  display:grid;
-  gap:12px;
-}
-.consent-card{
-  width:100%;
-  padding:15px 16px;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:#f8fafc;
-  text-align:left;
-  cursor:pointer;
-  transition:.2s;
-}
-.consent-card:hover{
-  transform:translateY(-1px);
-  border-color:#b9d6fb;
-  background:#f6faff;
-}
-.consent-card.required-card{
-  border-left:4px solid var(--blue);
-}
-.consent-card.optional-card{
-  border-left:4px solid var(--green);
-}
-.consent-status{
-  width:24px;
-  height:24px;
-  flex:0 0 24px;
-  display:grid;
-  place-items:center;
-  border-radius:8px;
-  color:#91a0b2;
-  background:#e8eef5;
-  font-size:.75rem;
-  font-weight:800;
-}
-.consent-card.accepted .consent-status{
-  color:#fff;
-  background:var(--green);
-}
-.consent-copy{min-width:0;flex:1}
-.consent-copy strong{
-  display:block;
-  color:var(--navy);
-  font-size:.78rem;
-}
-.consent-copy small{
-  display:block;
-  margin-top:3px;
-  color:var(--muted);
-  font-size:.65rem;
-  line-height:1.55;
-}
-.consent-arrow{
-  color:#8da0b6;
-  font-weight:800;
-}
-.consent-card.accepted .consent-copy small{
-  color:#087443;
-  font-weight:700;
-}
-.consent-help{
-  margin-top:12px;
-  color:#718198;
-  font-size:.66rem;
-  line-height:1.6;
-}
-
-.modal-backdrop{
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:18px;
-  background:rgba(3,16,37,.72);
-  backdrop-filter:blur(6px);
-}
-.modal-backdrop.show{display:flex}
-.document-modal{
+/* MEMBERSHIP BENEFITS */
+.brand-content{
   width:min(760px,100%);
-  max-height:min(88vh,860px);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  border-radius:24px;
-  background:#fff;
-  box-shadow:0 30px 90px rgba(0,0,0,.3);
+  padding:42px 0;
 }
-.document-modal-head{
-  padding:20px 22px;
+.brand-content h1{
+  font-size:clamp(2.55rem,5vw,4.9rem);
+}
+.brand-content>p{
+  max-width:720px;
+  margin-top:20px;
+  font-size:clamp(.95rem,1.35vw,1.1rem);
+}
+.feature-grid{
+  margin-top:28px;
+}
+.feature{
+  min-height:116px;
+  padding:16px;
+}
+.feature strong{
+  font-size:.84rem;
+  line-height:1.45;
+}
+.feature span{
+  margin-top:5px;
+  font-size:.68rem;
+}
+.member-benefits{
+  margin-top:16px;
+  padding:18px;
+  border-radius:20px;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.12);
+}
+.member-benefits-head{
   display:flex;
-  align-items:flex-start;
+  align-items:center;
   justify-content:space-between;
   gap:16px;
+}
+.member-benefits-head strong{
   color:#fff;
-  background:linear-gradient(135deg,#06152d,#0a2855);
+  font-size:.86rem;
 }
-.document-modal-head h3{
-  margin:0;
-  font-size:1.15rem;
+.member-benefits-head span{
+  padding:6px 9px;
+  border-radius:999px;
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.61rem;
+  font-weight:800;
 }
-.document-modal-head p{
-  margin:5px 0 0;
-  color:#c9d9eb;
-  font-size:.68rem;
+.member-benefits-list{
+  margin-top:13px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px 14px;
+}
+.member-benefit-item{
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+  color:#d8e6f6;
+  font-size:.66rem;
   line-height:1.55;
 }
-.modal-close{
-  width:38px;
-  height:38px;
-  flex:0 0 38px;
-  border:0;
-  border-radius:11px;
-  color:#fff;
-  background:rgba(255,255,255,.12);
-  font-size:1.1rem;
+.member-benefit-item b{
+  color:#64e5a2;
 }
-.document-scroll{
-  padding:22px;
-  overflow:auto;
-  overscroll-behavior:contain;
-  color:#39495f;
-  line-height:1.8;
-  font-size:.76rem;
-}
-.document-scroll h4{
-  margin:20px 0 7px;
-  color:var(--navy);
-  font-size:.9rem;
-}
-.document-scroll h4:first-child{margin-top:0}
-.document-scroll ul{
-  margin:7px 0 0;
-  padding-left:22px;
-}
-.document-scroll li{margin:5px 0}
-.document-scroll .document-note{
+.member-value-note{
+  margin-top:14px;
   padding:12px 14px;
-  border-radius:13px;
-  background:#f2f7fd;
-  border:1px solid #dce9f7;
+  border-radius:15px;
+  color:#c8d9ec;
+  background:rgba(3,16,37,.28);
+  border:1px solid rgba(255,255,255,.08);
+  font-size:.65rem;
+  line-height:1.65;
 }
-.document-modal-foot{
-  padding:16px 20px 20px;
-  border-top:1px solid var(--line);
-  background:#fbfcfe;
-}
-.read-progress{
-  height:7px;
-  overflow:hidden;
-  border-radius:999px;
-  background:#e9eef5;
-}
-.read-progress span{
-  display:block;
-  width:0;
-  height:100%;
-  background:var(--blue);
-  transition:.15s;
-}
-.read-hint{
-  margin-top:8px;
-  color:#78889d;
-  font-size:.64rem;
-}
-.modal-check-row{
-  margin-top:14px;
-  padding:13px 14px;
-  display:flex;
-  gap:10px;
-  align-items:flex-start;
-  border-radius:14px;
-  background:#f5f8fc;
-  border:1px solid #e0e8f1;
-}
-.modal-check-row input{
-  width:18px;
-  height:18px;
-  flex:0 0 18px;
-  margin-top:2px;
-  accent-color:var(--green);
-}
-.modal-check-row label{
-  color:#42536a;
-  font-size:.72rem;
-  line-height:1.6;
-}
-.modal-actions{
-  margin-top:14px;
-  display:flex;
-  justify-content:flex-end;
-  gap:10px;
-}
-.modal-actions .btn{min-height:46px}
-body.modal-open{overflow:hidden}
-@media(max-width:560px){
-  .modal-backdrop{padding:8px}
-  .document-modal{
-    max-height:94vh;
-    border-radius:18px;
+.member-value-note strong{color:var(--yellow)}
+@media(max-width:1350px){
+  .brand-content h1{
+    font-size:clamp(2.3rem,4.4vw,4.2rem);
   }
-  .document-modal-head,
-  .document-scroll,
-  .document-modal-foot{
-    padding-left:16px;
-    padding-right:16px;
-  }
-  .modal-actions{flex-direction:column-reverse}
-  .modal-actions .btn{width:100%}
+  .feature-grid{gap:11px}
+  .feature{min-height:108px}
 }
-
-
-/* CONSENT FLOW — FINAL */
-.marketing-check-card{
-  cursor:pointer;
+@media(max-height:850px) and (min-width:1101px){
+  .brand-panel{padding-top:24px;padding-bottom:28px}
+  .brand-content{padding:25px 0}
+  .feature-grid{margin-top:20px}
+  .member-benefits{margin-top:12px}
+  .member-value-note{display:none}
 }
-.marketing-checkbox{
-  position:absolute;
-  opacity:0;
-  pointer-events:none;
-}
-.marketing-check-card.accepted{
-  border-color:#a8e3c5;
-  background:#f1fbf6;
-}
-.create-account-button{
-  transition:.2s;
-}
-.create-account-button:disabled{
-  color:#8b98a8;
-  background:#dfe6ee;
-  box-shadow:none;
-  cursor:not-allowed;
-  opacity:1;
-}
-.create-account-button.ready{
-  color:#fff;
-  background:linear-gradient(135deg,#17b26a,#079653);
-  box-shadow:0 14px 28px rgba(23,178,106,.24);
+@media(max-width:640px){
+  .member-benefits-list{grid-template-columns:1fr}
 }
 
 </style>
@@ -907,1187 +539,313 @@ body.modal-open{overflow:hidden}
 <body>
 <div class="page">
 
-  <aside class="side">
-    <div class="side-top">
+  <section class="brand-panel">
+    <div class="brand-top">
       <a href="/" aria-label="ADTSpreadsheet หน้าแรก">
         <img class="logo"
              src="/assets/images/logo-header.png"
              onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
              alt="ADTSpreadsheet">
       </a>
-      <a class="back-link" href="/member/">เข้าสู่ระบบ</a>
+      <a class="back-home" href="/">← กลับหน้าเว็บไซต์</a>
     </div>
 
-    <div class="side-content">
-      <p class="kicker">ADT MEMBERSHIP</p>
-      <h1>สมัครง่าย<br><span>ปลอดภัย</span><br>ไม่มีข้อผูกพัน</h1>
-      <p class="side-copy">สมัครสมาชิก ADT ฟรี เพื่อเข้าถึงโปรแกรม การอบรม Knowledge Center Community และบริการทั้งหมดภายใต้บัญชีเดียว</p>
+    <div class="brand-content">
+      <p class="eyebrow">ADT MEMBERSHIP</p>
 
-      <div class="promise">
-        <article class="promise-item">
-          <div class="promise-icon">✓</div>
+      <h1>
+        ปลดล็อก<br>
+        <span>เครื่องมือ ความรู้</span><br>
+        และโอกาสสำหรับวิศวกร
+      </h1>
+
+      <p>
+        บัญชีสมาชิก ADT เพียงบัญชีเดียว ช่วยให้คุณเข้าถึงโปรแกรมทดลอง
+        คลังบทความ เอกสารตัวอย่างงานออกแบบ Community การอบรม
+        และบริการสำหรับสมาชิกทั้งหมด
+      </p>
+
+      <div class="feature-grid">
+        <article class="feature">
+          <div class="feature-icon">💻</div>
           <div>
-            <strong>สมัครฟรี</strong>
-            <span>ไม่มีค่าธรรมเนียม ไม่มีการผูกบัตร และไม่มีข้อผูกพันในการซื้อสินค้า</span>
+            <strong>ทดลองใช้ทุกโปรแกรมของ ADT</strong>
+            <span>ดาวน์โหลดเวอร์ชันทดลองของทุกโปรแกรมที่ ADT มีจำหน่าย เพื่อทดลองก่อนตัดสินใจ</span>
           </div>
         </article>
-        <article class="promise-item">
-          <div class="promise-icon">🔒</div>
+
+        <article class="feature">
+          <div class="feature-icon">📚</div>
           <div>
-            <strong>ข้อมูลเป็นส่วนตัว</strong>
-            <span>ใช้ข้อมูลเฉพาะเพื่อการสมัครสมาชิก การให้บริการ และวัตถุประสงค์ที่แจ้งไว้</span>
+            <strong>บทความวิศวกรรมแบบ PDF</strong>
+            <span>อ่านบทความทั้งหมดของ ADT และดาวน์โหลดเก็บเป็นไฟล์ PDF สำหรับศึกษาและอ้างอิง</span>
           </div>
         </article>
-        <article class="promise-item">
-          <div class="promise-icon">💬</div>
+
+        <article class="feature">
+          <div class="feature-icon">📂</div>
           <div>
-            <strong>ยืนยันผ่าน ADT Bot</strong>
-            <span>เชื่อมบัญชีสมาชิกกับช่องทางสื่อสารของ ADT เพื่อรับ OTP และการแจ้งเตือนสำคัญ</span>
+            <strong>คลังตัวอย่างงานออกแบบ</strong>
+            <span>ดาวน์โหลดแบบก่อสร้าง DWG/PDF รายการคำนวณ และตัวอย่าง BOQ Excel จากผลงานของ อ.เก่ง</span>
+          </div>
+        </article>
+
+        <article class="feature">
+          <div class="feature-icon">✍️</div>
+          <div>
+            <strong>เผยแพร่บทความของคุณ</strong>
+            <span>เขียนบทความทางวิศวกรรม แบ่งปันความรู้ และสร้างผลงานบนโปรไฟล์สมาชิกของคุณ</span>
           </div>
         </article>
       </div>
+
+      <section class="member-benefits">
+        <div class="member-benefits-head">
+          <strong>สิทธิพิเศษสำหรับสมาชิก ADT</strong>
+          <span>สมัครฟรี</span>
+        </div>
+
+        <div class="member-benefits-list">
+          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลดโปรแกรมทดลองทุกโปรแกรม</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลดบทความทั้งหมดเป็น PDF</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลด DWG / PDF / BOQ Excel</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>เขียนและเผยแพร่บทความวิศวกรรม</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>เข้าร่วม Community วิศวกร</span></div>
+          <div class="member-benefit-item"><b>✓</b><span>ติดตามการอบรม กิจกรรม และบริการ Support</span></div>
+        </div>
+
+        <div class="member-value-note">
+          <strong>บัญชีเดียว เข้าถึงทุกบริการของ ADT</strong><br>
+          โปรแกรม • ความรู้ • เอกสารตัวอย่าง • การอบรม • Community • Support
+        </div>
+      </section>
     </div>
 
-    <div class="side-foot">
+    <div class="brand-foot">
       <span>ADTSpreadsheet Member System</span>
-      <span>Free Membership</span>
+      <span>Software • Knowledge • Training • Community • Support</span>
     </div>
-  </aside>
+  </section>
 
-  <main class="main">
-    <div class="wrap">
+  <main class="login-panel">
+    <div class="login-wrap">
       <img class="mobile-logo"
            src="/assets/images/logo-header.png"
            onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
            alt="ADTSpreadsheet">
 
-      <section class="card">
-        <header class="card-head">
-          <p class="label">MEMBER REGISTRATION</p>
-          <h2>สมัครสมาชิก ADT</h2>
-          <p>ใช้เวลาประมาณ 2 นาที สมัครฟรี ไม่มีค่าใช้จ่าย และไม่มีข้อผูกพันในการซื้อสินค้า</p>
-        </header>
-
-        <div class="steps">
-          <div class="step active" id="stepIndicator1"><span class="step-no">1</span><span>ข้อมูลสมาชิก</span></div>
-          <div class="step" id="stepIndicator2"><span class="step-no">2</span><span>ยืนยัน ADT Bot</span></div>
-          <div class="step" id="stepIndicator3"><span class="step-no">3</span><span>สร้างบัญชี</span></div>
+      <section class="login-card">
+        <div class="login-head">
+          <p class="label">MEMBER LOGIN</p>
+          <h2>เข้าสู่ระบบสมาชิก</h2>
+          <p>เข้าสู่ระบบด้วยบัญชี ADT ID เพื่อใช้สิทธิ์สมาชิกและเข้าถึงบริการทั้งหมดของคุณ</p>
         </div>
 
-        <div class="form-body">
-          <div class="alert alert-error" id="errorAlert"></div>
-          <div class="alert alert-success" id="successAlert"></div>
+        <div class="alert alert-error" id="errorAlert" role="alert"></div>
+        <div class="alert alert-success" id="successAlert" role="status"></div>
 
-          <!-- STEP 1 -->
-          <section class="section active" id="step1">
-            <div class="section-title">
-              <div>
-                <h3>ข้อมูลสำหรับสมัครสมาชิก</h3>
-                <p>กรอกเฉพาะข้อมูลที่จำเป็นก่อน รายละเอียดโปรไฟล์อื่นสามารถเพิ่มภายหลังใน Dashboard ได้</p>
-              </div>
-              <span class="badge badge-free">สมัครฟรี</span>
+        <form id="loginForm" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="username">
+              <span>Username</span>
+            </label>
+            <div class="field">
+              <span class="field-icon">👤</span>
+              <input
+                class="form-control"
+                id="username"
+                name="username"
+                type="text"
+                autocomplete="username"
+                placeholder="กรอก Username"
+                maxlength="100"
+                required>
             </div>
+          </div>
 
-            <form id="profileForm" novalidate>
-              <div class="grid">
-                <div class="group full" id="groupFullName">
-                  <label class="label" for="fullName">ชื่อ–นามสกุล <span class="required">*</span></label>
-                  <input class="control" id="fullName" type="text" autocomplete="name" placeholder="เช่น นายช่างอานนท์ แซ้นสีดา">
-                  <span class="error-text">กรุณากรอกชื่อ–นามสกุล</span>
-                </div>
-
-                <div class="group full" id="groupAddress">
-                  <label class="label" for="address">ที่อยู่ติดต่อปัจจุบัน <span class="required">*</span></label>
-                  <textarea class="control" id="address" autocomplete="street-address" placeholder="กรอกที่อยู่ที่สามารถติดต่อได้ในปัจจุบัน"></textarea>
-                  <span class="error-text">กรุณากรอกที่อยู่ติดต่อ</span>
-                </div>
-
-                <div class="group" id="groupEmail">
-                  <label class="label" for="email">อีเมล <span class="required">*</span></label>
-                  <input class="control" id="email" type="email" autocomplete="email" placeholder="name@example.com">
-                  <span class="error-text">กรุณากรอกอีเมลให้ถูกต้อง</span>
-                </div>
-
-                <div class="group" id="groupPhone">
-                  <label class="label" for="phone">เบอร์โทรศัพท์ <span class="required">*</span></label>
-                  <input class="control" id="phone" type="tel" autocomplete="tel" inputmode="numeric" maxlength="10" placeholder="08xxxxxxxx">
-                  <span class="error-text">กรุณากรอกเบอร์โทรศัพท์ 10 หลัก</span>
-                </div>
-              </div>
-
-              <div class="actions">
-                <a class="btn btn-secondary" href="/member/">กลับหน้า Login</a>
-                <button class="btn btn-primary" type="submit">ดำเนินการยืนยันตัวตน →</button>
-              </div>
-            </form>
-          </section>
-
-          <!-- STEP 2 -->
-          <section class="section" id="step2">
-            <div class="section-title">
-              <div>
-                <h3>ยืนยันตัวตนผ่าน ADT Bot</h3>
-                <p>เพิ่มเพื่อน ADT Bot แล้วส่งข้อความตามที่กำหนด ระบบจะส่ง Flex ให้กดยืนยันก่อนออก OTP</p>
-              </div>
-              <span class="badge badge-free">OTP 6 หลัก</span>
+          <div class="form-group">
+            <label class="form-label" for="password">
+              <span>Password</span>
+            </label>
+            <div class="field">
+              <span class="field-icon">🔒</span>
+              <input
+                class="form-control"
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="กรอก Password"
+                maxlength="100"
+                required>
+              <button class="password-toggle" id="passwordToggle" type="button" aria-label="แสดงรหัสผ่าน">👁️</button>
             </div>
+          </div>
 
-            <div class="line-verify-card">
-              <div class="line-verify-head">
-                <img class="line-verify-logo"
-                     src="/assets/line/line-oa-logo.png"
-                     onerror="this.onerror=null;this.src='/assets/images/favicon.png';"
-                     alt="ADT Bot">
-                <div>
-                  <strong>เชื่อมต่อ ADT Bot</strong>
-                  <span>ใช้ได้ทั้งผู้ที่เป็นเพื่อนเดิมและผู้ที่เพิ่มเพื่อนใหม่</span>
-                </div>
-              </div>
+          <div class="form-row">
+            <label class="remember">
+              <input id="rememberMe" type="checkbox">
+              <span>จดจำการเข้าสู่ระบบ</span>
+            </label>
 
-              <div class="line-verify-body">
-                <div class="line-steps">
-                  <div class="line-qr-card">
-                    <img src="/assets/line/line-oa-qrcode.png"
-                         alt="QR Code เพิ่มเพื่อน ADT Bot">
-                    <small>สแกน QR Code เพื่อเพิ่มเพื่อน<br>หรือกดปุ่ม “เปิด ADT Bot” ด้านล่าง</small>
-                  </div>
+            <a class="text-link" href="/member/forgot-password/">ลืมรหัสผ่าน?</a>
+          </div>
 
-                  <div class="line-instruction">
-                    <div class="instruction-item">
-                      <div class="instruction-no">1</div>
-                      <div>
-                        <strong>เพิ่มเพื่อนหรือเปิดแชท ADT Bot</strong>
-                        <p>ผู้ที่เป็นเพื่อนอยู่แล้วสามารถเปิดแชทเดิมได้ทันที</p>
-                      </div>
-                    </div>
+          <button class="login-button" id="loginButton" type="submit">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="button-text">เข้าสู่ระบบ</span>
+          </button>
+        </form>
 
-                    <div class="instruction-item">
-                      <div class="instruction-no">2</div>
-                      <div>
-                        <strong>ส่งข้อความนี้ในแชท</strong>
-                        <div class="command-box">
-                          <span>สมัคร ADT</span>
-                          <button class="copy-command" id="copyCommandButton" type="button">คัดลอกข้อความ</button>
-                        </div>
-                      </div>
-                    </div>
+        <div class="divider">หรือ</div>
 
-                    <div class="instruction-item">
-                      <div class="instruction-no">3</div>
-                      <div>
-                        <strong>กดปุ่มยืนยันใน Flex</strong>
-                        <p>ระบบจะเริ่มสร้าง OTP หลังจากกดยืนยันเท่านั้น แล้วส่งรหัสกลับมาในแชท</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+        <div class="register-box">
+          <p>
+            ยังไม่มีบัญชีสมาชิก ADT?
+            <a href="/member/register/">สมัครสมาชิก</a>
+          </p>
+        </div>
 
-                <div class="actions" style="justify-content:center;margin-top:20px">
-                  <button class="btn btn-line" id="openBotButton" type="button">เปิด ADT Bot</button>
-                </div>
-              </div>
-            </div>
-
-            <div class="countdown-card" id="countdownCard">
-              <div class="countdown-label" id="countdownLabel">กรุณาดำเนินการและกรอก OTP ภายใน</div>
-              <div class="countdown-time" id="countdownTime">05:00</div>
-              <div class="countdown-note" id="countdownNote">เมื่อหมดเวลา กรุณาขอ OTP ใหม่จาก ADT Bot</div>
-            </div>
-
-            <div class="otp-wrap">
-              <div class="otp-label">กรอกรหัส OTP 6 หลักจากแชท LINE</div>
-              <input class="control otp-input"
-                     id="otpInput"
-                     inputmode="numeric"
-                     autocomplete="one-time-code"
-                     maxlength="6"
-                     placeholder="••••••">
-              <div class="timer">
-                ยังไม่ได้รับรหัส?
-                <button id="resendButton"
-                        type="button"
-                        style="border:0;background:none;color:var(--blue);font-weight:800;padding:0">
-                  เปิด ADT Bot อีกครั้ง
-                </button>
-              </div>
-            </div>
-
-            <div class="actions">
-              <button class="btn btn-secondary" id="backToStep1" type="button">← แก้ไขข้อมูล</button>
-              <button class="btn btn-primary" id="verifyOtpButton" type="button">ตรวจสอบ OTP และดำเนินการต่อ</button>
-            </div>
-          </section>
-
-          <!-- STEP 3 -->
-          <section class="section" id="step3">
-            <div class="section-title">
-              <div>
-                <h3>สร้างบัญชีสมาชิก</h3>
-                <p>ยืนยันตัวตนสำเร็จแล้ว กรุณาตั้ง Username และ Password สำหรับเข้าสู่ระบบ</p>
-              </div>
-              <span class="badge badge-verified">ยืนยันแล้ว</span>
-            </div>
-
-            <div class="member-banner">
-              <div>
-                <span>หมายเลขสมาชิกของคุณ</span>
-                <strong id="memberNumber">ADT-M000001</strong>
-              </div>
-              <div class="verified-mark">✓</div>
-            </div>
-
-            <form id="accountForm" novalidate>
-              <div class="grid" style="margin-top:22px">
-                <div class="group full" id="groupUsername">
-                  <label class="label" for="username">Username <span class="required">*</span></label>
-                  <input class="control" id="username" type="text" autocomplete="username" maxlength="40" placeholder="ตั้งชื่อผู้ใช้สำหรับเข้าสู่ระบบ">
-                  <span class="hint">ใช้ตัวอักษรภาษาอังกฤษ ตัวเลข จุด ขีดกลาง หรือขีดล่าง</span>
-                  <span class="error-text">Username ต้องมีอย่างน้อย 4 ตัวอักษรและใช้รูปแบบที่กำหนด</span>
-                </div>
-
-                <div class="group" id="groupPassword">
-                  <label class="label" for="password">Password <span class="required">*</span></label>
-                  <div class="password-field">
-                    <input class="control" id="password" type="password" autocomplete="new-password" placeholder="อย่างน้อย 8 ตัวอักษร">
-                    <button class="toggle" id="togglePassword" type="button" aria-label="แสดงรหัสผ่าน">👁️</button>
-                  </div>
-                  <div class="strength"><span id="strengthBar"></span></div>
-                  <span class="hint" id="strengthText">ควรมีตัวพิมพ์ใหญ่ ตัวพิมพ์เล็ก และตัวเลข</span>
-                  <span class="error-text">Password ต้องมีอย่างน้อย 8 ตัวอักษร</span>
-                </div>
-
-                <div class="group" id="groupConfirmPassword">
-                  <label class="label" for="confirmPassword">ยืนยัน Password <span class="required">*</span></label>
-                  <div class="password-field">
-                    <input class="control" id="confirmPassword" type="password" autocomplete="new-password" placeholder="กรอก Password อีกครั้ง">
-                    <button class="toggle" id="toggleConfirmPassword" type="button" aria-label="แสดงรหัสผ่าน">👁️</button>
-                  </div>
-                  <span class="error-text">Password ทั้งสองช่องไม่ตรงกัน</span>
-                </div>
-              </div>
-
-              
-              <div class="consent-list" id="consentList">
-                <button class="consent-card required-card"
-                        id="termsConsentCard"
-                        type="button"
-                        data-document="terms">
-                  <span class="consent-status" id="termsStatus">🔒</span>
-                  <span class="consent-copy">
-                    <strong>ข้อกำหนดการใช้งาน <span class="required">*</span></strong>
-                    <small id="termsStatusText">กรุณาเปิดอ่านและยอมรับจากภายในเอกสาร</small>
-                  </span>
-                  <span class="consent-arrow">›</span>
-                </button>
-
-                <button class="consent-card required-card"
-                        id="privacyConsentCard"
-                        type="button"
-                        data-document="privacy">
-                  <span class="consent-status" id="privacyStatus">🔒</span>
-                  <span class="consent-copy">
-                    <strong>ประกาศความเป็นส่วนตัว <span class="required">*</span></strong>
-                    <small id="privacyStatusText">กรุณาเปิดอ่านและรับทราบจากภายในเอกสาร</small>
-                  </span>
-                  <span class="consent-arrow">›</span>
-                </button>
-
-                <label class="consent-card optional-card marketing-check-card"
-                       id="marketingConsentCard"
-                       for="marketingConsentCheckbox">
-                  <input class="marketing-checkbox"
-                         id="marketingConsentCheckbox"
-                         type="checkbox">
-                  <span class="consent-status" id="marketingStatus">○</span>
-                  <span class="consent-copy">
-                    <strong>การรับข่าวสารและประชาสัมพันธ์</strong>
-                    <small id="marketingStatusText">ไม่บังคับ — เลือกยินยอมได้ทันที</small>
-                  </span>
-                </label>
-              </div>
-
-              <div class="consent-help">
-                ข้อกำหนดการใช้งานและประกาศความเป็นส่วนตัวต้องเปิดอ่านและยอมรับภายใน Popup ส่วนการรับข่าวสารเป็นตัวเลือกและไม่บังคับ
-              </div>
-
-
-              <div class="actions">
-                <button class="btn btn-secondary" id="backToStep2" type="button">← กลับ</button>
-                <button class="btn btn-primary create-account-button" id="createAccountButton" type="submit" disabled>สร้างบัญชีสมาชิก</button>
-              </div>
-            </form>
-          </section>
-
-          <!-- SUCCESS -->
-          <section class="section" id="successSection">
-            <div class="success">
-              <div class="success-icon">✓</div>
-              <h3>สร้างบัญชีสำเร็จ</h3>
-              <p>ยินดีต้อนรับเข้าสู่ ADT Membership บัญชีของคุณพร้อมใช้งานแล้ว</p>
-
-              <div class="success-id">
-                <span>หมายเลขสมาชิก</span>
-                <strong id="successMemberNumber">ADT-M000001</strong>
-              </div>
-
-              <a class="btn btn-primary" href="/member/">เข้าสู่ระบบสมาชิก</a>
-            </div>
-          </section>
+        <div class="security-note">
+          <span>●</span>
+          <span>ระบบจะตรวจสอบสิทธิ์สมาชิกก่อนเข้าสู่ Dashboard และไม่ควรบันทึกรหัสผ่านไว้ในอุปกรณ์สาธารณะ</span>
         </div>
       </section>
 
-      <div class="footer">
+      <div class="login-footer">
         <a href="/privacy/">นโยบายความเป็นส่วนตัว</a>
         &nbsp;•&nbsp;
         <a href="/terms/">ข้อกำหนดการใช้งาน</a>
-        <br>© 2026 ADTSpreadsheet
+        <br>
+        © 2026 ADTSpreadsheet
       </div>
     </div>
   </main>
+
 </div>
 
 <script>
-/* ============================================================
-   ADT MEMBER REGISTRATION — FRONTEND FLOW v2.1
-   ============================================================ */
+/*
+  ============================================================
+  ADT MEMBER LOGIN — FRONTEND TEMPLATE v1.0
+  ------------------------------------------------------------
+  เวอร์ชันนี้เป็นหน้า Design + Demo Login ก่อน
 
-const MEMBER_API_BASE_URL = "https://adt-website-api.onrender.com";
-const LINE_BOT_URL = "https://line.ee/uAB5K0W";
-const LINE_COMMAND = "สมัคร ADT";
-const OTP_DURATION_SECONDS = 5 * 60;
+  ขั้นเชื่อมระบบจริง:
+  1. ส่ง username และ password ไปยัง API หรือ Supabase Auth
+  2. ตรวจสอบสมาชิกและสถานะบัญชี
+  3. บันทึก session/token อย่างปลอดภัย
+  4. redirect ไป /member/dashboard/
+  ============================================================
+*/
 
-const STORAGE_KEYS = {
-  memberCode: "adt_member_code",
-  registrationId: "adt_member_registration_id",
-  currentStep: "adt_member_current_step",
-  otpStartedAt: "adt_member_otp_started_at"
-};
-
-const sections = {
-  1: document.getElementById("step1"),
-  2: document.getElementById("step2"),
-  3: document.getElementById("step3")
-};
-
-const indicators = {
-  1: document.getElementById("stepIndicator1"),
-  2: document.getElementById("stepIndicator2"),
-  3: document.getElementById("stepIndicator3")
-};
-
+const loginForm = document.getElementById("loginForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const passwordToggle = document.getElementById("passwordToggle");
+const loginButton = document.getElementById("loginButton");
 const errorAlert = document.getElementById("errorAlert");
 const successAlert = document.getElementById("successAlert");
-const profileForm = document.getElementById("profileForm");
-const accountForm = document.getElementById("accountForm");
-const openBotButton = document.getElementById("openBotButton");
-const copyCommandButton = document.getElementById("copyCommandButton");
-const resendButton = document.getElementById("resendButton");
-const verifyOtpButton = document.getElementById("verifyOtpButton");
-const otpInput = document.getElementById("otpInput");
-const countdownCard = document.getElementById("countdownCard");
-const countdownTime = document.getElementById("countdownTime");
-const countdownLabel = document.getElementById("countdownLabel");
-const countdownNote = document.getElementById("countdownNote");
 
-let countdownInterval = null;
-
-function showAlert(element, message) {
+function showAlert(element, message){
   errorAlert.classList.remove("show");
   successAlert.classList.remove("show");
   element.textContent = message;
   element.classList.add("show");
-  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function clearAlerts() {
+function clearAlerts(){
   errorAlert.classList.remove("show");
   successAlert.classList.remove("show");
 }
 
-function setButtonLoading(button, loading, loadingText = "กำลังดำเนินการ...") {
-  if (!button) return;
-
-  if (loading) {
-    button.dataset.originalText = button.textContent;
-    button.textContent = loadingText;
-    button.disabled = true;
-  } else {
-    button.textContent = button.dataset.originalText || button.textContent;
-    button.disabled = false;
-  }
+function setLoading(isLoading){
+  loginButton.disabled = isLoading;
+  loginButton.classList.toggle("loading", isLoading);
 }
 
-function setGroupError(groupId, hasError) {
-  document.getElementById(groupId)?.classList.toggle("error", hasError);
-}
-
-function showStep(step) {
-  clearAlerts();
-
-  Object.values(sections).forEach(section => {
-    section.classList.remove("active");
-  });
-
-  document.getElementById("successSection").classList.remove("active");
-  sections[step].classList.add("active");
-
-  Object.entries(indicators).forEach(([number, indicator]) => {
-    const current = Number(number);
-    indicator.classList.toggle("active", current === step);
-    indicator.classList.toggle("done", current < step);
-  });
-
-  sessionStorage.setItem(STORAGE_KEYS.currentStep, String(step));
-
-  if (step === 2) {
-    startOtpCountdown(true);
-  }
-
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-async function apiRequest(path, options = {}) {
-  let response;
-
-  try {
-    response = await fetch(`${MEMBER_API_BASE_URL}${path}`, {
-      ...options,
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {})
-      }
-    });
-  } catch {
-    throw new Error("ไม่สามารถเชื่อมต่อระบบได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่");
-  }
-
-  let result = {};
-
-  try {
-    result = await response.json();
-  } catch {
-    result = {};
-  }
-
-  if (!response.ok) {
-    throw new Error(result.message || "ระบบไม่สามารถดำเนินการได้ กรุณาลองใหม่อีกครั้ง");
-  }
-
-  return result;
-}
-
-function getProfileData() {
-  return {
-    full_name: document.getElementById("fullName").value.trim(),
-    current_address: document.getElementById("address").value.trim(),
-    email: document.getElementById("email").value.trim(),
-    phone: document.getElementById("phone").value.replace(/\D/g, "")
-  };
-}
-
-function validateProfile() {
-  const data = getProfileData();
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
-  const phoneOk = /^0\d{9}$/.test(data.phone);
-
-  setGroupError("groupFullName", data.full_name.length < 2);
-  setGroupError("groupAddress", data.current_address.length < 10);
-  setGroupError("groupEmail", !emailOk);
-  setGroupError("groupPhone", !phoneOk);
-
-  return (
-    data.full_name.length >= 2 &&
-    data.current_address.length >= 10 &&
-    emailOk &&
-    phoneOk
+passwordToggle.addEventListener("click", () => {
+  const isPassword = passwordInput.type === "password";
+  passwordInput.type = isPassword ? "text" : "password";
+  passwordToggle.textContent = isPassword ? "🙈" : "👁️";
+  passwordToggle.setAttribute(
+    "aria-label",
+    isPassword ? "ซ่อนรหัสผ่าน" : "แสดงรหัสผ่าน"
   );
-}
+});
 
-async function copyText(text) {
-  if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(text);
-    return;
-  }
-
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  textarea.style.position = "fixed";
-  textarea.style.opacity = "0";
-  document.body.appendChild(textarea);
-  textarea.focus();
-  textarea.select();
-  document.execCommand("copy");
-  textarea.remove();
-}
-
-async function copyLineCommand() {
-  try {
-    await copyText(LINE_COMMAND);
-    showAlert(successAlert, `คัดลอกข้อความ “${LINE_COMMAND}” แล้ว กรุณาวางและส่งในแชท ADT Bot`);
-  } catch {
-    showAlert(errorAlert, `คัดลอกไม่สำเร็จ กรุณาพิมพ์ “${LINE_COMMAND}” ในแชท`);
-  }
-}
-
-async function openLineBot() {
-  await copyLineCommand();
-  window.open(LINE_BOT_URL, "_blank", "noopener,noreferrer");
-}
-
-function formatTime(seconds) {
-  const safeSeconds = Math.max(0, seconds);
-  const minutes = String(Math.floor(safeSeconds / 60)).padStart(2, "0");
-  const remainSeconds = String(safeSeconds % 60).padStart(2, "0");
-  return `${minutes}:${remainSeconds}`;
-}
-
-function setOtpExpiredState(expired) {
-  countdownCard.classList.toggle("expired", expired);
-  otpInput.disabled = expired;
-  verifyOtpButton.disabled = expired;
-
-  if (expired) {
-    countdownLabel.textContent = "รหัส OTP หมดอายุแล้ว";
-    countdownTime.textContent = "00:00";
-    countdownNote.textContent = "กรุณาเปิด ADT Bot และกดยืนยันเพื่อรับรหัสใหม่";
-  } else {
-    countdownLabel.textContent = "กรุณาดำเนินการและกรอก OTP ภายใน";
-    countdownNote.textContent = "เมื่อหมดเวลา กรุณาขอ OTP ใหม่จาก ADT Bot";
-  }
-}
-
-function startOtpCountdown(forceRestart = false) {
-  if (countdownInterval) {
-    clearInterval(countdownInterval);
-  }
-
-  let startedAt = Number(
-    sessionStorage.getItem(STORAGE_KEYS.otpStartedAt) || 0
-  );
-
-  if (forceRestart || !startedAt) {
-    startedAt = Date.now();
-    sessionStorage.setItem(STORAGE_KEYS.otpStartedAt, String(startedAt));
-  }
-
-  setOtpExpiredState(false);
-
-  const tick = () => {
-    const elapsedSeconds = Math.floor((Date.now() - startedAt) / 1000);
-    const remaining = OTP_DURATION_SECONDS - elapsedSeconds;
-
-    if (remaining <= 0) {
-      clearInterval(countdownInterval);
-      countdownInterval = null;
-      setOtpExpiredState(true);
-      return;
-    }
-
-    countdownTime.textContent = formatTime(remaining);
-  };
-
-  tick();
-  countdownInterval = setInterval(tick, 1000);
-}
-
-profileForm.addEventListener("submit", event => {
+loginForm.addEventListener("submit", async event => {
   event.preventDefault();
   clearAlerts();
 
-  if (!validateProfile()) {
-    showAlert(errorAlert, "กรุณาตรวจสอบข้อมูลที่กรอกให้ครบถ้วน");
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+
+  if(!username){
+    showAlert(errorAlert, "กรุณากรอก Username");
+    usernameInput.focus();
     return;
   }
 
-  showStep(2);
-  showAlert(
-    successAlert,
-    `กรอกข้อมูลครบแล้ว กรุณาเพิ่มเพื่อน ADT Bot และส่งข้อความ “${LINE_COMMAND}”`
-  );
-});
-
-openBotButton.addEventListener("click", openLineBot);
-copyCommandButton.addEventListener("click", copyLineCommand);
-
-resendButton.addEventListener("click", async () => {
-  otpInput.value = "";
-  startOtpCountdown(true);
-  await openLineBot();
-});
-
-otpInput.addEventListener("input", event => {
-  event.target.value = event.target.value.replace(/\D/g, "").slice(0, 6);
-});
-
-verifyOtpButton.addEventListener("click", async () => {
-  clearAlerts();
-
-  const otp = otpInput.value.trim();
-
-  if (!/^\d{6}$/.test(otp)) {
-    showAlert(errorAlert, "กรุณากรอกรหัส OTP ตัวเลข 6 หลัก");
-    otpInput.focus();
+  if(!password){
+    showAlert(errorAlert, "กรุณากรอก Password");
+    passwordInput.focus();
     return;
   }
 
-  if (otpInput.disabled) {
-    showAlert(errorAlert, "รหัส OTP หมดอายุแล้ว กรุณาขอรหัสใหม่");
+  if(password.length < 6){
+    showAlert(errorAlert, "Password ต้องมีอย่างน้อย 6 ตัวอักษร");
+    passwordInput.focus();
     return;
   }
 
-  setButtonLoading(verifyOtpButton, true, "กำลังตรวจสอบ OTP...");
+  setLoading(true);
 
-  try {
-    const result = await apiRequest(
-      "/api/member/register/verify-line-otp",
-      {
+  try{
+    /*
+      ตัวอย่างสำหรับเชื่อม API จริง:
+
+      const response = await fetch("/api/member/login", {
         method: "POST",
+        headers: {"Content-Type":"application/json"},
+        credentials: "include",
         body: JSON.stringify({
-          ...getProfileData(),
-          otp
-        })
-      }
-    );
-
-    sessionStorage.setItem(
-      STORAGE_KEYS.registrationId,
-      result.registration_id || ""
-    );
-
-    sessionStorage.setItem(
-      STORAGE_KEYS.memberCode,
-      result.member_code
-    );
-
-    document.getElementById("memberNumber").textContent = result.member_code;
-    document.getElementById("successMemberNumber").textContent = result.member_code;
-
-    if (countdownInterval) {
-      clearInterval(countdownInterval);
-      countdownInterval = null;
-    }
-
-    showStep(3);
-    showAlert(
-      successAlert,
-      "ยืนยันตัวตนสำเร็จ กรุณาตั้ง Username และ Password"
-    );
-  } catch (error) {
-    showAlert(errorAlert, error.message);
-  } finally {
-    setButtonLoading(verifyOtpButton, false);
-  }
-});
-
-document
-  .getElementById("backToStep1")
-  .addEventListener("click", () => showStep(1));
-
-document
-  .getElementById("backToStep2")
-  .addEventListener("click", () => showStep(2));
-
-function setupPasswordToggle(buttonId, inputId) {
-  const button = document.getElementById(buttonId);
-  const input = document.getElementById(inputId);
-
-  button.addEventListener("click", () => {
-    const hidden = input.type === "password";
-    input.type = hidden ? "text" : "password";
-    button.textContent = hidden ? "🙈" : "👁️";
-  });
-}
-
-setupPasswordToggle("togglePassword", "password");
-setupPasswordToggle("toggleConfirmPassword", "confirmPassword");
-
-document
-  .getElementById("password")
-  .addEventListener("input", event => {
-    const value = event.target.value;
-    let score = 0;
-
-    if (value.length >= 8) score++;
-    if (/[A-Z]/.test(value)) score++;
-    if (/[a-z]/.test(value)) score++;
-    if (/\d/.test(value)) score++;
-    if (/[^A-Za-z0-9]/.test(value)) score++;
-
-    const width = Math.min(score * 20, 100);
-    const bar = document.getElementById("strengthBar");
-    const text = document.getElementById("strengthText");
-
-    bar.style.width = `${width}%`;
-    bar.style.background =
-      score <= 2
-        ? "var(--red)"
-        : score <= 3
-          ? "var(--yellow)"
-          : "var(--green)";
-
-    text.textContent =
-      score <= 2
-        ? "ความปลอดภัยต่ำ"
-        : score <= 3
-          ? "ความปลอดภัยปานกลาง"
-          : "ความปลอดภัยดี";
-  });
-
-
-/* ============================================================
-   DOCUMENT CONSENT MODALS
-   ============================================================ */
-
-const consentState = {
-  terms: false,
-  privacy: false,
-  marketing: false
-};
-
-const documentContents = {
-  terms: {
-    title: "ข้อกำหนดการใช้งาน",
-    subtitle: "ข้อกำหนดสำหรับการสมัครและใช้งาน ADTSpreadsheet",
-    checkbox:
-      "ข้าพเจ้าได้อ่านและยอมรับข้อกำหนดการใช้งานของ ADTSpreadsheet แล้ว",
-    html: `
-      <h4>การใช้งานเว็บไซต์ ADTSpreadsheet</h4>
-      <p>ยินดีต้อนรับสู่เว็บไซต์ <strong>ADTSpreadsheet</strong> การสมัครสมาชิกและใช้งานเว็บไซต์นี้ ถือว่าท่านรับทราบและยอมรับข้อกำหนดดังต่อไปนี้</p>
-
-      <h4>1. การสมัครสมาชิก</h4>
-      <ul>
-        <li>สมาชิกต้องให้ข้อมูลที่ถูกต้องและเป็นข้อมูลของตนเอง</li>
-        <li>สมาชิกต้องเก็บรักษา Username และ Password ไว้เป็นความลับ</li>
-        <li>สมาชิกต้องไม่ให้บุคคลอื่นใช้บัญชีของตน</li>
-      </ul>
-
-      <h4>2. การใช้งานเว็บไซต์</h4>
-      <ul>
-        <li>ใช้งานเว็บไซต์เพื่อวัตถุประสงค์ที่ถูกต้องตามกฎหมาย</li>
-        <li>ไม่พยายามเข้าถึงข้อมูลหรือบัญชีของบุคคลอื่น</li>
-        <li>ไม่โจมตี ดัดแปลง หรือรบกวนการทำงานของระบบ</li>
-        <li>ไม่เผยแพร่ข้อมูลที่ผิดกฎหมาย หมิ่นประมาท หรือสร้างความเสียหายแก่บุคคลอื่น</li>
-      </ul>
-
-      <h4>3. เนื้อหาและทรัพย์สินทางปัญญา</h4>
-      <p>บทความ โปรแกรม รูปภาพ วิดีโอ เอกสาร และเนื้อหาบนเว็บไซต์ เป็นทรัพย์สินของ ADTSpreadsheet หรือเจ้าของลิขสิทธิ์ที่เกี่ยวข้อง ห้ามคัดลอก ดัดแปลง หรือเผยแพร่โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร</p>
-
-      <h4>4. ความรับผิดชอบของสมาชิก</h4>
-      <p>สมาชิกเป็นผู้รับผิดชอบต่อการใช้งานบัญชีของตนเองทั้งหมด หากพบการใช้งานที่ผิดปกติ กรุณาแจ้งทีมงานทันที</p>
-
-      <h4>5. การระงับบัญชี</h4>
-      <p>ADTSpreadsheet อาจระงับหรือยกเลิกบัญชีเมื่อพบการให้ข้อมูลอันเป็นเท็จ การใช้งานผิดวัตถุประสงค์ การกระทำที่สร้างความเสียหายต่อระบบหรือสมาชิกอื่น หรือการฝ่าฝืนข้อกำหนดนี้</p>
-
-      <h4>6. การเปลี่ยนแปลงข้อกำหนด</h4>
-      <p>ADTSpreadsheet อาจปรับปรุงข้อกำหนดตามความเหมาะสม และจะแจ้งผ่านเว็บไซต์เมื่อมีการเปลี่ยนแปลงที่สำคัญ</p>
-
-      <div class="document-note">
-        การสมัครสมาชิกต่อถือว่าท่านยืนยันว่าข้อมูลที่ให้ไว้ถูกต้อง และยินยอมปฏิบัติตามข้อกำหนดฉบับนี้
-      </div>
-    `
-  },
-
-  privacy: {
-    title: "ประกาศความเป็นส่วนตัว",
-    subtitle: "การเก็บ ใช้ และคุ้มครองข้อมูลส่วนบุคคลของสมาชิก",
-    checkbox:
-      "ข้าพเจ้าได้อ่านและรับทราบประกาศความเป็นส่วนตัวแล้ว",
-    html: `
-      <h4>การเก็บรวบรวมข้อมูลส่วนบุคคล</h4>
-      <p>ADTSpreadsheet ให้ความสำคัญกับข้อมูลส่วนบุคคลของสมาชิก และดำเนินการตามหลักการคุ้มครองข้อมูลส่วนบุคคลที่เกี่ยวข้อง</p>
-
-      <h4>ข้อมูลที่ระบบอาจจัดเก็บ</h4>
-      <ul>
-        <li>ชื่อ–นามสกุล ที่อยู่ อีเมล และหมายเลขโทรศัพท์</li>
-        <li>LINE User ID ชื่อแสดงผล และรูปโปรไฟล์ LINE</li>
-        <li>Username ข้อมูลโปรไฟล์ และประวัติการใช้บริการ</li>
-        <li>ข้อมูลอุปกรณ์ เวลาเข้าใช้งาน และข้อมูลที่จำเป็นต่อความปลอดภัยของระบบ</li>
-      </ul>
-
-      <h4>วัตถุประสงค์ในการใช้ข้อมูล</h4>
-      <ul>
-        <li>สมัครสมาชิก ยืนยันตัวตน และเข้าสู่ระบบ</li>
-        <li>ให้บริการโปรแกรม การอบรม เอกสาร Community และบริการสมาชิก</li>
-        <li>ติดต่อเกี่ยวกับบัญชี ธุรกรรม และการสนับสนุน</li>
-        <li>ปรับปรุงคุณภาพบริการและรักษาความปลอดภัยของระบบ</li>
-      </ul>
-
-      <h4>การเปิดเผยข้อมูล</h4>
-      <p>ADTSpreadsheet จะไม่เปิดเผยข้อมูลส่วนบุคคลแก่บุคคลภายนอก เว้นแต่ได้รับความยินยอม เป็นการปฏิบัติตามกฎหมาย หรือจำเป็นต่อการให้บริการและการปกป้องสิทธิของผู้เกี่ยวข้อง</p>
-
-      <h4>การรักษาความปลอดภัย</h4>
-      <p>ระบบใช้มาตรการที่เหมาะสมเพื่อป้องกันการสูญหาย การเข้าถึง การใช้ หรือการเปิดเผยข้อมูลโดยไม่ได้รับอนุญาต และจำกัดการเข้าถึงเฉพาะผู้ที่มีหน้าที่เกี่ยวข้อง</p>
-
-      <h4>สิทธิของสมาชิก</h4>
-      <ul>
-        <li>ขอเข้าถึงและขอสำเนาข้อมูลของตน</li>
-        <li>ขอแก้ไขข้อมูลให้ถูกต้อง</li>
-        <li>ขอปิดบัญชีหรือขอลบข้อมูลตามเงื่อนไขที่กฎหมายกำหนด</li>
-        <li>ถอนความยินยอมในการรับข่าวสารได้ตลอดเวลา</li>
-      </ul>
-
-      <div class="document-note">
-        ข้อมูลที่จำเป็นต่อบัญชีและการให้บริการอาจต้องเก็บรักษาตามระยะเวลาที่เหมาะสมหรือที่กฎหมายกำหนด
-      </div>
-    `
-  }
-};
-
-const documentModal = document.getElementById("documentModal");
-const documentModalTitle = document.getElementById("documentModalTitle");
-const documentModalSubtitle = document.getElementById("documentModalSubtitle");
-const documentScroll = document.getElementById("documentScroll");
-const readProgressBar = document.getElementById("readProgressBar");
-const readHint = document.getElementById("readHint");
-const documentAcceptCheckbox = document.getElementById("documentAcceptCheckbox");
-const documentAcceptLabel = document.getElementById("documentAcceptLabel");
-const documentAcceptButton = document.getElementById("documentAcceptButton");
-const documentCancelButton = document.getElementById("documentCancelButton");
-const documentModalClose = document.getElementById("documentModalClose");
-const marketingConsentCheckbox =
-  document.getElementById("marketingConsentCheckbox");
-const createAccountButton =
-  document.getElementById("createAccountButton");
-
-let activeDocumentKey = null;
-let activeDocumentReadToEnd = false;
-
-function updateConsentCard(key) {
-  const accepted = consentState[key] === true;
-  const card = document.getElementById(`${key}ConsentCard`);
-  const status = document.getElementById(`${key}Status`);
-  const statusText = document.getElementById(`${key}StatusText`);
-
-  if (!card || !status || !statusText) return;
-
-  card.classList.toggle("accepted", accepted);
-
-  if (key === "marketing") {
-    status.textContent = accepted ? "✓" : "○";
-    statusText.textContent = accepted
-      ? "ยินยอมรับข่าวสารแล้ว — สามารถเปลี่ยนแปลงภายหลังได้"
-      : "ไม่บังคับ — เลือกยินยอมได้ทันที";
-    return;
-  }
-
-  status.textContent = accepted ? "✓" : "🔒";
-  statusText.textContent = accepted
-    ? "อ่านและยอมรับแล้ว"
-    : key === "terms"
-      ? "กรุณาเปิดอ่านและยอมรับจากภายในเอกสาร"
-      : "กรุณาเปิดอ่านและรับทราบจากภายในเอกสาร";
-}
-
-function updateCreateAccountButton() {
-  const ready =
-    consentState.terms === true &&
-    consentState.privacy === true;
-
-  createAccountButton.disabled = !ready;
-  createAccountButton.classList.toggle("ready", ready);
-}
-
-function updateDocumentAcceptState() {
-  documentAcceptCheckbox.disabled = !activeDocumentReadToEnd;
-
-  documentAcceptButton.disabled = !(
-    activeDocumentReadToEnd &&
-    documentAcceptCheckbox.checked
-  );
-
-  readHint.textContent =
-    activeDocumentReadToEnd
-      ? "อ่านถึงด้านล่างแล้ว กรุณาติ๊กยืนยันเพื่อดำเนินการต่อ"
-      : "กรุณาเลื่อนอ่านเอกสารจนถึงด้านล่าง";
-}
-
-function openDocumentModal(key) {
-  const documentData = documentContents[key];
-  if (!documentData) return;
-
-  activeDocumentKey = key;
-  activeDocumentReadToEnd = false;
-
-  documentModalTitle.textContent = documentData.title;
-  documentModalSubtitle.textContent = documentData.subtitle;
-  documentScroll.innerHTML = documentData.html;
-  documentAcceptLabel.textContent = documentData.checkbox;
-
-  documentAcceptCheckbox.checked = consentState[key] === true;
-  documentAcceptCheckbox.disabled = true;
-  documentAcceptButton.disabled = true;
-  readProgressBar.style.width = "0%";
-  readHint.textContent = "กรุณาเลื่อนอ่านเอกสารจนถึงด้านล่าง";
-
-  documentScroll.scrollTop = 0;
-  documentModal.classList.add("show");
-  documentModal.setAttribute("aria-hidden", "false");
-  document.body.classList.add("modal-open");
-
-  requestAnimationFrame(() => {
-    const noScrollNeeded =
-      documentScroll.scrollHeight <= documentScroll.clientHeight + 2;
-
-    if (noScrollNeeded) {
-      activeDocumentReadToEnd = true;
-      readProgressBar.style.width = "100%";
-      updateDocumentAcceptState();
-    }
-
-    documentScroll.focus();
-  });
-}
-
-function closeDocumentModal() {
-  documentModal.classList.remove("show");
-  documentModal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-open");
-  activeDocumentKey = null;
-}
-
-document.querySelectorAll("[data-document=\"terms\"], [data-document=\"privacy\"]").forEach(card => {
-  card.addEventListener("click", () => {
-    openDocumentModal(card.dataset.document);
-  });
-});
-
-documentScroll.addEventListener("scroll", () => {
-  const maxScroll =
-    documentScroll.scrollHeight - documentScroll.clientHeight;
-
-  const progress =
-    maxScroll <= 0
-      ? 100
-      : Math.min(100, (documentScroll.scrollTop / maxScroll) * 100);
-
-  readProgressBar.style.width = `${progress}%`;
-
-  if (
-    maxScroll <= 0 ||
-    documentScroll.scrollTop >= maxScroll - 8
-  ) {
-    activeDocumentReadToEnd = true;
-  }
-
-  updateDocumentAcceptState();
-});
-
-documentAcceptCheckbox.addEventListener("change", () => {
-  updateDocumentAcceptState();
-});
-
-documentAcceptButton.addEventListener("click", () => {
-  if (
-    !activeDocumentKey ||
-    !activeDocumentReadToEnd ||
-    !documentAcceptCheckbox.checked
-  ) {
-    return;
-  }
-
-  consentState[activeDocumentKey] = true;
-  updateConsentCard(activeDocumentKey);
-  updateCreateAccountButton();
-  closeDocumentModal();
-});
-
-
-marketingConsentCheckbox.addEventListener("change", event => {
-  consentState.marketing = event.target.checked;
-  updateConsentCard("marketing");
-});
-
-documentCancelButton.addEventListener("click", closeDocumentModal);
-documentModalClose.addEventListener("click", closeDocumentModal);
-
-documentModal.addEventListener("click", event => {
-  if (event.target === documentModal) {
-    closeDocumentModal();
-  }
-});
-
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape" && documentModal.classList.contains("show")) {
-    closeDocumentModal();
-  }
-});
-
-updateConsentCard("terms");
-updateConsentCard("privacy");
-updateConsentCard("marketing");
-updateCreateAccountButton();
-
-
-accountForm.addEventListener("submit", async event => {
-  event.preventDefault();
-  clearAlerts();
-
-  const submitButton =
-    accountForm.querySelector('button[type="submit"]');
-
-  const registrationId =
-    sessionStorage.getItem(STORAGE_KEYS.registrationId);
-
-  const memberCode =
-    sessionStorage.getItem(STORAGE_KEYS.memberCode);
-
-  const username =
-    document.getElementById("username").value.trim();
-
-  const password =
-    document.getElementById("password").value;
-
-  const confirmPassword =
-    document.getElementById("confirmPassword").value;
-
-  const agreeTerms =
-    consentState.terms === true;
-
-  const privacyAgreed =
-    consentState.privacy === true;
-
-  const marketingConsent =
-    consentState.marketing === true;
-
-  const usernameOk =
-    /^[A-Za-z0-9._-]{4,40}$/.test(username);
-
-  const passwordOk =
-    password.length >= 8;
-
-  const confirmOk =
-    Boolean(password) &&
-    password === confirmPassword;
-
-  setGroupError("groupUsername", !usernameOk);
-  setGroupError("groupPassword", !passwordOk);
-  setGroupError("groupConfirmPassword", !confirmOk);
-
-  if (!registrationId || !memberCode) {
-    showAlert(errorAlert, "ไม่พบข้อมูลยืนยันสมาชิก กรุณาเริ่มสมัครใหม่");
-    return;
-  }
-
-  if (!usernameOk || !passwordOk || !confirmOk) {
-    showAlert(errorAlert, "กรุณาตรวจสอบ Username และ Password");
-    return;
-  }
-
-  if (!agreeTerms || !privacyAgreed) {
-    showAlert(
-      errorAlert,
-      "กรุณาเปิดอ่านและยอมรับข้อกำหนดการใช้งานกับประกาศความเป็นส่วนตัวให้ครบถ้วน"
-    );
-    return;
-  }
-
-  setButtonLoading(submitButton, true, "กำลังสร้างบัญชี...");
-
-  try {
-    const result = await apiRequest(
-      "/api/member/register/complete",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          registration_id: registrationId,
-          member_code: memberCode,
           username,
           password,
-          agree_terms: true,
-          privacy_agreed: true,
-          marketing_consent: marketingConsent
+          remember: document.getElementById("rememberMe").checked
         })
+      });
+
+      const result = await response.json();
+
+      if(!response.ok){
+        throw new Error(result.message || "Username หรือ Password ไม่ถูกต้อง");
       }
+
+      window.location.href = "/member/dashboard/";
+    */
+
+    // Demo mode เพื่อทดสอบหน้าตา
+    await new Promise(resolve => setTimeout(resolve, 850));
+
+    showAlert(
+      successAlert,
+      "ตรวจสอบข้อมูลสำเร็จ กำลังเข้าสู่ Dashboard สมาชิก..."
     );
 
-    const finalMemberCode =
-      result.member?.member_code ||
-      memberCode;
+    setTimeout(() => {
+      window.location.href = "/member/dashboard/";
+    }, 900);
 
-    document.getElementById("successMemberNumber").textContent =
-      finalMemberCode;
-
-    Object.values(sections).forEach(section => {
-      section.classList.remove("active");
-    });
-
-    Object.values(indicators).forEach(indicator => {
-      indicator.classList.remove("active");
-      indicator.classList.add("done");
-    });
-
-    document
-      .getElementById("successSection")
-      .classList.add("active");
-
-    Object.values(STORAGE_KEYS).forEach(key => {
-      sessionStorage.removeItem(key);
-    });
-
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  } catch (error) {
-    showAlert(errorAlert, error.message);
-  } finally {
-    setButtonLoading(submitButton, false);
+  }catch(error){
+    showAlert(
+      errorAlert,
+      error.message || "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง"
+    );
+  }finally{
+    setLoading(false);
   }
 });
-
-sessionStorage.removeItem(STORAGE_KEYS.registrationId);
-sessionStorage.removeItem(STORAGE_KEYS.memberCode);
-sessionStorage.removeItem(STORAGE_KEYS.otpStartedAt);
-showStep(1);
 </script>
-
-<div class="modal-backdrop" id="documentModal" aria-hidden="true">
-  <section class="document-modal"
-           role="dialog"
-           aria-modal="true"
-           aria-labelledby="documentModalTitle">
-    <header class="document-modal-head">
-      <div>
-        <h3 id="documentModalTitle">เอกสาร</h3>
-        <p id="documentModalSubtitle">กรุณาเลื่อนอ่านเนื้อหาจนสุดก่อนยืนยัน</p>
-      </div>
-      <button class="modal-close"
-              id="documentModalClose"
-              type="button"
-              aria-label="ปิด">×</button>
-    </header>
-
-    <div class="document-scroll"
-         id="documentScroll"
-         tabindex="0"></div>
-
-    <footer class="document-modal-foot">
-      <div class="read-progress" aria-hidden="true">
-        <span id="readProgressBar"></span>
-      </div>
-      <div class="read-hint" id="readHint">
-        กรุณาเลื่อนอ่านเอกสารจนถึงด้านล่าง
-      </div>
-
-      <div class="modal-check-row">
-        <input id="documentAcceptCheckbox"
-               type="checkbox"
-               disabled>
-        <label id="documentAcceptLabel"
-               for="documentAcceptCheckbox">
-          ข้าพเจ้าได้อ่านและยอมรับเอกสารฉบับนี้
-        </label>
-      </div>
-
-      <div class="modal-actions">
-        <button class="btn btn-secondary"
-                id="documentCancelButton"
-                type="button">ยกเลิก</button>
-        <button class="btn btn-primary"
-                id="documentAcceptButton"
-                type="button"
-                disabled>ยืนยันและปิดเอกสาร</button>
-      </div>
-    </footer>
-  </section>
-</div>
-
 </body>
 </html>
