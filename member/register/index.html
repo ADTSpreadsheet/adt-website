@@ -628,7 +628,7 @@ textarea.control{min-height:106px;padding:13px 15px;resize:vertical;line-height:
             <div class="bot-box">
               <div class="bot-icon">💬</div>
               <h4>เชื่อมต่อ ADT Bot</h4>
-              <p>กดปุ่มด้านล่างเพื่อเปิดแชทกับ ADT Bot หลังจากเพิ่มเพื่อนแล้ว Bot จะส่งรหัสยืนยัน 6 หลัก ซึ่งมีอายุ 10 นาที</p>
+              <p>กดปุ่มด้านล่าง ระบบจะคัดลอกข้อความยืนยันและเปิด ADT Bot ให้ จากนั้นส่งข้อความที่เตรียมไว้ในแชท แล้วกดปุ่มยืนยันเพื่อรับรหัส OTP 6 หลัก</p>
 
               <div class="actions" style="justify-content:center">
                 <button class="btn btn-line" id="openBotButton" type="button">เปิด ADT Bot</button>
@@ -757,30 +757,28 @@ textarea.control{min-height:106px;padding:13px 15px;resize:vertical;line-height:
 </div>
 
 <script>
-/*
-  ============================================================
-  ADT MEMBER REGISTRATION — FRONTEND TEMPLATE v1.0
-  ------------------------------------------------------------
-  เวอร์ชันนี้เป็น Design + Demo Flow ก่อน
+/* ============================================================
+   ADT MEMBER REGISTRATION — LIVE API v1.0
+   API Host: ADT-LineBot-PileFix (temporary)
+   ============================================================ */
 
-  ระบบจริงควรมี API หลัก:
-  POST /api/member/register/start
-  POST /api/member/register/request-otp
-  POST /api/member/register/verify-otp
-  POST /api/member/register/complete
+const API_BASE_URL = "https://adt-pilefix.onrender.com";
+const LINE_BOT_URL = "https://line.ee/uAB5K0W";
 
-  สำคัญ:
-  - member_no ต้องออกจากฝั่ง Server
-  - OTP ต้องเก็บแบบ hash และมีวันหมดอายุ
-  - Password ต้อง hash ที่ Server ห้ามเก็บ plain text
-  ============================================================
-*/
+const STORAGE_KEYS = {
+  registrationId: "adt_member_registration_id",
+  registrationToken: "adt_member_registration_token",
+  botMessage: "adt_member_bot_message",
+  memberCode: "adt_member_code",
+  currentStep: "adt_member_current_step"
+};
 
 const sections = {
   1: document.getElementById("step1"),
   2: document.getElementById("step2"),
   3: document.getElementById("step3")
 };
+
 const indicators = {
   1: document.getElementById("stepIndicator1"),
   2: document.getElementById("stepIndicator2"),
@@ -790,188 +788,621 @@ const indicators = {
 const errorAlert = document.getElementById("errorAlert");
 const successAlert = document.getElementById("successAlert");
 
-function showAlert(element,message){
+const profileForm = document.getElementById("profileForm");
+const accountForm = document.getElementById("accountForm");
+const openBotButton = document.getElementById("openBotButton");
+const resendButton = document.getElementById("resendButton");
+const verifyOtpButton = document.getElementById("verifyOtpButton");
+
+function showAlert(element, message) {
   errorAlert.classList.remove("show");
   successAlert.classList.remove("show");
   element.textContent = message;
   element.classList.add("show");
-  window.scrollTo({top:0,behavior:"smooth"});
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
-function clearAlerts(){
+
+function clearAlerts() {
   errorAlert.classList.remove("show");
   successAlert.classList.remove("show");
 }
-function showStep(step){
-  clearAlerts();
-  Object.values(sections).forEach(section => section.classList.remove("active"));
-  document.getElementById("successSection").classList.remove("active");
 
+function setButtonLoading(button, loading, loadingText = "กำลังดำเนินการ...") {
+  if (!button) return;
+
+  if (loading) {
+    button.dataset.originalText = button.textContent;
+    button.textContent = loadingText;
+    button.disabled = true;
+  } else {
+    button.textContent = button.dataset.originalText || button.textContent;
+    button.disabled = false;
+  }
+}
+
+function showStep(step) {
+  clearAlerts();
+
+  Object.values(sections).forEach(section => {
+    section.classList.remove("active");
+  });
+
+  document.getElementById("successSection").classList.remove("active");
   sections[step].classList.add("active");
 
-  Object.entries(indicators).forEach(([number,indicator]) => {
-    const n = Number(number);
-    indicator.classList.toggle("active",n === step);
-    indicator.classList.toggle("done",n < step);
+  Object.entries(indicators).forEach(([number, indicator]) => {
+    const current = Number(number);
+    indicator.classList.toggle("active", current === step);
+    indicator.classList.toggle("done", current < step);
   });
-  window.scrollTo({top:0,behavior:"smooth"});
-}
-function setGroupError(groupId,hasError){
-  document.getElementById(groupId)?.classList.toggle("error",hasError);
+
+  sessionStorage.setItem(STORAGE_KEYS.currentStep, String(step));
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-document.getElementById("profileForm").addEventListener("submit",event=>{
+function setGroupError(groupId, hasError) {
+  document
+    .getElementById(groupId)
+    ?.classList.toggle("error", hasError);
+}
+
+async function apiRequest(path, options = {}) {
+  let response;
+
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {})
+      }
+    });
+  } catch (error) {
+    throw new Error(
+      "ไม่สามารถเชื่อมต่อระบบได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองใหม่"
+    );
+  }
+
+  let result = {};
+
+  try {
+    result = await response.json();
+  } catch {
+    result = {};
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      result.message ||
+      "ระบบไม่สามารถดำเนินการได้ กรุณาลองใหม่อีกครั้ง"
+    );
+  }
+
+  return result;
+}
+
+function saveRegistration(data) {
+  sessionStorage.setItem(
+    STORAGE_KEYS.registrationId,
+    data.registration_id
+  );
+
+  sessionStorage.setItem(
+    STORAGE_KEYS.registrationToken,
+    data.registration_token
+  );
+
+  sessionStorage.setItem(
+    STORAGE_KEYS.botMessage,
+    data.bot_message
+  );
+}
+
+function clearRegistrationSession() {
+  Object.values(STORAGE_KEYS).forEach(key => {
+    sessionStorage.removeItem(key);
+  });
+}
+
+async function copyText(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    await navigator.clipboard.writeText(text);
+    return;
+  }
+
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  document.execCommand("copy");
+  textarea.remove();
+}
+
+async function openLineBot() {
+  const botMessage =
+    sessionStorage.getItem(STORAGE_KEYS.botMessage);
+
+  if (!botMessage) {
+    showAlert(
+      errorAlert,
+      "ไม่พบข้อมูลยืนยัน กรุณากลับไปกรอกข้อมูลใหม่"
+    );
+    return;
+  }
+
+  try {
+    await copyText(botMessage);
+
+    showAlert(
+      successAlert,
+      "คัดลอกข้อความยืนยันแล้ว กรุณาเปิด ADT Bot วางข้อความในแชท และกดส่งครับ"
+    );
+
+    window.open(LINE_BOT_URL, "_blank", "noopener,noreferrer");
+  } catch (error) {
+    showAlert(
+      errorAlert,
+      "คัดลอกข้อความไม่สำเร็จ กรุณาลองใหม่อีกครั้ง"
+    );
+  }
+}
+
+/* ============================================================
+   STEP 1 — CREATE TEMPORARY REGISTRATION
+   ============================================================ */
+
+profileForm.addEventListener("submit", async event => {
   event.preventDefault();
   clearAlerts();
 
-  const fullName = document.getElementById("fullName").value.trim();
-  const address = document.getElementById("address").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const phone = document.getElementById("phone").value.replace(/\D/g,"");
+  const submitButton =
+    profileForm.querySelector('button[type="submit"]');
 
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const phoneOk = /^\d{10}$/.test(phone);
+  const fullName =
+    document.getElementById("fullName").value.trim();
 
-  setGroupError("groupFullName",!fullName);
-  setGroupError("groupAddress",!address);
-  setGroupError("groupEmail",!emailOk);
-  setGroupError("groupPhone",!phoneOk);
+  const address =
+    document.getElementById("address").value.trim();
 
-  if(!fullName || !address || !emailOk || !phoneOk){
-    showAlert(errorAlert,"กรุณาตรวจสอบข้อมูลที่กรอกให้ครบถ้วน");
+  const email =
+    document.getElementById("email").value.trim();
+
+  const phone =
+    document
+      .getElementById("phone")
+      .value
+      .replace(/\D/g, "");
+
+  const emailOk =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const phoneOk =
+    /^0\d{9}$/.test(phone);
+
+  setGroupError("groupFullName", fullName.length < 2);
+  setGroupError("groupAddress", address.length < 10);
+  setGroupError("groupEmail", !emailOk);
+  setGroupError("groupPhone", !phoneOk);
+
+  if (
+    fullName.length < 2 ||
+    address.length < 10 ||
+    !emailOk ||
+    !phoneOk
+  ) {
+    showAlert(
+      errorAlert,
+      "กรุณาตรวจสอบข้อมูลที่กรอกให้ครบถ้วน"
+    );
     return;
   }
 
-  /*
-    ระบบจริง:
-    POST /api/member/register/start
-    บันทึกข้อมูลเป็น WAIT_BOT_VERIFY
-  */
-  showStep(2);
+  setButtonLoading(
+    submitButton,
+    true,
+    "กำลังเตรียมรายการสมัคร..."
+  );
+
+  try {
+    const result = await apiRequest(
+      "/api/member/register/start",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          full_name: fullName,
+          current_address: address,
+          email,
+          phone
+        })
+      }
+    );
+
+    saveRegistration(result);
+    showStep(2);
+
+    showAlert(
+      successAlert,
+      "บันทึกข้อมูลแล้ว กรุณากด “เปิด ADT Bot” เพื่อยืนยันบัญชี LINE"
+    );
+  } catch (error) {
+    showAlert(errorAlert, error.message);
+  } finally {
+    setButtonLoading(submitButton, false);
+  }
 });
 
-document.getElementById("openBotButton").addEventListener("click",()=>{
-  /*
-    เปลี่ยนเป็น LINE Add Friend / LIFF URL จริงในภายหลัง
-    window.location.href = "https://line.me/R/ti/p/@YOUR_BOT";
-  */
-  showAlert(successAlert,"เปิด ADT Bot สำเร็จในโหมดตัวอย่าง กรุณาใช้รหัส 123456 เพื่อทดสอบ");
+/* ============================================================
+   STEP 2 — OPEN LINE AND VERIFY OTP
+   ============================================================ */
+
+openBotButton.addEventListener("click", openLineBot);
+
+resendButton.addEventListener("click", async () => {
+  await openLineBot();
 });
 
-document.getElementById("resendButton").addEventListener("click",()=>{
-  showAlert(successAlert,"ส่งรหัสใหม่แล้วในโหมดตัวอย่าง");
-});
+verifyOtpButton.addEventListener("click", async () => {
+  clearAlerts();
 
-document.getElementById("verifyOtpButton").addEventListener("click",()=>{
-  const otp = document.getElementById("otpInput").value.trim();
+  const registrationId =
+    sessionStorage.getItem(STORAGE_KEYS.registrationId);
 
-  if(!/^\d{6}$/.test(otp)){
-    showAlert(errorAlert,"กรุณากรอกรหัส OTP 6 หลัก");
+  const otp =
+    document.getElementById("otpInput").value.trim();
+
+  if (!registrationId) {
+    showAlert(
+      errorAlert,
+      "ไม่พบรายการสมัคร กรุณากลับไปเริ่มใหม่"
+    );
     return;
   }
-  if(otp !== "123456"){
-    showAlert(errorAlert,"รหัส OTP ไม่ถูกต้อง สำหรับ Demo ใช้รหัส 123456");
+
+  if (!/^\d{6}$/.test(otp)) {
+    showAlert(
+      errorAlert,
+      "กรุณากรอกรหัส OTP 6 หลัก"
+    );
     return;
   }
 
-  /*
-    ระบบจริง:
-    POST /api/member/register/verify-otp
-    Server ตรวจ OTP + LINE user id
-    จากนั้นจอง member_no เช่น ADT-M000001
-  */
-  const generatedMemberNo = "ADT-M000001";
-  document.getElementById("memberNumber").textContent = generatedMemberNo;
-  document.getElementById("successMemberNumber").textContent = generatedMemberNo;
-  showStep(3);
+  setButtonLoading(
+    verifyOtpButton,
+    true,
+    "กำลังตรวจสอบ OTP..."
+  );
+
+  try {
+    const result = await apiRequest(
+      "/api/member/register/verify-otp",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          registration_id: registrationId,
+          otp
+        })
+      }
+    );
+
+    sessionStorage.setItem(
+      STORAGE_KEYS.memberCode,
+      result.member_code
+    );
+
+    document.getElementById(
+      "memberNumber"
+    ).textContent = result.member_code;
+
+    document.getElementById(
+      "successMemberNumber"
+    ).textContent = result.member_code;
+
+    showStep(3);
+
+    showAlert(
+      successAlert,
+      "ยืนยันตัวตนสำเร็จ กรุณาตั้ง Username และ Password"
+    );
+  } catch (error) {
+    showAlert(errorAlert, error.message);
+  } finally {
+    setButtonLoading(verifyOtpButton, false);
+  }
 });
 
-document.getElementById("backToStep1").addEventListener("click",()=>showStep(1));
-document.getElementById("backToStep2").addEventListener("click",()=>showStep(2));
+document
+  .getElementById("backToStep1")
+  .addEventListener("click", () => showStep(1));
 
-function setupPasswordToggle(buttonId,inputId){
+document
+  .getElementById("backToStep2")
+  .addEventListener("click", () => showStep(2));
+
+/* ============================================================
+   PASSWORD UI
+   ============================================================ */
+
+function setupPasswordToggle(buttonId, inputId) {
   const button = document.getElementById(buttonId);
   const input = document.getElementById(inputId);
-  button.addEventListener("click",()=>{
+
+  button.addEventListener("click", () => {
     const hidden = input.type === "password";
     input.type = hidden ? "text" : "password";
     button.textContent = hidden ? "🙈" : "👁️";
   });
 }
-setupPasswordToggle("togglePassword","password");
-setupPasswordToggle("toggleConfirmPassword","confirmPassword");
 
-document.getElementById("password").addEventListener("input",event=>{
-  const value = event.target.value;
-  let score = 0;
-  if(value.length >= 8) score++;
-  if(/[A-Z]/.test(value)) score++;
-  if(/[a-z]/.test(value)) score++;
-  if(/\d/.test(value)) score++;
-  if(/[^A-Za-z0-9]/.test(value)) score++;
+setupPasswordToggle(
+  "togglePassword",
+  "password"
+);
 
-  const width = Math.min(score * 20,100);
-  const bar = document.getElementById("strengthBar");
-  const text = document.getElementById("strengthText");
+setupPasswordToggle(
+  "toggleConfirmPassword",
+  "confirmPassword"
+);
 
-  bar.style.width = width + "%";
-  bar.style.background = score <= 2 ? "var(--red)" : score <= 3 ? "var(--yellow)" : "var(--green)";
-  text.textContent = score <= 2 ? "ความปลอดภัยต่ำ" : score <= 3 ? "ความปลอดภัยปานกลาง" : "ความปลอดภัยดี";
-});
+document
+  .getElementById("password")
+  .addEventListener("input", event => {
+    const value = event.target.value;
+    let score = 0;
 
-document.getElementById("accountForm").addEventListener("submit",event=>{
+    if (value.length >= 8) score++;
+    if (/[A-Z]/.test(value)) score++;
+    if (/[a-z]/.test(value)) score++;
+    if (/\d/.test(value)) score++;
+    if (/[^A-Za-z0-9]/.test(value)) score++;
+
+    const width = Math.min(score * 20, 100);
+    const bar = document.getElementById("strengthBar");
+    const text = document.getElementById("strengthText");
+
+    bar.style.width = `${width}%`;
+
+    bar.style.background =
+      score <= 2
+        ? "var(--red)"
+        : score <= 3
+          ? "var(--yellow)"
+          : "var(--green)";
+
+    text.textContent =
+      score <= 2
+        ? "ความปลอดภัยต่ำ"
+        : score <= 3
+          ? "ความปลอดภัยปานกลาง"
+          : "ความปลอดภัยดี";
+  });
+
+/* ============================================================
+   STEP 3 — CREATE SUPABASE AUTH USER AND MEMBER RECORD
+   ============================================================ */
+
+accountForm.addEventListener("submit", async event => {
   event.preventDefault();
   clearAlerts();
 
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("confirmPassword").value;
-  const agreeTerms = document.getElementById("agreeTerms").checked;
+  const submitButton =
+    accountForm.querySelector('button[type="submit"]');
 
-  const usernameOk = /^[A-Za-z0-9._-]{4,40}$/.test(username);
-  const passwordOk = password.length >= 8;
-  const confirmOk = password && password === confirmPassword;
+  const registrationId =
+    sessionStorage.getItem(STORAGE_KEYS.registrationId);
 
-  setGroupError("groupUsername",!usernameOk);
-  setGroupError("groupPassword",!passwordOk);
-  setGroupError("groupConfirmPassword",!confirmOk);
+  const username =
+    document.getElementById("username").value.trim();
 
-  if(!usernameOk || !passwordOk || !confirmOk){
-    showAlert(errorAlert,"กรุณาตรวจสอบ Username และ Password");
+  const password =
+    document.getElementById("password").value;
+
+  const confirmPassword =
+    document.getElementById("confirmPassword").value;
+
+  const agreeTerms =
+    document.getElementById("agreeTerms").checked;
+
+  const marketingConsent =
+    document.getElementById(
+      "marketingConsent"
+    ).checked;
+
+  const usernameOk =
+    /^[A-Za-z0-9._-]{4,40}$/.test(username);
+
+  const passwordOk =
+    password.length >= 8;
+
+  const confirmOk =
+    Boolean(password) &&
+    password === confirmPassword;
+
+  setGroupError(
+    "groupUsername",
+    !usernameOk
+  );
+
+  setGroupError(
+    "groupPassword",
+    !passwordOk
+  );
+
+  setGroupError(
+    "groupConfirmPassword",
+    !confirmOk
+  );
+
+  if (!registrationId) {
+    showAlert(
+      errorAlert,
+      "ไม่พบรายการสมัคร กรุณาเริ่มสมัครใหม่"
+    );
     return;
   }
-  if(!agreeTerms){
-    showAlert(errorAlert,"กรุณายอมรับข้อกำหนดการใช้งานและประกาศความเป็นส่วนตัว");
+
+  if (
+    !usernameOk ||
+    !passwordOk ||
+    !confirmOk
+  ) {
+    showAlert(
+      errorAlert,
+      "กรุณาตรวจสอบ Username และ Password"
+    );
     return;
   }
 
-  /*
-    ระบบจริง:
-    POST /api/member/register/complete
+  if (!agreeTerms) {
+    showAlert(
+      errorAlert,
+      "กรุณายอมรับข้อกำหนดการใช้งานและประกาศความเป็นส่วนตัว"
+    );
+    return;
+  }
 
-    ส่ง:
-    registration_id
-    reserved_member_no
-    username
-    password
-    privacy_notice_version
-    terms_version
-    marketing_consent
+  setButtonLoading(
+    submitButton,
+    true,
+    "กำลังสร้างบัญชี..."
+  );
 
-    Server:
-    - เช็ก Username ซ้ำ
-    - hash Password
-    - สร้าง member record
-    - เปลี่ยน status เป็น ACTIVE
-  */
+  try {
+    const result = await apiRequest(
+      "/api/member/register/complete",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          registration_id: registrationId,
+          username,
+          password,
+          agree_terms: true,
+          marketing_consent: marketingConsent
+        })
+      }
+    );
 
-  Object.values(sections).forEach(section=>section.classList.remove("active"));
-  Object.values(indicators).forEach(indicator=>{
-    indicator.classList.remove("active");
-    indicator.classList.add("done");
-  });
-  document.getElementById("successSection").classList.add("active");
-  window.scrollTo({top:0,behavior:"smooth"});
+    const finalMemberCode =
+      result.member?.member_code ||
+      sessionStorage.getItem(STORAGE_KEYS.memberCode) ||
+      "-";
+
+    document.getElementById(
+      "successMemberNumber"
+    ).textContent = finalMemberCode;
+
+    Object.values(sections).forEach(section => {
+      section.classList.remove("active");
+    });
+
+    Object.values(indicators).forEach(indicator => {
+      indicator.classList.remove("active");
+      indicator.classList.add("done");
+    });
+
+    document
+      .getElementById("successSection")
+      .classList.add("active");
+
+    clearRegistrationSession();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  } catch (error) {
+    showAlert(errorAlert, error.message);
+  } finally {
+    setButtonLoading(submitButton, false);
+  }
 });
+
+/* ============================================================
+   RESTORE REGISTRATION AFTER RETURNING FROM LINE
+   ============================================================ */
+
+async function restoreRegistrationState() {
+  const registrationId =
+    sessionStorage.getItem(STORAGE_KEYS.registrationId);
+
+  const savedStep =
+    Number(
+      sessionStorage.getItem(STORAGE_KEYS.currentStep) || 1
+    );
+
+  if (!registrationId) {
+    showStep(1);
+    return;
+  }
+
+  try {
+    const result = await apiRequest(
+      `/api/member/register/status/${encodeURIComponent(
+        registrationId
+      )}`,
+      {
+        method: "GET"
+      }
+    );
+
+    const registration = result.registration;
+
+    if (
+      registration.status === "ACCOUNT_PENDING" ||
+      registration.otp_verified === true
+    ) {
+      if (registration.member_code) {
+        sessionStorage.setItem(
+          STORAGE_KEYS.memberCode,
+          registration.member_code
+        );
+
+        document.getElementById(
+          "memberNumber"
+        ).textContent = registration.member_code;
+
+        document.getElementById(
+          "successMemberNumber"
+        ).textContent = registration.member_code;
+      }
+
+      showStep(3);
+      return;
+    }
+
+    if (
+      registration.status === "WAIT_BOT" ||
+      registration.status === "OTP_SENT" ||
+      registration.status === "BOT_VERIFIED"
+    ) {
+      showStep(2);
+      return;
+    }
+
+    if (
+      registration.status === "EXPIRED" ||
+      registration.status === "CANCELLED"
+    ) {
+      clearRegistrationSession();
+      showStep(1);
+
+      showAlert(
+        errorAlert,
+        "รายการสมัครเดิมหมดอายุแล้ว กรุณาเริ่มสมัครใหม่"
+      );
+
+      return;
+    }
+
+    showStep(savedStep >= 1 && savedStep <= 3 ? savedStep : 1);
+  } catch {
+    showStep(savedStep >= 1 && savedStep <= 3 ? savedStep : 1);
+  }
+}
+
+restoreRegistrationState();
 </script>
 </body>
 </html>
