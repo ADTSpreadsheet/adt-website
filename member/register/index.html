@@ -871,6 +871,36 @@ body.modal-open{overflow:hidden}
   .modal-actions .btn{width:100%}
 }
 
+
+/* CONSENT FLOW — FINAL */
+.marketing-check-card{
+  cursor:pointer;
+}
+.marketing-checkbox{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.marketing-check-card.accepted{
+  border-color:#a8e3c5;
+  background:#f1fbf6;
+}
+.create-account-button{
+  transition:.2s;
+}
+.create-account-button:disabled{
+  color:#8b98a8;
+  background:#dfe6ee;
+  box-shadow:none;
+  cursor:not-allowed;
+  opacity:1;
+}
+.create-account-button.ready{
+  color:#fff;
+  background:linear-gradient(135deg,#17b26a,#079653);
+  box-shadow:0 14px 28px rgba(23,178,106,.24);
+}
+
 </style>
 </head>
 
@@ -1162,27 +1192,28 @@ body.modal-open{overflow:hidden}
                   <span class="consent-arrow">›</span>
                 </button>
 
-                <button class="consent-card optional-card"
-                        id="marketingConsentCard"
-                        type="button"
-                        data-document="marketing">
+                <label class="consent-card optional-card marketing-check-card"
+                       id="marketingConsentCard"
+                       for="marketingConsentCheckbox">
+                  <input class="marketing-checkbox"
+                         id="marketingConsentCheckbox"
+                         type="checkbox">
                   <span class="consent-status" id="marketingStatus">○</span>
                   <span class="consent-copy">
                     <strong>การรับข่าวสารและประชาสัมพันธ์</strong>
-                    <small id="marketingStatusText">ไม่บังคับ — เปิดอ่านและเลือกยินยอมได้</small>
+                    <small id="marketingStatusText">ไม่บังคับ — เลือกยินยอมได้ทันที</small>
                   </span>
-                  <span class="consent-arrow">›</span>
-                </button>
+                </label>
               </div>
 
               <div class="consent-help">
-                ช่องสถานะด้านนอกไม่สามารถติ๊กเองได้ การยอมรับจะเกิดขึ้นหลังจากเปิดเอกสาร เลื่อนอ่าน และกดยืนยันภายใน Popup เท่านั้น
+                ข้อกำหนดการใช้งานและประกาศความเป็นส่วนตัวต้องเปิดอ่านและยอมรับภายใน Popup ส่วนการรับข่าวสารเป็นตัวเลือกและไม่บังคับ
               </div>
 
 
               <div class="actions">
                 <button class="btn btn-secondary" id="backToStep2" type="button">← กลับ</button>
-                <button class="btn btn-primary" type="submit">สร้างบัญชีสมาชิก</button>
+                <button class="btn btn-primary create-account-button" id="createAccountButton" type="submit" disabled>สร้างบัญชีสมาชิก</button>
               </div>
             </form>
           </section>
@@ -1699,33 +1730,6 @@ const documentContents = {
         ข้อมูลที่จำเป็นต่อบัญชีและการให้บริการอาจต้องเก็บรักษาตามระยะเวลาที่เหมาะสมหรือที่กฎหมายกำหนด
       </div>
     `
-  },
-
-  marketing: {
-    title: "การรับข่าวสารและประชาสัมพันธ์",
-    subtitle: "ตัวเลือกนี้ไม่บังคับและไม่มีผลต่อการสมัครสมาชิก",
-    checkbox:
-      "ข้าพเจ้ายินยอมรับข่าวสารและประชาสัมพันธ์จาก ADTSpreadsheet",
-    html: `
-      <h4>ข่าวสารที่ท่านอาจได้รับ</h4>
-      <ul>
-        <li>ข่าวสารและบทความด้านวิศวกรรม</li>
-        <li>ข่าวการอัปเดตโปรแกรมและบริการ</li>
-        <li>กิจกรรม การอบรม และสัมมนา</li>
-        <li>โปรโมชั่น สิทธิพิเศษ และข้อมูลประชาสัมพันธ์</li>
-        <li>การแจ้งเตือนผ่าน LINE หรืออีเมล</li>
-      </ul>
-
-      <h4>การให้ความยินยอม</h4>
-      <p>การยินยอมในหัวข้อนี้เป็นทางเลือก ท่านสามารถสมัครสมาชิกและใช้งานบริการได้แม้ไม่ยินยอมรับข่าวสาร</p>
-
-      <h4>การถอนความยินยอม</h4>
-      <p>ท่านสามารถเปลี่ยนแปลงหรือถอนความยินยอมได้ภายหลังจากหน้าโปรไฟล์สมาชิก หรือติดต่อทีมงาน ADTSpreadsheet</p>
-
-      <div class="document-note">
-        การไม่ยินยอมไม่มีผลต่อการสมัครสมาชิกหรือสิทธิ์การใช้งานบริการหลักของ ADTSpreadsheet
-      </div>
-    `
   }
 };
 
@@ -1740,6 +1744,10 @@ const documentAcceptLabel = document.getElementById("documentAcceptLabel");
 const documentAcceptButton = document.getElementById("documentAcceptButton");
 const documentCancelButton = document.getElementById("documentCancelButton");
 const documentModalClose = document.getElementById("documentModalClose");
+const marketingConsentCheckbox =
+  document.getElementById("marketingConsentCheckbox");
+const createAccountButton =
+  document.getElementById("createAccountButton");
 
 let activeDocumentKey = null;
 let activeDocumentReadToEnd = false;
@@ -1750,23 +1758,33 @@ function updateConsentCard(key) {
   const status = document.getElementById(`${key}Status`);
   const statusText = document.getElementById(`${key}StatusText`);
 
+  if (!card || !status || !statusText) return;
+
   card.classList.toggle("accepted", accepted);
 
-  if (accepted) {
-    status.textContent = "✓";
-    statusText.textContent =
-      key === "marketing"
-        ? "ยินยอมรับข่าวสารแล้ว — สามารถเปลี่ยนแปลงภายหลังได้"
-        : "อ่านและยอมรับแล้ว";
-  } else {
-    status.textContent = key === "marketing" ? "○" : "🔒";
-    statusText.textContent =
-      key === "marketing"
-        ? "ไม่บังคับ — เปิดอ่านและเลือกยินยอมได้"
-        : key === "terms"
-          ? "กรุณาเปิดอ่านและยอมรับจากภายในเอกสาร"
-          : "กรุณาเปิดอ่านและรับทราบจากภายในเอกสาร";
+  if (key === "marketing") {
+    status.textContent = accepted ? "✓" : "○";
+    statusText.textContent = accepted
+      ? "ยินยอมรับข่าวสารแล้ว — สามารถเปลี่ยนแปลงภายหลังได้"
+      : "ไม่บังคับ — เลือกยินยอมได้ทันที";
+    return;
   }
+
+  status.textContent = accepted ? "✓" : "🔒";
+  statusText.textContent = accepted
+    ? "อ่านและยอมรับแล้ว"
+    : key === "terms"
+      ? "กรุณาเปิดอ่านและยอมรับจากภายในเอกสาร"
+      : "กรุณาเปิดอ่านและรับทราบจากภายในเอกสาร";
+}
+
+function updateCreateAccountButton() {
+  const ready =
+    consentState.terms === true &&
+    consentState.privacy === true;
+
+  createAccountButton.disabled = !ready;
+  createAccountButton.classList.toggle("ready", ready);
 }
 
 function updateDocumentAcceptState() {
@@ -1827,7 +1845,7 @@ function closeDocumentModal() {
   activeDocumentKey = null;
 }
 
-document.querySelectorAll("[data-document]").forEach(card => {
+document.querySelectorAll("[data-document=\"terms\"], [data-document=\"privacy\"]").forEach(card => {
   card.addEventListener("click", () => {
     openDocumentModal(card.dataset.document);
   });
@@ -1869,7 +1887,14 @@ documentAcceptButton.addEventListener("click", () => {
 
   consentState[activeDocumentKey] = true;
   updateConsentCard(activeDocumentKey);
+  updateCreateAccountButton();
   closeDocumentModal();
+});
+
+
+marketingConsentCheckbox.addEventListener("change", event => {
+  consentState.marketing = event.target.checked;
+  updateConsentCard("marketing");
 });
 
 documentCancelButton.addEventListener("click", closeDocumentModal);
@@ -1890,6 +1915,7 @@ document.addEventListener("keydown", event => {
 updateConsentCard("terms");
 updateConsentCard("privacy");
 updateConsentCard("marketing");
+updateCreateAccountButton();
 
 
 accountForm.addEventListener("submit", async event => {
