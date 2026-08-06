@@ -649,6 +649,228 @@ textarea.control{min-height:106px;padding:13px 15px;resize:vertical;line-height:
   .copy-command{width:100%}
 }
 
+
+/* =========================================================
+   CONSENT DOCUMENT CARDS + MODAL
+========================================================= */
+.consent-list{
+  margin-top:22px;
+  display:grid;
+  gap:12px;
+}
+.consent-card{
+  width:100%;
+  padding:15px 16px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#f8fafc;
+  text-align:left;
+  cursor:pointer;
+  transition:.2s;
+}
+.consent-card:hover{
+  transform:translateY(-1px);
+  border-color:#b9d6fb;
+  background:#f6faff;
+}
+.consent-card.required-card{
+  border-left:4px solid var(--blue);
+}
+.consent-card.optional-card{
+  border-left:4px solid var(--green);
+}
+.consent-status{
+  width:24px;
+  height:24px;
+  flex:0 0 24px;
+  display:grid;
+  place-items:center;
+  border-radius:8px;
+  color:#91a0b2;
+  background:#e8eef5;
+  font-size:.75rem;
+  font-weight:800;
+}
+.consent-card.accepted .consent-status{
+  color:#fff;
+  background:var(--green);
+}
+.consent-copy{min-width:0;flex:1}
+.consent-copy strong{
+  display:block;
+  color:var(--navy);
+  font-size:.78rem;
+}
+.consent-copy small{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:.65rem;
+  line-height:1.55;
+}
+.consent-arrow{
+  color:#8da0b6;
+  font-weight:800;
+}
+.consent-card.accepted .consent-copy small{
+  color:#087443;
+  font-weight:700;
+}
+.consent-help{
+  margin-top:12px;
+  color:#718198;
+  font-size:.66rem;
+  line-height:1.6;
+}
+
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:rgba(3,16,37,.72);
+  backdrop-filter:blur(6px);
+}
+.modal-backdrop.show{display:flex}
+.document-modal{
+  width:min(760px,100%);
+  max-height:min(88vh,860px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  border-radius:24px;
+  background:#fff;
+  box-shadow:0 30px 90px rgba(0,0,0,.3);
+}
+.document-modal-head{
+  padding:20px 22px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  color:#fff;
+  background:linear-gradient(135deg,#06152d,#0a2855);
+}
+.document-modal-head h3{
+  margin:0;
+  font-size:1.15rem;
+}
+.document-modal-head p{
+  margin:5px 0 0;
+  color:#c9d9eb;
+  font-size:.68rem;
+  line-height:1.55;
+}
+.modal-close{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  border:0;
+  border-radius:11px;
+  color:#fff;
+  background:rgba(255,255,255,.12);
+  font-size:1.1rem;
+}
+.document-scroll{
+  padding:22px;
+  overflow:auto;
+  overscroll-behavior:contain;
+  color:#39495f;
+  line-height:1.8;
+  font-size:.76rem;
+}
+.document-scroll h4{
+  margin:20px 0 7px;
+  color:var(--navy);
+  font-size:.9rem;
+}
+.document-scroll h4:first-child{margin-top:0}
+.document-scroll ul{
+  margin:7px 0 0;
+  padding-left:22px;
+}
+.document-scroll li{margin:5px 0}
+.document-scroll .document-note{
+  padding:12px 14px;
+  border-radius:13px;
+  background:#f2f7fd;
+  border:1px solid #dce9f7;
+}
+.document-modal-foot{
+  padding:16px 20px 20px;
+  border-top:1px solid var(--line);
+  background:#fbfcfe;
+}
+.read-progress{
+  height:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#e9eef5;
+}
+.read-progress span{
+  display:block;
+  width:0;
+  height:100%;
+  background:var(--blue);
+  transition:.15s;
+}
+.read-hint{
+  margin-top:8px;
+  color:#78889d;
+  font-size:.64rem;
+}
+.modal-check-row{
+  margin-top:14px;
+  padding:13px 14px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  border-radius:14px;
+  background:#f5f8fc;
+  border:1px solid #e0e8f1;
+}
+.modal-check-row input{
+  width:18px;
+  height:18px;
+  flex:0 0 18px;
+  margin-top:2px;
+  accent-color:var(--green);
+}
+.modal-check-row label{
+  color:#42536a;
+  font-size:.72rem;
+  line-height:1.6;
+}
+.modal-actions{
+  margin-top:14px;
+  display:flex;
+  justify-content:flex-end;
+  gap:10px;
+}
+.modal-actions .btn{min-height:46px}
+body.modal-open{overflow:hidden}
+@media(max-width:560px){
+  .modal-backdrop{padding:8px}
+  .document-modal{
+    max-height:94vh;
+    border-radius:18px;
+  }
+  .document-modal-head,
+  .document-scroll,
+  .document-modal-foot{
+    padding-left:16px;
+    padding-right:16px;
+  }
+  .modal-actions{flex-direction:column-reverse}
+  .modal-actions .btn{width:100%}
+}
+
 </style>
 </head>
 
@@ -712,7 +934,7 @@ textarea.control{min-height:106px;padding:13px 15px;resize:vertical;line-height:
       <section class="card">
         <header class="card-head">
           <p class="label">MEMBER REGISTRATION</p>
-          <h2>สมัครสมาชิก ADTSpreadsheet.com</h2>
+          <h2>สมัครสมาชิก ADT</h2>
           <p>ใช้เวลาประมาณ 2 นาที สมัครฟรี ไม่มีค่าใช้จ่าย และไม่มีข้อผูกพันในการซื้อสินค้า</p>
         </header>
 
@@ -914,31 +1136,49 @@ textarea.control{min-height:106px;padding:13px 15px;resize:vertical;line-height:
                 </div>
               </div>
 
-              <div class="checks">
-                <div class="check">
-                  <input id="agreeTerms" type="checkbox">
-                  <label for="agreeTerms">
-                    ข้าพเจ้าได้อ่านและยอมรับ
-                    <a href="/terms/" target="_blank">ข้อกำหนดการใช้งาน</a>
-                    และ
-                    <a href="/privacy/" target="_blank">ประกาศความเป็นส่วนตัว</a>
-                    ของ ADT <span class="required">*</span>
-                  </label>
-                </div>
+              
+              <div class="consent-list" id="consentList">
+                <button class="consent-card required-card"
+                        id="termsConsentCard"
+                        type="button"
+                        data-document="terms">
+                  <span class="consent-status" id="termsStatus">🔒</span>
+                  <span class="consent-copy">
+                    <strong>ข้อกำหนดการใช้งาน <span class="required">*</span></strong>
+                    <small id="termsStatusText">กรุณาเปิดอ่านและยอมรับจากภายในเอกสาร</small>
+                  </span>
+                  <span class="consent-arrow">›</span>
+                </button>
 
-                <div class="check">
-                  <input id="marketingConsent" type="checkbox">
-                  <label for="marketingConsent">
-                    ยินยอมรับข่าวสาร บทความ กิจกรรม และข้อมูลประชาสัมพันธ์จาก ADT ผ่าน LINE หรืออีเมล
-                    <strong style="color:var(--muted)">(ไม่บังคับ)</strong>
-                  </label>
-                </div>
+                <button class="consent-card required-card"
+                        id="privacyConsentCard"
+                        type="button"
+                        data-document="privacy">
+                  <span class="consent-status" id="privacyStatus">🔒</span>
+                  <span class="consent-copy">
+                    <strong>ประกาศความเป็นส่วนตัว <span class="required">*</span></strong>
+                    <small id="privacyStatusText">กรุณาเปิดอ่านและรับทราบจากภายในเอกสาร</small>
+                  </span>
+                  <span class="consent-arrow">›</span>
+                </button>
+
+                <button class="consent-card optional-card"
+                        id="marketingConsentCard"
+                        type="button"
+                        data-document="marketing">
+                  <span class="consent-status" id="marketingStatus">○</span>
+                  <span class="consent-copy">
+                    <strong>การรับข่าวสารและประชาสัมพันธ์</strong>
+                    <small id="marketingStatusText">ไม่บังคับ — เปิดอ่านและเลือกยินยอมได้</small>
+                  </span>
+                  <span class="consent-arrow">›</span>
+                </button>
               </div>
 
-              <div class="privacy-note">
-                <span>🔒</span>
-                <span>ADT จะใช้ข้อมูลของคุณตามวัตถุประสงค์ที่แจ้งไว้ และจะไม่เปิดเผยแก่บุคคลภายนอกโดยไม่ได้รับความยินยอม เว้นแต่จำเป็นต่อการให้บริการที่คุณร้องขอหรือเป็นไปตามกฎหมาย</span>
+              <div class="consent-help">
+                ช่องสถานะด้านนอกไม่สามารถติ๊กเองได้ การยอมรับจะเกิดขึ้นหลังจากเปิดเอกสาร เลื่อนอ่าน และกดยืนยันภายใน Popup เท่านั้น
               </div>
+
 
               <div class="actions">
                 <button class="btn btn-secondary" id="backToStep2" type="button">← กลับ</button>
@@ -977,7 +1217,7 @@ textarea.control{min-height:106px;padding:13px 15px;resize:vertical;line-height:
 
 <script>
 /* ============================================================
-   ADT MEMBER REGISTRATION — FRONTEND FLOW v2.0
+   ADT MEMBER REGISTRATION — FRONTEND FLOW v2.1
    ============================================================ */
 
 const MEMBER_API_BASE_URL = "https://adt-website-api.onrender.com";
@@ -1362,6 +1602,296 @@ document
           : "ความปลอดภัยดี";
   });
 
+
+/* ============================================================
+   DOCUMENT CONSENT MODALS
+   ============================================================ */
+
+const consentState = {
+  terms: false,
+  privacy: false,
+  marketing: false
+};
+
+const documentContents = {
+  terms: {
+    title: "ข้อกำหนดการใช้งาน",
+    subtitle: "ข้อกำหนดสำหรับการสมัครและใช้งาน ADTSpreadsheet",
+    checkbox:
+      "ข้าพเจ้าได้อ่านและยอมรับข้อกำหนดการใช้งานของ ADTSpreadsheet แล้ว",
+    html: `
+      <h4>การใช้งานเว็บไซต์ ADTSpreadsheet</h4>
+      <p>ยินดีต้อนรับสู่เว็บไซต์ <strong>ADTSpreadsheet</strong> การสมัครสมาชิกและใช้งานเว็บไซต์นี้ ถือว่าท่านรับทราบและยอมรับข้อกำหนดดังต่อไปนี้</p>
+
+      <h4>1. การสมัครสมาชิก</h4>
+      <ul>
+        <li>สมาชิกต้องให้ข้อมูลที่ถูกต้องและเป็นข้อมูลของตนเอง</li>
+        <li>สมาชิกต้องเก็บรักษา Username และ Password ไว้เป็นความลับ</li>
+        <li>สมาชิกต้องไม่ให้บุคคลอื่นใช้บัญชีของตน</li>
+      </ul>
+
+      <h4>2. การใช้งานเว็บไซต์</h4>
+      <ul>
+        <li>ใช้งานเว็บไซต์เพื่อวัตถุประสงค์ที่ถูกต้องตามกฎหมาย</li>
+        <li>ไม่พยายามเข้าถึงข้อมูลหรือบัญชีของบุคคลอื่น</li>
+        <li>ไม่โจมตี ดัดแปลง หรือรบกวนการทำงานของระบบ</li>
+        <li>ไม่เผยแพร่ข้อมูลที่ผิดกฎหมาย หมิ่นประมาท หรือสร้างความเสียหายแก่บุคคลอื่น</li>
+      </ul>
+
+      <h4>3. เนื้อหาและทรัพย์สินทางปัญญา</h4>
+      <p>บทความ โปรแกรม รูปภาพ วิดีโอ เอกสาร และเนื้อหาบนเว็บไซต์ เป็นทรัพย์สินของ ADTSpreadsheet หรือเจ้าของลิขสิทธิ์ที่เกี่ยวข้อง ห้ามคัดลอก ดัดแปลง หรือเผยแพร่โดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร</p>
+
+      <h4>4. ความรับผิดชอบของสมาชิก</h4>
+      <p>สมาชิกเป็นผู้รับผิดชอบต่อการใช้งานบัญชีของตนเองทั้งหมด หากพบการใช้งานที่ผิดปกติ กรุณาแจ้งทีมงานทันที</p>
+
+      <h4>5. การระงับบัญชี</h4>
+      <p>ADTSpreadsheet อาจระงับหรือยกเลิกบัญชีเมื่อพบการให้ข้อมูลอันเป็นเท็จ การใช้งานผิดวัตถุประสงค์ การกระทำที่สร้างความเสียหายต่อระบบหรือสมาชิกอื่น หรือการฝ่าฝืนข้อกำหนดนี้</p>
+
+      <h4>6. การเปลี่ยนแปลงข้อกำหนด</h4>
+      <p>ADTSpreadsheet อาจปรับปรุงข้อกำหนดตามความเหมาะสม และจะแจ้งผ่านเว็บไซต์เมื่อมีการเปลี่ยนแปลงที่สำคัญ</p>
+
+      <div class="document-note">
+        การสมัครสมาชิกต่อถือว่าท่านยืนยันว่าข้อมูลที่ให้ไว้ถูกต้อง และยินยอมปฏิบัติตามข้อกำหนดฉบับนี้
+      </div>
+    `
+  },
+
+  privacy: {
+    title: "ประกาศความเป็นส่วนตัว",
+    subtitle: "การเก็บ ใช้ และคุ้มครองข้อมูลส่วนบุคคลของสมาชิก",
+    checkbox:
+      "ข้าพเจ้าได้อ่านและรับทราบประกาศความเป็นส่วนตัวแล้ว",
+    html: `
+      <h4>การเก็บรวบรวมข้อมูลส่วนบุคคล</h4>
+      <p>ADTSpreadsheet ให้ความสำคัญกับข้อมูลส่วนบุคคลของสมาชิก และดำเนินการตามหลักการคุ้มครองข้อมูลส่วนบุคคลที่เกี่ยวข้อง</p>
+
+      <h4>ข้อมูลที่ระบบอาจจัดเก็บ</h4>
+      <ul>
+        <li>ชื่อ–นามสกุล ที่อยู่ อีเมล และหมายเลขโทรศัพท์</li>
+        <li>LINE User ID ชื่อแสดงผล และรูปโปรไฟล์ LINE</li>
+        <li>Username ข้อมูลโปรไฟล์ และประวัติการใช้บริการ</li>
+        <li>ข้อมูลอุปกรณ์ เวลาเข้าใช้งาน และข้อมูลที่จำเป็นต่อความปลอดภัยของระบบ</li>
+      </ul>
+
+      <h4>วัตถุประสงค์ในการใช้ข้อมูล</h4>
+      <ul>
+        <li>สมัครสมาชิก ยืนยันตัวตน และเข้าสู่ระบบ</li>
+        <li>ให้บริการโปรแกรม การอบรม เอกสาร Community และบริการสมาชิก</li>
+        <li>ติดต่อเกี่ยวกับบัญชี ธุรกรรม และการสนับสนุน</li>
+        <li>ปรับปรุงคุณภาพบริการและรักษาความปลอดภัยของระบบ</li>
+      </ul>
+
+      <h4>การเปิดเผยข้อมูล</h4>
+      <p>ADTSpreadsheet จะไม่เปิดเผยข้อมูลส่วนบุคคลแก่บุคคลภายนอก เว้นแต่ได้รับความยินยอม เป็นการปฏิบัติตามกฎหมาย หรือจำเป็นต่อการให้บริการและการปกป้องสิทธิของผู้เกี่ยวข้อง</p>
+
+      <h4>การรักษาความปลอดภัย</h4>
+      <p>ระบบใช้มาตรการที่เหมาะสมเพื่อป้องกันการสูญหาย การเข้าถึง การใช้ หรือการเปิดเผยข้อมูลโดยไม่ได้รับอนุญาต และจำกัดการเข้าถึงเฉพาะผู้ที่มีหน้าที่เกี่ยวข้อง</p>
+
+      <h4>สิทธิของสมาชิก</h4>
+      <ul>
+        <li>ขอเข้าถึงและขอสำเนาข้อมูลของตน</li>
+        <li>ขอแก้ไขข้อมูลให้ถูกต้อง</li>
+        <li>ขอปิดบัญชีหรือขอลบข้อมูลตามเงื่อนไขที่กฎหมายกำหนด</li>
+        <li>ถอนความยินยอมในการรับข่าวสารได้ตลอดเวลา</li>
+      </ul>
+
+      <div class="document-note">
+        ข้อมูลที่จำเป็นต่อบัญชีและการให้บริการอาจต้องเก็บรักษาตามระยะเวลาที่เหมาะสมหรือที่กฎหมายกำหนด
+      </div>
+    `
+  },
+
+  marketing: {
+    title: "การรับข่าวสารและประชาสัมพันธ์",
+    subtitle: "ตัวเลือกนี้ไม่บังคับและไม่มีผลต่อการสมัครสมาชิก",
+    checkbox:
+      "ข้าพเจ้ายินยอมรับข่าวสารและประชาสัมพันธ์จาก ADTSpreadsheet",
+    html: `
+      <h4>ข่าวสารที่ท่านอาจได้รับ</h4>
+      <ul>
+        <li>ข่าวสารและบทความด้านวิศวกรรม</li>
+        <li>ข่าวการอัปเดตโปรแกรมและบริการ</li>
+        <li>กิจกรรม การอบรม และสัมมนา</li>
+        <li>โปรโมชั่น สิทธิพิเศษ และข้อมูลประชาสัมพันธ์</li>
+        <li>การแจ้งเตือนผ่าน LINE หรืออีเมล</li>
+      </ul>
+
+      <h4>การให้ความยินยอม</h4>
+      <p>การยินยอมในหัวข้อนี้เป็นทางเลือก ท่านสามารถสมัครสมาชิกและใช้งานบริการได้แม้ไม่ยินยอมรับข่าวสาร</p>
+
+      <h4>การถอนความยินยอม</h4>
+      <p>ท่านสามารถเปลี่ยนแปลงหรือถอนความยินยอมได้ภายหลังจากหน้าโปรไฟล์สมาชิก หรือติดต่อทีมงาน ADTSpreadsheet</p>
+
+      <div class="document-note">
+        การไม่ยินยอมไม่มีผลต่อการสมัครสมาชิกหรือสิทธิ์การใช้งานบริการหลักของ ADTSpreadsheet
+      </div>
+    `
+  }
+};
+
+const documentModal = document.getElementById("documentModal");
+const documentModalTitle = document.getElementById("documentModalTitle");
+const documentModalSubtitle = document.getElementById("documentModalSubtitle");
+const documentScroll = document.getElementById("documentScroll");
+const readProgressBar = document.getElementById("readProgressBar");
+const readHint = document.getElementById("readHint");
+const documentAcceptCheckbox = document.getElementById("documentAcceptCheckbox");
+const documentAcceptLabel = document.getElementById("documentAcceptLabel");
+const documentAcceptButton = document.getElementById("documentAcceptButton");
+const documentCancelButton = document.getElementById("documentCancelButton");
+const documentModalClose = document.getElementById("documentModalClose");
+
+let activeDocumentKey = null;
+let activeDocumentReadToEnd = false;
+
+function updateConsentCard(key) {
+  const accepted = consentState[key] === true;
+  const card = document.getElementById(`${key}ConsentCard`);
+  const status = document.getElementById(`${key}Status`);
+  const statusText = document.getElementById(`${key}StatusText`);
+
+  card.classList.toggle("accepted", accepted);
+
+  if (accepted) {
+    status.textContent = "✓";
+    statusText.textContent =
+      key === "marketing"
+        ? "ยินยอมรับข่าวสารแล้ว — สามารถเปลี่ยนแปลงภายหลังได้"
+        : "อ่านและยอมรับแล้ว";
+  } else {
+    status.textContent = key === "marketing" ? "○" : "🔒";
+    statusText.textContent =
+      key === "marketing"
+        ? "ไม่บังคับ — เปิดอ่านและเลือกยินยอมได้"
+        : key === "terms"
+          ? "กรุณาเปิดอ่านและยอมรับจากภายในเอกสาร"
+          : "กรุณาเปิดอ่านและรับทราบจากภายในเอกสาร";
+  }
+}
+
+function updateDocumentAcceptState() {
+  documentAcceptCheckbox.disabled = !activeDocumentReadToEnd;
+
+  documentAcceptButton.disabled = !(
+    activeDocumentReadToEnd &&
+    documentAcceptCheckbox.checked
+  );
+
+  readHint.textContent =
+    activeDocumentReadToEnd
+      ? "อ่านถึงด้านล่างแล้ว กรุณาติ๊กยืนยันเพื่อดำเนินการต่อ"
+      : "กรุณาเลื่อนอ่านเอกสารจนถึงด้านล่าง";
+}
+
+function openDocumentModal(key) {
+  const documentData = documentContents[key];
+  if (!documentData) return;
+
+  activeDocumentKey = key;
+  activeDocumentReadToEnd = false;
+
+  documentModalTitle.textContent = documentData.title;
+  documentModalSubtitle.textContent = documentData.subtitle;
+  documentScroll.innerHTML = documentData.html;
+  documentAcceptLabel.textContent = documentData.checkbox;
+
+  documentAcceptCheckbox.checked = consentState[key] === true;
+  documentAcceptCheckbox.disabled = true;
+  documentAcceptButton.disabled = true;
+  readProgressBar.style.width = "0%";
+  readHint.textContent = "กรุณาเลื่อนอ่านเอกสารจนถึงด้านล่าง";
+
+  documentScroll.scrollTop = 0;
+  documentModal.classList.add("show");
+  documentModal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+
+  requestAnimationFrame(() => {
+    const noScrollNeeded =
+      documentScroll.scrollHeight <= documentScroll.clientHeight + 2;
+
+    if (noScrollNeeded) {
+      activeDocumentReadToEnd = true;
+      readProgressBar.style.width = "100%";
+      updateDocumentAcceptState();
+    }
+
+    documentScroll.focus();
+  });
+}
+
+function closeDocumentModal() {
+  documentModal.classList.remove("show");
+  documentModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+  activeDocumentKey = null;
+}
+
+document.querySelectorAll("[data-document]").forEach(card => {
+  card.addEventListener("click", () => {
+    openDocumentModal(card.dataset.document);
+  });
+});
+
+documentScroll.addEventListener("scroll", () => {
+  const maxScroll =
+    documentScroll.scrollHeight - documentScroll.clientHeight;
+
+  const progress =
+    maxScroll <= 0
+      ? 100
+      : Math.min(100, (documentScroll.scrollTop / maxScroll) * 100);
+
+  readProgressBar.style.width = `${progress}%`;
+
+  if (
+    maxScroll <= 0 ||
+    documentScroll.scrollTop >= maxScroll - 8
+  ) {
+    activeDocumentReadToEnd = true;
+  }
+
+  updateDocumentAcceptState();
+});
+
+documentAcceptCheckbox.addEventListener("change", () => {
+  updateDocumentAcceptState();
+});
+
+documentAcceptButton.addEventListener("click", () => {
+  if (
+    !activeDocumentKey ||
+    !activeDocumentReadToEnd ||
+    !documentAcceptCheckbox.checked
+  ) {
+    return;
+  }
+
+  consentState[activeDocumentKey] = true;
+  updateConsentCard(activeDocumentKey);
+  closeDocumentModal();
+});
+
+documentCancelButton.addEventListener("click", closeDocumentModal);
+documentModalClose.addEventListener("click", closeDocumentModal);
+
+documentModal.addEventListener("click", event => {
+  if (event.target === documentModal) {
+    closeDocumentModal();
+  }
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && documentModal.classList.contains("show")) {
+    closeDocumentModal();
+  }
+});
+
+updateConsentCard("terms");
+updateConsentCard("privacy");
+updateConsentCard("marketing");
+
+
 accountForm.addEventListener("submit", async event => {
   event.preventDefault();
   clearAlerts();
@@ -1385,10 +1915,13 @@ accountForm.addEventListener("submit", async event => {
     document.getElementById("confirmPassword").value;
 
   const agreeTerms =
-    document.getElementById("agreeTerms").checked;
+    consentState.terms === true;
+
+  const privacyAgreed =
+    consentState.privacy === true;
 
   const marketingConsent =
-    document.getElementById("marketingConsent").checked;
+    consentState.marketing === true;
 
   const usernameOk =
     /^[A-Za-z0-9._-]{4,40}$/.test(username);
@@ -1414,10 +1947,10 @@ accountForm.addEventListener("submit", async event => {
     return;
   }
 
-  if (!agreeTerms) {
+  if (!agreeTerms || !privacyAgreed) {
     showAlert(
       errorAlert,
-      "กรุณายอมรับข้อกำหนดการใช้งานและประกาศความเป็นส่วนตัว"
+      "กรุณาเปิดอ่านและยอมรับข้อกำหนดการใช้งานกับประกาศความเป็นส่วนตัวให้ครบถ้วน"
     );
     return;
   }
@@ -1435,6 +1968,7 @@ accountForm.addEventListener("submit", async event => {
           username,
           password,
           agree_terms: true,
+          privacy_agreed: true,
           marketing_consent: marketingConsent
         })
       }
@@ -1477,5 +2011,57 @@ sessionStorage.removeItem(STORAGE_KEYS.memberCode);
 sessionStorage.removeItem(STORAGE_KEYS.otpStartedAt);
 showStep(1);
 </script>
+
+<div class="modal-backdrop" id="documentModal" aria-hidden="true">
+  <section class="document-modal"
+           role="dialog"
+           aria-modal="true"
+           aria-labelledby="documentModalTitle">
+    <header class="document-modal-head">
+      <div>
+        <h3 id="documentModalTitle">เอกสาร</h3>
+        <p id="documentModalSubtitle">กรุณาเลื่อนอ่านเนื้อหาจนสุดก่อนยืนยัน</p>
+      </div>
+      <button class="modal-close"
+              id="documentModalClose"
+              type="button"
+              aria-label="ปิด">×</button>
+    </header>
+
+    <div class="document-scroll"
+         id="documentScroll"
+         tabindex="0"></div>
+
+    <footer class="document-modal-foot">
+      <div class="read-progress" aria-hidden="true">
+        <span id="readProgressBar"></span>
+      </div>
+      <div class="read-hint" id="readHint">
+        กรุณาเลื่อนอ่านเอกสารจนถึงด้านล่าง
+      </div>
+
+      <div class="modal-check-row">
+        <input id="documentAcceptCheckbox"
+               type="checkbox"
+               disabled>
+        <label id="documentAcceptLabel"
+               for="documentAcceptCheckbox">
+          ข้าพเจ้าได้อ่านและยอมรับเอกสารฉบับนี้
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn btn-secondary"
+                id="documentCancelButton"
+                type="button">ยกเลิก</button>
+        <button class="btn btn-primary"
+                id="documentAcceptButton"
+                type="button"
+                disabled>ยืนยันและปิดเอกสาร</button>
+      </div>
+    </footer>
+  </section>
+</div>
+
 </body>
 </html>
