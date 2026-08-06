@@ -901,6 +901,33 @@ body.modal-open{overflow:hidden}
   box-shadow:0 14px 28px rgba(23,178,106,.24);
 }
 
+
+/* PASSWORD MATCH FEEDBACK */
+#groupConfirmPassword.match-error .control{
+  color:#b42332;
+  background:#fff0f2;
+  border-color:#f4a7b0;
+  box-shadow:0 0 0 4px rgba(239,61,72,.08);
+}
+#groupConfirmPassword.match-success .control{
+  color:#087443;
+  background:#eaf9f2;
+  border-color:#8ed8b7;
+  box-shadow:0 0 0 4px rgba(23,178,106,.08);
+}
+#confirmPasswordMatchMessage{
+  display:block;
+  min-height:20px;
+  font-size:.67rem;
+  font-weight:700;
+}
+#groupConfirmPassword.match-error #confirmPasswordMatchMessage{
+  color:#b42332;
+}
+#groupConfirmPassword.match-success #confirmPasswordMatchMessage{
+  color:#087443;
+}
+
 </style>
 </head>
 
@@ -1162,6 +1189,7 @@ body.modal-open{overflow:hidden}
                     <input class="control" id="confirmPassword" type="password" autocomplete="new-password" placeholder="กรอก Password อีกครั้ง">
                     <button class="toggle" id="toggleConfirmPassword" type="button" aria-label="แสดงรหัสผ่าน">👁️</button>
                   </div>
+                  <span id="confirmPasswordMatchMessage"></span>
                   <span class="error-text">Password ทั้งสองช่องไม่ตรงกัน</span>
                 </div>
               </div>
@@ -1171,7 +1199,8 @@ body.modal-open{overflow:hidden}
                 <button class="consent-card required-card"
                         id="termsConsentCard"
                         type="button"
-                        data-document="terms">
+                        data-document="terms"
+                        onclick="window.openAdtConsentDocument && window.openAdtConsentDocument('terms')">
                   <span class="consent-status" id="termsStatus">🔒</span>
                   <span class="consent-copy">
                     <strong>ข้อกำหนดการใช้งาน <span class="required">*</span></strong>
@@ -1183,7 +1212,8 @@ body.modal-open{overflow:hidden}
                 <button class="consent-card required-card"
                         id="privacyConsentCard"
                         type="button"
-                        data-document="privacy">
+                        data-document="privacy"
+                        onclick="window.openAdtConsentDocument && window.openAdtConsentDocument('privacy')">
                   <span class="consent-status" id="privacyStatus">🔒</span>
                   <span class="consent-copy">
                     <strong>ประกาศความเป็นส่วนตัว <span class="required">*</span></strong>
@@ -1896,11 +1926,32 @@ function closeDocumentModal() {
   activeDocumentKey = null;
 }
 
-document.querySelectorAll("[data-document=\"terms\"], [data-document=\"privacy\"]").forEach(card => {
-  card.addEventListener("click", () => {
-    openDocumentModal(card.dataset.document);
+const termsConsentCard =
+  document.getElementById("termsConsentCard");
+
+const privacyConsentCard =
+  document.getElementById("privacyConsentCard");
+
+if (termsConsentCard) {
+  termsConsentCard.addEventListener("click", event => {
+    event.preventDefault();
+    if (!documentModal.classList.contains("show")) {
+      openDocumentModal("terms");
+    }
   });
-});
+}
+
+if (privacyConsentCard) {
+  privacyConsentCard.addEventListener("click", event => {
+    event.preventDefault();
+    if (!documentModal.classList.contains("show")) {
+      openDocumentModal("privacy");
+    }
+  });
+}
+
+// เผื่อ Browser หรือ Cache บางกรณี เรียกจาก HTML ได้โดยตรง
+window.openAdtConsentDocument = openDocumentModal;
 
 documentScroll.addEventListener("scroll", () => {
   const maxScroll =
@@ -2087,6 +2138,261 @@ sessionStorage.removeItem(STORAGE_KEYS.registrationId);
 sessionStorage.removeItem(STORAGE_KEYS.memberCode);
 sessionStorage.removeItem(STORAGE_KEYS.otpStartedAt);
 showStep(1);
+</script>
+
+
+<script>
+(function(){
+  "use strict";
+
+  const modal = document.getElementById("documentModal");
+  const modalTitle = document.getElementById("documentModalTitle");
+  const modalSubtitle = document.getElementById("documentModalSubtitle");
+  const scrollBox = document.getElementById("documentScroll");
+  const progressBar = document.getElementById("readProgressBar");
+  const readHint = document.getElementById("readHint");
+  const acceptCheck = document.getElementById("documentAcceptCheckbox");
+  const acceptLabel = document.getElementById("documentAcceptLabel");
+  const acceptButton = document.getElementById("documentAcceptButton");
+  const cancelButton = document.getElementById("documentCancelButton");
+  const closeButton = document.getElementById("documentModalClose");
+  const createButton = document.getElementById("createAccountButton");
+
+  const consent = {
+    terms: false,
+    privacy: false
+  };
+
+  const docs = {
+    terms: {
+      title: "ข้อกำหนดการใช้งาน",
+      subtitle: "กรุณาเลื่อนอ่านจนสุดก่อนยอมรับ",
+      label: "ข้าพเจ้าได้อ่านและยอมรับข้อกำหนดการใช้งานของ ADTSpreadsheet แล้ว",
+      html: `
+        <h4>การใช้งานเว็บไซต์ ADTSpreadsheet</h4>
+        <p>การสมัครสมาชิกและใช้งานเว็บไซต์นี้ ถือว่าท่านรับทราบและยอมรับข้อกำหนดต่อไปนี้</p>
+        <h4>1. การสมัครสมาชิก</h4>
+        <ul>
+          <li>ต้องให้ข้อมูลที่ถูกต้องและเป็นข้อมูลของตนเอง</li>
+          <li>ต้องเก็บ Username และ Password เป็นความลับ</li>
+          <li>ต้องไม่อนุญาตให้บุคคลอื่นใช้บัญชีของตน</li>
+        </ul>
+        <h4>2. การใช้งานระบบ</h4>
+        <ul>
+          <li>ใช้งานเพื่อวัตถุประสงค์ที่ถูกกฎหมาย</li>
+          <li>ไม่เข้าถึงข้อมูลหรือบัญชีของผู้อื่นโดยไม่ได้รับอนุญาต</li>
+          <li>ไม่โจมตี ดัดแปลง หรือรบกวนระบบ</li>
+          <li>ไม่เผยแพร่เนื้อหาที่ผิดกฎหมายหรือสร้างความเสียหายแก่ผู้อื่น</li>
+        </ul>
+        <h4>3. ทรัพย์สินทางปัญญา</h4>
+        <p>บทความ โปรแกรม รูปภาพ วิดีโอ และเอกสาร เป็นทรัพย์สินของ ADTSpreadsheet หรือเจ้าของลิขสิทธิ์ ห้ามคัดลอก ดัดแปลง หรือเผยแพร่โดยไม่ได้รับอนุญาต</p>
+        <h4>4. ความรับผิดชอบของสมาชิก</h4>
+        <p>สมาชิกเป็นผู้รับผิดชอบต่อกิจกรรมทั้งหมดที่เกิดขึ้นภายใต้บัญชีของตน และควรแจ้งทีมงานทันทีเมื่อพบความผิดปกติ</p>
+        <h4>5. การระงับบัญชี</h4>
+        <p>ADTSpreadsheet อาจระงับหรือยกเลิกบัญชีเมื่อพบข้อมูลเท็จ การใช้งานผิดวัตถุประสงค์ การสร้างความเสียหาย หรือการฝ่าฝืนข้อกำหนด</p>
+        <h4>6. การปรับปรุงข้อกำหนด</h4>
+        <p>ADTSpreadsheet อาจปรับปรุงข้อกำหนดตามความเหมาะสม และจะแจ้งเมื่อมีการเปลี่ยนแปลงที่สำคัญ</p>
+        <div class="document-note">การดำเนินการต่อถือว่าท่านยืนยันว่าข้อมูลที่ให้ไว้ถูกต้องและยอมรับข้อกำหนดฉบับนี้</div>
+      `
+    },
+    privacy: {
+      title: "ประกาศความเป็นส่วนตัว",
+      subtitle: "กรุณาเลื่อนอ่านจนสุดก่อนรับทราบ",
+      label: "ข้าพเจ้าได้อ่านและรับทราบประกาศความเป็นส่วนตัวแล้ว",
+      html: `
+        <h4>การเก็บรวบรวมข้อมูลส่วนบุคคล</h4>
+        <p>ADTSpreadsheet ให้ความสำคัญกับข้อมูลส่วนบุคคล และจะใช้ข้อมูลตามวัตถุประสงค์ที่แจ้งไว้</p>
+        <h4>ข้อมูลที่อาจจัดเก็บ</h4>
+        <ul>
+          <li>ชื่อ–นามสกุล ที่อยู่ อีเมล และเบอร์โทรศัพท์</li>
+          <li>LINE User ID ชื่อแสดงผล และรูปโปรไฟล์</li>
+          <li>Username ข้อมูลโปรไฟล์ และประวัติการใช้บริการ</li>
+          <li>ข้อมูลอุปกรณ์ เวลาเข้าใช้งาน และข้อมูลด้านความปลอดภัย</li>
+        </ul>
+        <h4>วัตถุประสงค์ในการใช้ข้อมูล</h4>
+        <ul>
+          <li>สมัครสมาชิก ยืนยันตัวตน และเข้าสู่ระบบ</li>
+          <li>ให้บริการโปรแกรม การอบรม เอกสาร Community และบริการสมาชิก</li>
+          <li>ติดต่อเกี่ยวกับบัญชี ธุรกรรม และการสนับสนุน</li>
+          <li>ปรับปรุงบริการและรักษาความปลอดภัยของระบบ</li>
+        </ul>
+        <h4>การเปิดเผยข้อมูล</h4>
+        <p>ADTSpreadsheet จะไม่เปิดเผยข้อมูลแก่บุคคลภายนอก เว้นแต่ได้รับความยินยอม เป็นไปตามกฎหมาย หรือจำเป็นต่อการให้บริการ</p>
+        <h4>การรักษาความปลอดภัย</h4>
+        <p>ระบบใช้มาตรการที่เหมาะสมเพื่อป้องกันการเข้าถึง ใช้ หรือเปิดเผยข้อมูลโดยไม่ได้รับอนุญาต</p>
+        <h4>สิทธิของสมาชิก</h4>
+        <ul>
+          <li>ขอเข้าถึงและขอสำเนาข้อมูลของตน</li>
+          <li>ขอแก้ไขข้อมูลให้ถูกต้อง</li>
+          <li>ขอปิดบัญชีหรือขอลบข้อมูลตามเงื่อนไขที่กฎหมายกำหนด</li>
+          <li>ถอนความยินยอมในการรับข่าวสารได้ตลอดเวลา</li>
+        </ul>
+        <div class="document-note">ข้อมูลที่จำเป็นต่อบัญชีหรือการให้บริการอาจต้องเก็บรักษาตามระยะเวลาที่เหมาะสมหรือที่กฎหมายกำหนด</div>
+      `
+    }
+  };
+
+  let activeKey = null;
+  let readToEnd = false;
+
+  function updateCreateButton(){
+    const ready = consent.terms && consent.privacy;
+    if (!createButton) return;
+    createButton.disabled = !ready;
+    createButton.classList.toggle("ready", ready);
+  }
+
+  function updateOuterCard(key){
+    const card = document.getElementById(key + "ConsentCard");
+    const status = document.getElementById(key + "Status");
+    const text = document.getElementById(key + "StatusText");
+    if (!card || !status || !text) return;
+
+    card.classList.toggle("accepted", consent[key]);
+    status.textContent = consent[key] ? "✓" : "🔒";
+    text.textContent = consent[key]
+      ? "อ่านและยอมรับแล้ว"
+      : key === "terms"
+        ? "กรุณาเปิดอ่านและยอมรับจากภายในเอกสาร"
+        : "กรุณาเปิดอ่านและรับทราบจากภายในเอกสาร";
+  }
+
+  function refreshAcceptState(){
+    if (!acceptCheck || !acceptButton) return;
+    acceptCheck.disabled = !readToEnd;
+    acceptButton.disabled = !(readToEnd && acceptCheck.checked);
+    if (readHint) {
+      readHint.textContent = readToEnd
+        ? "อ่านถึงด้านล่างแล้ว กรุณาติ๊กยืนยัน"
+        : "กรุณาเลื่อนอ่านเอกสารจนถึงด้านล่าง";
+    }
+  }
+
+  function openModal(key){
+    const data = docs[key];
+    if (!data || !modal) return;
+
+    activeKey = key;
+    readToEnd = false;
+    modalTitle.textContent = data.title;
+    modalSubtitle.textContent = data.subtitle;
+    scrollBox.innerHTML = data.html;
+    acceptLabel.textContent = data.label;
+    acceptCheck.checked = false;
+    acceptCheck.disabled = true;
+    acceptButton.disabled = true;
+    progressBar.style.width = "0%";
+    scrollBox.scrollTop = 0;
+
+    modal.classList.add("show");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("modal-open");
+
+    requestAnimationFrame(function(){
+      if (scrollBox.scrollHeight <= scrollBox.clientHeight + 2) {
+        readToEnd = true;
+        progressBar.style.width = "100%";
+        refreshAcceptState();
+      }
+    });
+  }
+
+  function closeModal(){
+    if (!modal) return;
+    modal.classList.remove("show");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("modal-open");
+    activeKey = null;
+  }
+
+  document.addEventListener("click", function(event){
+    const termsCard = event.target.closest("#termsConsentCard");
+    const privacyCard = event.target.closest("#privacyConsentCard");
+
+    if (termsCard) {
+      event.preventDefault();
+      openModal("terms");
+      return;
+    }
+
+    if (privacyCard) {
+      event.preventDefault();
+      openModal("privacy");
+    }
+  });
+
+  scrollBox.addEventListener("scroll", function(){
+    const max = scrollBox.scrollHeight - scrollBox.clientHeight;
+    const progress = max <= 0 ? 100 : Math.min(100, (scrollBox.scrollTop / max) * 100);
+    progressBar.style.width = progress + "%";
+
+    if (max <= 0 || scrollBox.scrollTop >= max - 8) {
+      readToEnd = true;
+    }
+    refreshAcceptState();
+  });
+
+  acceptCheck.addEventListener("change", refreshAcceptState);
+
+  acceptButton.addEventListener("click", function(){
+    if (!activeKey || !readToEnd || !acceptCheck.checked) return;
+    consent[activeKey] = true;
+
+    // sync with main script state when available
+    if (typeof consentState !== "undefined") {
+      consentState[activeKey] = true;
+    }
+
+    updateOuterCard(activeKey);
+    updateCreateButton();
+    closeModal();
+  });
+
+  cancelButton.addEventListener("click", closeModal);
+  closeButton.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", function(event){
+    if (event.target === modal) closeModal();
+  });
+
+  document.addEventListener("keydown", function(event){
+    if (event.key === "Escape" && modal.classList.contains("show")) {
+      closeModal();
+    }
+  });
+
+  // Password match live feedback
+  const password = document.getElementById("password");
+  const confirmPassword = document.getElementById("confirmPassword");
+  const confirmGroup = document.getElementById("groupConfirmPassword");
+  const matchMessage = document.getElementById("confirmPasswordMatchMessage");
+
+  function updatePasswordMatch(){
+    if (!password || !confirmPassword || !confirmGroup || !matchMessage) return;
+
+    confirmGroup.classList.remove("match-error", "match-success");
+
+    if (!confirmPassword.value) {
+      matchMessage.textContent = "";
+      return;
+    }
+
+    if (password.value === confirmPassword.value) {
+      confirmGroup.classList.add("match-success");
+      matchMessage.textContent = "Password ตรงกัน";
+    } else {
+      confirmGroup.classList.add("match-error");
+      matchMessage.textContent = "Password ทั้งสองช่องไม่ตรงกัน";
+    }
+  }
+
+  password.addEventListener("input", updatePasswordMatch);
+  confirmPassword.addEventListener("input", updatePasswordMatch);
+
+  updateOuterCard("terms");
+  updateOuterCard("privacy");
+  updateCreateButton();
+})();
 </script>
 
 </body>
