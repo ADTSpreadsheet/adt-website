@@ -463,9 +463,8 @@ a{color:inherit;text-decoration:none}
                         </h2>
 
                         <p class="form-desc">
-                            ระบบจะตรวจสอบสิทธิ์จากฐานข้อมูล
-                            และส่งรายละเอียดการเข้าสัมมนาไปยัง LINE
-                            ที่ผูกกับหมายเลขของคุณ
+                            ระบบจะตรวจสอบสิทธิ์ ADT-PILEFiX จากฐานข้อมูลก่อน
+                            โดยขั้นตอนนี้ยังไม่ถือว่าเป็นการยืนยันเข้าร่วมสัมมนา
                         </p>
 
                         <form id="pilefixForm">
@@ -540,7 +539,7 @@ a{color:inherit;text-decoration:none}
 
                             <div class="result-icon success">✓</div>
 
-                            <h2>ยืนยันสิทธิ์เรียบร้อยแล้ว</h2>
+                            <h2>ตรวจสอบสิทธิ์สำเร็จ</h2>
 
                             <div
                                 class="result-name"
@@ -548,21 +547,32 @@ a{color:inherit;text-decoration:none}
                             </div>
 
                             <p>
-                                คุณได้รับสิทธิ์เข้าร่วมสัมมนาฟรี
+                                คุณมีสิทธิ์เข้าร่วมสัมมนาโดยไม่เสียค่าใช้จ่าย
                             </p>
 
                             <div class="result-box">
-                                ระบบได้ส่งรายละเอียดการเข้าสัมมนา
-                                ลิงก์เข้าห้อง และรหัสผ่านไปยัง LINE
-                                ที่ผูกกับ ADT-PILEFiX ของคุณแล้ว
+                                <strong style="display:block;color:#142033;margin-bottom:8px;">
+                                    ยืนยันเข้าร่วมสัมมนาหรือไม่?
+                                </strong>
+
+                                เมื่อกดยืนยัน ระบบจะบันทึกการลงทะเบียนของคุณ
+                                สำหรับรับลิงก์เข้าห้องประชุมและรหัสผ่านทาง LINE
+                                ในขั้นตอนถัดไป
                             </div>
 
-                            <a
-                                class="action-link primary"
-                                style="margin-top:22px;"
-                                href="/seminar/">
-                                เสร็จสิ้น
-                            </a>
+                            <button
+                                class="btn"
+                                id="confirmRegistrationButton"
+                                type="button">
+                                ยืนยันเข้าร่วมสัมมนา
+                            </button>
+
+                            <button
+                                class="retry"
+                                id="cancelRegistrationButton"
+                                type="button">
+                                ยังไม่เข้าร่วมตอนนี้
+                            </button>
 
                         </div>
 
@@ -612,38 +622,6 @@ a{color:inherit;text-decoration:none}
                         </div>
 
                     </div>
-
-
-                    <div class="state" id="stateLineError">
-
-                        <div class="center-state">
-
-                            <div class="result-icon warn">!</div>
-
-                            <h2>พบสิทธิ์ของคุณแล้ว</h2>
-
-                            <p id="lineErrorMessage">
-                                แต่ระบบยังไม่สามารถส่งรายละเอียดผ่าน LINE ได้
-                            </p>
-
-                            <div class="result-box">
-                                กรุณาตรวจสอบว่า ADT Official LINE
-                                ยังอยู่ในรายชื่อเพื่อนและไม่ได้ถูกบล็อก
-                                จากนั้นลองใหม่อีกครั้ง
-                            </div>
-
-                            <button
-                                class="retry"
-                                type="button"
-                                onclick="showState('form')">
-                                ลองอีกครั้ง
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
                     <div class="state" id="stateSystemError">
 
                         <div class="center-state">
@@ -689,7 +667,7 @@ a{color:inherit;text-decoration:none}
 ========================================================= */
 
 const PILEFIX_API_URL =
-    "https://adt-linebot-pilefix.onrender.com/api/seminar/pilefix/register";
+    "https://adt-linebot-pilefix.onrender.com/api/seminar/pilefix/verify";
 
 
 /* =========================================================
@@ -708,9 +686,6 @@ const states = {
 
     notfound:
         document.getElementById("stateNotFound"),
-
-    lineerror:
-        document.getElementById("stateLineError"),
 
     systemerror:
         document.getElementById("stateSystemError")
@@ -759,7 +734,7 @@ function normalizeBookingNumber(value){
 
 
 /* =========================================================
-   SUBMIT -> ยิง API จริง
+   SUBMIT -> ตรวจสอบสิทธิ์เท่านั้น
 ========================================================= */
 
 document
@@ -861,24 +836,6 @@ document
         }
 
 
-        if(
-            data.code === "LINE_USER_ID_NOT_FOUND" ||
-            data.code === "LINE_BOT_BLOCKED" ||
-            data.code === "LINE_SEND_FAILED"
-        ){
-
-            document
-            .getElementById("lineErrorMessage")
-            .textContent =
-                data.message ||
-                "พบสิทธิ์แล้ว แต่ยังไม่สามารถส่งรายละเอียดผ่าน LINE ได้";
-
-            showState("lineerror");
-
-            return;
-        }
-
-
         document
         .getElementById("systemErrorMessage")
         .textContent =
@@ -904,6 +861,40 @@ document
     }
 
 });
+
+
+/* =========================================================
+   CONFIRM BUTTON
+
+   ตอนนี้หน้าเว็บหยุดไว้ที่ขั้นตอน "ถามยืนยัน"
+   ปุ่มนี้ยังไม่ยิง API บันทึกข้อมูล
+   Backend /confirm จะเชื่อมในขั้นตอนถัดไป
+========================================================= */
+
+document
+.getElementById("confirmRegistrationButton")
+.addEventListener("click", function(){
+
+    alert(
+        "ตรวจสอบสิทธิ์เรียบร้อยแล้ว\n\n" +
+        "ขั้นตอนยืนยันการลงทะเบียนจะเชื่อมกับ API /confirm ในขั้นตอนถัดไป"
+    );
+
+});
+
+
+document
+.getElementById("cancelRegistrationButton")
+.addEventListener("click", function(){
+
+    showState("form");
+
+    document
+    .getElementById("bookingNumber")
+    .focus();
+
+});
+
 </script>
 
 </body>
