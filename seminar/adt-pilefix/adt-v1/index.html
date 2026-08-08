@@ -971,6 +971,12 @@
                 ยืนยันรหัส OTP
               </button>
 
+              <div
+                id="otpMessage"
+                class="notice"
+                hidden
+              ></div>
+
 
               <div class="locked-note">
                 ขั้นตอนนี้ใช้เพื่อยืนยันตัวตนเท่านั้น
@@ -1052,6 +1058,10 @@
     const VERIFY_ENDPOINT =
       API_BASE +
       "/api/seminar/adt-v1/verify";
+
+    const VERIFY_OTP_ENDPOINT =
+      API_BASE +
+      "/api/seminar/adt-v1/verify-otp";
 
     const ADT_V1_LINE_KEYWORD =
       "สัมมนา ADTSpreadsheet V1.0";
@@ -1156,8 +1166,14 @@
         "verifyOtpButton"
       );
 
+    const otpMessage =
+      document.getElementById(
+        "otpMessage"
+      );
+
 
     let verifiedMember = null;
+    let verifiedOtpResult = null;
 
 
     // ====================================================
@@ -1481,6 +1497,9 @@
         verifiedMember =
           null;
 
+        verifiedOtpResult =
+          null;
+
         phoneInput.value =
           "";
 
@@ -1502,6 +1521,9 @@
       () => {
 
         verifiedMember =
+          null;
+
+        verifiedOtpResult =
           null;
 
         phoneInput.value =
@@ -1550,15 +1572,26 @@
 
 
     // ====================================================
-    // OTP BUTTON
-    //
-    // รอบนี้ทำเฉพาะ UX ก่อน
-    // Backend OTP จะเชื่อมในขั้นตอนถัดไป
+    // OTP BUTTON -> VERIFY BACKEND
     // ====================================================
 
     verifyOtpButton.addEventListener(
       "click",
-      () => {
+      async () => {
+
+        if (!verifiedMember) {
+
+          alert(
+            "ไม่พบข้อมูลสิทธิ์ที่ผ่านการตรวจสอบ กรุณาเริ่มใหม่อีกครั้ง"
+          );
+
+          showState(
+            searchState
+          );
+
+          return;
+        }
+
 
         const otp =
           String(
@@ -1580,13 +1613,143 @@
         }
 
 
-        alert(
-          "หน้าเว็บพร้อมสำหรับเชื่อมระบบ OTP แล้ว\n\n" +
-          "ขั้นตอนถัดไปคือเชื่อม Backend สำหรับสร้างและตรวจสอบ OTP"
-        );
+        const phone =
+          String(
+            verifiedMember.phone ||
+            phoneInput.value ||
+            ""
+          ).trim();
+
+
+        otpMessage.hidden =
+          true;
+
+        otpMessage.textContent =
+          "";
+
+        verifyOtpButton.disabled =
+          true;
+
+        const oldText =
+          verifyOtpButton.textContent;
+
+        verifyOtpButton.innerHTML =
+          '<span class="loading"></span>' +
+          "กำลังยืนยันตัวตน...";
+
+
+        try {
+
+          const response =
+            await fetch(
+              VERIFY_OTP_ENDPOINT,
+              {
+                method:
+                  "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify({
+                    phone,
+                    otp
+                  })
+              }
+            );
+
+
+          let data = null;
+
+
+          try {
+
+            data =
+              await response.json();
+
+          }
+          catch (jsonError) {
+
+            throw new Error(
+              "INVALID_API_RESPONSE"
+            );
+          }
+
+
+          if (
+            response.ok &&
+            data?.success === true &&
+            data?.verified === true
+          ) {
+
+            verifiedOtpResult =
+              data;
+
+            otpMessage.innerHTML =
+              "<strong>ยืนยันตัวตนสำเร็จ</strong><br>" +
+              "ระบบยืนยัน LINE ของคุณเรียบร้อยแล้ว " +
+              "ขั้นตอนถัดไปคือออกสิทธิ์เข้าร่วมสัมมนาและส่งลิงก์ Zoom";
+
+            otpMessage.hidden =
+              false;
+
+            verifyOtpButton.textContent =
+              "ยืนยันตัวตนสำเร็จ";
+
+            verifyOtpButton.disabled =
+              true;
+
+            lineOtp.disabled =
+              true;
+
+            return;
+          }
+
+
+          otpMessage.innerHTML =
+            "<strong>ยืนยัน OTP ไม่สำเร็จ</strong><br>" +
+            (
+              data?.message ||
+              data?.code ||
+              "กรุณาตรวจสอบ OTP แล้วลองใหม่อีกครั้ง"
+            );
+
+          otpMessage.hidden =
+            false;
+
+        }
+        catch (error) {
+
+          console.error(
+            "ADT V1 OTP verify error:",
+            error
+          );
+
+          otpMessage.innerHTML =
+            "<strong>ไม่สามารถเชื่อมต่อระบบยืนยัน OTP ได้</strong><br>" +
+            "กรุณาลองใหม่อีกครั้ง";
+
+          otpMessage.hidden =
+            false;
+
+        }
+        finally {
+
+          if (!verifiedOtpResult) {
+
+            verifyOtpButton.disabled =
+              false;
+
+            verifyOtpButton.textContent =
+              oldText;
+          }
+        }
 
       }
     );
+
 
   </script>
 
