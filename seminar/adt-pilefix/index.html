@@ -406,6 +406,38 @@ nav>a.current{
     line-height:1.7;
 }
 
+.capacity-box{
+    margin-top:4px;
+    padding:18px 20px;
+    border-radius:16px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+}
+.capacity-head{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    margin-bottom:10px;
+    color:#dce8f7;
+    font-size:.9rem;
+}
+.capacity-head strong{
+    color:var(--yellow);
+}
+.capacity-track{
+    height:12px;
+    overflow:hidden;
+    border-radius:999px;
+    background:rgba(255,255,255,.12);
+}
+.capacity-fill{
+    width:0%;
+    height:100%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#1677ff,#ffc928);
+    transition:width .45s ease;
+}
+
 /* =========================
    REGISTRATION TYPE
 ========================= */
@@ -681,9 +713,8 @@ footer{
 
 <!-- =====================================================
      STEP 3 : REAL-TIME PARTICIPANT COUNT
-     หมายเหตุ:
-     ตอนนี้เป็นค่า Demo
-     ภายหลังค่อยต่อ API / Supabase
+     เชื่อมข้อมูลจริงจาก ADT Website API
+     จำกัดจำนวนผู้เข้าร่วม 100 ที่นั่ง
 ===================================================== -->
 <section class="section section-dark" id="live-count">
     <div class="container">
@@ -692,8 +723,8 @@ footer{
             <p class="kicker">LIVE REGISTRATION</p>
             <h2>จำนวนผู้ลงทะเบียนเข้าร่วมสัมมนา</h2>
             <p>
-                จำนวนผู้ลงทะเบียนจะอัปเดตจากระบบแบบ Real-time
-                เมื่อเชื่อมต่อฐานข้อมูลเรียบร้อยแล้ว
+                จำนวนผู้ลงทะเบียนที่ยืนยันสิทธิ์แล้วจากระบบ
+                อัปเดตอัตโนมัติ โดยจำกัดผู้เข้าร่วม 100 ที่นั่ง
             </p>
         </div>
 
@@ -701,7 +732,7 @@ footer{
 
             <div class="count-circle">
                 <div>
-                    <strong id="totalParticipants">0</strong>
+                    <strong id="totalParticipants">0 / 100</strong>
                     <span>ผู้ลงทะเบียนแล้ว</span>
                 </div>
             </div>
@@ -723,9 +754,18 @@ footer{
                     <strong id="countSpreadsheet">0</strong>
                 </div>
 
-                <p class="live-note">
-                    * Version นี้ยังเป็น Frontend Prototype
-                    ตัวเลขจะเชื่อม Supabase/API ในขั้นตอนถัดไป
+                <div class="capacity-box">
+                    <div class="capacity-head">
+                        <span id="remainingSeats">เหลืออีก 100 ที่นั่ง</span>
+                        <strong id="capacityPercent">0%</strong>
+                    </div>
+                    <div class="capacity-track" aria-label="จำนวนที่นั่งที่ถูกลงทะเบียนแล้ว">
+                        <div class="capacity-fill" id="capacityFill"></div>
+                    </div>
+                </div>
+
+                <p class="live-note" id="liveCountStatus">
+                    กำลังโหลดจำนวนผู้ลงทะเบียนล่าสุด...
                 </p>
 
             </div>
@@ -847,33 +887,141 @@ footer{
 
 <script>
 /* =====================================================
-   LIVE COUNT DEMO
-   ภายหลังเปลี่ยนเป็น fetch() จาก API
+   LIVE REGISTRATION COUNT
+   Source: ADT Website API
 ===================================================== */
+
+const REGISTRATION_STATS_API =
+    "https://adt-website-api.onrender.com/api/seminar/registration-stats";
+
 async function loadLiveRegistrationCount(){
 
-    /*
-    ตัวอย่างสำหรับใช้ภายหลัง:
+    const totalEl =
+        document.getElementById("totalParticipants");
 
-    const response = await fetch(
-        "https://YOUR-API.com/api/seminar/adt-pilefix/count"
-    );
+    const publicEl =
+        document.getElementById("countPublic");
 
-    const data = await response.json();
+    const pilefixEl =
+        document.getElementById("countPilefix");
 
-    document.getElementById("totalParticipants").textContent = data.total;
-    document.getElementById("countPublic").textContent = data.public;
-    document.getElementById("countPilefix").textContent = data.pilefix;
-    document.getElementById("countSpreadsheet").textContent = data.spreadsheet;
-    */
+    const spreadsheetEl =
+        document.getElementById("countSpreadsheet");
 
-    document.getElementById("totalParticipants").textContent = "0";
-    document.getElementById("countPublic").textContent = "0";
-    document.getElementById("countPilefix").textContent = "0";
-    document.getElementById("countSpreadsheet").textContent = "0";
+    const remainingEl =
+        document.getElementById("remainingSeats");
+
+    const percentEl =
+        document.getElementById("capacityPercent");
+
+    const fillEl =
+        document.getElementById("capacityFill");
+
+    const statusEl =
+        document.getElementById("liveCountStatus");
+
+    try {
+
+        const response =
+            await fetch(
+                REGISTRATION_STATS_API,
+                {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    },
+                    cache: "no-store"
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            !response.ok ||
+            data?.success !== true
+        ) {
+            throw new Error(
+                data?.message ||
+                "ไม่สามารถโหลดจำนวนผู้ลงทะเบียนได้"
+            );
+        }
+
+        const capacity =
+            Number(data.capacity) || 100;
+
+        const total =
+            Math.max(
+                Number(data.total) || 0,
+                0
+            );
+
+        const remaining =
+            Math.max(
+                Number(data.remaining) || 0,
+                0
+            );
+
+        const percent =
+            Math.min(
+                Math.max(
+                    Number(data.percent) || 0,
+                    0
+                ),
+                100
+            );
+
+        totalEl.textContent =
+            `${total} / ${capacity}`;
+
+        publicEl.textContent =
+            Number(data.public) || 0;
+
+        pilefixEl.textContent =
+            Number(data.pilefix) || 0;
+
+        spreadsheetEl.textContent =
+            Number(data.adt_v1) || 0;
+
+        remainingEl.textContent =
+            data.full === true
+                ? "ที่นั่งเต็มแล้ว"
+                : `เหลืออีก ${remaining} ที่นั่ง`;
+
+        percentEl.textContent =
+            `${percent}%`;
+
+        fillEl.style.width =
+            `${percent}%`;
+
+        statusEl.textContent =
+            data.full === true
+                ? "ขณะนี้มีผู้ลงทะเบียนครบจำนวน 100 ที่นั่งแล้ว"
+                : "อัปเดตจากระบบลงทะเบียนล่าสุด";
+
+    }
+    catch (error) {
+
+        console.error(
+            "[SEMINAR LIVE COUNT] Error:",
+            error
+        );
+
+        statusEl.textContent =
+            "ไม่สามารถโหลดจำนวนผู้ลงทะเบียนล่าสุดได้ กรุณารีเฟรชหน้าอีกครั้ง";
+    }
 }
 
 loadLiveRegistrationCount();
+
+/*
+    อัปเดตตัวเลขทุก 60 วินาที
+    เพื่อให้หน้าเว็บที่เปิดค้างอยู่เห็นยอดล่าสุด
+*/
+setInterval(
+    loadLiveRegistrationCount,
+    60000
+);
 </script>
 
 </body>
