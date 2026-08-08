@@ -1582,7 +1582,7 @@
     setOcrProgress(
       100,
       "ตรวจสอบสลิปเรียบร้อยแล้ว",
-      "ระบบตรวจสอบข้อมูลสำคัญจากสลิปเรียบร้อย กำลังจัดเตรียมสิทธิ์เข้าร่วมสัมมนา"
+      "กำลังส่งลิงก์ Zoom และรหัสผ่านไปยัง LINE ของคุณ..."
     );
   }
 
@@ -1648,9 +1648,15 @@
       "final-success";
 
     submitMessage.innerHTML =
-      "<strong>✅ ลงทะเบียนและส่งข้อมูลเข้าสัมมนาสำเร็จแล้ว</strong>" +
-      "ระบบได้ส่งลิงก์ Zoom และรหัสผ่านไปยัง LINE ของคุณเรียบร้อยแล้ว<br>" +
+      "<strong>✅ ลงทะเบียนสำเร็จ</strong>" +
+      "ระบบได้ส่งลิงก์ Zoom และรหัสผ่านเข้าร่วมสัมมนาไปยัง LINE ของคุณเรียบร้อยแล้ว<br>" +
       "กรุณาตรวจสอบข้อความใน LINE และเก็บข้อมูลไว้สำหรับวันสัมมนา";
+
+    setOcrProgress(
+      100,
+      "✅ ส่งสิทธิ์เข้าร่วมสัมมนาสำเร็จ",
+      "ระบบได้ส่งลิงก์ Zoom และรหัสผ่านไปยัง LINE ของคุณเรียบร้อยแล้ว"
+    );
 
     submitRegistrationButton.disabled =
       true;
@@ -2288,8 +2294,28 @@
           "กรุณาเปิดหน้านี้ไว้ ระบบจะอัปเดตเมื่อส่งลิงก์ Zoom และรหัสผ่านเข้า LINE สำเร็จ";
 
 
+        const customerAccessStatus =
+          String(
+            result?.customer_access ||
+            ""
+          )
+            .trim()
+            .toUpperCase();
+
+
+        if (
+          customerAccessStatus ===
+            "SENT"
+        ) {
+
+          showFinalSuccess();
+
+          return;
+        }
+
+
         submitRegistrationButton.textContent =
-          "กำลังตรวจสอบรายการ...";
+          "กำลังส่งสิทธิ์ไปยัง LINE...";
 
 
         if (registrationId) {
@@ -2304,7 +2330,7 @@
             รองรับ Backend รุ่นเก่าที่ยังไม่คืน registration_id
           */
           submitMessage.innerHTML +=
-            "<br><br><strong>กรุณาตรวจสอบข้อความใน LINE ของคุณ</strong>";
+            "<br><br><strong>กำลังส่งสิทธิ์ไปยัง LINE กรุณาตรวจสอบข้อความของคุณ</strong>";
         }
 
         return;
