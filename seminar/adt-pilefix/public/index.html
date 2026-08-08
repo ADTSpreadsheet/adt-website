@@ -5,1047 +5,1402 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>ลงทะเบียนบุคคลทั่วไป | สัมมนา ADT-PILEFiX</title>
-
   <meta
     name="description"
     content="ลงทะเบียนบุคคลทั่วไปเพื่อเข้าร่วมสัมมนา การออกแบบฐานรากเสาเข็มเยื้องศูนย์ และ Workshop ADT-PILEFiX"
   >
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;min-height:100%}
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      min-height: 100%;
-    }
-
-    body {
-      font-family:
-        "Prompt",
-        "Noto Sans Thai",
-        Arial,
-        sans-serif;
-
-      color: #071a3b;
-
+    body{
+      font-family:"Prompt","Noto Sans Thai",Arial,sans-serif;
+      color:#071a3b;
       background:
-        radial-gradient(
-          circle at 20% 0%,
-          rgba(22, 119, 255, 0.12),
-          transparent 32%
-        ),
-        linear-gradient(
-          180deg,
-          #edf5ff 0%,
-          #f8fbff 45%,
-          #eef3f9 100%
-        );
+        radial-gradient(circle at 20% 0%,rgba(22,119,255,.12),transparent 32%),
+        linear-gradient(180deg,#edf5ff 0%,#f8fbff 45%,#eef3f9 100%);
     }
 
-    button,
-    input {
-      font: inherit;
+    button,input{font:inherit}
+    button{cursor:pointer}
+
+    .page{
+      min-height:100vh;
+      padding:22px 18px 60px;
     }
 
-    button {
-      cursor: pointer;
+    .topbar{
+      width:min(1040px,100%);
+      margin:0 auto 42px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
     }
 
-    .page {
-      min-height: 100vh;
-      padding: 22px 18px 60px;
+    .brand{
+      display:inline-flex;
+      align-items:center;
+      text-decoration:none;
+      color:#071a3b;
+      font-size:20px;
+      font-weight:800;
     }
 
-    .topbar {
-      width: min(1040px, 100%);
-      margin: 0 auto 42px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+    .brand-mark{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:46px;
+      height:46px;
+      margin-right:10px;
+      border-radius:14px;
+      color:#fff;
+      background:linear-gradient(135deg,#071a3b,#1677ff);
+      font-size:14px;
+      letter-spacing:.5px;
     }
 
-    .brand {
-      display: inline-flex;
-      align-items: center;
-
-      text-decoration: none;
-      color: #071a3b;
-
-      font-size: 20px;
-      font-weight: 800;
+    .back-link{
+      color:#19345d;
+      text-decoration:none;
+      font-size:14px;
+      font-weight:700;
     }
 
-    .brand-mark {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-
-      width: 46px;
-      height: 46px;
-      margin-right: 10px;
-
-      border-radius: 14px;
-
-      color: #ffffff;
-      background:
-        linear-gradient(
-          135deg,
-          #071a3b,
-          #1677ff
-        );
-
-      font-size: 14px;
-      letter-spacing: 0.5px;
+    .shell{
+      width:min(760px,100%);
+      margin:0 auto;
     }
 
-    .back-link {
-      color: #19345d;
-      text-decoration: none;
-
-      font-size: 14px;
-      font-weight: 700;
+    .eyebrow{
+      width:max-content;
+      max-width:100%;
+      margin:0 auto 18px;
+      padding:9px 18px;
+      border:1px solid #bfd8ff;
+      border-radius:999px;
+      color:#1677ff;
+      background:rgba(255,255,255,.56);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.6px;
     }
 
-    .shell {
-      width: min(760px, 100%);
-      margin: 0 auto;
+    .card{
+      overflow:hidden;
+      border:1px solid #d8e3f0;
+      border-radius:28px;
+      background:#fff;
+      box-shadow:0 24px 70px rgba(7,26,59,.12);
     }
 
-    .eyebrow {
-      width: max-content;
-      max-width: 100%;
-      margin: 0 auto 18px;
-      padding: 9px 18px;
-
-      border: 1px solid #bfd8ff;
-      border-radius: 999px;
-
-      color: #1677ff;
-      background: rgba(255, 255, 255, 0.56);
-
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.6px;
+    .hero{
+      padding:36px 34px 32px;
+      text-align:center;
+      color:#fff;
+      background:linear-gradient(120deg,#061a3a 0%,#0a2e61 55%,#1559a9 100%);
     }
 
-    .card {
-      overflow: hidden;
-
-      border: 1px solid #d8e3f0;
-      border-radius: 28px;
-
-      background: #ffffff;
-
-      box-shadow:
-        0 24px 70px rgba(7, 26, 59, 0.12);
+    .hero-icon{
+      width:66px;
+      height:66px;
+      margin:0 auto 18px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:18px;
+      background:rgba(255,255,255,.10);
+      color:#ffd129;
+      font-size:18px;
+      font-weight:900;
     }
 
-    .hero {
-      padding: 36px 34px 32px;
-
-      text-align: center;
-      color: #ffffff;
-
-      background:
-        linear-gradient(
-          120deg,
-          #061a3a 0%,
-          #0a2e61 55%,
-          #1559a9 100%
-        );
+    .hero h1{
+      margin:0;
+      font-size:clamp(28px,5vw,44px);
+      line-height:1.2;
+      font-weight:900;
     }
 
-    .hero-icon {
-      width: 66px;
-      height: 66px;
-      margin: 0 auto 18px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 18px;
-
-      background: rgba(255, 255, 255, 0.10);
-
-      color: #ffd129;
-      font-size: 18px;
-      font-weight: 900;
+    .hero p{
+      max-width:600px;
+      margin:13px auto 0;
+      color:rgba(255,255,255,.90);
+      font-size:15px;
+      line-height:1.75;
     }
 
-    .hero h1 {
-      margin: 0;
-
-      font-size: clamp(28px, 5vw, 44px);
-      line-height: 1.2;
-      font-weight: 900;
+    .price-badge{
+      display:inline-flex;
+      margin-top:20px;
+      padding:9px 17px;
+      border-radius:999px;
+      color:#5e3d00;
+      background:#ffd95a;
+      font-size:14px;
+      font-weight:900;
     }
 
-    .hero p {
-      max-width: 600px;
-      margin: 13px auto 0;
+    .body{padding:38px 34px 34px}
 
-      color: rgba(255, 255, 255, 0.90);
+    .state{display:none}
+    .state.active{display:block}
 
-      font-size: 15px;
-      line-height: 1.75;
+    .state-icon{
+      width:70px;
+      height:70px;
+      margin:0 auto 20px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      font-size:34px;
+      font-weight:900;
     }
 
-    .price-badge {
-      display: inline-flex;
-      margin-top: 20px;
-      padding: 9px 17px;
+    .state-icon.form{color:#1265dc;background:#e5f0ff}
+    .state-icon.success{color:#078651;background:#d9f8e9}
+    .state-icon.payment{color:#a26100;background:#fff0bf}
+    .state-icon.line{color:#0b8f55;background:#d8f7e8}
 
-      border-radius: 999px;
-
-      color: #5e3d00;
-      background: #ffd95a;
-
-      font-size: 14px;
-      font-weight: 900;
+    .state h2{
+      margin:0;
+      text-align:center;
+      color:#071a3b;
+      font-size:25px;
+      line-height:1.35;
+      font-weight:900;
     }
 
-    .body {
-      padding: 38px 34px 34px;
+    .state-subtitle{
+      max-width:600px;
+      margin:10px auto 28px;
+      text-align:center;
+      color:#6c7b91;
+      font-size:14px;
+      line-height:1.75;
     }
 
-    .state {
-      display: none;
+    .field{margin-top:20px}
+
+    .field label{
+      display:block;
+      margin-bottom:9px;
+      color:#19345d;
+      font-size:14px;
+      font-weight:800;
     }
 
-    .state.active {
-      display: block;
+    .field input{
+      width:100%;
+      height:56px;
+      padding:0 18px;
+      border:1px solid #cbd9e9;
+      border-radius:14px;
+      outline:none;
+      color:#071a3b;
+      background:#fff;
+      font-size:16px;
     }
 
-    .state-icon {
-      width: 70px;
-      height: 70px;
-      margin: 0 auto 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      border-radius: 50%;
-
-      font-size: 34px;
-      font-weight: 900;
+    .field input:focus{
+      border-color:#1677ff;
+      box-shadow:0 0 0 4px rgba(22,119,255,.10);
     }
 
-    .state-icon.form {
-      color: #1265dc;
-      background: #e5f0ff;
+    .hint{
+      margin-top:8px;
+      color:#8793a5;
+      font-size:12px;
+      line-height:1.6;
     }
 
-    .state-icon.success {
-      color: #078651;
-      background: #d9f8e9;
+    .btn{
+      width:100%;
+      min-height:54px;
+      margin-top:20px;
+      padding:13px 18px;
+      border:0;
+      border-radius:14px;
+      font-size:15px;
+      font-weight:900;
     }
 
-    .state h2 {
-      margin: 0;
-
-      text-align: center;
-
-      color: #071a3b;
-
-      font-size: 25px;
-      line-height: 1.35;
-      font-weight: 900;
+    .btn-primary{
+      color:#fff;
+      background:#1677ff;
+      box-shadow:0 12px 28px rgba(22,119,255,.22);
     }
 
-    .state-subtitle {
-      max-width: 600px;
-      margin: 10px auto 28px;
+    .btn-primary:hover{background:#0869eb}
 
-      text-align: center;
-
-      color: #6c7b91;
-
-      font-size: 14px;
-      line-height: 1.75;
+    .btn-secondary{
+      border:1px solid #cbd9e9;
+      color:#071a3b;
+      background:#fff;
     }
 
-    .field {
-      margin-top: 20px;
+    .btn-green{
+      color:#fff;
+      background:#12a763;
+      box-shadow:0 12px 28px rgba(18,167,99,.18);
     }
 
-    .field label {
-      display: block;
-      margin-bottom: 9px;
-
-      color: #19345d;
-
-      font-size: 14px;
-      font-weight: 800;
+    .btn:disabled{
+      cursor:not-allowed;
+      opacity:.55;
     }
 
-    .field input {
-      width: 100%;
-      height: 56px;
-      padding: 0 18px;
-
-      border: 1px solid #cbd9e9;
-      border-radius: 14px;
-      outline: none;
-
-      color: #071a3b;
-      background: #ffffff;
-
-      font-size: 16px;
+    .summary-box{
+      margin-top:26px;
+      padding:22px;
+      border-radius:18px;
+      background:#f3f7fc;
     }
 
-    .field input:focus {
-      border-color: #1677ff;
-
-      box-shadow:
-        0 0 0 4px rgba(22, 119, 255, 0.10);
+    .summary-row{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      padding:11px 0;
+      border-bottom:1px solid #e0e8f2;
     }
 
-    .hint {
-      margin-top: 8px;
+    .summary-row:last-child{border-bottom:0}
 
-      color: #8793a5;
-
-      font-size: 12px;
-      line-height: 1.6;
+    .summary-label{
+      color:#77859a;
+      font-size:13px;
+      font-weight:700;
     }
 
-    .btn {
-      width: 100%;
-      min-height: 54px;
-      margin-top: 20px;
-      padding: 13px 18px;
-
-      border: 0;
-      border-radius: 14px;
-
-      font-size: 15px;
-      font-weight: 900;
+    .summary-value{
+      text-align:right;
+      color:#071a3b;
+      font-size:14px;
+      font-weight:900;
     }
 
-    .btn-primary {
-      color: #ffffff;
-      background: #1677ff;
-
-      box-shadow:
-        0 12px 28px rgba(22, 119, 255, 0.22);
+    .next-box,
+    .notice{
+      margin-top:22px;
+      padding:15px 17px;
+      border-radius:14px;
+      font-size:12px;
+      line-height:1.7;
     }
 
-    .btn-primary:hover {
-      background: #0869eb;
+    .next-box{
+      padding:22px;
+      border:1px solid #f0df9a;
+      text-align:center;
+      background:#fff9df;
     }
 
-    .btn-secondary {
-      border: 1px solid #cbd9e9;
-
-      color: #071a3b;
-      background: #ffffff;
+    .next-box strong{
+      display:block;
+      margin-bottom:8px;
+      color:#715000;
+      font-size:16px;
     }
 
-    .summary-box {
-      margin-top: 26px;
-      padding: 22px;
+    .next-box span{color:#806d34;font-size:13px;line-height:1.75}
 
-      border-radius: 18px;
-
-      background: #f3f7fc;
+    .notice{
+      color:#51647d;
+      background:#f1f6fc;
     }
 
-    .summary-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-
-      padding: 11px 0;
-
-      border-bottom: 1px solid #e0e8f2;
+    .error-message{
+      margin-top:12px;
+      text-align:center;
+      color:#bd2a20;
+      font-size:13px;
+      line-height:1.7;
     }
 
-    .summary-row:last-child {
-      border-bottom: 0;
+    /* PAYMENT */
+    .bank-box{
+      margin-top:24px;
+      padding:22px;
+      border:1px solid #bfe9c9;
+      border-radius:18px;
+      background:#effcf3;
     }
 
-    .summary-label {
-      color: #77859a;
-
-      font-size: 13px;
-      font-weight: 700;
+    .bank-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:16px;
     }
 
-    .summary-value {
-      text-align: right;
-
-      color: #071a3b;
-
-      font-size: 14px;
-      font-weight: 900;
+    .bank-title{
+      color:#0b7a42;
+      font-size:18px;
+      font-weight:900;
     }
 
-    .next-box {
-      margin-top: 22px;
-      padding: 22px;
-
-      border: 1px solid #f0df9a;
-      border-radius: 18px;
-
-      text-align: center;
-
-      background: #fff9df;
+    .bank-name{
+      text-align:right;
+      color:#0b7a42;
+      font-size:14px;
+      font-weight:900;
     }
 
-    .next-box strong {
-      display: block;
-      margin-bottom: 8px;
-
-      color: #715000;
-
-      font-size: 16px;
+    .bank-sub{
+      display:block;
+      margin-top:2px;
+      color:#6f8797;
+      font-size:11px;
+      font-weight:500;
     }
 
-    .next-box span {
-      color: #806d34;
-
-      font-size: 13px;
-      line-height: 1.75;
+    .bank-row{
+      display:grid;
+      grid-template-columns:150px 1fr auto;
+      gap:14px;
+      align-items:center;
+      padding:14px 0;
+      border-top:1px solid #d7eee0;
     }
 
-    .notice {
-      margin-top: 22px;
-      padding: 15px 17px;
+    .bank-row:first-of-type{border-top:0}
 
-      border-radius: 14px;
-
-      color: #51647d;
-      background: #f1f6fc;
-
-      font-size: 12px;
-      line-height: 1.7;
+    .bank-label{
+      color:#607284;
+      font-size:13px;
     }
 
-    .error-message {
-      margin-top: 12px;
-
-      text-align: center;
-
-      color: #bd2a20;
-
-      font-size: 13px;
-      line-height: 1.7;
+    .bank-value{
+      text-align:right;
+      color:#071a3b;
+      font-size:14px;
+      font-weight:900;
     }
 
-    @media (max-width: 640px) {
-      .page {
-        padding: 16px 12px 40px;
-      }
+    .copy-btn{
+      min-width:70px;
+      height:34px;
+      padding:0 10px;
+      border:1px solid #28ba6e;
+      border-radius:9px;
+      color:#0c914e;
+      background:#fff;
+      font-size:12px;
+      font-weight:900;
+    }
 
-      .topbar {
-        margin-bottom: 28px;
-      }
+    .slip-box{
+      margin-top:18px;
+      padding:22px;
+      border:1px dashed #80b7ff;
+      border-radius:18px;
+      text-align:center;
+      background:#f8fbff;
+    }
 
-      .brand {
-        font-size: 16px;
-      }
+    .slip-title{
+      margin-bottom:6px;
+      color:#071a3b;
+      font-size:16px;
+      font-weight:900;
+    }
 
-      .brand-mark {
-        width: 40px;
-        height: 40px;
-      }
+    .slip-sub{
+      color:#77859a;
+      font-size:12px;
+      line-height:1.7;
+    }
 
-      .back-link {
-        font-size: 12px;
-      }
+    .slip-box input[type="file"]{
+      width:100%;
+      height:auto;
+      margin-top:16px;
+      padding:12px;
+      border:1px solid #d4e2f1;
+      border-radius:12px;
+      background:#fff;
+    }
 
-      .hero {
-        padding: 30px 20px 28px;
-      }
+    .file-ok{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:10px;
+      color:#087b47;
+      background:#ddf8e9;
+      font-size:12px;
+      font-weight:800;
+    }
 
-      .body {
-        padding: 30px 20px 24px;
-      }
+    /* LINE */
+    .line-box{
+      margin-top:24px;
+      padding:24px;
+      border:1px solid #cfe9dc;
+      border-radius:18px;
+      text-align:center;
+      background:#f4fcf8;
+    }
 
-      .card {
-        border-radius: 22px;
-      }
+    .line-box h3{
+      margin:0;
+      color:#087b47;
+      font-size:20px;
+    }
 
-      .state h2 {
-        font-size: 22px;
-      }
+    .line-box p{
+      margin:10px auto 18px;
+      max-width:520px;
+      color:#66798c;
+      font-size:13px;
+      line-height:1.75;
+    }
 
-      .summary-row {
-        flex-direction: column;
-        gap: 4px;
-      }
+    .qr-wrap{
+      width:230px;
+      max-width:100%;
+      margin:0 auto;
+      padding:12px;
+      border:1px solid #dfe7ef;
+      border-radius:18px;
+      background:#fff;
+      box-shadow:0 10px 30px rgba(7,26,59,.08);
+    }
 
-      .summary-value {
-        text-align: left;
-      }
+    .qr-wrap img{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+
+    .otp-box{
+      margin-top:20px;
+    }
+
+    .otp-box input{
+      width:100%;
+      height:58px;
+      text-align:center;
+      letter-spacing:.18em;
+      font-size:22px;
+      font-weight:900;
+    }
+
+    .locked-note{
+      margin-top:14px;
+      color:#7a8799;
+      font-size:12px;
+      line-height:1.65;
+    }
+
+    @media (max-width:640px){
+      .page{padding:16px 12px 40px}
+      .topbar{margin-bottom:28px}
+      .brand{font-size:16px}
+      .brand-mark{width:40px;height:40px}
+      .back-link{font-size:12px}
+      .hero{padding:30px 20px 28px}
+      .body{padding:30px 20px 24px}
+      .card{border-radius:22px}
+      .state h2{font-size:22px}
+      .summary-row{flex-direction:column;gap:4px}
+      .summary-value{text-align:left}
+      .bank-row{grid-template-columns:1fr;gap:6px}
+      .bank-value{text-align:left}
+      .copy-btn{width:max-content}
+      .bank-head{align-items:flex-start}
     }
   </style>
 </head>
 
 <body>
 
-  <main class="page">
+<main class="page">
 
-    <header class="topbar">
+  <header class="topbar">
+    <a class="brand" href="/">
+      <span class="brand-mark">ADT</span>
+      ADTSpreadsheet
+    </a>
 
-      <a
-        class="brand"
-        href="/"
-      >
-        <span class="brand-mark">ADT</span>
-        ADTSpreadsheet
-      </a>
-
-      <a
-        class="back-link"
-        href="/seminar/adt-pilefix/"
-      >
-        ← กลับไปเลือกช่องทาง
-      </a>
-
-    </header>
+    <a class="back-link" href="/seminar/adt-pilefix/">
+      ← กลับไปเลือกช่องทาง
+    </a>
+  </header>
 
 
-    <section class="shell">
+  <section class="shell">
 
-      <div class="eyebrow">
-        PUBLIC REGISTRATION
+    <div class="eyebrow">PUBLIC REGISTRATION</div>
+
+    <article class="card">
+
+      <div class="hero">
+        <div class="hero-icon">01</div>
+
+        <h1>ลงทะเบียนบุคคลทั่วไป</h1>
+
+        <p>
+          สำหรับผู้ที่สนใจเข้าร่วมสัมมนา
+          การออกแบบฐานรากเสาเข็มเยื้องศูนย์
+          และ Workshop ADT-PILEFiX
+        </p>
+
+        <div class="price-badge">ค่าสัมมนา 399 บาท</div>
       </div>
 
 
-      <article class="card">
+      <div class="body">
 
-        <div class="hero">
+        <!-- ==================================================
+             STEP 1 : REGISTRATION FORM
+        =================================================== -->
+        <section id="formState" class="state active">
 
-          <div class="hero-icon">
-            01
-          </div>
+          <div class="state-icon form">✓</div>
 
-          <h1>
-            ลงทะเบียนบุคคลทั่วไป
-          </h1>
+          <h2>กรอกข้อมูลลงทะเบียน</h2>
 
-          <p>
-            สำหรับผู้ที่สนใจเข้าร่วมสัมมนา
-            การออกแบบฐานรากเสาเข็มเยื้องศูนย์
-            และ Workshop ADT-PILEFiX
+          <p class="state-subtitle">
+            ใช้ข้อมูลเพียง 3 รายการ
+            เพื่อดำเนินการชำระค่าสัมมนา
           </p>
 
-          <div class="price-badge">
-            ค่าสัมมนา 399 บาท
+          <form id="publicForm">
+
+            <div class="field">
+              <label for="firstName">ชื่อ</label>
+              <input
+                id="firstName"
+                name="first_name"
+                type="text"
+                autocomplete="given-name"
+                maxlength="100"
+                placeholder="กรอกชื่อ"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label for="lastName">นามสกุล</label>
+              <input
+                id="lastName"
+                name="last_name"
+                type="text"
+                autocomplete="family-name"
+                maxlength="100"
+                placeholder="กรอกนามสกุล"
+                required
+              >
+            </div>
+
+            <div class="field">
+              <label for="phone">เบอร์โทรศัพท์</label>
+              <input
+                id="phone"
+                name="phone"
+                type="tel"
+                inputmode="numeric"
+                autocomplete="tel"
+                maxlength="15"
+                placeholder="เช่น 0812345678"
+                required
+              >
+
+              <div class="hint">
+                ใช้เบอร์โทรศัพท์จริงสำหรับอ้างอิงรายการลงทะเบียน
+              </div>
+            </div>
+
+            <button class="btn btn-primary" type="submit">
+              ดำเนินการต่อ
+            </button>
+
+            <div id="formError" class="error-message" hidden></div>
+
+          </form>
+
+          <div class="notice">
+            ระบบยังไม่บันทึกเป็นผู้ลงทะเบียนสำเร็จในขั้นตอนนี้
+            การลงทะเบียนจะสมบูรณ์หลังยืนยันตัวตนผ่าน LINE สำเร็จ
           </div>
 
-        </div>
+        </section>
 
 
-        <div class="body">
+        <!-- ==================================================
+             STEP 2 : REVIEW
+        =================================================== -->
+        <section id="reviewState" class="state">
 
-          <!-- ==========================================
-               STEP 1 : FORM
-          =========================================== -->
+          <div class="state-icon success">✓</div>
 
-          <section
-            id="formState"
-            class="state active"
-          >
+          <h2>ตรวจสอบข้อมูล</h2>
 
-            <div class="state-icon form">
-              ✓
+          <p class="state-subtitle">
+            กรุณาตรวจสอบชื่อและเบอร์โทรศัพท์
+            ก่อนเข้าสู่ขั้นตอนชำระเงิน
+          </p>
+
+          <div class="summary-box">
+
+            <div class="summary-row">
+              <span class="summary-label">ชื่อ</span>
+              <span id="summaryFirstName" class="summary-value">-</span>
             </div>
 
-            <h2>
-              กรอกข้อมูลลงทะเบียน
-            </h2>
+            <div class="summary-row">
+              <span class="summary-label">นามสกุล</span>
+              <span id="summaryLastName" class="summary-value">-</span>
+            </div>
 
-            <p class="state-subtitle">
-              ใช้ข้อมูลเพียง 3 รายการ
-              เพื่อดำเนินการลงทะเบียนและชำระค่าสัมมนา
-            </p>
+            <div class="summary-row">
+              <span class="summary-label">เบอร์โทร</span>
+              <span id="summaryPhone" class="summary-value">-</span>
+            </div>
+
+            <div class="summary-row">
+              <span class="summary-label">ค่าสัมมนา</span>
+              <span class="summary-value">399 บาท</span>
+            </div>
+
+          </div>
+
+          <button
+            id="paymentButton"
+            class="btn btn-primary"
+            type="button"
+          >
+            ดำเนินการชำระเงิน 399 บาท
+          </button>
+
+          <button
+            id="editButton"
+            class="btn btn-secondary"
+            type="button"
+          >
+            แก้ไขข้อมูล
+          </button>
+
+        </section>
 
 
-            <form id="publicForm">
+        <!-- ==================================================
+             STEP 3 : PAYMENT + SLIP
+        =================================================== -->
+        <section id="paymentState" class="state">
 
-              <div class="field">
+          <div class="state-icon payment">฿</div>
 
-                <label for="firstName">
-                  ชื่อ
-                </label>
+          <h2>ชำระค่าสัมมนา 399 บาท</h2>
 
-                <input
-                  id="firstName"
-                  name="first_name"
-                  type="text"
-                  autocomplete="given-name"
-                  maxlength="100"
-                  placeholder="กรอกชื่อ"
-                  required
-                >
+          <p class="state-subtitle">
+            กรุณาโอนเงินเข้าบัญชีบริษัท
+            แล้วแนบหลักฐานการโอนเพื่อดำเนินการต่อ
+          </p>
 
+
+          <div class="bank-box">
+
+            <div class="bank-head">
+              <div class="bank-title">
+                บัญชีสำหรับโอน
+                <span class="bank-sub">Kasikorn Bank Transfer Account</span>
               </div>
 
-
-              <div class="field">
-
-                <label for="lastName">
-                  นามสกุล
-                </label>
-
-                <input
-                  id="lastName"
-                  name="last_name"
-                  type="text"
-                  autocomplete="family-name"
-                  maxlength="100"
-                  placeholder="กรอกนามสกุล"
-                  required
-                >
-
+              <div class="bank-name">
+                ธนาคารกสิกรไทย
+                <span class="bank-sub">KASIKORNBANK</span>
               </div>
+            </div>
 
 
-              <div class="field">
-
-                <label for="phone">
-                  เบอร์โทรศัพท์
-                </label>
-
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  inputmode="numeric"
-                  autocomplete="tel"
-                  maxlength="15"
-                  placeholder="เช่น 0812345678"
-                  required
-                >
-
-                <div class="hint">
-                  ใช้เบอร์โทรศัพท์จริง
-                  สำหรับอ้างอิงรายการลงทะเบียน
-                </div>
-
-              </div>
+            <div class="bank-row">
+              <div class="bank-label">ธนาคาร</div>
+              <div class="bank-value">กสิกรไทย</div>
+              <div></div>
+            </div>
 
 
-              <button
-                class="btn btn-primary"
-                type="submit"
-              >
-                ดำเนินการต่อ
-              </button>
-
+            <div class="bank-row">
+              <div class="bank-label">เลขที่บัญชี</div>
 
               <div
-                id="formError"
-                class="error-message"
-                hidden
-              ></div>
+                id="bankAccount"
+                class="bank-value"
+              >
+                226-2-59393-5
+              </div>
 
-            </form>
-
-
-            <div class="notice">
-              ขั้นตอนถัดไปจะเป็นการชำระค่าสัมมนา 399 บาท
-              แนบสลิป และยืนยันตัวตนผ่าน LINE
-              ก่อนรับสิทธิ์เข้าห้องสัมมนา
+              <button
+                class="copy-btn"
+                type="button"
+                data-copy="226-2-59393-5"
+              >
+                คัดลอก
+              </button>
             </div>
 
-          </section>
+
+            <div class="bank-row">
+              <div class="bank-label">ชื่อบัญชี</div>
+
+              <div
+                id="bankAccountName"
+                class="bank-value"
+              >
+                บจก. เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+              </div>
+
+              <button
+                class="copy-btn"
+                type="button"
+                data-copy="บจก. เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด"
+              >
+                คัดลอก
+              </button>
+            </div>
 
 
-          <!-- ==========================================
-               STEP 2 : REVIEW
-          =========================================== -->
+            <div class="bank-row">
+              <div class="bank-label">ยอดชำระ</div>
+              <div class="bank-value">399 บาท</div>
+              <div></div>
+            </div>
 
-          <section
-            id="reviewState"
-            class="state"
+          </div>
+
+
+          <div class="slip-box">
+
+            <div class="slip-title">
+              แนบสลิปการโอน
+            </div>
+
+            <div class="slip-sub">
+              รองรับ JPG, JPEG, PNG และ PDF
+            </div>
+
+            <input
+              id="slipFile"
+              type="file"
+              accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf"
+            >
+
+            <div
+              id="fileReady"
+              class="file-ok"
+              hidden
+            ></div>
+
+          </div>
+
+
+          <button
+            id="slipContinueButton"
+            class="btn btn-green"
+            type="button"
+            disabled
           >
+            แนบสลิปเรียบร้อย — ดำเนินการยืนยัน LINE
+          </button>
 
-            <div class="state-icon success">
-              ✓
-            </div>
 
-            <h2>
-              ตรวจสอบข้อมูลก่อนดำเนินการต่อ
-            </h2>
+          <button
+            id="backToReviewButton"
+            class="btn btn-secondary"
+            type="button"
+          >
+            กลับไปตรวจสอบข้อมูล
+          </button>
 
-            <p class="state-subtitle">
-              กรุณาตรวจสอบชื่อและเบอร์โทรศัพท์
-              ก่อนเข้าสู่ขั้นตอนชำระเงิน
+          <div class="notice">
+            ขั้นตอนนี้เป็นการเตรียมหลักฐานการชำระเงิน
+            ระบบจะบันทึกผู้ลงทะเบียนจริงหลัง LINE OTP ผ่านเท่านั้น
+          </div>
+
+        </section>
+
+
+        <!-- ==================================================
+             STEP 4 : LINE VERIFY
+        =================================================== -->
+        <section id="lineState" class="state">
+
+          <div class="state-icon line">✓</div>
+
+          <h2>ยืนยันตัวตนผ่าน LINE</h2>
+
+          <p class="state-subtitle">
+            สแกน QR Code เพื่อ Add LINE Bot
+            จากนั้นรับรหัสยืนยันจาก Bot
+            แล้วนำรหัสมากรอกด้านล่าง
+          </p>
+
+
+          <div class="line-box">
+
+            <h3>ADT LINE Official</h3>
+
+            <p>
+              สแกน QR Code ด้านล่างเพื่อ Add LINE
+              และรับรหัสสำหรับยืนยันตัวตน
             </p>
 
+            <div class="qr-wrap">
+              <img
+                src="/assets/line/line-oa-qrcode.png"
+                alt="QR Code สำหรับ Add LINE Official Account ของ ADT"
+              >
+            </div>
 
-            <div class="summary-box">
 
-              <div class="summary-row">
-                <span class="summary-label">
-                  ชื่อ
-                </span>
+            <div class="otp-box">
 
-                <span
-                  id="summaryFirstName"
-                  class="summary-value"
+              <div class="field">
+                <label for="lineOtp">
+                  รหัสยืนยันจาก LINE
+                </label>
+
+                <input
+                  id="lineOtp"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="one-time-code"
+                  maxlength="10"
+                  placeholder="กรอกรหัสที่ได้รับจาก LINE"
                 >
-                  -
-                </span>
-              </div>
-
-
-              <div class="summary-row">
-                <span class="summary-label">
-                  นามสกุล
-                </span>
-
-                <span
-                  id="summaryLastName"
-                  class="summary-value"
-                >
-                  -
-                </span>
-              </div>
-
-
-              <div class="summary-row">
-                <span class="summary-label">
-                  เบอร์โทร
-                </span>
-
-                <span
-                  id="summaryPhone"
-                  class="summary-value"
-                >
-                  -
-                </span>
-              </div>
-
-
-              <div class="summary-row">
-                <span class="summary-label">
-                  ค่าสัมมนา
-                </span>
-
-                <span class="summary-value">
-                  399 บาท
-                </span>
               </div>
 
             </div>
 
 
-            <div class="next-box">
-
-              <strong>
-                ขั้นตอนถัดไป
-              </strong>
-
-              <span>
-                ชำระค่าสัมมนา 399 บาท
-                → แนบสลิป
-                → ยืนยันตัวตนผ่าน LINE
-                → รับสิทธิ์เข้าร่วมสัมมนา
-              </span>
-
-            </div>
-
-
-            <!--
-              ปุ่มนี้ยังไม่ยิง API
-              รอบถัดไปค่อยเชื่อมระบบ:
-              - สร้าง Registration
-              - Payment
-              - Slip Upload
-              - OCR
-            -->
             <button
-              id="paymentButton"
+              id="submitRegistrationButton"
               class="btn btn-primary"
               type="button"
             >
-              ดำเนินการชำระเงิน 399 บาท
-            </button>
-
-
-            <button
-              id="editButton"
-              class="btn btn-secondary"
-              type="button"
-            >
-              แก้ไขข้อมูล
+              Submit ยืนยันการลงทะเบียน
             </button>
 
 
             <div
-              id="nextMessage"
+              id="submitMessage"
               class="notice"
               hidden
             ></div>
 
-          </section>
+            <div class="locked-note">
+              เมื่อกด Submit ระบบจะตรวจ LINE OTP ก่อน
+              จากนั้นจึงบันทึกข้อมูลผู้ลงทะเบียน
+              ผูก LINE User ID และออกสิทธิ์เข้าร่วมสัมมนา
+            </div>
 
-        </div>
+          </div>
 
-      </article>
+        </section>
 
-    </section>
-
-  </main>
-
-
-  <script>
-
-    const publicForm =
-      document.getElementById(
-        "publicForm"
-      );
-
-    const formState =
-      document.getElementById(
-        "formState"
-      );
-
-    const reviewState =
-      document.getElementById(
-        "reviewState"
-      );
-
-    const firstNameInput =
-      document.getElementById(
-        "firstName"
-      );
-
-    const lastNameInput =
-      document.getElementById(
-        "lastName"
-      );
-
-    const phoneInput =
-      document.getElementById(
-        "phone"
-      );
-
-    const formError =
-      document.getElementById(
-        "formError"
-      );
-
-    const summaryFirstName =
-      document.getElementById(
-        "summaryFirstName"
-      );
-
-    const summaryLastName =
-      document.getElementById(
-        "summaryLastName"
-      );
-
-    const summaryPhone =
-      document.getElementById(
-        "summaryPhone"
-      );
-
-    const editButton =
-      document.getElementById(
-        "editButton"
-      );
-
-    const paymentButton =
-      document.getElementById(
-        "paymentButton"
-      );
-
-    const nextMessage =
-      document.getElementById(
-        "nextMessage"
-      );
+      </div>
+    </article>
+  </section>
+</main>
 
 
-    function showState(target) {
+<script>
+  // ======================================================
+  // FRONTEND FLOW ONLY
+  //
+  // STEP 1 -> REVIEW
+  // STEP 2 -> PAYMENT
+  // STEP 3 -> SLIP SELECTED
+  // STEP 4 -> LINE OTP
+  //
+  // IMPORTANT:
+  // ยังไม่บันทึก Database ในไฟล์นี้
+  // จุดบันทึกจริงต้องเกิดหลัง API ตรวจ LINE OTP สำเร็จ
+  // ======================================================
 
-      [
-        formState,
-        reviewState
-      ].forEach((state) => {
 
-        state.classList.remove(
-          "active"
-        );
+  const publicForm =
+    document.getElementById("publicForm");
 
-      });
+  const formState =
+    document.getElementById("formState");
 
-      target.classList.add(
-        "active"
-      );
+  const reviewState =
+    document.getElementById("reviewState");
 
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+  const paymentState =
+    document.getElementById("paymentState");
+
+  const lineState =
+    document.getElementById("lineState");
+
+
+  const firstNameInput =
+    document.getElementById("firstName");
+
+  const lastNameInput =
+    document.getElementById("lastName");
+
+  const phoneInput =
+    document.getElementById("phone");
+
+  const formError =
+    document.getElementById("formError");
+
+
+  const summaryFirstName =
+    document.getElementById("summaryFirstName");
+
+  const summaryLastName =
+    document.getElementById("summaryLastName");
+
+  const summaryPhone =
+    document.getElementById("summaryPhone");
+
+
+  const paymentButton =
+    document.getElementById("paymentButton");
+
+  const editButton =
+    document.getElementById("editButton");
+
+  const backToReviewButton =
+    document.getElementById("backToReviewButton");
+
+
+  const slipFile =
+    document.getElementById("slipFile");
+
+  const fileReady =
+    document.getElementById("fileReady");
+
+  const slipContinueButton =
+    document.getElementById("slipContinueButton");
+
+
+  const lineOtp =
+    document.getElementById("lineOtp");
+
+  const submitRegistrationButton =
+    document.getElementById("submitRegistrationButton");
+
+  const submitMessage =
+    document.getElementById("submitMessage");
+
+
+  let registrationDraft = {
+    first_name: "",
+    last_name: "",
+    phone: "",
+    amount: 399,
+    slip_file: null
+  };
+
+
+  function showState(target) {
+
+    [
+      formState,
+      reviewState,
+      paymentState,
+      lineState
+    ].forEach((state) => {
+      state.classList.remove("active");
+    });
+
+    target.classList.add("active");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  function normalizePhone(value) {
+
+    let phone =
+      String(value || "")
+        .trim()
+        .replace(/\D/g, "");
+
+    if (
+      phone.startsWith("66") &&
+      phone.length >= 11
+    ) {
+      phone =
+        "0" + phone.slice(2);
     }
 
+    return phone;
+  }
 
-    function normalizePhone(value) {
 
-      let phone =
-        String(value || "")
-          .trim()
-          .replace(/\D/g, "");
+  function formatPhone(value) {
 
-      if (
-        phone.startsWith("66") &&
-        phone.length >= 11
-      ) {
-        phone =
-          "0" + phone.slice(2);
-      }
+    const phone =
+      normalizePhone(value);
 
-      return phone;
+    if (phone.length === 10) {
+
+      return (
+        phone.slice(0, 3) +
+        "-" +
+        phone.slice(3, 6) +
+        "-" +
+        phone.slice(6)
+      );
     }
 
+    return phone;
+  }
 
-    function formatPhone(value) {
 
-      const phone =
-        normalizePhone(value);
+  async function copyText(value, button) {
 
-      if (phone.length === 10) {
+    try {
 
-        return (
-          phone.slice(0, 3) +
-          "-" +
-          phone.slice(3, 6) +
-          "-" +
-          phone.slice(6)
-        );
+      await navigator.clipboard.writeText(value);
 
-      }
+      const oldText =
+        button.textContent;
 
-      return phone;
+      button.textContent =
+        "คัดลอกแล้ว";
+
+      setTimeout(() => {
+        button.textContent =
+          oldText;
+      }, 1200);
+
     }
+    catch (error) {
+
+      console.error(
+        "Copy failed:",
+        error
+      );
+    }
+  }
 
 
-    publicForm.addEventListener(
-      "submit",
-      (event) => {
+  document
+    .querySelectorAll("[data-copy]")
+    .forEach((button) => {
 
-        event.preventDefault();
+      button.addEventListener(
+        "click",
+        () => {
 
-        formError.hidden =
-          true;
-
-        formError.textContent =
-          "";
-
-
-        const firstName =
-          firstNameInput
-            .value
-            .trim();
-
-        const lastName =
-          lastNameInput
-            .value
-            .trim();
-
-        const phone =
-          normalizePhone(
-            phoneInput.value
+          copyText(
+            button.dataset.copy,
+            button
           );
 
-
-        if (
-          !firstName ||
-          !lastName ||
-          !phone
-        ) {
-
-          formError.textContent =
-            "กรุณากรอกชื่อ นามสกุล และเบอร์โทรศัพท์ให้ครบ";
-
-          formError.hidden =
-            false;
-
-          return;
         }
+      );
+
+    });
 
 
-        if (
-          !/^\d{9,10}$/.test(phone)
-        ) {
+  // ======================================================
+  // STEP 1 -> REVIEW
+  // ======================================================
 
-          formError.textContent =
-            "รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง";
+  publicForm.addEventListener(
+    "submit",
+    (event) => {
 
-          formError.hidden =
-            false;
+      event.preventDefault();
 
-          return;
-        }
+      formError.hidden =
+        true;
 
-
-        phoneInput.value =
-          phone;
-
-
-        summaryFirstName.textContent =
-          firstName;
-
-        summaryLastName.textContent =
-          lastName;
-
-        summaryPhone.textContent =
-          formatPhone(phone);
+      formError.textContent =
+        "";
 
 
-        showState(
-          reviewState
+      const firstName =
+        firstNameInput.value.trim();
+
+      const lastName =
+        lastNameInput.value.trim();
+
+      const phone =
+        normalizePhone(
+          phoneInput.value
         );
 
-      }
-    );
 
+      if (
+        !firstName ||
+        !lastName ||
+        !phone
+      ) {
 
-    editButton.addEventListener(
-      "click",
-      () => {
+        formError.textContent =
+          "กรุณากรอกชื่อ นามสกุล และเบอร์โทรศัพท์ให้ครบ";
 
-        nextMessage.hidden =
-          true;
-
-        showState(
-          formState
-        );
-
-      }
-    );
-
-
-    paymentButton.addEventListener(
-      "click",
-      () => {
-
-        nextMessage.innerHTML =
-          "<strong>ข้อมูลพร้อมแล้ว</strong><br>" +
-          "ขั้นตอนถัดไปจะเชื่อมระบบชำระเงิน " +
-          "แนบสลิป และ OCR ตรวจสอบยอด 399 บาท";
-
-        nextMessage.hidden =
+        formError.hidden =
           false;
 
+        return;
       }
-    );
 
-  </script>
+
+      if (
+        !/^\d{9,10}$/.test(phone)
+      ) {
+
+        formError.textContent =
+          "รูปแบบเบอร์โทรศัพท์ไม่ถูกต้อง";
+
+        formError.hidden =
+          false;
+
+        return;
+      }
+
+
+      registrationDraft.first_name =
+        firstName;
+
+      registrationDraft.last_name =
+        lastName;
+
+      registrationDraft.phone =
+        phone;
+
+
+      phoneInput.value =
+        phone;
+
+
+      summaryFirstName.textContent =
+        firstName;
+
+      summaryLastName.textContent =
+        lastName;
+
+      summaryPhone.textContent =
+        formatPhone(phone);
+
+
+      showState(
+        reviewState
+      );
+
+    }
+  );
+
+
+  // ======================================================
+  // REVIEW -> PAYMENT
+  // ======================================================
+
+  paymentButton.addEventListener(
+    "click",
+    () => {
+
+      showState(
+        paymentState
+      );
+
+    }
+  );
+
+
+  editButton.addEventListener(
+    "click",
+    () => {
+
+      showState(
+        formState
+      );
+
+    }
+  );
+
+
+  backToReviewButton.addEventListener(
+    "click",
+    () => {
+
+      showState(
+        reviewState
+      );
+
+    }
+  );
+
+
+  // ======================================================
+  // PAYMENT -> SLIP
+  //
+  // ตอนนี้ Frontend แค่รับไฟล์ไว้ใน Memory
+  // เมื่อ API พร้อม:
+  // 1. Upload ไป Supabase Storage
+  // 2. OCR
+  // 3. ถ้า Upload สำเร็จ จึงอนุญาตไป LINE
+  // ======================================================
+
+  slipFile.addEventListener(
+    "change",
+    () => {
+
+      const file =
+        slipFile.files?.[0];
+
+      registrationDraft.slip_file =
+        file || null;
+
+
+      if (!file) {
+
+        fileReady.hidden =
+          true;
+
+        fileReady.textContent =
+          "";
+
+        slipContinueButton.disabled =
+          true;
+
+        return;
+      }
+
+
+      const allowedTypes =
+        [
+          "image/jpeg",
+          "image/png",
+          "application/pdf"
+        ];
+
+
+      if (
+        !allowedTypes.includes(
+          file.type
+        )
+      ) {
+
+        fileReady.hidden =
+          false;
+
+        fileReady.textContent =
+          "ไฟล์ไม่ถูกต้อง กรุณาใช้ JPG, JPEG, PNG หรือ PDF";
+
+        slipContinueButton.disabled =
+          true;
+
+        registrationDraft.slip_file =
+          null;
+
+        return;
+      }
+
+
+      fileReady.hidden =
+        false;
+
+      fileReady.textContent =
+        "✓ เลือกไฟล์แล้ว: " +
+        file.name;
+
+      slipContinueButton.disabled =
+        false;
+
+    }
+  );
+
+
+  slipContinueButton.addEventListener(
+    "click",
+    () => {
+
+      if (
+        !registrationDraft.slip_file
+      ) {
+        return;
+      }
+
+      /*
+        IMPORTANT:
+        ตอนเชื่อม API จริง
+        ตรงนี้ต้อง Upload Slip สำเร็จก่อน
+        แล้วจึง showState(lineState)
+      */
+
+      showState(
+        lineState
+      );
+
+    }
+  );
+
+
+  // ======================================================
+  // LINE OTP -> FINAL SUBMIT
+  //
+  // จุดนี้เป็นจุดเดียวที่ควรบันทึก Registration จริง
+  //
+  // API จริงต้อง:
+  // 1. รับ Draft ID / Payment Ref
+  // 2. ตรวจ OTP
+  // 3. ได้ line_user_id
+  // 4. ตรวจ Payment/OCR
+  // 5. INSERT Registration จริง
+  // 6. เรียก Central Seminar Access API
+  // 7. Push ลิงก์เข้าสัมมนาเข้า LINE
+  // ======================================================
+
+  submitRegistrationButton.addEventListener(
+    "click",
+    () => {
+
+      const otp =
+        String(
+          lineOtp.value || ""
+        ).trim();
+
+
+      submitMessage.hidden =
+        false;
+
+
+      if (!otp) {
+
+        submitMessage.innerHTML =
+          "<strong>กรุณากรอกรหัสยืนยันจาก LINE</strong>";
+
+        return;
+      }
+
+
+      /*
+        FRONTEND PROTOTYPE:
+        ยังไม่ยิง API จนกว่าเราจะสร้าง
+        Public Seminar Registration API
+        และ LINE OTP Endpoint
+      */
+
+      submitMessage.innerHTML =
+        "<strong>ข้อมูลพร้อมส่งแล้ว</strong><br>" +
+        "ขั้นตอนถัดไปคือเชื่อม API ตรวจ LINE OTP " +
+        "เพื่อรับ LINE User ID แล้วจึงบันทึกข้อมูลจริง " +
+        "และส่งลิงก์เข้าร่วมสัมมนาทาง LINE";
+
+    }
+  );
+
+</script>
 
 </body>
 </html>
