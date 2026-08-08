@@ -439,6 +439,141 @@
       line-height: 1.7;
     }
 
+    /* LINE VERIFY */
+    .line-box {
+      margin-top: 24px;
+      padding: 24px;
+
+      border: 1px solid #cfe9dc;
+      border-radius: 18px;
+
+      text-align: center;
+      background: #f4fcf8;
+    }
+
+    .line-box h3 {
+      margin: 0;
+      color: #087b47;
+      font-size: 20px;
+    }
+
+    .line-box p {
+      margin: 10px auto 18px;
+      max-width: 520px;
+
+      color: #66798c;
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .qr-wrap {
+      width: 230px;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 12px;
+
+      border: 1px solid #dfe7ef;
+      border-radius: 18px;
+
+      background: #ffffff;
+
+      box-shadow:
+        0 10px 30px rgba(7, 26, 59, 0.08);
+    }
+
+    .qr-wrap img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .line-instruction {
+      margin: 20px 0 0;
+      padding: 18px;
+
+      border: 1px solid #b7dfcb;
+      border-radius: 16px;
+
+      background: #ffffff;
+      text-align: left;
+    }
+
+    .line-instruction-title {
+      margin: 0 0 8px;
+
+      color: #087b47;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .line-instruction-text {
+      margin: 0;
+
+      color: #51647d;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .line-keyword-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .line-keyword {
+      flex: 1;
+      min-height: 46px;
+      padding: 12px 14px;
+
+      border: 1px dashed #19a968;
+      border-radius: 12px;
+
+      color: #075f38;
+      background: #effcf5;
+
+      font-weight: 900;
+      text-align: center;
+      word-break: break-word;
+    }
+
+    .line-copy-btn {
+      min-width: 92px;
+      height: 46px;
+      padding: 0 14px;
+
+      border: 0;
+      border-radius: 12px;
+
+      color: #ffffff;
+      background: #12a763;
+
+      font-weight: 900;
+    }
+
+    .otp-box {
+      margin-top: 20px;
+    }
+
+    .otp-box input {
+      width: 100%;
+      height: 58px;
+
+      text-align: center;
+      letter-spacing: 0.18em;
+
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .locked-note {
+      margin-top: 14px;
+
+      color: #7a8799;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
     .loading {
       display: inline-block;
 
@@ -497,6 +632,14 @@
 
       .state h2 {
         font-size: 22px;
+      }
+
+      .line-keyword-row {
+        flex-direction: column;
+      }
+
+      .line-copy-btn {
+        width: 100%;
       }
     }
   </style>
@@ -729,7 +872,118 @@
 
 
           <!-- ==========================================
-               STATE 3 : NOT FOUND / ERROR
+               STATE 3 : LINE VERIFY
+          =========================================== -->
+
+          <section
+            id="lineState"
+            class="state"
+          >
+
+            <div class="state-icon success">
+              ✓
+            </div>
+
+            <h2>
+              ยืนยันตัวตนผ่าน LINE
+            </h2>
+
+            <p class="state-subtitle">
+              เพื่อยืนยันว่าคุณเป็นเจ้าของสิทธิ์ ADTSpreadsheet V.1.0 จริง
+              กรุณา Add LINE Official แล้วพิมพ์ข้อความด้านล่างในแชท
+              เพื่อขอรหัส OTP 6 หลัก
+            </p>
+
+
+            <div class="line-box">
+
+              <h3>ADT LINE Official</h3>
+
+              <p>
+                สแกน QR Code ด้านล่างเพื่อ Add LINE
+                แล้วกลับไปที่แชทกับ ADT LINE Official
+              </p>
+
+              <div class="qr-wrap">
+                <img
+                  src="/assets/line/line-oa-qrcode.png"
+                  alt="QR Code สำหรับ Add LINE Official Account ของ ADT"
+                >
+              </div>
+
+
+              <div class="line-instruction">
+
+                <div class="line-instruction-title">
+                  หลังจาก Add LINE แล้ว ให้พิมพ์ข้อความนี้ในแชท
+                </div>
+
+                <p class="line-instruction-text">
+                  Bot จะใช้ข้อความนี้เพื่อสร้าง OTP สำหรับสิทธิ์
+                  ADTSpreadsheet V.1.0 โดยเฉพาะ
+                </p>
+
+                <div class="line-keyword-row">
+
+                  <div
+                    id="adtV1LineKeyword"
+                    class="line-keyword"
+                  >สัมมนา ADTSpreadsheet V1.0</div>
+
+                  <button
+                    id="copyAdtV1KeywordButton"
+                    class="line-copy-btn"
+                    type="button"
+                  >
+                    คัดลอก
+                  </button>
+
+                </div>
+
+              </div>
+
+
+              <div class="otp-box">
+
+                <div class="field">
+                  <label for="lineOtp">
+                    รหัสยืนยันจาก LINE
+                  </label>
+
+                  <input
+                    id="lineOtp"
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="one-time-code"
+                    maxlength="6"
+                    placeholder="กรอก OTP 6 หลัก"
+                  >
+                </div>
+
+              </div>
+
+
+              <button
+                id="verifyOtpButton"
+                class="btn btn-primary"
+                type="button"
+              >
+                ยืนยันรหัส OTP
+              </button>
+
+
+              <div class="locked-note">
+                ขั้นตอนนี้ใช้เพื่อยืนยันตัวตนเท่านั้น
+                ระบบจะยังไม่ออกสิทธิ์สัมมนาจนกว่าจะตรวจสอบ OTP สำเร็จ
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ==========================================
+               STATE 4 : NOT FOUND / ERROR
           =========================================== -->
 
           <section
@@ -799,6 +1053,9 @@
       API_BASE +
       "/api/seminar/adt-v1/verify";
 
+    const ADT_V1_LINE_KEYWORD =
+      "สัมมนา ADTSpreadsheet V1.0";
+
 
     // ====================================================
     // ELEMENTS
@@ -832,6 +1089,11 @@
     const confirmState =
       document.getElementById(
         "confirmState"
+      );
+
+    const lineState =
+      document.getElementById(
+        "lineState"
       );
 
     const errorState =
@@ -879,6 +1141,21 @@
         "confirmMessage"
       );
 
+    const copyAdtV1KeywordButton =
+      document.getElementById(
+        "copyAdtV1KeywordButton"
+      );
+
+    const lineOtp =
+      document.getElementById(
+        "lineOtp"
+      );
+
+    const verifyOtpButton =
+      document.getElementById(
+        "verifyOtpButton"
+      );
+
 
     let verifiedMember = null;
 
@@ -892,6 +1169,7 @@
       [
         searchState,
         confirmState,
+        lineState,
         errorState
       ].forEach((state) => {
         state.classList.remove(
@@ -955,6 +1233,58 @@
       }
 
       return value || "-";
+    }
+
+
+    async function copyText(
+      value,
+      button
+    ) {
+
+      try {
+
+        await navigator.clipboard.writeText(
+          value
+        );
+
+        const oldText =
+          button.textContent;
+
+        button.textContent =
+          "คัดลอกแล้ว";
+
+        setTimeout(
+          () => {
+            button.textContent =
+              oldText;
+          },
+          1200
+        );
+
+      }
+      catch (error) {
+
+        console.error(
+          "Copy failed:",
+          error
+        );
+      }
+    }
+
+
+    if (copyAdtV1KeywordButton) {
+
+      copyAdtV1KeywordButton.addEventListener(
+        "click",
+        () => {
+
+          copyText(
+            ADT_V1_LINE_KEYWORD,
+            copyAdtV1KeywordButton
+          );
+
+        }
+      );
     }
 
 
@@ -1194,10 +1524,7 @@
 
 
     // ====================================================
-    // CONFIRM
-    //
-    // รอบนี้ตั้งใจหยุดไว้ตรงนี้
-    // ขั้นถัดไปค่อยเชื่อม LINE Verification
+    // CONFIRM -> LINE VERIFY FRAME
     // ====================================================
 
     confirmButton.addEventListener(
@@ -1208,13 +1535,55 @@
           return;
         }
 
-        confirmMessage.innerHTML =
-          "<strong>ตรวจสอบสิทธิ์เรียบร้อยแล้ว</strong><br>" +
-          "ขั้นตอนถัดไปจะเป็นการยืนยันตัวตนผ่าน LINE " +
-          "ก่อนรับลิงก์เข้าห้องประชุมและรหัสผ่าน";
-
         confirmMessage.hidden =
-          false;
+          true;
+
+        lineOtp.value =
+          "";
+
+        showState(
+          lineState
+        );
+
+      }
+    );
+
+
+    // ====================================================
+    // OTP BUTTON
+    //
+    // รอบนี้ทำเฉพาะ UX ก่อน
+    // Backend OTP จะเชื่อมในขั้นตอนถัดไป
+    // ====================================================
+
+    verifyOtpButton.addEventListener(
+      "click",
+      () => {
+
+        const otp =
+          String(
+            lineOtp.value || ""
+          )
+            .trim()
+            .replace(/\D/g, "");
+
+
+        if (!/^\d{6}$/.test(otp)) {
+
+          alert(
+            "กรุณากรอก OTP 6 หลักจาก LINE"
+          );
+
+          lineOtp.focus();
+
+          return;
+        }
+
+
+        alert(
+          "หน้าเว็บพร้อมสำหรับเชื่อมระบบ OTP แล้ว\n\n" +
+          "ขั้นตอนถัดไปคือเชื่อม Backend สำหรับสร้างและตรวจสอบ OTP"
+        );
 
       }
     );
