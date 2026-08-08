@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ตรวจสอบสิทธิ์ ADTSpreadsheet V.1.0 | ADTSpreadsheet</title>
+
+  <meta
+    name="description"
+    content="ตรวจสอบสิทธิ์ผู้ถือ ADTSpreadsheet V.1.0 เพื่อเข้าร่วมสัมมนาตามสิทธิ์"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family:
+        "Prompt",
+        "Noto Sans Thai",
+        Arial,
+        sans-serif;
+
+      color: #071a3b;
+
+      background:
+        radial-gradient(
+          circle at 20% 0%,
+          rgba(22, 119, 255, 0.12),
+          transparent 32%
+        ),
+        linear-gradient(
+          180deg,
+          #edf5ff 0%,
+          #f8fbff 45%,
+          #eef3f9 100%
+        );
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 22px 18px 60px;
+    }
+
+    .topbar {
+      width: min(1040px, 100%);
+      margin: 0 auto 42px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+
+      text-decoration: none;
+      color: #071a3b;
+
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 46px;
+      height: 46px;
+      margin-right: 10px;
+
+      border-radius: 14px;
+
+      color: #ffffff;
+      background:
+        linear-gradient(
+          135deg,
+          #071a3b,
+          #1677ff
+        );
+
+      font-size: 14px;
+      letter-spacing: 0.5px;
+    }
+
+    .back-link {
+      color: #19345d;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .shell {
+      width: min(760px, 100%);
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      width: max-content;
+      max-width: 100%;
+      margin: 0 auto 18px;
+      padding: 9px 18px;
+
+      border: 1px solid #bfd8ff;
+      border-radius: 999px;
+
+      color: #1677ff;
+      background: rgba(255, 255, 255, 0.56);
+
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+    }
+
+    .card {
+      overflow: hidden;
+
+      border: 1px solid #d8e3f0;
+      border-radius: 28px;
+
+      background: #ffffff;
+
+      box-shadow:
+        0 24px 70px rgba(7, 26, 59, 0.12);
+    }
+
+    .hero {
+      padding: 36px 34px 32px;
+
+      text-align: center;
+      color: #ffffff;
+
+      background:
+        linear-gradient(
+          120deg,
+          #061a3a 0%,
+          #0a2e61 55%,
+          #1559a9 100%
+        );
+    }
+
+    .hero-icon {
+      width: 66px;
+      height: 66px;
+      margin: 0 auto 18px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 18px;
+
+      background: rgba(255, 255, 255, 0.10);
+
+      color: #ffd129;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .hero h1 {
+      margin: 0;
+
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .hero p {
+      max-width: 600px;
+      margin: 13px auto 0;
+
+      color: rgba(255, 255, 255, 0.90);
+
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .free-badge {
+      display: inline-flex;
+      margin-top: 20px;
+      padding: 9px 17px;
+
+      border-radius: 999px;
+
+      color: #06442b;
+      background: #9cf3c7;
+
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .body {
+      padding: 38px 34px 34px;
+    }
+
+    .state {
+      display: none;
+    }
+
+    .state.active {
+      display: block;
+    }
+
+    .state-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 20px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 50%;
+
+      font-size: 34px;
+      font-weight: 900;
+    }
+
+    .state-icon.search {
+      color: #1265dc;
+      background: #e5f0ff;
+    }
+
+    .state-icon.success {
+      color: #078651;
+      background: #d9f8e9;
+    }
+
+    .state-icon.error {
+      color: #c5281c;
+      background: #ffe2df;
+    }
+
+    .state h2 {
+      margin: 0;
+
+      text-align: center;
+
+      color: #071a3b;
+
+      font-size: 25px;
+      line-height: 1.35;
+      font-weight: 900;
+    }
+
+    .state-subtitle {
+      max-width: 600px;
+      margin: 10px auto 28px;
+
+      text-align: center;
+
+      color: #6c7b91;
+
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    .field {
+      margin-top: 22px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 9px;
+
+      color: #19345d;
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .field input {
+      width: 100%;
+      height: 56px;
+      padding: 0 18px;
+
+      border: 1px solid #cbd9e9;
+      border-radius: 14px;
+      outline: none;
+
+      color: #071a3b;
+      background: #ffffff;
+
+      font-size: 17px;
+    }
+
+    .field input:focus {
+      border-color: #1677ff;
+
+      box-shadow:
+        0 0 0 4px rgba(22, 119, 255, 0.10);
+    }
+
+    .hint {
+      margin-top: 9px;
+
+      color: #8793a5;
+
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 54px;
+      margin-top: 20px;
+      padding: 13px 18px;
+
+      border: 0;
+      border-radius: 14px;
+
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .btn-primary {
+      color: #ffffff;
+      background: #1677ff;
+
+      box-shadow:
+        0 12px 28px rgba(22, 119, 255, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: #0869eb;
+    }
+
+    .btn-secondary {
+      border: 1px solid #cbd9e9;
+
+      color: #071a3b;
+      background: #ffffff;
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.62;
+    }
+
+    .result-box {
+      margin-top: 26px;
+      padding: 22px;
+
+      border-radius: 18px;
+
+      background: #f3f7fc;
+    }
+
+    .result-name {
+      text-align: center;
+
+      color: #071a3b;
+
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    .result-phone {
+      margin-top: 6px;
+
+      text-align: center;
+
+      color: #6c7b91;
+
+      font-size: 14px;
+    }
+
+    .confirm-box {
+      margin-top: 22px;
+      padding: 22px;
+
+      border: 1px solid #e0e8f2;
+      border-radius: 18px;
+
+      text-align: center;
+
+      background: #f7f9fc;
+    }
+
+    .confirm-title {
+      margin-bottom: 8px;
+
+      color: #071a3b;
+
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .confirm-text {
+      color: #68778d;
+
+      font-size: 13px;
+      line-height: 1.75;
+    }
+
+    .notice {
+      margin-top: 22px;
+      padding: 15px 17px;
+
+      border-radius: 14px;
+
+      color: #51647d;
+      background: #f1f6fc;
+
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .error-message {
+      margin-top: 12px;
+
+      text-align: center;
+
+      color: #bd2a20;
+
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .loading {
+      display: inline-block;
+
+      width: 17px;
+      height: 17px;
+      margin-right: 8px;
+
+      vertical-align: -3px;
+
+      border: 2px solid rgba(255, 255, 255, 0.45);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 16px 12px 40px;
+      }
+
+      .topbar {
+        margin-bottom: 28px;
+      }
+
+      .brand {
+        font-size: 16px;
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+      }
+
+      .back-link {
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 30px 20px 28px;
+      }
+
+      .body {
+        padding: 30px 20px 24px;
+      }
+
+      .card {
+        border-radius: 22px;
+      }
+
+      .state h2 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="page">
+
+    <header class="topbar">
+
+      <a
+        class="brand"
+        href="/"
+      >
+        <span class="brand-mark">ADT</span>
+        ADTSpreadsheet
+      </a>
+
+      <a
+        class="back-link"
+        href="/seminar/adt-pilefix/"
+      >
+        ← กลับไปเลือกช่องทาง
+      </a>
+
+    </header>
+
+
+    <section class="shell">
+
+      <div class="eyebrow">
+        ADTSpreadsheet V.1.0 OWNER PRIVILEGE
+      </div>
+
+
+      <article class="card">
+
+        <div class="hero">
+
+          <div class="hero-icon">
+            V1
+          </div>
+
+          <h1>
+            ตรวจสอบสิทธิ์ ADTSpreadsheet V.1.0
+          </h1>
+
+          <p>
+            สำหรับผู้ถือครอง ADTSpreadsheet V.1.0 เดิม
+            กรุณาใช้เบอร์โทรศัพท์ที่เคยลงทะเบียนไว้
+            เพื่อตรวจสอบสิทธิ์เข้าร่วมสัมมนา
+          </p>
+
+          <div class="free-badge">
+            เข้าร่วมสัมมนาฟรี
+          </div>
+
+        </div>
+
+
+        <div class="body">
+
+          <!-- ==========================================
+               STATE 1 : SEARCH
+          =========================================== -->
+
+          <section
+            id="searchState"
+            class="state active"
+          >
+
+            <div class="state-icon search">
+              ✓
+            </div>
+
+            <h2>
+              ตรวจสอบข้อมูลผู้ถือสิทธิ์
+            </h2>
+
+            <p class="state-subtitle">
+              กรอกเบอร์โทรศัพท์ที่ใช้กับ ADTSpreadsheet V.1.0
+              ระบบจะตรวจสอบข้อมูลจากฐานผู้ถือสิทธิ์เดิม
+            </p>
+
+
+            <form id="verifyForm">
+
+              <div class="field">
+
+                <label for="phone">
+                  เบอร์โทรศัพท์
+                </label>
+
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  inputmode="numeric"
+                  autocomplete="tel"
+                  maxlength="15"
+                  placeholder="เช่น 0812345678"
+                  required
+                >
+
+                <div class="hint">
+                  สามารถกรอก 0812345678, 081-234-5678
+                  หรือ +66812345678 ได้
+                </div>
+
+              </div>
+
+
+              <button
+                id="verifyButton"
+                class="btn btn-primary"
+                type="submit"
+              >
+                ตรวจสอบสิทธิ์
+              </button>
+
+
+              <div
+                id="formError"
+                class="error-message"
+                hidden
+              ></div>
+
+            </form>
+
+
+            <div class="notice">
+              การตรวจสอบขั้นตอนนี้เป็นเพียงการตรวจสอบสิทธิ์
+              ADTSpreadsheet V.1.0 เท่านั้น
+              ยังไม่ใช่การสมัครสมาชิก ADT ระบบใหม่
+            </div>
+
+          </section>
+
+
+          <!-- ==========================================
+               STATE 2 : ELIGIBLE / CONFIRM
+          =========================================== -->
+
+          <section
+            id="confirmState"
+            class="state"
+          >
+
+            <div class="state-icon success">
+              ✓
+            </div>
+
+            <h2>
+              ตรวจสอบสิทธิ์สำเร็จ
+            </h2>
+
+            <p class="state-subtitle">
+              พบข้อมูลผู้ถือสิทธิ์ ADTSpreadsheet V.1.0
+              ในระบบ
+            </p>
+
+
+            <div class="result-box">
+
+              <div
+                id="resultName"
+                class="result-name"
+              >
+                -
+              </div>
+
+              <div
+                id="resultPhone"
+                class="result-phone"
+              >
+                -
+              </div>
+
+            </div>
+
+
+            <div class="confirm-box">
+
+              <div class="confirm-title">
+                ยืนยันเข้าร่วมสัมมนาหรือไม่?
+              </div>
+
+              <div class="confirm-text">
+                เมื่อกดยืนยัน
+                ระบบจะนำคุณเข้าสู่ขั้นตอนยืนยันตัวตนผ่าน LINE
+                เพื่อเตรียมรับลิงก์เข้าห้องประชุมและรหัสผ่าน
+                ในขั้นตอนถัดไป
+              </div>
+
+            </div>
+
+
+            <!--
+              รอบนี้เราหยุด Flow ไว้ตรงปุ่มนี้ก่อน
+              ยังไม่ยิง API ลงทะเบียน
+              ยังไม่ผูก LINE
+            -->
+
+            <button
+              id="confirmButton"
+              class="btn btn-primary"
+              type="button"
+            >
+              ยืนยันเข้าร่วมสัมมนา
+            </button>
+
+
+            <button
+              id="changePhoneButton"
+              class="btn btn-secondary"
+              type="button"
+            >
+              ใช้เบอร์โทรอื่น
+            </button>
+
+
+            <div
+              id="confirmMessage"
+              class="notice"
+              hidden
+            ></div>
+
+          </section>
+
+
+          <!-- ==========================================
+               STATE 3 : NOT FOUND / ERROR
+          =========================================== -->
+
+          <section
+            id="errorState"
+            class="state"
+          >
+
+            <div class="state-icon error">
+              !
+            </div>
+
+            <h2 id="errorTitle">
+              ไม่พบข้อมูลผู้ถือสิทธิ์
+            </h2>
+
+            <p
+              id="errorText"
+              class="state-subtitle"
+            >
+              ไม่พบเบอร์โทรศัพท์นี้ในฐานข้อมูล
+              ADTSpreadsheet V.1.0
+            </p>
+
+
+            <button
+              id="retryButton"
+              class="btn btn-primary"
+              type="button"
+            >
+              ลองอีกครั้ง
+            </button>
+
+
+            <a
+              href="/seminar/adt-pilefix/"
+              style="text-decoration:none;"
+            >
+              <button
+                class="btn btn-secondary"
+                type="button"
+              >
+                กลับไปเลือกช่องทางลงทะเบียน
+              </button>
+            </a>
+
+          </section>
+
+        </div>
+
+      </article>
+
+    </section>
+
+  </main>
+
+
+  <script>
+
+    // ====================================================
+    // CONFIG
+    // ====================================================
+
+    const API_BASE =
+      "https://adt-website-api.onrender.com";
+
+    const VERIFY_ENDPOINT =
+      API_BASE +
+      "/api/seminar/adt-v1/verify";
+
+
+    // ====================================================
+    // ELEMENTS
+    // ====================================================
+
+    const verifyForm =
+      document.getElementById(
+        "verifyForm"
+      );
+
+    const phoneInput =
+      document.getElementById(
+        "phone"
+      );
+
+    const verifyButton =
+      document.getElementById(
+        "verifyButton"
+      );
+
+    const formError =
+      document.getElementById(
+        "formError"
+      );
+
+    const searchState =
+      document.getElementById(
+        "searchState"
+      );
+
+    const confirmState =
+      document.getElementById(
+        "confirmState"
+      );
+
+    const errorState =
+      document.getElementById(
+        "errorState"
+      );
+
+    const resultName =
+      document.getElementById(
+        "resultName"
+      );
+
+    const resultPhone =
+      document.getElementById(
+        "resultPhone"
+      );
+
+    const errorTitle =
+      document.getElementById(
+        "errorTitle"
+      );
+
+    const errorText =
+      document.getElementById(
+        "errorText"
+      );
+
+    const retryButton =
+      document.getElementById(
+        "retryButton"
+      );
+
+    const changePhoneButton =
+      document.getElementById(
+        "changePhoneButton"
+      );
+
+    const confirmButton =
+      document.getElementById(
+        "confirmButton"
+      );
+
+    const confirmMessage =
+      document.getElementById(
+        "confirmMessage"
+      );
+
+
+    let verifiedMember = null;
+
+
+    // ====================================================
+    // HELPERS
+    // ====================================================
+
+    function showState(target) {
+
+      [
+        searchState,
+        confirmState,
+        errorState
+      ].forEach((state) => {
+        state.classList.remove(
+          "active"
+        );
+      });
+
+      target.classList.add(
+        "active"
+      );
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+
+    function setLoading(isLoading) {
+
+      verifyButton.disabled =
+        isLoading;
+
+      phoneInput.disabled =
+        isLoading;
+
+      if (isLoading) {
+
+        verifyButton.innerHTML =
+          '<span class="loading"></span>' +
+          "กำลังตรวจสอบ...";
+
+      }
+      else {
+
+        verifyButton.textContent =
+          "ตรวจสอบสิทธิ์";
+
+      }
+    }
+
+
+    function normalizePhoneForDisplay(
+      value
+    ) {
+
+      const phone =
+        String(value || "")
+          .replace(/\D/g, "");
+
+      if (phone.length === 10) {
+
+        return (
+          phone.slice(0, 3) +
+          "-" +
+          phone.slice(3, 6) +
+          "-" +
+          phone.slice(6)
+        );
+
+      }
+
+      return value || "-";
+    }
+
+
+    // ====================================================
+    // VERIFY
+    // ====================================================
+
+    verifyForm.addEventListener(
+      "submit",
+      async (event) => {
+
+        event.preventDefault();
+
+        formError.hidden =
+          true;
+
+        formError.textContent =
+          "";
+
+        const phone =
+          phoneInput.value.trim();
+
+
+        if (!phone) {
+
+          formError.textContent =
+            "กรุณากรอกเบอร์โทรศัพท์";
+
+          formError.hidden =
+            false;
+
+          return;
+        }
+
+
+        setLoading(true);
+
+
+        try {
+
+          const response =
+            await fetch(
+              VERIFY_ENDPOINT,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                  JSON.stringify({
+                    phone
+                  })
+              }
+            );
+
+
+          let data = null;
+
+
+          try {
+
+            data =
+              await response.json();
+
+          }
+          catch (jsonError) {
+
+            throw new Error(
+              "INVALID_API_RESPONSE"
+            );
+
+          }
+
+
+          if (
+            response.ok &&
+            data?.success === true &&
+            data?.eligible === true
+          ) {
+
+            verifiedMember =
+              data;
+
+            resultName.textContent =
+              data.full_name ||
+              [
+                data.first_name,
+                data.last_name
+              ]
+                .filter(Boolean)
+                .join(" ") ||
+              "ผู้ถือสิทธิ์ ADTSpreadsheet V.1.0";
+
+            resultPhone.textContent =
+              normalizePhoneForDisplay(
+                data.phone
+              );
+
+            showState(
+              confirmState
+            );
+
+            return;
+          }
+
+
+          if (
+            response.status === 404 ||
+            data?.code ===
+              "ADT_V1_RIGHT_NOT_FOUND"
+          ) {
+
+            errorTitle.textContent =
+              "ไม่พบข้อมูลผู้ถือสิทธิ์";
+
+            errorText.textContent =
+              data?.message ||
+              "ไม่พบเบอร์โทรศัพท์นี้ในฐานข้อมูล ADTSpreadsheet V.1.0";
+
+            showState(
+              errorState
+            );
+
+            return;
+          }
+
+
+          if (
+            response.status === 400
+          ) {
+
+            formError.textContent =
+              data?.message ||
+              "กรุณาตรวจสอบเบอร์โทรศัพท์อีกครั้ง";
+
+            formError.hidden =
+              false;
+
+            return;
+          }
+
+
+          errorTitle.textContent =
+            "ระบบยังไม่สามารถดำเนินการได้";
+
+          errorText.textContent =
+            data?.message ||
+            "ไม่สามารถเชื่อมต่อระบบตรวจสอบสิทธิ์ กรุณาลองใหม่อีกครั้ง";
+
+          showState(
+            errorState
+          );
+
+        }
+        catch (error) {
+
+          console.error(
+            "ADT V1 verify error:",
+            error
+          );
+
+          errorTitle.textContent =
+            "ไม่สามารถเชื่อมต่อระบบได้";
+
+          errorText.textContent =
+            "กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต และลองใหม่อีกครั้ง";
+
+          showState(
+            errorState
+          );
+
+        }
+        finally {
+
+          setLoading(false);
+
+        }
+
+      }
+    );
+
+
+    // ====================================================
+    // RETRY
+    // ====================================================
+
+    retryButton.addEventListener(
+      "click",
+      () => {
+
+        verifiedMember =
+          null;
+
+        phoneInput.value =
+          "";
+
+        showState(
+          searchState
+        );
+
+        setTimeout(
+          () => phoneInput.focus(),
+          200
+        );
+
+      }
+    );
+
+
+    changePhoneButton.addEventListener(
+      "click",
+      () => {
+
+        verifiedMember =
+          null;
+
+        phoneInput.value =
+          "";
+
+        confirmMessage.hidden =
+          true;
+
+        showState(
+          searchState
+        );
+
+        setTimeout(
+          () => phoneInput.focus(),
+          200
+        );
+
+      }
+    );
+
+
+    // ====================================================
+    // CONFIRM
+    //
+    // รอบนี้ตั้งใจหยุดไว้ตรงนี้
+    // ขั้นถัดไปค่อยเชื่อม LINE Verification
+    // ====================================================
+
+    confirmButton.addEventListener(
+      "click",
+      () => {
+
+        if (!verifiedMember) {
+          return;
+        }
+
+        confirmMessage.innerHTML =
+          "<strong>ตรวจสอบสิทธิ์เรียบร้อยแล้ว</strong><br>" +
+          "ขั้นตอนถัดไปจะเป็นการยืนยันตัวตนผ่าน LINE " +
+          "ก่อนรับลิงก์เข้าห้องประชุมและรหัสผ่าน";
+
+        confirmMessage.hidden =
+          false;
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
