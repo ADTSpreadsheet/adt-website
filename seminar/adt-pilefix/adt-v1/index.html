@@ -989,7 +989,47 @@
 
 
           <!-- ==========================================
-               STATE 4 : NOT FOUND / ERROR
+               STATE 4 : FINAL SUCCESS
+          =========================================== -->
+
+          <section
+            id="successState"
+            class="state"
+          >
+
+            <div class="state-icon success">
+              ✓
+            </div>
+
+            <h2>
+              ลงทะเบียนสำเร็จ
+            </h2>
+
+            <p class="state-subtitle">
+              ระบบได้บันทึกสิทธิ์เข้าร่วมสัมมนา
+              และส่งลิงก์ Zoom พร้อมรหัสผ่านไปยัง LINE ของคุณแล้ว
+            </p>
+
+            <div class="confirm-box">
+
+              <div class="confirm-title">
+                กรุณาตรวจสอบข้อความใน LINE
+              </div>
+
+              <div
+                id="successMessage"
+                class="confirm-text"
+              >
+                เก็บลิงก์เข้าห้องประชุมและรหัสผ่านไว้สำหรับวันสัมมนา
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ==========================================
+               STATE 5 : NOT FOUND / ERROR
           =========================================== -->
 
           <section
@@ -1063,6 +1103,10 @@
       API_BASE +
       "/api/seminar/adt-v1/verify-otp";
 
+    const CONFIRM_ENDPOINT =
+      API_BASE +
+      "/api/seminar/adt-v1/confirm";
+
     const ADT_V1_LINE_KEYWORD =
       "สัมมนา ADTSpreadsheet V1.0";
 
@@ -1104,6 +1148,16 @@
     const lineState =
       document.getElementById(
         "lineState"
+      );
+
+    const successState =
+      document.getElementById(
+        "successState"
+      );
+
+    const successMessage =
+      document.getElementById(
+        "successMessage"
       );
 
     const errorState =
@@ -1186,6 +1240,7 @@
         searchState,
         confirmState,
         lineState,
+        successState,
         errorState
       ].forEach((state) => {
         state.classList.remove(
@@ -1689,20 +1744,114 @@
 
             otpMessage.innerHTML =
               "<strong>ยืนยันตัวตนสำเร็จ</strong><br>" +
-              "ระบบยืนยัน LINE ของคุณเรียบร้อยแล้ว " +
-              "ขั้นตอนถัดไปคือออกสิทธิ์เข้าร่วมสัมมนาและส่งลิงก์ Zoom";
+              "กำลังลงทะเบียนสิทธิ์และส่งลิงก์ Zoom ไปยัง LINE...";
 
             otpMessage.hidden =
               false;
 
-            verifyOtpButton.textContent =
-              "ยืนยันตัวตนสำเร็จ";
-
-            verifyOtpButton.disabled =
-              true;
+            verifyOtpButton.innerHTML =
+              '<span class="loading"></span>' +
+              "กำลังส่งสิทธิ์เข้าร่วมสัมมนา...";
 
             lineOtp.disabled =
               true;
+
+
+            // ===========================================
+            // OTP VERIFIED -> CONFIRM REGISTRATION
+            // ===========================================
+
+            const confirmResponse =
+              await fetch(
+                CONFIRM_ENDPOINT,
+                {
+                  method:
+                    "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify({
+                      phone,
+                      otp_verification_id:
+                        data.otp_verification_id
+                    })
+                }
+              );
+
+
+            let confirmData = null;
+
+
+            try {
+
+              confirmData =
+                await confirmResponse.json();
+
+            }
+            catch (confirmJsonError) {
+
+              throw new Error(
+                "INVALID_CONFIRM_RESPONSE"
+              );
+            }
+
+
+            if (
+              confirmResponse.ok &&
+              confirmData?.success === true &&
+              confirmData?.confirmed === true
+            ) {
+
+              verifyOtpButton.textContent =
+                "ลงทะเบียนสำเร็จ";
+
+              verifyOtpButton.disabled =
+                true;
+
+              successMessage.innerHTML =
+                (
+                  confirmData?.customer_access === "SENT"
+                )
+                  ? "ระบบได้ส่งลิงก์ Zoom และรหัสผ่านไปยัง LINE ของคุณเรียบร้อยแล้ว"
+                  : (
+                      confirmData?.message ||
+                      "ระบบบันทึกสิทธิ์เรียบร้อยแล้ว กรุณาตรวจสอบ LINE ของคุณ"
+                    );
+
+              showState(
+                successState
+              );
+
+              return;
+            }
+
+
+            otpMessage.innerHTML =
+              "<strong>ยืนยันตัวตนสำเร็จ แต่ยังออกสิทธิ์ไม่สำเร็จ</strong><br>" +
+              (
+                confirmData?.message ||
+                confirmData?.code ||
+                "กรุณาลองใหม่อีกครั้ง"
+              );
+
+            otpMessage.hidden =
+              false;
+
+            verifiedOtpResult =
+              null;
+
+            verifyOtpButton.disabled =
+              false;
+
+            verifyOtpButton.textContent =
+              "ยืนยันรหัส OTP";
+
+            lineOtp.disabled =
+              false;
 
             return;
           }
