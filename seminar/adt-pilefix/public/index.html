@@ -498,6 +498,78 @@
       line-height:1.65;
     }
 
+    .line-instruction{
+      margin:20px 0 0;
+      padding:18px;
+      border:1px solid #b7dfcb;
+      border-radius:16px;
+      background:#ffffff;
+      text-align:left;
+    }
+
+    .line-instruction-title{
+      margin:0 0 8px;
+      color:#087b47;
+      font-size:15px;
+      font-weight:900;
+    }
+
+    .line-instruction-text{
+      margin:0;
+      color:#51647d;
+      font-size:13px;
+      line-height:1.7;
+    }
+
+    .line-keyword-row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top:12px;
+    }
+
+    .line-keyword{
+      flex:1;
+      min-height:46px;
+      padding:12px 14px;
+      border:1px dashed #19a968;
+      border-radius:12px;
+      color:#075f38;
+      background:#effcf5;
+      font-weight:900;
+      text-align:center;
+      word-break:break-word;
+    }
+
+    .line-copy-btn{
+      min-width:92px;
+      height:46px;
+      padding:0 14px;
+      border:0;
+      border-radius:12px;
+      color:#fff;
+      background:#12a763;
+      font-weight:900;
+    }
+
+    .final-success{
+      margin-top:18px;
+      padding:20px;
+      border:1px solid #b9e9cf;
+      border-radius:16px;
+      background:#effcf5;
+      text-align:center;
+      color:#0b6d43;
+      line-height:1.8;
+    }
+
+    .final-success strong{
+      display:block;
+      margin-bottom:6px;
+      font-size:17px;
+      color:#087b47;
+    }
+
     @media (max-width:640px){
       .page{padding:16px 12px 40px}
       .topbar{margin-bottom:28px}
@@ -837,9 +909,9 @@
           <h2>ยืนยันตัวตนผ่าน LINE</h2>
 
           <p class="state-subtitle">
-            สแกน QR Code เพื่อ Add LINE Bot
-            จากนั้นรับรหัสยืนยันจาก Bot
-            แล้วนำรหัสมากรอกด้านล่าง
+            สแกน QR Code เพื่อ Add LINE Official
+            จากนั้นพิมพ์ข้อความ <strong>“สัมมนา ADT-PILEFiX”</strong>
+            ในแชท เพื่อรับรหัส OTP 6 หลัก แล้วนำรหัสมากรอกด้านล่าง
           </p>
 
 
@@ -849,7 +921,7 @@
 
             <p>
               สแกน QR Code ด้านล่างเพื่อ Add LINE
-              และรับรหัสสำหรับยืนยันตัวตน
+              แล้วกลับไปที่แชทกับ ADT LINE Official
             </p>
 
             <div class="qr-wrap">
@@ -857,6 +929,32 @@
                 src="/assets/line/line-oa-qrcode.png"
                 alt="QR Code สำหรับ Add LINE Official Account ของ ADT"
               >
+            </div>
+
+            <div class="line-instruction">
+              <div class="line-instruction-title">
+                หลังจาก Add LINE แล้ว ให้พิมพ์ข้อความนี้ในแชท
+              </div>
+
+              <p class="line-instruction-text">
+                Bot จะตรวจข้อความและส่ง Flex สำหรับยืนยันสิทธิ์
+                จากนั้นกดปุ่มยืนยันเพื่อรับ OTP 6 หลัก
+              </p>
+
+              <div class="line-keyword-row">
+                <div
+                  id="seminarLineKeyword"
+                  class="line-keyword"
+                >สัมมนา ADT-PILEFiX</div>
+
+                <button
+                  id="copySeminarKeywordButton"
+                  class="line-copy-btn"
+                  type="button"
+                >
+                  คัดลอก
+                </button>
+              </div>
             </div>
 
 
@@ -897,8 +995,8 @@
 
             <div class="locked-note">
               เมื่อกด Submit ระบบจะส่งข้อมูลและหลักฐานการชำระเงินเข้าสู่ระบบ
-              หลังจากระบบรับรายการสำเร็จ กรุณาติดตามข้อความทาง LINE
-              ระบบจะส่งลิงก์ Zoom และรหัสผ่านให้อัตโนมัติเมื่อรายการได้รับการอนุมัติ
+              หากสลิปผ่านการตรวจสอบ ระบบจะส่งลิงก์ Zoom และรหัสผ่านทาง LINE อัตโนมัติ
+              หากต้องรอ Admin ตรวจสอบ หน้านี้จะติดตามสถานะให้ต่อเนื่อง
             </div>
 
           </div>
@@ -928,6 +1026,12 @@
 
   const PUBLIC_SEMINAR_API =
     "https://adt-website-api.onrender.com/api/seminar/public/submit";
+
+  const PUBLIC_SEMINAR_STATUS_API =
+    "https://adt-website-api.onrender.com/api/seminar/public/status";
+
+  const SEMINAR_LINE_KEYWORD =
+    "สัมมนา ADT-PILEFiX";
 
 
   const publicForm =
@@ -998,6 +1102,9 @@
   const submitMessage =
     document.getElementById("submitMessage");
 
+  const copySeminarKeywordButton =
+    document.getElementById("copySeminarKeywordButton");
+
 
   let registrationDraft = {
     first_name: "",
@@ -1006,6 +1113,10 @@
     amount: 399,
     slip_file: null
   };
+
+  let registrationId = "";
+  let statusPollTimer = null;
+  let statusPollStartedAt = 0;
 
 
   function showState(target) {
@@ -1112,6 +1223,225 @@
       );
 
     });
+
+
+  if (copySeminarKeywordButton) {
+
+    copySeminarKeywordButton.addEventListener(
+      "click",
+      () => {
+
+        copyText(
+          SEMINAR_LINE_KEYWORD,
+          copySeminarKeywordButton
+        );
+
+      }
+    );
+  }
+
+
+  function stopStatusPolling() {
+
+    if (statusPollTimer) {
+
+      clearTimeout(
+        statusPollTimer
+      );
+
+      statusPollTimer = null;
+    }
+  }
+
+
+  function showFinalSuccess() {
+
+    stopStatusPolling();
+
+    submitMessage.hidden =
+      false;
+
+    submitMessage.className =
+      "final-success";
+
+    submitMessage.innerHTML =
+      "<strong>✅ ลงทะเบียนและส่งข้อมูลเข้าสัมมนาสำเร็จแล้ว</strong>" +
+      "ระบบได้ส่งลิงก์ Zoom และรหัสผ่านไปยัง LINE ของคุณเรียบร้อยแล้ว<br>" +
+      "กรุณาตรวจสอบข้อความใน LINE และเก็บข้อมูลไว้สำหรับวันสัมมนา";
+
+    submitRegistrationButton.disabled =
+      true;
+
+    submitRegistrationButton.textContent =
+      "ลงทะเบียนสำเร็จ";
+  }
+
+
+  async function checkRegistrationStatus() {
+
+    if (!registrationId) {
+      return;
+    }
+
+    try {
+
+      const url =
+        PUBLIC_SEMINAR_STATUS_API +
+        "?registration_id=" +
+        encodeURIComponent(
+          registrationId
+        );
+
+      const response =
+        await fetch(
+          url,
+          {
+            method:
+              "GET",
+
+            cache:
+              "no-store"
+          }
+        );
+
+
+      /*
+        ตอนนี้ Backend /status อาจยังไม่ได้ Deploy
+        ถ้ายัง 404 ให้รอต่อแบบเงียบ ๆ
+      */
+      if (!response.ok) {
+
+        if (
+          response.status !== 404
+        ) {
+
+          console.warn(
+            "Seminar status HTTP:",
+            response.status
+          );
+        }
+
+        return;
+      }
+
+
+      const result =
+        await response.json();
+
+
+      const status =
+        String(
+          result?.registration_status ||
+          ""
+        )
+          .trim()
+          .toUpperCase();
+
+
+      if (
+        status ===
+        "ACCESS_ISSUED"
+      ) {
+
+        showFinalSuccess();
+
+        return;
+      }
+
+
+      if (
+        status ===
+        "PAYMENT_REJECTED"
+      ) {
+
+        stopStatusPolling();
+
+        submitMessage.hidden =
+          false;
+
+        submitMessage.className =
+          "notice";
+
+        submitMessage.innerHTML =
+          "<strong>หลักฐานการชำระเงินยังไม่ผ่านการตรวจสอบ</strong><br>" +
+          "กรุณาติดต่อ ADT หรือดำเนินการส่งหลักฐานใหม่";
+
+        submitRegistrationButton.disabled =
+          false;
+
+        submitRegistrationButton.textContent =
+          "ส่งข้อมูลอีกครั้ง";
+
+        return;
+      }
+
+    }
+    catch (error) {
+
+      console.warn(
+        "Status polling error:",
+        error
+      );
+    }
+
+
+    /*
+      Poll สูงสุดประมาณ 30 นาที
+      รองรับกรณีต้องรอ Admin กดอนุมัติ
+    */
+    if (
+      Date.now() -
+      statusPollStartedAt <
+      30 * 60 * 1000
+    ) {
+
+      statusPollTimer =
+        setTimeout(
+          checkRegistrationStatus,
+          3000
+        );
+    }
+    else {
+
+      stopStatusPolling();
+
+      submitMessage.hidden =
+        false;
+
+      submitMessage.className =
+        "notice";
+
+      submitMessage.innerHTML =
+        "<strong>ระบบได้รับข้อมูลแล้ว</strong><br>" +
+        "หากรายการยังอยู่ระหว่างตรวจสอบ ระบบจะส่งลิงก์ Zoom และรหัสผ่านทาง LINE เมื่ออนุมัติเรียบร้อย";
+    }
+  }
+
+
+  function startStatusPolling(
+    id
+  ) {
+
+    registrationId =
+      String(
+        id || ""
+      ).trim();
+
+    if (!registrationId) {
+      return;
+    }
+
+    stopStatusPolling();
+
+    statusPollStartedAt =
+      Date.now();
+
+    statusPollTimer =
+      setTimeout(
+        checkRegistrationStatus,
+        1500
+      );
+  }
 
 
   // ======================================================
@@ -1374,12 +1704,15 @@
   // จุดนี้เป็นจุดเดียวที่ควรบันทึก Registration จริง
   //
   // RESPONSE CONTRACT:
-  // - HTTP 200     = ระบบรับรายการสำเร็จ
-  //                  หน้าเว็บแจ้งให้ติดตาม LINE
-  // - HTTP != 200  = แสดง Error และเปิดปุ่มให้ลองใหม่
+  // - POST /submit ได้ HTTP 200
+  //   -> เก็บ registration_id
+  //   -> Poll GET /status
+  // - ACCESS_ISSUED
+  //   -> แสดง Success หลัง Zoom ถึง LINE แล้ว
+  // - HTTP != 200
+  //   -> แสดง Error และเปิดปุ่มให้ลองใหม่
   //
   // หน้าเว็บไม่แยกว่าอนุมัติจาก OCR หรือ Admin
-  // Backend เป็นผู้ดำเนินการต่อจนส่ง Zoom Link + Passcode ทาง LINE
   // ======================================================
 
   submitRegistrationButton.addEventListener(
@@ -1537,21 +1870,46 @@
 
 
         // ===============================================
-        // HTTP 200 = WEBSITE SUCCESS
+        // HTTP 200 = SUBMIT ACCEPTED
         //
-        // หน้าเว็บไม่สนใจว่า Approval มาจาก OCR หรือ Admin
-        // Backend เป็นผู้จัดการ Flow หลังจากนี้ทั้งหมด
+        // เก็บ registration_id แล้วติดตามสถานะต่อ
+        // จน Backend เปลี่ยนเป็น ACCESS_ISSUED
         // ===============================================
+
+        registrationId =
+          String(
+            result?.registration_id ||
+            ""
+          ).trim();
+
+
+        submitMessage.className =
+          "notice";
 
         submitMessage.innerHTML =
           "<strong>✅ ระบบได้รับข้อมูลเรียบร้อยแล้ว</strong><br>" +
-          "ระบบกำลังดำเนินการตรวจสอบและจัดเตรียมสิทธิ์เข้าร่วมสัมมนา<br>" +
-          "เมื่อรายการได้รับการอนุมัติ ระบบจะส่งลิงก์ Zoom และรหัสผ่านทาง LINE อัตโนมัติ<br><br>" +
-          "<strong>กรุณาตรวจสอบข้อความใน LINE ของคุณ</strong>";
+          "กำลังตรวจสอบหลักฐานการชำระเงินและจัดเตรียมสิทธิ์เข้าร่วมสัมมนา<br>" +
+          "กรุณาเปิดหน้านี้ไว้ ระบบจะอัปเดตเมื่อส่งลิงก์ Zoom และรหัสผ่านเข้า LINE สำเร็จ";
 
 
         submitRegistrationButton.textContent =
-          "ส่งข้อมูลเรียบร้อย";
+          "กำลังตรวจสอบรายการ...";
+
+
+        if (registrationId) {
+
+          startStatusPolling(
+            registrationId
+          );
+        }
+        else {
+
+          /*
+            รองรับ Backend รุ่นเก่าที่ยังไม่คืน registration_id
+          */
+          submitMessage.innerHTML +=
+            "<br><br><strong>กรุณาตรวจสอบข้อความใน LINE ของคุณ</strong>";
+        }
 
         return;
 
