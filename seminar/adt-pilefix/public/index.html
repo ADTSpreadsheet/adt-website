@@ -636,6 +636,38 @@
       text-align:center;
     }
 
+    .final-rejected{
+      margin-top:18px;
+      padding:20px;
+      border:1px solid #fecaca;
+      border-radius:16px;
+      background:#fff1f2;
+      text-align:center;
+      color:#991b1b;
+      line-height:1.8;
+    }
+
+    .final-rejected strong{
+      display:block;
+      margin-bottom:6px;
+      font-size:17px;
+      color:#b91c1c;
+    }
+
+    .ocr-progress.rejected{
+      border-color:#fecaca;
+      background:#fff7f7;
+    }
+
+    .ocr-progress.rejected .ocr-progress-title,
+    .ocr-progress.rejected .ocr-progress-percent{
+      color:#dc2626;
+    }
+
+    .ocr-progress.rejected .ocr-progress-bar{
+      background:linear-gradient(90deg,#fb7185 0%,#ef4444 60%,#b91c1c 100%);
+    }
+
     .final-success{
       margin-top:18px;
       padding:20px;
@@ -1666,6 +1698,40 @@
   }
 
 
+  function showFinalRejected() {
+
+    stopStatusPolling();
+
+    ocrProgress.classList.add(
+      "rejected"
+    );
+
+    setOcrProgress(
+      100,
+      "❌ รายการไม่ได้รับการอนุมัติ",
+      "ระบบได้ปฏิเสธคำขอ เนื่องจากข้อมูลหรือหลักฐานการลงทะเบียนไม่ถูกต้อง"
+    );
+
+    submitMessage.hidden =
+      false;
+
+    submitMessage.className =
+      "final-rejected";
+
+    submitMessage.innerHTML =
+      "<strong>❌ คำขอเข้าร่วมสัมมนาไม่ได้รับการอนุมัติ</strong>" +
+      "ระบบตรวจสอบพบว่าข้อมูลหรือหลักฐานการลงทะเบียนไม่ถูกต้อง<br>" +
+      "จึงไม่สามารถอนุมัติสิทธิ์เข้าร่วมสัมมนารายการนี้ได้<br>" +
+      "หากคิดว่าเกิดข้อผิดพลาด กรุณาติดต่อทีมงาน ADT";
+
+    submitRegistrationButton.disabled =
+      true;
+
+    submitRegistrationButton.textContent =
+      "รายการไม่ได้รับการอนุมัติ";
+  }
+
+
   async function checkRegistrationStatus() {
 
     if (!registrationId) {
@@ -1743,23 +1809,7 @@
         "PAYMENT_REJECTED"
       ) {
 
-        stopStatusPolling();
-
-        submitMessage.hidden =
-          false;
-
-        submitMessage.className =
-          "notice";
-
-        submitMessage.innerHTML =
-          "<strong>หลักฐานการชำระเงินยังไม่ผ่านการตรวจสอบ</strong><br>" +
-          "กรุณาติดต่อ ADT หรือดำเนินการส่งหลักฐานใหม่";
-
-        submitRegistrationButton.disabled =
-          false;
-
-        submitRegistrationButton.textContent =
-          "ส่งข้อมูลอีกครั้ง";
+        showFinalRejected();
 
         return;
       }
