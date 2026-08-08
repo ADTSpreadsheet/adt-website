@@ -579,6 +579,33 @@ a{color:inherit;text-decoration:none}
                     </div>
 
 
+                    <div class="state" id="stateConfirmed">
+
+                        <div class="center-state">
+
+                            <div class="result-icon success">✓</div>
+
+                            <h2>ลงทะเบียนสำเร็จ</h2>
+
+                            <p>
+                                ระบบได้ส่งลิงก์ Zoom และรหัสผ่าน
+                                ไปยัง LINE ของคุณเรียบร้อยแล้ว
+                            </p>
+
+                            <div class="result-box">
+                                <strong style="display:block;color:#142033;margin-bottom:8px;">
+                                    กรุณาตรวจสอบข้อความใน LINE
+                                </strong>
+
+                                และเก็บลิงก์เข้าห้องประชุมกับรหัสผ่าน
+                                ไว้สำหรับวันสัมมนา
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
                     <div class="state" id="stateNotFound">
 
                         <div class="center-state">
@@ -669,6 +696,9 @@ a{color:inherit;text-decoration:none}
 const PILEFIX_API_URL =
     "https://adt-linebot-pilefix.onrender.com/api/seminar/pilefix/verify";
 
+const PILEFIX_CONFIRM_API_URL =
+    "https://adt-linebot-pilefix.onrender.com/api/seminar/pilefix/confirm";
+
 
 /* =========================================================
    STATE
@@ -684,12 +714,17 @@ const states = {
     success:
         document.getElementById("stateSuccess"),
 
+    confirmed:
+        document.getElementById("stateConfirmed"),
+
     notfound:
         document.getElementById("stateNotFound"),
 
     systemerror:
         document.getElementById("stateSystemError")
 };
+
+let verifiedBookingNo = "";
 
 
 function showState(name){
@@ -806,6 +841,9 @@ document
                     data.full_name || ""
                 ).trim();
 
+            verifiedBookingNo =
+                bookingNo;
+
             document
             .getElementById("successName")
             .textContent =
@@ -866,21 +904,141 @@ document
 /* =========================================================
    CONFIRM BUTTON
 
-   ตอนนี้หน้าเว็บหยุดไว้ที่ขั้นตอน "ถามยืนยัน"
-   ปุ่มนี้ยังไม่ยิง API บันทึกข้อมูล
-   Backend /confirm จะเชื่อมในขั้นตอนถัดไป
+   POST /api/seminar/pilefix/confirm
+   - ส่ง booking_no ที่ Verify ผ่านแล้ว
+   - Backend ตรวจสิทธิ์ซ้ำ
+   - บันทึก Table 05
+   - ส่ง Zoom + Passcode ทาง LINE
+   - แจ้ง Admin
+   - ถ้าสำเร็จ เปลี่ยน UX เป็น Success
 ========================================================= */
 
 document
 .getElementById("confirmRegistrationButton")
-.addEventListener("click", function(){
+.addEventListener("click", async function(){
 
-    alert(
-        "ตรวจสอบสิทธิ์เรียบร้อยแล้ว\n\n" +
-        "ขั้นตอนยืนยันการลงทะเบียนจะเชื่อมกับ API /confirm ในขั้นตอนถัดไป"
-    );
+    const button =
+        document.getElementById("confirmRegistrationButton");
+
+    if(!verifiedBookingNo){
+
+        document
+        .getElementById("systemErrorMessage")
+        .textContent =
+            "ไม่พบหมายเลขสิทธิ์ที่ผ่านการตรวจสอบ กรุณาตรวจสอบสิทธิ์ใหม่อีกครั้ง";
+
+        showState("systemerror");
+
+        return;
+    }
+
+
+    const oldText =
+        button.textContent;
+
+
+    button.disabled =
+        true;
+
+    button.textContent =
+        "กำลังยืนยันและส่งลิงก์ทาง LINE...";
+
+
+    try{
+
+        const response =
+            await fetch(
+                PILEFIX_CONFIRM_API_URL,
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:JSON.stringify({
+                        booking_no:
+                            verifiedBookingNo
+                    })
+                }
+            );
+
+
+        let data = {};
+
+        try{
+            data =
+                await response.json();
+        }
+        catch(error){
+            data = {};
+        }
+
+
+        if(
+            response.ok &&
+            data.success === true
+        ){
+
+            if(
+                data.customer_access === "SENT" ||
+                data.confirmed === true
+            ){
+
+                showState("confirmed");
+
+                return;
+            }
+
+
+            document
+            .getElementById("systemErrorMessage")
+            .textContent =
+                data.message ||
+                "บันทึกสิทธิ์แล้ว แต่ระบบยังไม่ยืนยันการส่งลิงก์ทาง LINE";
+
+            showState("systemerror");
+
+            return;
+        }
+
+
+        document
+        .getElementById("systemErrorMessage")
+        .textContent =
+            data.message ||
+            data.code ||
+            "ไม่สามารถยืนยันการลงทะเบียนได้ กรุณาลองใหม่อีกครั้ง";
+
+        showState("systemerror");
+
+    }
+    catch(error){
+
+        console.error(
+            "PILEFiX seminar confirm error:",
+            error
+        );
+
+        document
+        .getElementById("systemErrorMessage")
+        .textContent =
+            "ไม่สามารถเชื่อมต่อระบบยืนยันการลงทะเบียนได้ กรุณาลองใหม่อีกครั้ง";
+
+        showState("systemerror");
+    }
+    finally{
+
+        button.disabled =
+            false;
+
+        button.textContent =
+            oldText;
+    }
 
 });
+
 
 
 document
