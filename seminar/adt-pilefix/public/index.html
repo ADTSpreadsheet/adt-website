@@ -820,8 +820,8 @@
           </button>
 
           <div class="notice">
-            ขั้นตอนนี้เป็นการเตรียมหลักฐานการชำระเงิน
-            ระบบจะบันทึกผู้ลงทะเบียนจริงหลัง LINE OTP ผ่านเท่านั้น
+            ไฟล์สลิปจะถูกส่งพร้อมข้อมูลทั้งหมดหลังกรอก LINE OTP
+            และกด Submit ยืนยันการลงทะเบียน
           </div>
 
         </section>
@@ -896,9 +896,9 @@
             ></div>
 
             <div class="locked-note">
-              เมื่อกด Submit ระบบจะตรวจ LINE OTP ก่อน
-              จากนั้นจึงบันทึกข้อมูลผู้ลงทะเบียน
-              ผูก LINE User ID และออกสิทธิ์เข้าร่วมสัมมนา
+              เมื่อกด Submit ระบบจะตรวจ LINE OTP และสลิปการชำระเงิน
+              จากนั้นจึงบันทึกข้อมูลและดำเนินการอนุมัติ
+              หาก OCR อ่านไม่ชัด ระบบจะส่งให้ Admin ตรวจสอบต่อ
             </div>
 
           </div>
@@ -913,17 +913,21 @@
 
 <script>
   // ======================================================
-  // FRONTEND FLOW ONLY
+  // PUBLIC SEMINAR REGISTRATION
   //
   // STEP 1 -> REVIEW
   // STEP 2 -> PAYMENT
   // STEP 3 -> SLIP SELECTED
   // STEP 4 -> LINE OTP
+  // STEP 5 -> POST ทุกข้อมูลไปยัง ADT Website API
   //
-  // IMPORTANT:
-  // ยังไม่บันทึก Database ในไฟล์นี้
-  // จุดบันทึกจริงต้องเกิดหลัง API ตรวจ LINE OTP สำเร็จ
+  // Endpoint:
+  // POST https://adt-website-api.onrender.com/api/seminar/public/submit
   // ======================================================
+
+
+  const PUBLIC_SEMINAR_API =
+    "https://adt-website-api.onrender.com/api/seminar/public/submit";
 
 
   const publicForm =
@@ -1244,11 +1248,9 @@
   // ======================================================
   // PAYMENT -> SLIP
   //
-  // ตอนนี้ Frontend แค่รับไฟล์ไว้ใน Memory
-  // เมื่อ API พร้อม:
-  // 1. Upload ไป Supabase Storage
-  // 2. OCR
-  // 3. ถ้า Upload สำเร็จ จึงอนุญาตไป LINE
+  // Frontend เก็บไฟล์ไว้ชั่วคราวใน Browser
+  // ยังไม่ Upload จนกว่าผู้ใช้จะกรอก LINE OTP
+  // แล้วกด Submit ครั้งสุดท้าย
   // ======================================================
 
   slipFile.addEventListener(
@@ -1307,6 +1309,27 @@
       }
 
 
+      const maxFileSize =
+        10 * 1024 * 1024;
+
+      if (file.size > maxFileSize) {
+
+        fileReady.hidden =
+          false;
+
+        fileReady.textContent =
+          "ไฟล์มีขนาดเกิน 10 MB กรุณาเลือกไฟล์ใหม่";
+
+        slipContinueButton.disabled =
+          true;
+
+        registrationDraft.slip_file =
+          null;
+
+        return;
+      }
+
+
       fileReady.hidden =
         false;
 
@@ -1332,10 +1355,9 @@
       }
 
       /*
-        IMPORTANT:
-        ตอนเชื่อม API จริง
-        ตรงนี้ต้อง Upload Slip สำเร็จก่อน
-        แล้วจึง showState(lineState)
+        เก็บไฟล์ไว้ใน registrationDraft
+        แล้วไปขั้น LINE OTP
+        การ Upload จริงจะเกิดตอน Final Submit
       */
 
       showState(
@@ -1363,40 +1385,237 @@
 
   submitRegistrationButton.addEventListener(
     "click",
-    () => {
+    async () => {
 
       const otp =
         String(
           lineOtp.value || ""
-        ).trim();
+        )
+          .trim()
+          .replace(/\D/g, "");
 
 
       submitMessage.hidden =
         false;
 
 
-      if (!otp) {
+      if (!/^\d{6}$/.test(otp)) {
 
         submitMessage.innerHTML =
-          "<strong>กรุณากรอกรหัสยืนยันจาก LINE</strong>";
+          "<strong>กรุณากรอกรหัส OTP 6 หลักจาก LINE</strong>";
 
         return;
       }
 
 
-      /*
-        FRONTEND PROTOTYPE:
-        ยังไม่ยิง API จนกว่าเราจะสร้าง
-        Public Seminar Registration API
-        และ LINE OTP Endpoint
-      */
+      if (
+        !registrationDraft.first_name ||
+        !registrationDraft.last_name ||
+        !registrationDraft.phone
+      ) {
+
+        submitMessage.innerHTML =
+          "<strong>ข้อมูลชื่อ นามสกุล หรือเบอร์โทรศัพท์ไม่ครบ</strong>";
+
+        return;
+      }
+
+
+      if (!registrationDraft.slip_file) {
+
+        submitMessage.innerHTML =
+          "<strong>ไม่พบไฟล์สลิป กรุณากลับไปแนบสลิปอีกครั้ง</strong>";
+
+        return;
+      }
+
+
+      const oldButtonText =
+        submitRegistrationButton.textContent;
+
+
+      submitRegistrationButton.disabled =
+        true;
+
+      submitRegistrationButton.textContent =
+        "กำลังตรวจสอบและส่งข้อมูล...";
+
 
       submitMessage.innerHTML =
-        "<strong>ข้อมูลพร้อมส่งแล้ว</strong><br>" +
-        "ขั้นตอนถัดไปคือเชื่อม API ตรวจ LINE OTP " +
-        "เพื่อรับ LINE User ID แล้วจึงบันทึกข้อมูลจริง " +
-        "และส่งลิงก์เข้าร่วมสัมมนาทาง LINE";
+        "<strong>กำลังตรวจสอบ OTP และหลักฐานการชำระเงิน</strong><br>" +
+        "กรุณารอสักครู่ และอย่าปิดหน้านี้";
 
+
+      try {
+
+        const formData =
+          new FormData();
+
+        formData.append(
+          "first_name",
+          registrationDraft.first_name
+        );
+
+        formData.append(
+          "last_name",
+          registrationDraft.last_name
+        );
+
+        formData.append(
+          "phone",
+          registrationDraft.phone
+        );
+
+        formData.append(
+          "otp",
+          otp
+        );
+
+        formData.append(
+          "slip",
+          registrationDraft.slip_file
+        );
+
+
+        /*
+          สำคัญ:
+          ไม่ต้องกำหนด Content-Type เอง
+          Browser จะสร้าง multipart boundary ให้ FormData
+        */
+        const response =
+          await fetch(
+            PUBLIC_SEMINAR_API,
+            {
+              method:
+                "POST",
+
+              body:
+                formData
+            }
+          );
+
+
+        let result = {};
+
+        try {
+          result =
+            await response.json();
+        }
+        catch (jsonError) {
+
+          console.error(
+            "Invalid API JSON response:",
+            jsonError
+          );
+        }
+
+
+        if (!response.ok) {
+
+          const errorMessage =
+            result?.message ||
+            result?.code ||
+            "ไม่สามารถส่งข้อมูลลงทะเบียนได้";
+
+
+          submitMessage.innerHTML =
+            "<strong>ดำเนินการไม่สำเร็จ</strong><br>" +
+            errorMessage;
+
+
+          /*
+            OTP ผิดหรือหมดอายุ
+            เปิดให้ลองใหม่ได้
+          */
+          submitRegistrationButton.disabled =
+            false;
+
+          submitRegistrationButton.textContent =
+            oldButtonText;
+
+          return;
+        }
+
+
+        // ===============================================
+        // AUTO APPROVED
+        // ===============================================
+
+        if (
+          result?.payment_status ===
+          "APPROVED"
+        ) {
+
+          submitMessage.innerHTML =
+            "<strong>✅ ลงทะเบียนสำเร็จ</strong><br>" +
+            "ระบบตรวจสอบการชำระเงินเรียบร้อยแล้ว<br>" +
+            "กรุณาตรวจสอบ LINE เพื่อรับลิงก์เข้าร่วมสัมมนา";
+
+
+          submitRegistrationButton.textContent =
+            "ลงทะเบียนสำเร็จ";
+
+          return;
+        }
+
+
+        // ===============================================
+        // PAYMENT REVIEW
+        // ===============================================
+
+        if (
+          result?.payment_status ===
+          "PAYMENT_REVIEW"
+        ) {
+
+          submitMessage.innerHTML =
+            "<strong>✅ ระบบได้รับข้อมูลแล้ว</strong><br>" +
+            "หลักฐานการชำระเงินกำลังรอ Admin ตรวจสอบ<br>" +
+            "เมื่ออนุมัติแล้ว ระบบจะส่งลิงก์เข้าร่วมสัมมนาทาง LINE อัตโนมัติ";
+
+
+          submitRegistrationButton.textContent =
+            "รอตรวจสอบการชำระเงิน";
+
+          return;
+        }
+
+
+        // ===============================================
+        // OTHER SUCCESS
+        // ===============================================
+
+        submitMessage.innerHTML =
+          "<strong>✅ ระบบได้รับข้อมูลแล้ว</strong><br>" +
+          (
+            result?.message ||
+            "กรุณาตรวจสอบ LINE สำหรับขั้นตอนถัดไป"
+          );
+
+
+        submitRegistrationButton.textContent =
+          "ส่งข้อมูลเรียบร้อย";
+
+      }
+      catch (error) {
+
+        console.error(
+          "Public seminar submit error:",
+          error
+        );
+
+
+        submitMessage.innerHTML =
+          "<strong>ไม่สามารถเชื่อมต่อระบบได้</strong><br>" +
+          "กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง";
+
+
+        submitRegistrationButton.disabled =
+          false;
+
+        submitRegistrationButton.textContent =
+          oldButtonText;
+      }
     }
   );
 
