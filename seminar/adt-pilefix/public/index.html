@@ -552,6 +552,90 @@
       font-weight:900;
     }
 
+
+    /* OCR PROGRESS */
+    .ocr-progress{
+      margin-top:18px;
+      padding:18px;
+      border:1px solid #cfe0f7;
+      border-radius:16px;
+      background:#f7fbff;
+    }
+
+    .ocr-progress[hidden]{
+      display:none;
+    }
+
+    .ocr-progress-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom:11px;
+    }
+
+    .ocr-progress-title{
+      color:#0b376f;
+      font-size:14px;
+      font-weight:900;
+      line-height:1.5;
+    }
+
+    .ocr-progress-percent{
+      min-width:48px;
+      text-align:right;
+      color:#1677ff;
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .ocr-progress-track{
+      position:relative;
+      width:100%;
+      height:12px;
+      overflow:hidden;
+      border-radius:999px;
+      background:#dfeaf7;
+      box-shadow:inset 0 1px 2px rgba(7,26,59,.08);
+    }
+
+    .ocr-progress-bar{
+      width:0%;
+      height:100%;
+      border-radius:999px;
+      background:linear-gradient(90deg,#67a8ff 0%,#1677ff 60%,#0f5fd1 100%);
+      transition:width .65s ease;
+    }
+
+    .ocr-progress-bar::after{
+      content:"";
+      display:block;
+      width:100%;
+      height:100%;
+      background:linear-gradient(
+        110deg,
+        transparent 0%,
+        rgba(255,255,255,.22) 35%,
+        rgba(255,255,255,.55) 50%,
+        rgba(255,255,255,.22) 65%,
+        transparent 100%
+      );
+      transform:translateX(-100%);
+      animation:ocrShine 1.6s linear infinite;
+    }
+
+    @keyframes ocrShine{
+      to{transform:translateX(100%)}
+    }
+
+    .ocr-progress-stage{
+      margin-top:10px;
+      color:#61738a;
+      font-size:12px;
+      line-height:1.7;
+      text-align:center;
+    }
+
     .final-success{
       margin-top:18px;
       padding:20px;
@@ -988,6 +1072,43 @@
 
 
             <div
+              id="ocrProgress"
+              class="ocr-progress"
+              hidden
+            >
+              <div class="ocr-progress-head">
+                <div
+                  id="ocrProgressTitle"
+                  class="ocr-progress-title"
+                >
+                  กำลังเตรียมตรวจสอบสลิป...
+                </div>
+
+                <div
+                  id="ocrProgressPercent"
+                  class="ocr-progress-percent"
+                >
+                  0%
+                </div>
+              </div>
+
+              <div class="ocr-progress-track">
+                <div
+                  id="ocrProgressBar"
+                  class="ocr-progress-bar"
+                ></div>
+              </div>
+
+              <div
+                id="ocrProgressStage"
+                class="ocr-progress-stage"
+              >
+                ระบบกำลังส่งข้อมูลเข้าสู่ระบบ
+              </div>
+            </div>
+
+
+            <div
               id="submitMessage"
               class="notice"
               hidden
@@ -1102,6 +1223,21 @@
   const submitMessage =
     document.getElementById("submitMessage");
 
+  const ocrProgress =
+    document.getElementById("ocrProgress");
+
+  const ocrProgressBar =
+    document.getElementById("ocrProgressBar");
+
+  const ocrProgressPercent =
+    document.getElementById("ocrProgressPercent");
+
+  const ocrProgressTitle =
+    document.getElementById("ocrProgressTitle");
+
+  const ocrProgressStage =
+    document.getElementById("ocrProgressStage");
+
   const copySeminarKeywordButton =
     document.getElementById("copySeminarKeywordButton");
 
@@ -1117,6 +1253,9 @@
   let registrationId = "";
   let statusPollTimer = null;
   let statusPollStartedAt = 0;
+
+  let ocrProgressTimer = null;
+  let ocrProgressValue = 0;
 
 
   function showState(target) {
@@ -1238,6 +1377,250 @@
 
       }
     );
+  }
+
+
+  function setOcrProgress(
+    value,
+    title,
+    stage
+  ) {
+
+    const safeValue =
+      Math.max(
+        0,
+        Math.min(
+          100,
+          Number(value || 0)
+        )
+      );
+
+    ocrProgressValue =
+      safeValue;
+
+    ocrProgress.hidden =
+      false;
+
+    ocrProgressBar.style.width =
+      safeValue + "%";
+
+    ocrProgressPercent.textContent =
+      Math.round(
+        safeValue
+      ) + "%";
+
+    if (title) {
+      ocrProgressTitle.textContent =
+        title;
+    }
+
+    if (stage) {
+      ocrProgressStage.textContent =
+        stage;
+    }
+  }
+
+
+  function getOcrStage(value) {
+
+    if (value < 18) {
+      return {
+        title:
+          "กำลังอัปโหลดสลิป...",
+        stage:
+          "กำลังส่งภาพสลิปและข้อมูลเข้าสู่ระบบ"
+      };
+    }
+
+    if (value < 48) {
+      return {
+        title:
+          "OCR กำลังอ่านข้อความจากสลิป...",
+        stage:
+          "กำลังอ่านข้อมูลสำคัญจากภาพ กรุณารอสักครู่"
+      };
+    }
+
+    if (value < 70) {
+      return {
+        title:
+          "กำลังตรวจสอบชื่อผู้รับ...",
+        stage:
+          "ระบบกำลังตรวจสอบข้อมูลบัญชีผู้รับชำระเงิน"
+      };
+    }
+
+    if (value < 88) {
+      return {
+        title:
+          "กำลังตรวจสอบยอดชำระ...",
+        stage:
+          "ระบบกำลังตรวจสอบยอดเงินจากหลักฐานการโอน"
+      };
+    }
+
+    return {
+      title:
+        "กำลังสรุปผลการตรวจสอบ...",
+      stage:
+        "อีกสักครู่ระบบจะแจ้งผลและดำเนินการขั้นตอนถัดไป"
+    };
+  }
+
+
+  function startOcrProgress() {
+
+    if (ocrProgressTimer) {
+      clearInterval(
+        ocrProgressTimer
+      );
+    }
+
+    ocrProgressValue = 6;
+
+    const firstStage =
+      getOcrStage(
+        ocrProgressValue
+      );
+
+    setOcrProgress(
+      ocrProgressValue,
+      firstStage.title,
+      firstStage.stage
+    );
+
+
+    /*
+      Progress นี้เป็น UX Progress
+      ไม่ใช่เปอร์เซ็นต์จริงจาก Tesseract
+
+      จะค่อย ๆ ไหลถึงประมาณ 92%
+      แล้วรอผล API จริงก่อนขึ้น 100%
+    */
+    ocrProgressTimer =
+      setInterval(
+        () => {
+
+          if (
+            ocrProgressValue >= 92
+          ) {
+            return;
+          }
+
+          let increment = 1;
+
+          if (
+            ocrProgressValue < 25
+          ) {
+            increment = 3;
+          }
+          else if (
+            ocrProgressValue < 60
+          ) {
+            increment = 2;
+          }
+
+          ocrProgressValue =
+            Math.min(
+              92,
+              ocrProgressValue +
+                increment
+            );
+
+          const currentStage =
+            getOcrStage(
+              ocrProgressValue
+            );
+
+          setOcrProgress(
+            ocrProgressValue,
+            currentStage.title,
+            currentStage.stage
+          );
+
+        },
+        700
+      );
+  }
+
+
+  function finishOcrProgress(
+    result
+  ) {
+
+    if (ocrProgressTimer) {
+
+      clearInterval(
+        ocrProgressTimer
+      );
+
+      ocrProgressTimer = null;
+    }
+
+    const paymentStatus =
+      String(
+        result?.payment_status ||
+        ""
+      )
+        .trim()
+        .toUpperCase();
+
+    if (
+      paymentStatus ===
+        "PAYMENT_REVIEW"
+    ) {
+
+      setOcrProgress(
+        100,
+        "OCR ตรวจสอบเสร็จแล้ว",
+        "ข้อมูลบางส่วนต้องให้ Admin ตรวจสอบต่อ ระบบได้ส่งรายการเข้าสู่ขั้นตอนตรวจสอบแล้ว"
+      );
+
+      return;
+    }
+
+    setOcrProgress(
+      100,
+      "ตรวจสอบสลิปเรียบร้อยแล้ว",
+      "ระบบตรวจสอบข้อมูลสำคัญจากสลิปเรียบร้อย กำลังจัดเตรียมสิทธิ์เข้าร่วมสัมมนา"
+    );
+  }
+
+
+  function failOcrProgress(
+    message
+  ) {
+
+    if (ocrProgressTimer) {
+
+      clearInterval(
+        ocrProgressTimer
+      );
+
+      ocrProgressTimer = null;
+    }
+
+    ocrProgress.hidden =
+      false;
+
+    ocrProgressTitle.textContent =
+      "ไม่สามารถตรวจสอบรายการได้";
+
+    ocrProgressStage.textContent =
+      message ||
+      "กรุณาตรวจสอบข้อมูลแล้วลองอีกครั้ง";
+
+    ocrProgressPercent.textContent =
+      "—";
+
+    ocrProgressBar.style.width =
+      Math.max(
+        8,
+        Math.min(
+          100,
+          ocrProgressValue
+        )
+      ) + "%";
   }
 
 
@@ -1773,6 +2156,9 @@
         "กำลังตรวจสอบและส่งข้อมูล...";
 
 
+      startOcrProgress();
+
+
       submitMessage.innerHTML =
         "<strong>กำลังส่งข้อมูลเข้าสู่ระบบ</strong><br>" +
         "กรุณารอสักครู่";
@@ -1850,6 +2236,11 @@
             "ไม่สามารถส่งข้อมูลลงทะเบียนได้";
 
 
+          failOcrProgress(
+            errorMessage
+          );
+
+
           submitMessage.innerHTML =
             "<strong>ดำเนินการไม่สำเร็จ</strong><br>" +
             errorMessage;
@@ -1867,6 +2258,11 @@
 
           return;
         }
+
+
+        finishOcrProgress(
+          result
+        );
 
 
         // ===============================================
@@ -1919,6 +2315,11 @@
         console.error(
           "Public seminar submit error:",
           error
+        );
+
+
+        failOcrProgress(
+          "ไม่สามารถเชื่อมต่อระบบได้ กรุณาตรวจสอบอินเทอร์เน็ตแล้วลองอีกครั้ง"
         );
 
 
