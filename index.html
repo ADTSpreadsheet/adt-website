@@ -152,6 +152,32 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
 .footer{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .footer p{margin:0;line-height:1.8;font-size:.86rem}
 .footer-links{display:flex;gap:14px;flex-wrap:wrap}.footer-links a{text-decoration:none;color:#d8e6f6;font-size:.86rem}
+
+.seminar-live{padding:54px 0 66px}
+.seminar-live-card{overflow:hidden;border-radius:28px;background:#fff;border:1px solid #e7edf5;box-shadow:var(--shadow)}
+.seminar-live-head{padding:28px 30px;text-align:center;background:linear-gradient(135deg,#031025,var(--navy2));color:#fff}
+.seminar-live-head .kicker{color:var(--yellow)}
+.seminar-live-head h2{margin:4px 0 8px;font-size:clamp(1.7rem,4vw,2.6rem)}
+.seminar-live-head p{margin:0;color:#d6e4f5}
+.seminar-live-body{padding:30px}
+.seminar-live-total{text-align:center;margin-bottom:24px}
+.seminar-live-total strong{display:block;color:var(--navy);font:800 clamp(2.8rem,7vw,4.6rem) "Inter";line-height:1}
+.seminar-live-total span{display:block;margin-top:8px;color:var(--muted)}
+.seminar-live-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.seminar-live-item{padding:18px;border-radius:16px;background:#f5f8fc;border:1px solid #e4ebf3;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.seminar-live-item span{color:#52647c;font-size:.9rem}
+.seminar-live-item strong{color:var(--navy);font:800 1.6rem "Inter"}
+.seminar-capacity{margin-top:22px;padding:18px 20px;border-radius:16px;background:#f8fbff;border:1px solid #dce8f5}
+.seminar-capacity-head{display:flex;justify-content:space-between;gap:14px;margin-bottom:10px;color:#52647c;font-size:.9rem}
+.seminar-capacity-head strong{color:var(--red)}
+.seminar-capacity-track{height:13px;overflow:hidden;border-radius:999px;background:#e6edf5}
+.seminar-capacity-fill{width:0%;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--blue),var(--yellow));transition:width .45s ease}
+.seminar-live-note{margin:12px 0 0;text-align:center;color:var(--muted);font-size:.82rem}
+.seminar-register{text-align:center;margin-top:28px}
+.btn-register-seminar{min-height:64px;padding:0 42px;border-radius:18px;background:var(--yellow);color:#10213f;box-shadow:0 16px 34px rgba(255,201,40,.34);font-size:1.12rem;font-weight:800}
+.btn-register-seminar:hover{transform:translateY(-3px);box-shadow:0 20px 40px rgba(255,201,40,.42)}
+.btn-register-seminar.disabled{pointer-events:none;opacity:.58;filter:grayscale(.25)}
+@media(max-width:700px){.seminar-live{padding:36px 0 48px}.seminar-live-body{padding:22px 16px}.seminar-live-grid{grid-template-columns:1fr}.btn-register-seminar{width:100%;padding:0 20px}}
 @media(max-width:1220px){.logo-full{width:230px}nav{display:none}.count-card,.status-layout,.product{grid-template-columns:1fr}.kpis{grid-template-columns:repeat(2,1fr)}.articles{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.logo-full{width:210px;max-height:54px}.hero{aspect-ratio:auto;min-height:350px}.hero-slide img{min-height:350px}.hero-actions{position:static;padding:16px;background:#031025}.slider-dots{bottom:18px}.slider-arrow{display:none}.hero-actions,.hero-actions .btn{width:100%}.count-wrap{margin-top:0}.count-card{border-radius:0 0 var(--radius) var(--radius)}.count-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.count-item strong{font-size:1.3rem}.kpis,.two-grid,.features,.articles{grid-template-columns:1fr}.section{padding:56px 0}}
 </style>
@@ -251,79 +277,62 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
   </div>
 </section>
 
-<section class="section" id="dashboard">
+<section class="seminar-live" id="seminar-live">
   <div class="container">
-    <div class="head">
-      <p class="kicker">LIVE DASHBOARD</p>
-      <h2>สถานะล่าสุดของ ADT-PILEFiX</h2>
-      <p>ข้อมูลสรุปผู้ชำระเงิน การเปิดใช้งานโปรแกรม สิทธิ์เสื้อ และผู้ลงทะเบียนสัมมนา</p>
-    </div>
-    <div class="kpis">
-      <article class="kpi"><div class="ring" id="paidRing" style="--ring:#1677ff"><div><span class="num" id="paidCount">--</span><span class="unit">ราย</span></div></div><h3>ชำระเงินแล้ว</h3><p>นับเฉพาะรายการที่อนุมัติการชำระเงินแล้ว</p></article>
-      <article class="kpi"><div class="ring" id="activatedRing" style="--ring:#17b26a"><div><span class="num" id="activatedCount">--</span><span class="unit">บัญชี</span></div></div><h3>เปิดใช้งานแล้ว</h3><p>บัญชี Professional ที่ Activate สำเร็จ</p></article>
-      <article class="kpi"><div class="ring" id="jacketRing" style="--ring:#ff8a1f"><div><span class="num" id="jacketRemaining">--</span><span class="unit">สิทธิ์คงเหลือ</span></div></div><h3>สิทธิ์เสื้อ Jacket</h3><p>สำหรับผู้ชำระเงินจริง 50 ลำดับแรก</p></article>
-      <article class="kpi"><div class="ring" id="seminarRing" style="--ring:#ef3d48"><div><span class="num" id="seminarCount">--</span><span class="unit">ผู้ลงทะเบียน</span></div></div><h3>ลงทะเบียนสัมมนา</h3><p>รวมผู้ถือโปรแกรมและบุคคลทั่วไป</p></article>
-    </div>
-    <div class="api-status" id="dashboardStatus">กำลังเชื่อมต่อข้อมูลล่าสุดจากระบบ...</div>
-  </div>
-</section>
-
-<section class="section" id="pf-status">
-  <div class="container">
-    <div class="head"><p class="kicker">PAYMENT & ACTIVATION</p><h2>รายงานสถานะผู้ชำระเงิน</h2><p>แสดงเฉพาะหมายเลข PF ไม่มีชื่อ เบอร์โทร หรือข้อมูลส่วนบุคคล</p></div>
-    <div class="status-layout">
-      <div class="panel">
-        <div class="panel-head"><h3>รายการล่าสุด</h3><span class="updated">อัปเดต: <strong id="lastUpdated">กำลังโหลด...</strong></span></div>
-        <div class="table-wrap"><table><thead><tr><th>ลำดับชำระ</th><th>PF No.</th><th>ชำระเงิน</th><th>สิทธิ์เสื้อ</th><th>เปิดใช้งาน</th></tr></thead><tbody id="pfBody"></tbody></table></div>
-        <div class="empty" id="pfEmpty">กำลังโหลดข้อมูล...</div>
+    <div class="seminar-live-card">
+      <div class="seminar-live-head">
+        <p class="kicker">LIVE REGISTRATION</p>
+        <h2>สถานะการลงทะเบียนสัมมนา</h2>
+        <p>Workshop Online วันที่ 9 สิงหาคม 2569 · จำกัด 100 ที่นั่ง</p>
       </div>
-      <aside class="side">
-        <article class="side-card side-red"><h3>มี PF No. แต่ยังไม่ชำระ?</h3><p>สิทธิ์เสื้อยืนยันตามลำดับการชำระเงินจริง</p><a class="btn" href="https://adt-pilefix.onrender.com/payment.html">ไปหน้าชำระเงิน</a></article>
-        <article class="side-card side-blue"><h3>ชำระแล้ว แต่ยังไม่ Activate?</h3><p>ดาวน์โหลด Professional และเปิดใช้งานก่อนวัน Workshop</p><a class="btn" href="https://adt-pilefix.onrender.com/download.html">ไปหน้าดาวน์โหลด</a></article>
-      </aside>
+
+      <div class="seminar-live-body">
+        <div class="seminar-live-total">
+          <strong id="seminarTotal">-- / 100</strong>
+          <span>ผู้ลงทะเบียนที่ยืนยันสิทธิ์แล้ว</span>
+        </div>
+
+        <div class="seminar-live-grid">
+          <div class="seminar-live-item">
+            <span>บุคคลทั่วไป</span>
+            <strong id="seminarPublic">--</strong>
+          </div>
+          <div class="seminar-live-item">
+            <span>ผู้ถือ ADT-PILEFiX</span>
+            <strong id="seminarPilefix">--</strong>
+          </div>
+          <div class="seminar-live-item">
+            <span>ผู้ถือ ADTSpreadsheet V1.0</span>
+            <strong id="seminarAdtV1">--</strong>
+          </div>
+        </div>
+
+        <div class="seminar-capacity">
+          <div class="seminar-capacity-head">
+            <span id="seminarRemaining">กำลังตรวจสอบจำนวนที่นั่ง...</span>
+            <strong id="seminarPercent">--%</strong>
+          </div>
+          <div class="seminar-capacity-track" aria-label="จำนวนผู้ลงทะเบียนสัมมนา">
+            <div class="seminar-capacity-fill" id="seminarCapacityFill"></div>
+          </div>
+        </div>
+
+        <p class="seminar-live-note" id="seminarLiveStatus">
+          กำลังโหลดข้อมูลล่าสุดจากระบบ...
+        </p>
+
+        <div class="seminar-register">
+          <a
+            class="btn btn-register-seminar"
+            id="seminarRegisterButton"
+            href="/seminar/adt-pilefix/"
+          >ลงทะเบียนเข้าร่วมสัมมนา</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section section-dark" id="seminar">
-  <div class="container">
-    <div class="head"><p class="kicker">WORKSHOP PROGRAM</p><h2>สัมมนาออนไลน์วันที่ 9 สิงหาคม 2569</h2><p>เรียนรู้ทั้งมุมงานเสาเข็มหน้างาน และการวิเคราะห์ออกแบบด้วย ADT-PILEFiX</p></div>
-    <div class="two-grid">
-      <article class="dark-card"><h3>ช่วงที่ 1 — ความรู้ด้านเสาเข็ม</h3><ul><li>ประเภทเสาเข็ม ข้อดี และข้อจำกัด</li><li>การเลือกเสาเข็มให้เหมาะกับโครงการ</li><li>แรงที่เสาเข็มรับและปัญหาที่พบบ่อย</li><li>Case Study จากงานจริง</li></ul></article>
-      <article class="dark-card"><h3>ช่วงที่ 2 — วิเคราะห์และออกแบบ</h3><ul><li>การกระจายแรงลงเสาเข็ม</li><li>Moment และ Beam Shear</li><li>Punching Shear</li><li>Workshop ADT-PILEFiX</li></ul></article>
-    </div>
-    <div class="hero-actions" id="register" style="position:static;margin-top:28px">
-      <a class="btn btn-yellow" href="/seminar/adt-pilefix">ผู้ถือโปรแกรมเข้าร่วมฟรี</a>
-      <a class="btn btn-glass" href="/seminar/adt-pilefix">บุคคลทั่วไป 399 บาท</a>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="pilefix">
-  <div class="container">
-    <div class="head"><p class="kicker">OUR SOFTWARE</p><h2>ADT-PILEFiX Professional</h2><p>โปรแกรมคำนวณ ตรวจสอบ และออกแบบฐานรากเสาเข็มเยื้องศูนย์อย่างเป็นระบบ</p></div>
-    <div class="product">
-      <article class="product-main">
-        <h3>ลดเวลาคำนวณ เพิ่มความชัดเจนในการตรวจสอบ</h3>
-        <p>วิเคราะห์จุดศูนย์ถ่วง แรงปฏิกิริยา Beam Shear, Punching Shear ออกแบบเหล็ก และจัดทำรายงาน</p>
-        <div class="features"><div class="feature">✓ Pile Reaction</div><div class="feature">✓ CG / Ex / Ey</div><div class="feature">✓ Beam Shear</div><div class="feature">✓ Punching Shear</div><div class="feature">✓ Reinforcement</div><div class="feature">✓ Calculation Report</div></div>
-        <a class="btn btn-blue" href="/software/adt-pilefix/">ดูรายละเอียดโปรแกรม</a>
-      </article>
-      <aside class="price-card"><small>ADT-PILEFiX Professional v1.0</small><div class="price">4,999</div><small>บาท / Lifetime License</small><div style="height:18px"></div><a class="btn btn-yellow" href="/software/adt-pilefix/">ซื้อโปรแกรม</a></aside>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="articles">
-  <div class="container">
-    <div class="head"><p class="kicker">KNOWLEDGE CENTER</p><h2>บทความวิศวกรรมล่าสุด</h2><p>พื้นที่รวบรวมความรู้ด้านฐานราก เสาเข็ม และการวิเคราะห์โครงสร้าง</p></div>
-    <div class="articles">
-      <article class="article"><div class="article-cover">PILE FOUNDATION</div><div class="article-body"><h3>ฐานรากเสาเข็มเยื้องศูนย์คืออะไร</h3><p>สาเหตุ ผลกระทบ และแนวคิดในการตรวจสอบเมื่อแนวเสาเข็มจริงไม่ตรงแบบ</p></div></article>
-      <article class="article"><div class="article-cover">BEAM SHEAR</div><div class="article-body"><h3>Beam Shear ตรวจตรงไหน</h3><p>อธิบายแนววิกฤต ระยะ d และการรวมแรงปฏิกิริยาของเสาเข็ม</p></div></article>
-      <article class="article"><div class="article-cover">PUNCHING SHEAR</div><div class="article-body"><h3>Punching Shear ต่างจาก Beam Shear อย่างไร</h3><p>เปรียบเทียบเส้นรอบรูปวิกฤตและตัวแปรที่ส่งผลต่อกำลังรับแรงเฉือน</p></div></article>
-    </div>
-  </div>
-</section>
 </main>
 
 <footer><div class="container footer"><p><strong>ADT Spreadsheet</strong><br>ซอฟต์แวร์ ความรู้ และเครื่องมือสำหรับวิศวกรไทย</p><div class="footer-links"><a href="#top">หน้าแรก</a><a href="/about/">เกี่ยวกับเรา</a><a href="/seminar/adt-pilefix">อบรม 9 สิงหาคม</a><a href="/software/adt-pilefix/">ADT-PILEFiX</a><a href="/member/">สมาชิก</a><a href="/articles/">บทความ</a><a href="/contact/">ติดต่อเรา</a><a href="/admin/">Admin เข้าระบบ</a></div></div></footer>
@@ -393,82 +402,87 @@ footer{padding:42px 0;color:#cbd8e7;background:#031025}
 </script>
 
 <script>
-const API_BASE="https://adt-linebot-pilefix.onrender.com";
-const DASHBOARD_API=`${API_BASE}/api/public/dashboard`;
+const SEMINAR_STATS_API =
+  "https://adt-website-api.onrender.com/api/seminar/registration-stats";
 
-const clamp=(v,min,max)=>Math.min(Math.max(v,min),max);
-const esc=v=>String(v||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
-
-function setRing(id,value){document.getElementById(id)?.style.setProperty("--value",clamp(Number(value||0),0,100))}
-function animate(el,target,duration=800){
-  const start=performance.now();
-  const frame=now=>{
-    const p=clamp((now-start)/duration,0,1);
-    el.textContent=Math.round(target*(1-Math.pow(1-p,3)));
-    if(p<1)requestAnimationFrame(frame);
-  };
-  requestAnimationFrame(frame);
-}
-function thaiDate(v){
-  try{return new Intl.DateTimeFormat("th-TH",{dateStyle:"medium",timeStyle:"short",timeZone:"Asia/Bangkok"}).format(new Date(v))}
-  catch{return "-"}
-}
-function renderRows(rows){
-  const body=document.getElementById("pfBody"),empty=document.getElementById("pfEmpty");
-  body.innerHTML="";
-  if(!rows.length){empty.textContent="ยังไม่มีข้อมูลรายการชำระเงิน";return}
-  empty.textContent="";
-  rows.slice().sort((a,b)=>Number(a.payment_order||0)-Number(b.payment_order||0)).forEach(row=>{
-    const activated=String(row.activation_status||row.license_status||"").toUpperCase()==="ACTIVATED";
-    const tr=document.createElement("tr");
-    tr.innerHTML=`<td>#${Number(row.payment_order||0)}</td><td class="pf">${esc(row.pf_no||row.booking_no||"-")}</td><td><span class="badge paid">ชำระแล้ว</span></td><td><span class="badge ${row.jacket_eligible?"jacket":"wait"}">${row.jacket_eligible?"ได้รับสิทธิ์":"ไม่มีสิทธิ์"}</span></td><td><span class="badge ${activated?"active":"wait"}">${activated?"เปิดใช้งานแล้ว":"รอเปิดใช้งาน"}</span></td>`;
-    body.appendChild(tr);
-  });
-}
-function renderDashboard(data){
-  const s=data.summary||{},paid=Number(s.paid_count||0),activated=Number(s.activated_count||0),limit=Number(s.jacket_limit||50),used=Number(s.jacket_used||0),remain=Math.max(limit-used,0),seminar=Number(s.seminar_count||0);
-  animate(document.getElementById("paidCount"),paid);
-  animate(document.getElementById("activatedCount"),activated);
-  animate(document.getElementById("jacketRemaining"),remain);
-  animate(document.getElementById("seminarCount"),seminar);
-  setRing("paidRing",limit?(paid/limit)*100:0);
-  setRing("activatedRing",paid?(activated/paid)*100:0);
-  setRing("jacketRing",limit?(used/limit)*100:0);
-  setRing("seminarRing",Math.min(seminar*2,100));
-  document.getElementById("lastUpdated").textContent=thaiDate(data.updated_at);
-  renderRows(Array.isArray(data.paid_users)?data.paid_users:[]);
-  const box=document.getElementById("dashboardStatus");
-  box.className="api-status";
-  box.textContent="เชื่อมต่อข้อมูลจากระบบสำเร็จ";
-}
-async function loadDashboard(){
-  const box=document.getElementById("dashboardStatus");
-  try{
-    const res=await fetch(DASHBOARD_API,{headers:{Accept:"application/json"},cache:"no-store"});
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const data=await res.json();
-    if(!data?.success)throw new Error("Invalid response");
-    renderDashboard(data);
-  }catch(err){
-    console.error(err);
-    box.className="api-status error";
-    box.textContent="หน้าเว็บพร้อมแล้ว แต่ต้องเพิ่ม Public Dashboard API และอนุญาต CORS สำหรับ https://adtspreadsheet.com";
-    document.getElementById("pfEmpty").textContent="รอเชื่อมต่อ Public Dashboard API";
-  }
-}
 function countdown(){
   const target=new Date("2026-08-09T19:00:00+07:00");
   const update=()=>{
     const diff=target-Date.now();
-    if(diff<=0){["days","hours","minutes","seconds"].forEach(id=>document.getElementById(id).textContent="00");return}
+    if(diff<=0){
+      ["days","hours","minutes","seconds"].forEach(id=>{
+        const el=document.getElementById(id);
+        if(el) el.textContent="00";
+      });
+      return;
+    }
     document.getElementById("days").textContent=String(Math.floor(diff/86400000)).padStart(2,"0");
     document.getElementById("hours").textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,"0");
     document.getElementById("minutes").textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
     document.getElementById("seconds").textContent=String(Math.floor((diff%60000)/1000)).padStart(2,"0");
   };
-  update();setInterval(update,1000);
+  update();
+  setInterval(update,1000);
 }
-document.addEventListener("DOMContentLoaded",()=>{countdown();loadDashboard();setInterval(loadDashboard,60000)});
+
+async function loadSeminarStats(){
+  const totalEl=document.getElementById("seminarTotal");
+  const publicEl=document.getElementById("seminarPublic");
+  const pilefixEl=document.getElementById("seminarPilefix");
+  const adtV1El=document.getElementById("seminarAdtV1");
+  const remainingEl=document.getElementById("seminarRemaining");
+  const percentEl=document.getElementById("seminarPercent");
+  const fillEl=document.getElementById("seminarCapacityFill");
+  const statusEl=document.getElementById("seminarLiveStatus");
+  const registerButton=document.getElementById("seminarRegisterButton");
+
+  try{
+    const res=await fetch(SEMINAR_STATS_API,{
+      headers:{Accept:"application/json"},
+      cache:"no-store"
+    });
+    const data=await res.json();
+
+    if(!res.ok || data?.success!==true){
+      throw new Error(data?.message || `HTTP ${res.status}`);
+    }
+
+    const capacity=Number(data.capacity)||100;
+    const total=Math.max(Number(data.total)||0,0);
+    const remaining=Math.max(Number(data.remaining)||0,0);
+    const percent=Math.min(Math.max(Number(data.percent)||0,0),100);
+
+    totalEl.textContent=`${total} / ${capacity}`;
+    publicEl.textContent=Number(data.public)||0;
+    pilefixEl.textContent=Number(data.pilefix)||0;
+    adtV1El.textContent=Number(data.adt_v1)||0;
+    remainingEl.textContent=data.full===true ? "ที่นั่งเต็มแล้ว" : `เหลืออีก ${remaining} ที่นั่ง`;
+    percentEl.textContent=`${percent}%`;
+    fillEl.style.width=`${percent}%`;
+    statusEl.textContent="อัปเดตจากระบบลงทะเบียนล่าสุด";
+
+    if(data.full===true){
+      registerButton.textContent="ลงทะเบียนเต็มแล้ว";
+      registerButton.classList.add("disabled");
+      registerButton.setAttribute("aria-disabled","true");
+      registerButton.removeAttribute("href");
+    }else{
+      registerButton.textContent="ลงทะเบียนเข้าร่วมสัมมนา";
+      registerButton.classList.remove("disabled");
+      registerButton.removeAttribute("aria-disabled");
+      registerButton.setAttribute("href","/seminar/adt-pilefix/");
+    }
+  }catch(err){
+    console.error("[HOME SEMINAR STATS]",err);
+    statusEl.textContent="ไม่สามารถโหลดจำนวนผู้ลงทะเบียนล่าสุดได้";
+  }
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  countdown();
+  loadSeminarStats();
+  setInterval(loadSeminarStats,60000);
+});
 </script>
 </body>
 </html>
