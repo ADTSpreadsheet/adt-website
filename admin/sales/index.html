@@ -1,794 +1,1896 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ADT Control Center | Sales & Payments</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ADT Control Center | Dashboard</title>
+
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="description" content="ADTSpreadsheet Control Center Dashboard">
+
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
   <style>
-    *{box-sizing:border-box}
-    :root{
-      --navy:#071a35;
-      --navy-2:#0a2347;
-      --blue:#2563eb;
-      --blue-2:#1d4ed8;
-      --bg:#f3f7fc;
-      --card:#ffffff;
-      --text:#0f172a;
-      --muted:#64748b;
-      --line:#dbe4ef;
-      --green:#16a34a;
-      --orange:#f59e0b;
-      --red:#ef4444;
-      --purple:#7c3aed;
-      --teal:#0fbaa8;
-      --shadow:0 10px 28px rgba(15,23,42,.06);
-      --radius:16px;
+    :root {
+      --navy-950: #031025;
+      --navy-900: #06152d;
+      --navy-850: #081d3f;
+      --navy-800: #0a2855;
+      --blue-600: #1677ff;
+      --blue-500: #2d8cff;
+      --blue-100: #eaf3ff;
+      --gold-500: #d9a61a;
+      --gold-400: #ffc928;
+      --green-600: #17b26a;
+      --green-100: #eafaf3;
+      --orange-600: #f79009;
+      --orange-100: #fff4e5;
+      --red-600: #ef3d48;
+      --red-100: #fff0f1;
+      --violet-600: #7c3aed;
+      --violet-100: #f3edff;
+      --ink-900: #142033;
+      --ink-700: #40506a;
+      --ink-500: #6c7a90;
+      --ink-400: #8f9caf;
+      --line: #dce5ef;
+      --paper: #ffffff;
+      --surface: #f4f7fb;
+      --surface-2: #eef3f8;
+      --shadow-sm: 0 8px 24px rgba(4, 27, 60, 0.08);
+      --shadow-md: 0 18px 50px rgba(4, 27, 60, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --sidebar-width: 286px;
+      --topbar-height: 74px;
     }
 
-    body{
-      margin:0;
-      font-family:Tahoma,"Segoe UI",sans-serif;
-      background:var(--bg);
-      color:var(--text);
+    * {
+      box-sizing: border-box;
     }
 
-    button,input,select{font:inherit}
-    a{text-decoration:none;color:inherit}
-
-    .app{
-      min-height:100vh;
-      display:grid;
-      grid-template-columns:240px 1fr;
+    html {
+      scroll-behavior: smooth;
     }
 
-    /* SIDEBAR */
-    .sidebar{
-      background:linear-gradient(180deg,var(--navy),#05162d 100%);
-      color:#dbeafe;
-      padding:22px 14px 18px;
-      position:sticky;
-      top:0;
-      height:100vh;
-      overflow:auto;
+    body {
+      margin: 0;
+      font-family: "Prompt", sans-serif;
+      color: var(--ink-900);
+      background: var(--surface);
     }
 
-    .brand{
-      display:flex;
-      gap:12px;
-      align-items:center;
-      padding:0 8px 20px;
-      border-bottom:1px solid rgba(255,255,255,.10);
+    button,
+    input,
+    select {
+      font: inherit;
     }
 
-    .brand-logo{
-      width:42px;height:42px;border-radius:10px;
-      background:#fff;
-      display:grid;place-items:center;
-      color:#0b3b86;
-      font-weight:900;
-      box-shadow:0 4px 14px rgba(0,0,0,.25);
+    a {
+      color: inherit;
     }
 
-    .brand-title{font-weight:800;font-size:14px;color:#fff}
-    .brand-sub{font-size:10px;color:#93a4bd;margin-top:3px;letter-spacing:.5px}
-
-    .workspace{
-      margin:16px 6px 20px;
-      padding:14px 12px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      border-radius:12px;
-    }
-    .workspace small{display:block;color:#8ea2bd;font-size:10px;margin-bottom:6px}
-    .workspace strong{font-size:13px;color:#fff}
-
-    .section-label{
-      font-size:10px;
-      color:#7186a5;
-      margin:18px 8px 8px;
-      font-weight:700;
+    img {
+      display: block;
+      max-width: 100%;
     }
 
-    .nav-item{
-      display:flex;align-items:center;gap:10px;
-      padding:11px 12px;
-      margin:3px 0;
-      border-radius:9px;
-      color:#dbeafe;
-      font-size:13px;
-      transition:.18s;
-    }
-    .nav-item:hover{background:rgba(255,255,255,.07)}
-    .nav-item.active{
-      background:linear-gradient(90deg,#1f6feb,#1559c9);
-      color:#fff;
-      box-shadow:0 5px 14px rgba(37,99,235,.25);
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
     }
 
-    .nav-icon{
-      width:19px;height:19px;border-radius:6px;
-      background:rgba(255,255,255,.08);
-      display:grid;place-items:center;
-      font-size:11px;
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 20px 16px;
+      overflow-y: auto;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 0 0, rgba(22, 119, 255, 0.24), transparent 26%),
+        linear-gradient(180deg, var(--navy-950), var(--navy-850));
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 1200;
     }
 
-    .nav-badge{
-      margin-left:auto;
-      background:#ef4444;color:#fff;
-      min-width:21px;height:21px;border-radius:999px;
-      display:grid;place-items:center;
-      font-size:11px;font-weight:700;
+    .sidebar-brand {
+      padding: 8px 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
     }
 
-    .nav-group{
-      margin:4px 0 8px 20px;
-      padding-left:12px;
-      border-left:1px solid rgba(255,255,255,.12);
-    }
-    .nav-sub{
-      display:block;
-      padding:8px 10px;
-      color:#b9c8dc;
-      font-size:12px;
-      border-radius:8px;
-      margin:2px 0;
-    }
-    .nav-sub.active{
-      color:#fff;
-      background:rgba(37,99,235,.18);
+    .sidebar-brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.96);
     }
 
-    .nav-parent{
-      width:100%;
-      border:0;
-      font-family:inherit;
-      text-align:left;
-      cursor:pointer;
+    .sidebar-brand strong {
+      display: block;
+      font-family: "Inter", sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
     }
 
-    .nav-arrow{
-      margin-left:auto;
-      font-size:10px;
-      color:#aebfd4;
-      transition:transform .2s ease;
+    .sidebar-brand span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
     }
 
-    .nav-arrow.open{
-      transform:rotate(180deg);
+    .workspace {
+      margin: 0 8px 18px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
     }
 
-    .nav-group{
-      max-height:360px;
-      overflow:hidden;
-      opacity:1;
-      transition:max-height .25s ease,opacity .2s ease,margin .25s ease;
+    .workspace small {
+      display: block;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 0.67rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
 
-    .nav-group.closed{
-      max-height:0;
-      opacity:0;
-      margin-top:0;
-      margin-bottom:0;
+    .workspace strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.86rem;
     }
 
-    /* MAIN */
-    .main{min-width:0}
-
-    .topbar{
-      height:72px;
-      background:#fff;
-      border-bottom:1px solid var(--line);
-      padding:0 28px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      position:sticky;top:0;z-index:20;
+    .nav-label {
+      margin: 22px 10px 8px;
+      color: rgba(255, 255, 255, 0.38);
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
 
-    .top-title h1{font-size:18px;margin:0 0 4px}
-    .breadcrumb{font-size:12px;color:#7a8ba4}
+    .nav-menu {
+      display: grid;
+      gap: 5px;
+    }
 
-    .top-actions{display:flex;gap:10px;align-items:center}
-    .top-select,.top-input,.icon-btn{
-      height:38px;
-      border:1px solid var(--line);
-      background:#fff;
-      border-radius:10px;
-      padding:0 12px;
-      color:#334155;
+    .nav-item {
+      min-height: 46px;
+      padding: 0 13px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-radius: 12px;
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: 0.18s ease;
     }
-    .icon-btn{cursor:pointer}
 
-    .profile{
-      display:flex;align-items:center;gap:10px;margin-left:6px;
+    .nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
     }
-    .avatar{
-      width:34px;height:34px;border-radius:50%;
-      display:grid;place-items:center;
-      color:#fff;font-weight:800;
-      background:linear-gradient(135deg,#1d4ed8,#0b3b86);
-    }
-    .profile-name{font-size:12px;font-weight:700}
-    .profile-role{font-size:9px;color:#7c8ba1;margin-top:2px}
 
-    .content{padding:26px 28px 40px;max-width:1600px;margin:0 auto}
+    .nav-item.active {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(22, 119, 255, 0.85), rgba(13, 87, 191, 0.85));
+      box-shadow: 0 10px 26px rgba(22, 119, 255, 0.20);
+    }
 
-    .page-heading{
-      display:flex;justify-content:space-between;align-items:end;
-      gap:18px;margin-bottom:18px;
+    .nav-icon {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+      flex: 0 0 auto;
     }
-    .page-heading h2{margin:0 0 6px;font-size:21px}
-    .page-heading p{margin:0;color:var(--muted);font-size:13px}
 
-    /* KPI CIRCLES */
-    .kpi-grid{
-      display:grid;
-      grid-template-columns:repeat(6,minmax(160px,1fr));
-      gap:14px;
-      margin-bottom:20px;
+    .nav-badge {
+      margin-left: auto;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--red-600);
+      font: 700 0.68rem "Inter", sans-serif;
     }
-    .kpi-card{
-      background:#fff;
-      border:1px solid #e5edf6;
-      border-radius:15px;
-      padding:18px 12px 15px;
-      text-align:center;
-      box-shadow:var(--shadow);
-    }
-    .kpi-title{
-      font-size:12px;font-weight:700;margin-bottom:12px;
-      color:#334155;
-      min-height:30px;
-      display:flex;align-items:center;justify-content:center;
-    }
-    .ring{
-      --value:78;
-      --ring:#2563eb;
-      --track:#dbeafe;
-      width:132px;height:132px;
-      margin:0 auto 12px;
-      border-radius:50%;
-      background:conic-gradient(var(--ring) calc(var(--value)*1%),var(--track) 0);
-      position:relative;
-      display:grid;place-items:center;
-    }
-    .ring::after{
-      content:"";
-      position:absolute;
-      width:104px;height:104px;border-radius:50%;
-      background:#fff;
-    }
-    .ring-content{
-      position:relative;z-index:2;
-      line-height:1.15;
-    }
-    .ring-number{
-      font-size:23px;
-      font-weight:900;
-      letter-spacing:-.6px;
-    }
-    .ring-unit{font-size:11px;font-weight:700;margin-top:4px}
-    .kpi-detail{font-size:11px;color:#64748b}
-    .kpi-up{font-size:10px;margin-top:7px;color:#16a34a;font-weight:700}
 
-    /* TABLE PANEL */
-    .panel{
-      background:#fff;
-      border:1px solid #e2e8f0;
-      border-radius:16px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
+    .nav-parent {
+      width: 100%;
+      border: 0;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: left;
+      background: transparent;
     }
-    .panel-head{
-      display:flex;justify-content:space-between;align-items:center;
-      gap:14px;padding:18px 20px;
-      border-bottom:1px solid #e8eef5;
-      flex-wrap:wrap;
-    }
-    .panel-head h3{margin:0 0 5px;font-size:18px}
-    .panel-sub{font-size:12px;color:#64748b}
-    .panel-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-    .filter,.search{
-      height:38px;
-      border:1px solid #dbe4ef;
-      border-radius:9px;
-      background:#fff;
-      padding:0 12px;
-      color:#475569;
-    }
-    .search{min-width:310px}
-    .btn-primary{
-      height:38px;
-      border:0;
-      border-radius:9px;
-      background:linear-gradient(90deg,#2563eb,#1d4ed8);
-      color:#fff;
-      padding:0 16px;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow:0 5px 13px rgba(37,99,235,.22);
-    }
-    .btn-primary:hover{filter:brightness(.97)}
 
-    .table-wrap{overflow:auto}
-    table{
-      width:100%;
-      border-collapse:collapse;
-      min-width:1100px;
-      font-size:12px;
+    .nav-parent:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
     }
-    th{
-      text-align:left;
-      color:#475569;
-      font-weight:700;
-      background:#f8fafc;
-      padding:12px 14px;
-      border-bottom:1px solid #e2e8f0;
-      white-space:nowrap;
-    }
-    td{
-      padding:13px 14px;
-      border-bottom:1px solid #edf2f7;
-      vertical-align:middle;
-      color:#1e293b;
-    }
-    tbody tr:hover{background:#fbfdff}
-    .money{text-align:right;font-variant-numeric:tabular-nums}
-    .code{font-weight:800;color:#0f172a}
 
-    .pill{
-      display:inline-block;
-      padding:5px 10px;
-      border-radius:999px;
-      font-size:10px;
-      font-weight:700;
-      white-space:nowrap;
+    .nav-arrow {
+      margin-left: auto;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 0.72rem;
+      transition: transform 0.22s ease;
     }
-    .pill-design{background:#ede9fe;color:#6d28d9}
-    .pill-software{background:#dcfce7;color:#15803d}
-    .pill-wait{background:#fff7d6;color:#b45309}
-    .pill-sent{background:#dbeafe;color:#1d4ed8}
-    .pill-approved{background:#dcfce7;color:#15803d}
-    .pill-draft{background:#f1f5f9;color:#64748b}
-    .pill-cancel{background:#fee2e2;color:#b91c1c}
 
-    .action-box{display:flex;gap:6px}
-    .action-btn{
-      width:32px;height:32px;border:1px solid #dbe4ef;
-      border-radius:8px;background:#fff;cursor:pointer;color:#475569;
+    .nav-parent.open .nav-arrow {
+      transform: rotate(180deg);
     }
-    .action-btn:hover{background:#f8fafc}
 
-    .panel-foot{
-      padding:14px 20px;
-      display:flex;justify-content:space-between;align-items:center;
-      gap:12px;
-      color:#64748b;font-size:11px;
+    .nav-submenu {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin: 0 0 0 18px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(255, 255, 255, 0.10);
+      transition:
+        max-height 0.28s ease,
+        opacity 0.20s ease,
+        margin-top 0.20s ease,
+        margin-bottom 0.20s ease;
     }
-    .pagination{display:flex;gap:6px;align-items:center}
-    .page-btn{
-      width:32px;height:32px;border:1px solid #dbe4ef;
-      border-radius:7px;background:#fff;cursor:pointer;
-    }
-    .page-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
 
-    @media(max-width:1300px){
-      .kpi-grid{grid-template-columns:repeat(3,1fr)}
+    .nav-submenu.open {
+      max-height: 420px;
+      opacity: 1;
+      margin-top: 4px;
+      margin-bottom: 4px;
     }
-    @media(max-width:900px){
-      .app{grid-template-columns:1fr}
-      .sidebar{display:none}
-      .topbar{padding:0 16px}
-      .content{padding:20px 14px}
-      .kpi-grid{grid-template-columns:repeat(2,1fr)}
-      .search{min-width:220px}
+
+    .nav-subitem {
+      min-height: 38px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.58);
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 500;
+      transition: 0.18s ease;
     }
-    @media(max-width:560px){
-      .top-actions .top-select,.top-actions .top-input{display:none}
-      .kpi-grid{grid-template-columns:1fr}
-      .panel-tools{width:100%}
-      .filter,.search,.btn-primary{width:100%;min-width:0}
+
+    .nav-subitem:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
     }
+
+    .nav-subitem.active {
+      color: #ffffff;
+      background: rgba(22, 119, 255, 0.18);
+    }
+
+    .sidebar-footer {
+      margin: 24px 8px 0;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .sidebar-footer a {
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 0.75rem;
+      text-decoration: none;
+    }
+
+    .main-shell {
+      min-width: 0;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      height: var(--topbar-height);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mobile-menu {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .topbar-title {
+      min-width: 0;
+    }
+
+    .topbar-title strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .topbar-title span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.74rem;
+    }
+
+    .topbar-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar-button {
+      height: 42px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink-700);
+      background: #ffffff;
+      text-decoration: none;
+      font-size: 0.79rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .topbar-button:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .admin-profile {
+      padding-left: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), var(--navy-800));
+      font: 800 0.82rem "Inter", sans-serif;
+    }
+
+    .admin-profile strong {
+      display: block;
+      font-size: 0.78rem;
+    }
+
+    .admin-profile span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    .page-head {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.85rem, 3vw, 2.65rem);
+      letter-spacing: -0.035em;
+    }
+
+    .page-head p {
+      margin: 8px 0 0;
+      color: var(--ink-500);
+      line-height: 1.7;
+    }
+
+    .demo-badge {
+      padding: 8px 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      color: #8a5600;
+      background: #fff4cf;
+      border: 1px solid #f7d772;
+      font-size: 0.73rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .metric-card {
+      padding: 20px;
+      border: 1px solid #e3ebf4;
+      border-radius: var(--radius-lg);
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .metric-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 1.05rem;
+    }
+
+    .metric-icon.blue {
+      color: var(--blue-600);
+      background: var(--blue-100);
+    }
+
+    .metric-icon.green {
+      color: var(--green-600);
+      background: var(--green-100);
+    }
+
+    .metric-icon.violet {
+      color: var(--violet-600);
+      background: var(--violet-100);
+    }
+
+    .metric-icon.orange {
+      color: var(--orange-600);
+      background: var(--orange-100);
+    }
+
+    .trend {
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: #087545;
+      background: #eafaf3;
+      font: 700 0.68rem "Inter", sans-serif;
+    }
+
+    .metric-value {
+      margin-top: 18px;
+      color: var(--navy-900);
+      font: 800 2rem "Inter", sans-serif;
+      line-height: 1;
+    }
+
+    .metric-title {
+      margin-top: 8px;
+      color: var(--ink-700);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .metric-note {
+      margin-top: 5px;
+      color: var(--ink-400);
+      font-size: 0.72rem;
+    }
+
+    .grid-2 {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.55fr);
+      gap: 18px;
+    }
+
+    .grid-equal {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid #e3ebf4;
+      border-radius: var(--radius-xl);
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 70px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.72rem;
+    }
+
+    .panel-link {
+      color: var(--blue-600);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .chart-wrap {
+      min-height: 280px;
+      position: relative;
+    }
+
+    .chart-grid {
+      position: absolute;
+      inset: 14px 0 34px;
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+    }
+
+    .chart-grid span {
+      border-top: 1px dashed #e5ebf2;
+    }
+
+    .bars {
+      position: absolute;
+      inset: 14px 4px 34px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      align-items: end;
+      gap: 16px;
+    }
+
+    .bar-column {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .bar {
+      width: min(34px, 72%);
+      min-height: 8px;
+      border-radius: 10px 10px 4px 4px;
+      background: linear-gradient(180deg, var(--blue-500), var(--blue-600));
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+    }
+
+    .bar-label {
+      position: absolute;
+      bottom: 4px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .chart-summary {
+      padding-top: 10px;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      border-top: 1px solid #edf2f7;
+    }
+
+    .chart-summary-item strong {
+      display: block;
+      color: var(--navy-900);
+      font: 800 1.05rem "Inter", sans-serif;
+    }
+
+    .chart-summary-item span {
+      color: var(--ink-500);
+      font-size: 0.7rem;
+    }
+
+    .device-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .device-row {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr) 52px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .device-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink-700);
+      font-size: 0.79rem;
+      font-weight: 600;
+    }
+
+    .progress {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #edf2f7;
+    }
+
+    .progress > span {
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue-600), #54a4ff);
+    }
+
+    .device-value {
+      color: var(--navy-900);
+      font: 700 0.78rem "Inter", sans-serif;
+      text-align: right;
+    }
+
+    .bot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .bot-card {
+      padding: 15px;
+      border: 1px solid #e7edf5;
+      border-radius: 15px;
+      background: #fbfdff;
+    }
+
+    .bot-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .bot-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--ink-900);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .bot-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--violet-600), #5b21b6);
+      font-size: 0.82rem;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green-600);
+      box-shadow: 0 0 0 4px rgba(23, 178, 106, 0.10);
+    }
+
+    .bot-number {
+      margin-top: 12px;
+      color: var(--navy-900);
+      font: 800 1.28rem "Inter", sans-serif;
+    }
+
+    .bot-meta {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+      line-height: 1.55;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px 16px;
+      text-align: left;
+      border-bottom: 1px solid #edf2f7;
+      font-size: 0.75rem;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--ink-500);
+      background: #f8fbff;
+      font-size: 0.67rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      padding: 6px 9px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .badge.blue {
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .badge.orange {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .badge.red {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .badge.gray {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .task-item {
+      padding: 13px 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #e8eef5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .task-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--orange-600);
+      background: var(--orange-100);
+    }
+
+    .task-item strong {
+      display: block;
+      color: var(--ink-900);
+      font-size: 0.77rem;
+    }
+
+    .task-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .task-action {
+      color: var(--blue-600);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .line-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .line-stat {
+      padding: 15px;
+      border: 1px solid #e8eef5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .line-stat strong {
+      display: block;
+      color: var(--navy-900);
+      font: 800 1.25rem "Inter", sans-serif;
+    }
+
+    .line-stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .system-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .system-row {
+      min-height: 48px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border: 1px solid #e8eef5;
+      border-radius: 13px;
+      background: #fbfdff;
+    }
+
+    .system-row strong {
+      font-size: 0.76rem;
+    }
+
+    .system-row span {
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      color: #8a5600;
+      background: #fff8df;
+      border: 1px solid #f5df8c;
+      font-size: 0.72rem;
+      line-height: 1.65;
+    }
+
+    .sidebar-overlay {
+      display: none;
+    }
+
+    @media (max-width: 1240px) {
+      .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-2,
+      .grid-equal {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: var(--sidebar-width);
+        transform: translateX(-100%);
+        transition: transform 0.22s ease;
+      }
+
+      body.sidebar-open .sidebar {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1150;
+        background: rgba(3, 16, 37, 0.48);
+      }
+
+      body.sidebar-open .sidebar-overlay {
+        display: block;
+      }
+
+      .mobile-menu {
+        display: grid;
+        place-items: center;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 22px 18px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topbar-button.hide-mobile,
+      .admin-profile > div {
+        display: none;
+      }
+
+      .bot-grid,
+      .line-summary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .device-row {
+        grid-template-columns: 94px minmax(0, 1fr) 44px;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .bot-grid,
+      .line-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        padding: 18px 12px;
+      }
+
+      .topbar {
+        padding: 0 12px;
+      }
+    }
+
+    /* =====================================================
+       SALES & PAYMENTS DASHBOARD
+       Right-side content only
+    ===================================================== */
+
+    .sales-page-head {
+      margin-bottom: 22px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .sales-page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      letter-spacing: -0.035em;
+    }
+
+    .sales-page-head p {
+      margin: 7px 0 0;
+      color: var(--ink-500);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    .sales-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sales-filter {
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.76rem;
+    }
+
+    .sales-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(150px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .sales-kpi-card {
+      padding: 18px 12px 16px;
+      border: 1px solid #e3ebf4;
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .sales-kpi-title {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      color: var(--ink-700);
+      font-size: 0.73rem;
+      font-weight: 600;
+    }
+
+    .sales-ring {
+      --value: 70;
+      --ring-color: var(--blue-600);
+      --track-color: #e8f2ff;
+
+      width: 124px;
+      height: 124px;
+      margin: 0 auto 11px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          var(--ring-color) calc(var(--value) * 1%),
+          var(--track-color) 0
+        );
+    }
+
+    .sales-ring::after {
+      content: "";
+      position: absolute;
+      width: 98px;
+      height: 98px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .sales-ring-content {
+      position: relative;
+      z-index: 2;
+      line-height: 1.12;
+    }
+
+    .sales-ring-value {
+      color: var(--navy-900);
+      font: 800 1.18rem "Inter", sans-serif;
+      letter-spacing: -0.04em;
+    }
+
+    .sales-ring-unit {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.63rem;
+      font-weight: 600;
+    }
+
+    .sales-kpi-note {
+      color: var(--ink-400);
+      font-size: 0.67rem;
+    }
+
+    .sales-panel {
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .sales-panel-head {
+      min-height: 72px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+      flex-wrap: wrap;
+    }
+
+    .sales-panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .sales-panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.71rem;
+    }
+
+    .sales-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sales-search,
+    .sales-select {
+      height: 39px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.72rem;
+    }
+
+    .sales-search {
+      width: 280px;
+    }
+
+    .sales-primary-btn {
+      height: 39px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .sales-type,
+    .sales-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .sales-type.design {
+      color: #6d28d9;
+      background: var(--violet-100);
+    }
+
+    .sales-type.software {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .sales-status.wait {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .sales-status.approved {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .sales-status.draft {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .sales-action {
+      display: inline-flex;
+      gap: 5px;
+    }
+
+    .sales-action button {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink-700);
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .sales-action button:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .sales-panel-foot {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid #edf2f7;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    @media (max-width: 1400px) {
+      .sales-kpi-grid {
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sales-kpi-grid {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+      }
+
+      .sales-page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .sales-tools {
+        width: 100%;
+      }
+
+      .sales-search {
+        flex: 1;
+        width: auto;
+        min-width: 220px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .sales-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sales-tools {
+        flex-direction: column;
+      }
+
+      .sales-search,
+      .sales-select,
+      .sales-primary-btn {
+        width: 100%;
+      }
+    }
+
   </style>
 </head>
 
 <body>
-<div class="app">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-logo">ADT</div>
-      <div>
-        <div class="brand-title">ADT Control Center</div>
-        <div class="brand-sub">ADMINISTRATION SYSTEM</div>
-      </div>
-    </div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="/admin/dashboard/">
+        <img src="/assets/images/logo-icon.png" alt="ADTSpreadsheet">
+        <span>
+          <strong>ADT Control Center</strong>
+          <span>ADMINISTRATION SYSTEM</span>
+        </span>
+      </a>
 
-    <div class="workspace">
-      <small>WORKSPACE</small>
-      <strong>ADTSpreadsheet</strong>
-    </div>
-
-    <!-- โครงเมนูหลัก: คงรูปแบบเดียวกับ Admin Dashboard -->
-    <div class="section-label">ภาพรวม</div>
-
-    <a class="nav-item" href="/admin/dashboard/">
-      <span class="nav-icon">⌂</span>
-      <span>Dashboard</span>
-    </a>
-
-    <a class="nav-item" href="#">
-      <span class="nav-icon">✓</span>
-      <span>งานที่ต้องดำเนินการ</span>
-      <span class="nav-badge">9</span>
-    </a>
-
-    <div class="section-label">ธุรกิจ</div>
-
-    <a class="nav-item" href="#">
-      <span class="nav-icon">□</span>
-      <span>Products</span>
-    </a>
-
-    <!-- Sales & Payments = เมนูเดิมจาก Dashboard หลัก / หน้านี้เพียงกางเมนูย่อย -->
-    <button
-      class="nav-item nav-parent active"
-      type="button"
-      id="salesMenuButton"
-      onclick="toggleSalesMenu()"
-      aria-expanded="true"
-      aria-controls="salesSubmenu"
-    >
-      <span class="nav-icon">฿</span>
-      <span>Sales &amp; Payments</span>
-      <span class="nav-arrow open" id="salesArrow">▼</span>
-    </button>
-
-    <div class="nav-group" id="salesSubmenu">
-      <a class="nav-sub active" href="/admin/sales/">Dashboard</a>
-      <a class="nav-sub" href="/admin/sales/projects/">Projects</a>
-      <a class="nav-sub" href="/admin/sales/quotations/">ใบเสนอราคา</a>
-      <a class="nav-sub" href="/admin/sales/documents/">เอกสาร</a>
-      <a class="nav-sub" href="/admin/sales/payments/">การรับชำระเงิน</a>
-      <a class="nav-sub" href="/admin/sales/customers/">ลูกค้า</a>
-      <a class="nav-sub" href="/admin/sales/reports/">รายงาน</a>
-    </div>
-
-    <a class="nav-item" href="#">
-      <span class="nav-icon">♙</span>
-      <span>Members</span>
-    </a>
-
-    <a class="nav-item" href="#">
-      <span class="nav-icon">◎</span>
-      <span>Seminars</span>
-    </a>
-
-    <div class="section-label">สื่อและการสนับสนุน</div>
-
-    <a class="nav-item" href="#">
-      <span class="nav-icon">◌</span>
-      <span>LINE OA Center</span>
-    </a>
-
-    <a class="nav-item" href="#">
-      <span class="nav-icon">A</span>
-      <span>Articles</span>
-    </a>
-
-    <a class="nav-item" href="#">
-      <span class="nav-icon">▤</span>
-      <span>Design Portfolio</span>
-    </a>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <header class="topbar">
-      <div class="top-title">
-        <h1>Dashboard</h1>
-        <div class="breadcrumb">Sales & Payments &gt; Dashboard</div>
+      <div class="workspace">
+        <small>Workspace</small>
+        <strong>ADTSpreadsheet</strong>
       </div>
 
-      <div class="top-actions">
-        <input class="top-input" value="1 - 30 พ.ค. 2569" readonly />
-        <select class="top-select">
-          <option>ทั้งหมด</option>
-          <option>งานออกแบบ / บริการ</option>
-          <option>ขายโปรแกรม</option>
-        </select>
-        <button class="icon-btn" onclick="refreshDemo()">↻ รีเฟรช</button>
+      <div class="nav-label">ภาพรวม</div>
+      <nav class="nav-menu" aria-label="เมนูผู้ดูแล">
+        <a class="nav-item active" href="/admin/dashboard/">
+          <span class="nav-icon">▦</span>
+          Dashboard
+        </a>
 
-        <div class="profile">
-          <div class="avatar">AK</div>
+        <a class="nav-item" href="/admin/tasks/">
+          <span class="nav-icon">✓</span>
+          งานที่ต้องดำเนินการ
+          <span class="nav-badge">9</span>
+        </a>
+      </nav>
+
+      <div class="nav-label">เว็บไซต์และการค้นหา</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/analytics/">
+          <span class="nav-icon">◫</span>
+          Website Analytics
+        </a>
+
+        <a class="nav-item" href="/admin/search-ai/">
+          <span class="nav-icon">AI</span>
+          Search & AI Center
+        </a>
+
+        <a class="nav-item" href="/admin/system-logs/">
+          <span class="nav-icon">⌁</span>
+          System Logs
+        </a>
+      </nav>
+
+      <div class="nav-label">ธุรกิจ</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/products/">
+          <span class="nav-icon">▣</span>
+          Products
+        </a>
+
+        <button
+          class="nav-item nav-parent"
+          id="salesMenuToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="salesSubmenu"
+        >
+          <span class="nav-icon">฿</span>
+          <span>Sales & Payments</span>
+          <span class="nav-arrow" aria-hidden="true">▼</span>
+        </button>
+
+        <div
+          class="nav-submenu"
+          id="salesSubmenu"
+          aria-label="Sales & Payments submenu"
+        >
+          <a class="nav-subitem active" href="/admin/sales/">
+            Dashboard
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/customers/">
+            Customers / Vendor List
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/design-projects/">
+            Design Projects
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/software-sales/">
+            Software Sales
+          </a>
+        </div>
+
+        <a class="nav-item" href="/admin/members/">
+          <span class="nav-icon">◎</span>
+          Members
+        </a>
+
+        <a class="nav-item" href="/admin/seminars/">
+          <span class="nav-icon">◉</span>
+          Seminars
+        </a>
+      </nav>
+
+      <div class="nav-label">สื่อและการสนับสนุน</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/line-oa/">
+          <span class="nav-icon">L</span>
+          LINE OA Center
+        </a>
+
+        <a class="nav-item" href="/admin/articles/">
+          <span class="nav-icon">✎</span>
+          Articles
+        </a>
+
+        <a class="nav-item" href="/admin/portfolio/">
+          <span class="nav-icon">▤</span>
+          Design Portfolio
+        </a>
+
+        <a class="nav-item" href="/admin/support/">
+          <span class="nav-icon">?</span>
+          Support Center
+        </a>
+      </nav>
+
+      <div class="nav-label">ระบบ</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/settings/">
+          <span class="nav-icon">⚙</span>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/">← กลับเว็บไซต์หลัก</a>
+      </div>
+    </aside>
+
+    <div class="main-shell">
+
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">
+          ☰
+        </button>
+
+        <div class="topbar-title">
+          <strong>Sales &amp; Payments</strong>
+          <span>ADTSpreadsheet Control Center</span>
+        </div>
+
+        <div class="topbar-actions">
+          <a class="topbar-button hide-mobile" href="/" target="_blank" rel="noopener">
+            ดูเว็บไซต์
+          </a>
+
+          <button class="topbar-button" type="button" id="refreshButton">
+            ↻ รีเฟรช
+          </button>
+
+          <div class="admin-profile">
+            <div class="avatar">AK</div>
+            <div>
+              <strong>อ.เก่ง</strong>
+              <span>SUPER ADMIN</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <section class="sales-page-head">
           <div>
-            <div class="profile-name">อ.เก่ง</div>
-            <div class="profile-role">SUPER ADMIN</div>
-          </div>
-        </div>
-      </div>
-    </header>
-
-    <div class="content">
-
-      <div class="page-heading">
-        <div>
-          <h2>Sales & Payments</h2>
-          <p>ภาพรวมรายได้ โครงการ เอกสาร และการรับชำระเงินของบริษัท</p>
-        </div>
-      </div>
-
-      <!-- KPI -->
-      <section class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-title">รายได้รวม (รับจริง)</div>
-          <div class="ring" style="--value:78;--ring:#2563eb;--track:#dbeafe">
-            <div class="ring-content">
-              <div class="ring-number">185,000</div>
-              <div class="ring-unit">บาท</div>
-            </div>
-          </div>
-          <div class="kpi-detail">จาก 12 รายการ</div>
-          <div class="kpi-up">▲ 12.4% จากเดือนก่อน</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-title">ยอดรับงาน (มูลค่าโครงการ)</div>
-          <div class="ring" style="--value:68;--ring:#22c55e;--track:#d1fae5">
-            <div class="ring-content">
-              <div class="ring-number">520,000</div>
-              <div class="ring-unit">บาท</div>
-            </div>
-          </div>
-          <div class="kpi-detail">จาก 8 โครงการ</div>
-          <div class="kpi-up">▲ 18.7% จากเดือนก่อน</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-title">งานออกแบบ / บริการ</div>
-          <div class="ring" style="--value:64;--ring:#7c3aed;--track:#ede9fe">
-            <div class="ring-content">
-              <div class="ring-number">320,000</div>
-              <div class="ring-unit">บาท</div>
-            </div>
-          </div>
-          <div class="kpi-detail">จาก 5 โครงการ</div>
-          <div class="kpi-up">▲ 15.3% จากเดือนก่อน</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-title">ขายโปรแกรม / ซอฟต์แวร์</div>
-          <div class="ring" style="--value:59;--ring:#f59e0b;--track:#ffedd5">
-            <div class="ring-content">
-              <div class="ring-number">200,000</div>
-              <div class="ring-unit">บาท</div>
-            </div>
-          </div>
-          <div class="kpi-detail">จาก 5 รายการ</div>
-          <div class="kpi-up">▲ 22.1% จากเดือนก่อน</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-title">ลูกหนี้ค้างรับ</div>
-          <div class="ring" style="--value:71;--ring:#ef4444;--track:#fee2e2">
-            <div class="ring-content">
-              <div class="ring-number">82,500</div>
-              <div class="ring-unit">บาท</div>
-            </div>
-          </div>
-          <div class="kpi-detail">จาก 5 รายการ</div>
-          <div class="kpi-up">▲ 8.2% จากเดือนก่อน</div>
-        </div>
-
-        <div class="kpi-card">
-          <div class="kpi-title">โครงการที่กำลังดูแล</div>
-          <div class="ring" style="--value:74;--ring:#0fbaa8;--track:#ccfbf1">
-            <div class="ring-content">
-              <div class="ring-number">9</div>
-              <div class="ring-unit">โครงการ</div>
-            </div>
-          </div>
-          <div class="kpi-detail">กำลังดำเนินการ</div>
-          <div class="kpi-up">▲ 1 โครงการใหม่</div>
-        </div>
-      </section>
-
-      <!-- QUOTATION TABLE -->
-      <section class="panel">
-        <div class="panel-head">
-          <div>
-            <h3>ใบเสนอราคา (Quotation)</h3>
-            <div class="panel-sub">รายการใบเสนอราคาล่าสุด</div>
+            <h1>ภาพรวม Sales &amp; Payments</h1>
+            <p>
+              ภาพรวมรายได้ งานที่กำลังดำเนินการ และรายการใบเสนอราคาของบริษัท
+            </p>
           </div>
 
-          <div class="panel-tools">
-            <select class="filter" id="statusFilter" onchange="filterRows()">
-              <option value="ALL">สถานะทั้งหมด</option>
-              <option value="DRAFT">ร่างใบเสนอราคา</option>
-              <option value="SENT">ส่งแล้ว</option>
-              <option value="WAIT">รอลูกค้าตอบ</option>
-              <option value="APPROVED">อนุมัติแล้ว</option>
-              <option value="CANCEL">ยกเลิก</option>
+          <div class="sales-filter-row">
+            <select class="sales-filter">
+              <option>เดือนปัจจุบัน</option>
+              <option>ปี 2569</option>
+              <option>ทั้งหมด</option>
             </select>
 
-            <input class="search" id="searchInput"
-              oninput="filterRows()"
-              placeholder="ค้นหาเลขที่ใบเสนอราคา / ลูกค้า / โปรเจ็ค" />
-
-            <button class="btn-primary" onclick="addQuotation()">＋ เพิ่มใบเสนอราคา</button>
+            <select class="sales-filter">
+              <option>รายได้ทั้งหมด</option>
+              <option>งานออกแบบ</option>
+              <option>ขายโปรแกรม</option>
+            </select>
           </div>
-        </div>
+        </section>
 
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>เลขที่ใบเสนอราคา</th>
-                <th>วันที่</th>
-                <th>ลูกค้า</th>
-                <th>โปรเจ็ค</th>
-                <th>ประเภทงาน</th>
-                <th class="money">มูลค่า (บาท)</th>
-                <th>สถานะ</th>
-                <th>วันหมดอายุ</th>
-                <th>ดำเนินการ</th>
-              </tr>
-            </thead>
+        <!-- KPI -->
+        <section class="sales-kpi-grid">
 
-            <tbody id="quotationTable">
-              <tr data-status="WAIT">
-                <td class="code">QT-2569-0008</td>
-                <td>28 พ.ค. 2569</td>
-                <td>บริษัท เอสอี คอนสตรัคชั่น จำกัด</td>
-                <td>PJ-2569-001</td>
-                <td><span class="pill pill-design">งานออกแบบ</span></td>
-                <td class="money">65,000.00</td>
-                <td><span class="pill pill-wait">รอลูกค้าตอบ</span></td>
-                <td style="color:#ef4444;font-weight:700">12 มิ.ย. 2569</td>
-                <td><div class="action-box">
-                  <button class="action-btn" title="ดู">◉</button>
-                  <button class="action-btn" title="แก้ไข">✎</button>
-                  <button class="action-btn" title="เพิ่มเติม">⋮</button>
-                </div></td>
-              </tr>
+          <article class="sales-kpi-card">
+            <div class="sales-kpi-title">รายได้รวม (รับจริง)</div>
+            <div
+              class="sales-ring"
+              style="--value:78;--ring-color:#1677ff;--track-color:#eaf3ff"
+            >
+              <div class="sales-ring-content">
+                <div class="sales-ring-value">185,000</div>
+                <div class="sales-ring-unit">บาท</div>
+              </div>
+            </div>
+            <div class="sales-kpi-note">จาก 12 รายการ</div>
+          </article>
 
-              <tr data-status="SENT">
-                <td class="code">QT-2569-0007</td>
-                <td>26 พ.ค. 2569</td>
-                <td>บริษัท พีเอสที เทคโนโลยี จำกัด</td>
-                <td>PJ-2569-003</td>
-                <td><span class="pill pill-software">ขายโปรแกรม</span></td>
-                <td class="money">29,900.00</td>
-                <td><span class="pill pill-sent">ส่งแล้ว</span></td>
-                <td>09 มิ.ย. 2569</td>
-                <td><div class="action-box">
-                  <button class="action-btn">◉</button>
-                  <button class="action-btn">✎</button>
-                  <button class="action-btn">⋮</button>
-                </div></td>
-              </tr>
+          <article class="sales-kpi-card">
+            <div class="sales-kpi-title">ยอดรับงาน</div>
+            <div
+              class="sales-ring"
+              style="--value:68;--ring-color:#17b26a;--track-color:#eafaf3"
+            >
+              <div class="sales-ring-content">
+                <div class="sales-ring-value">520,000</div>
+                <div class="sales-ring-unit">บาท</div>
+              </div>
+            </div>
+            <div class="sales-kpi-note">จาก 8 โครงการ</div>
+          </article>
 
-              <tr data-status="APPROVED">
-                <td class="code">QT-2569-0006</td>
-                <td>23 พ.ค. 2569</td>
-                <td>ห้างหุ้นส่วนจำกัด เอ็มจีเนียริ่ง</td>
-                <td>PJ-2569-002</td>
-                <td><span class="pill pill-design">งานออกแบบ</span></td>
-                <td class="money">120,000.00</td>
-                <td><span class="pill pill-approved">อนุมัติแล้ว</span></td>
-                <td>06 มิ.ย. 2569</td>
-                <td><div class="action-box">
-                  <button class="action-btn">◉</button>
-                  <button class="action-btn">✎</button>
-                  <button class="action-btn">⋮</button>
-                </div></td>
-              </tr>
+          <article class="sales-kpi-card">
+            <div class="sales-kpi-title">งานออกแบบ / บริการ</div>
+            <div
+              class="sales-ring"
+              style="--value:64;--ring-color:#7c3aed;--track-color:#f3edff"
+            >
+              <div class="sales-ring-content">
+                <div class="sales-ring-value">320,000</div>
+                <div class="sales-ring-unit">บาท</div>
+              </div>
+            </div>
+            <div class="sales-kpi-note">5 โครงการ</div>
+          </article>
 
-              <tr data-status="DRAFT">
-                <td class="code">QT-2569-0005</td>
-                <td>20 พ.ค. 2569</td>
-                <td>บริษัท โกลบอล ซีวิล จำกัด</td>
-                <td>PJ-2569-001</td>
-                <td><span class="pill pill-design">งานออกแบบ</span></td>
-                <td class="money">85,000.00</td>
-                <td><span class="pill pill-draft">ร่างใบเสนอราคา</span></td>
-                <td>—</td>
-                <td><div class="action-box">
-                  <button class="action-btn">◉</button>
-                  <button class="action-btn">✎</button>
-                  <button class="action-btn">⋮</button>
-                </div></td>
-              </tr>
+          <article class="sales-kpi-card">
+            <div class="sales-kpi-title">ขายโปรแกรม</div>
+            <div
+              class="sales-ring"
+              style="--value:59;--ring-color:#f79009;--track-color:#fff4e5"
+            >
+              <div class="sales-ring-content">
+                <div class="sales-ring-value">200,000</div>
+                <div class="sales-ring-unit">บาท</div>
+              </div>
+            </div>
+            <div class="sales-kpi-note">5 รายการ</div>
+          </article>
 
-              <tr data-status="CANCEL">
-                <td class="code">QT-2569-0004</td>
-                <td>18 พ.ค. 2569</td>
-                <td>บริษัท ดีดี ซอฟต์แวร์ จำกัด</td>
-                <td>PJ-2569-004</td>
-                <td><span class="pill pill-software">ขายโปรแกรม</span></td>
-                <td class="money">49,900.00</td>
-                <td><span class="pill pill-cancel">ยกเลิก</span></td>
-                <td>—</td>
-                <td><div class="action-box">
-                  <button class="action-btn">◉</button>
-                  <button class="action-btn">✎</button>
-                  <button class="action-btn">⋮</button>
-                </div></td>
-              </tr>
+          <article class="sales-kpi-card">
+            <div class="sales-kpi-title">ลูกหนี้ค้างรับ</div>
+            <div
+              class="sales-ring"
+              style="--value:71;--ring-color:#ef3d48;--track-color:#fff0f1"
+            >
+              <div class="sales-ring-content">
+                <div class="sales-ring-value">82,500</div>
+                <div class="sales-ring-unit">บาท</div>
+              </div>
+            </div>
+            <div class="sales-kpi-note">5 รายการ</div>
+          </article>
 
-              <tr data-status="APPROVED">
-                <td class="code">QT-2569-0003</td>
-                <td>15 พ.ค. 2569</td>
-                <td>บริษัท เจริญทรัพย์ วิศวกรรม จำกัด</td>
-                <td>PJ-2569-002</td>
-                <td><span class="pill pill-design">งานออกแบบ</span></td>
-                <td class="money">150,000.00</td>
-                <td><span class="pill pill-approved">อนุมัติแล้ว</span></td>
-                <td>28 พ.ค. 2569</td>
-                <td><div class="action-box">
-                  <button class="action-btn">◉</button>
-                  <button class="action-btn">✎</button>
-                  <button class="action-btn">⋮</button>
-                </div></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <article class="sales-kpi-card">
+            <div class="sales-kpi-title">โครงการที่กำลังดูแล</div>
+            <div
+              class="sales-ring"
+              style="--value:74;--ring-color:#0fbaa8;--track-color:#e5faf7"
+            >
+              <div class="sales-ring-content">
+                <div class="sales-ring-value">9</div>
+                <div class="sales-ring-unit">โครงการ</div>
+              </div>
+            </div>
+            <div class="sales-kpi-note">กำลังดำเนินการ</div>
+          </article>
 
-        <div class="panel-foot">
-          <div id="rowCount">แสดง 1 - 6 จาก 6 รายการ</div>
-          <div class="pagination">
-            <button class="page-btn">‹</button>
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">›</button>
+        </section>
+
+        <!-- QUOTATION TABLE -->
+        <section class="sales-panel">
+
+          <header class="sales-panel-head">
+            <div>
+              <h2>ใบเสนอราคา (Quotation)</h2>
+              <p>รายการใบเสนอราคาล่าสุดและสถานะการติดตาม</p>
+            </div>
+
+            <div class="sales-tools">
+              <select
+                class="sales-select"
+                id="quotationStatusFilter"
+                onchange="filterQuotationRows()"
+              >
+                <option value="ALL">สถานะทั้งหมด</option>
+                <option value="DRAFT">ร่างใบเสนอราคา</option>
+                <option value="WAIT">รอลูกค้าตอบ</option>
+                <option value="APPROVED">อนุมัติแล้ว</option>
+              </select>
+
+              <input
+                class="sales-search"
+                id="quotationSearch"
+                type="search"
+                placeholder="ค้นหาเลขที่ / ลูกค้า / โปรเจ็ค"
+                oninput="filterQuotationRows()"
+              >
+
+              <button
+                class="sales-primary-btn"
+                type="button"
+                onclick="addQuotation()"
+              >
+                ＋ เพิ่มใบเสนอราคา
+              </button>
+            </div>
+          </header>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>เลขที่ใบเสนอราคา</th>
+                  <th>วันที่</th>
+                  <th>ลูกค้า</th>
+                  <th>โปรเจ็ค</th>
+                  <th>ประเภทงาน</th>
+                  <th>มูลค่า (บาท)</th>
+                  <th>สถานะ</th>
+                  <th>ดำเนินการ</th>
+                </tr>
+              </thead>
+
+              <tbody id="quotationTableBody">
+
+                <tr data-status="WAIT">
+                  <td><strong>QT-2569-0008</strong></td>
+                  <td>28 พ.ค. 2569</td>
+                  <td>บริษัท เอสอี คอนสตรัคชั่น จำกัด</td>
+                  <td>PJ-2569-001</td>
+                  <td><span class="sales-type design">งานออกแบบ</span></td>
+                  <td>65,000.00</td>
+                  <td><span class="sales-status wait">รอลูกค้าตอบ</span></td>
+                  <td>
+                    <span class="sales-action">
+                      <button title="ดู">◉</button>
+                      <button title="แก้ไข">✎</button>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr data-status="APPROVED">
+                  <td><strong>QT-2569-0007</strong></td>
+                  <td>26 พ.ค. 2569</td>
+                  <td>บริษัท พีเอสที เทคโนโลยี จำกัด</td>
+                  <td>SW-2569-003</td>
+                  <td><span class="sales-type software">ขายโปรแกรม</span></td>
+                  <td>29,900.00</td>
+                  <td><span class="sales-status approved">อนุมัติแล้ว</span></td>
+                  <td>
+                    <span class="sales-action">
+                      <button title="ดู">◉</button>
+                      <button title="แก้ไข">✎</button>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr data-status="APPROVED">
+                  <td><strong>QT-2569-0006</strong></td>
+                  <td>23 พ.ค. 2569</td>
+                  <td>ห้างหุ้นส่วนจำกัด เอ็มจีเนียริ่ง</td>
+                  <td>PJ-2569-002</td>
+                  <td><span class="sales-type design">งานออกแบบ</span></td>
+                  <td>120,000.00</td>
+                  <td><span class="sales-status approved">อนุมัติแล้ว</span></td>
+                  <td>
+                    <span class="sales-action">
+                      <button title="ดู">◉</button>
+                      <button title="แก้ไข">✎</button>
+                    </span>
+                  </td>
+                </tr>
+
+                <tr data-status="DRAFT">
+                  <td><strong>QT-2569-0005</strong></td>
+                  <td>20 พ.ค. 2569</td>
+                  <td>บริษัท โกลบอล ซีวิล จำกัด</td>
+                  <td>PJ-2569-004</td>
+                  <td><span class="sales-type design">งานออกแบบ</span></td>
+                  <td>85,000.00</td>
+                  <td><span class="sales-status draft">ร่างใบเสนอราคา</span></td>
+                  <td>
+                    <span class="sales-action">
+                      <button title="ดู">◉</button>
+                      <button title="แก้ไข">✎</button>
+                    </span>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
           </div>
-        </div>
-      </section>
+
+          <footer class="sales-panel-foot">
+            <span id="quotationRowCount">แสดง 4 จาก 4 รายการ</span>
+            <span>DEMO DATA — รอเชื่อม Supabase API</span>
+          </footer>
+
+        </section>
+
+      </main>
     </div>
-  </main>
-</div>
+  </div>
 
-<script>
-  function toggleSalesMenu(){
-    const menu = document.getElementById("salesSubmenu");
-    const arrow = document.getElementById("salesArrow");
-    const button = document.getElementById("salesMenuButton");
+  <script>
+    /*
+      ============================================================
+      DEVELOPMENT MODE
+      ============================================================
+      ตอนนี้ยังไม่บังคับตรวจ Token เพื่อให้เปิดดูหน้า Dashboard
+      และพัฒนา UI ได้ก่อน
 
-    const isClosed = menu.classList.toggle("closed");
-    arrow.classList.toggle("open", !isClosed);
-    button.setAttribute("aria-expanded", String(!isClosed));
-  }
+      เมื่อสร้าง API Login และ Supabase Auth เสร็จ ให้เปลี่ยนเป็น true
+    */
+    const AUTH_REQUIRED = false;
 
-  function filterRows(){
-    const status = document.getElementById("statusFilter").value;
-    const q = document.getElementById("searchInput").value.trim().toLowerCase();
-    const rows = [...document.querySelectorAll("#quotationTable tr")];
-    let shown = 0;
+    const LOGIN_URL = "/admin/";
+    const TOKEN_KEY = "adt_admin_access_token";
 
-    rows.forEach(row=>{
-      const rowStatus = row.dataset.status || "";
-      const text = row.innerText.toLowerCase();
-      const statusOk = status === "ALL" || rowStatus === status;
-      const searchOk = !q || text.includes(q);
-      const visible = statusOk && searchOk;
-      row.style.display = visible ? "" : "none";
-      if(visible) shown++;
+    if (AUTH_REQUIRED) {
+      const token =
+        sessionStorage.getItem(TOKEN_KEY) ||
+        localStorage.getItem(TOKEN_KEY);
+
+      if (!token) {
+        window.location.replace(LOGIN_URL);
+      }
+    }
+
+    const body = document.body;
+    const mobileMenu = document.getElementById("mobileMenu");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const refreshButton = document.getElementById("refreshButton");
+    const salesMenuToggle = document.getElementById("salesMenuToggle");
+    const salesSubmenu = document.getElementById("salesSubmenu");
+
+    mobileMenu?.addEventListener("click", () => {
+      body.classList.toggle("sidebar-open");
     });
 
-    document.getElementById("rowCount").innerText =
-      `แสดง ${shown.toLocaleString("th-TH")} จาก ${rows.length.toLocaleString("th-TH")} รายการ`;
-  }
+    salesMenuToggle?.addEventListener("click", () => {
+      const isOpen = salesSubmenu?.classList.toggle("open");
 
-  function addQuotation(){
-    alert("ขั้นต่อไป: เปิดฟอร์มสร้างใบเสนอราคาใหม่");
-  }
+      salesMenuToggle.classList.toggle("open", Boolean(isOpen));
+      salesMenuToggle.setAttribute(
+        "aria-expanded",
+        String(Boolean(isOpen))
+      );
+    });
 
-  function refreshDemo(){
-    alert("ขั้นต่อไป: เชื่อม API เพื่อโหลดข้อมูลจริงจาก Supabase");
-  }
-</script>
+    sidebarOverlay?.addEventListener("click", () => {
+      body.classList.remove("sidebar-open");
+    });
+
+    refreshButton?.addEventListener("click", () => {
+      refreshButton.disabled = true;
+      refreshButton.textContent = "↻ กำลังรีเฟรช...";
+
+      window.setTimeout(() => {
+        refreshButton.disabled = false;
+        refreshButton.textContent = "↻ รีเฟรช";
+      }, 700);
+    });
+
+    function animateCounter(element, target, duration = 900) {
+      const start = performance.now();
+
+      function frame(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        element.textContent =
+          Math.round(target * eased).toLocaleString("th-TH");
+
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document
+        .querySelectorAll("[data-counter]")
+        .forEach((element) => {
+          animateCounter(
+            element,
+            Number(element.dataset.counter || 0)
+          );
+        });
+    });
+
+    function filterQuotationRows() {
+      const status =
+        document.getElementById("quotationStatusFilter")?.value || "ALL";
+
+      const keyword =
+        (document.getElementById("quotationSearch")?.value || "")
+          .trim()
+          .toLowerCase();
+
+      const rows =
+        [...document.querySelectorAll("#quotationTableBody tr")];
+
+      let shown = 0;
+
+      rows.forEach((row) => {
+        const rowStatus = row.dataset.status || "";
+        const text = row.innerText.toLowerCase();
+
+        const statusMatch =
+          status === "ALL" || rowStatus === status;
+
+        const keywordMatch =
+          !keyword || text.includes(keyword);
+
+        const visible =
+          statusMatch && keywordMatch;
+
+        row.style.display =
+          visible ? "" : "none";
+
+        if (visible) {
+          shown++;
+        }
+      });
+
+      const counter =
+        document.getElementById("quotationRowCount");
+
+      if (counter) {
+        counter.textContent =
+          `แสดง ${shown} จาก ${rows.length} รายการ`;
+      }
+    }
+
+    function addQuotation() {
+      alert("ขั้นต่อไป: เปิดฟอร์มสร้างใบเสนอราคาใหม่");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (salesSubmenu && salesMenuToggle) {
+        salesSubmenu.classList.add("open");
+        salesMenuToggle.classList.add("open");
+        salesMenuToggle.setAttribute("aria-expanded", "true");
+      }
+    });
+
+  </script>
 </body>
 </html>
