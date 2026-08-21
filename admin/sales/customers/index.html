@@ -1646,6 +1646,409 @@
       background: #eef2f6;
     }
 
+    .vendor-status.rejected {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .customer-status-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .customer-preview-btn {
+      height: 29px;
+      padding: 0 9px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: 1px solid #f2c979;
+      border-radius: 8px;
+      color: #9d5200;
+      background: #fffaf0;
+      font-size: 0.64rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .customer-preview-btn:hover {
+      transform: translateY(-1px);
+      background: var(--orange-100);
+      box-shadow: 0 5px 12px rgba(4, 27, 60, 0.08);
+    }
+
+    .customer-review-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 6000;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px;
+      overflow-y: auto;
+      background: rgba(3, 16, 37, 0.62);
+      backdrop-filter: blur(5px);
+    }
+
+    .customer-review-modal.open {
+      display: flex;
+    }
+
+    .customer-review-frame {
+      width: min(100%, 1120px);
+      margin: 18px auto 40px;
+      border-radius: 20px;
+      background: #eef3f8;
+      box-shadow: 0 30px 90px rgba(3, 16, 37, 0.28);
+      overflow: hidden;
+    }
+
+    .customer-review-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      min-height: 62px;
+      padding: 12px 16px 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--navy-900), var(--navy-800));
+    }
+
+    .customer-review-topbar strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .customer-review-topbar span {
+      display: block;
+      margin-top: 2px;
+      color: rgba(255,255,255,.68);
+      font-size: 0.68rem;
+    }
+
+    .customer-review-close {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.20);
+      border-radius: 10px;
+      color: #ffffff;
+      background: rgba(255,255,255,.08);
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .customer-review-body {
+      padding: 22px;
+    }
+
+    .customer-review-paper {
+      width: min(100%, 900px);
+      margin: 0 auto;
+      padding: 38px 44px;
+      border: 1px solid #dfe7f0;
+      background: #ffffff;
+      box-shadow: 0 10px 28px rgba(4,27,60,.08);
+    }
+
+    .review-doc-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 24px;
+      padding-bottom: 18px;
+      border-bottom: 2px solid var(--navy-900);
+    }
+
+    .review-company {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .review-company img {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+    }
+
+    .review-company strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 0.95rem;
+    }
+
+    .review-company p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+      line-height: 1.55;
+    }
+
+    .review-title {
+      text-align: right;
+    }
+
+    .review-title h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1.15rem;
+    }
+
+    .review-title span {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    .review-ref {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 5px 10px;
+      color: var(--ink-700);
+      font-size: 0.67rem;
+      text-align: left;
+    }
+
+    .review-section {
+      margin-top: 22px;
+    }
+
+    .review-section-title {
+      margin-bottom: 11px;
+      padding: 8px 11px;
+      color: var(--navy-900);
+      background: #eaf3ff;
+      border-left: 4px solid var(--blue-600);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .review-data-grid {
+      display: grid;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 8px 14px;
+      font-size: 0.72rem;
+    }
+
+    .review-data-grid .label {
+      color: var(--ink-500);
+      font-weight: 600;
+    }
+
+    .review-data-grid .value {
+      min-height: 24px;
+      padding-bottom: 5px;
+      color: var(--ink-900);
+      border-bottom: 1px dotted #cfd9e5;
+      white-space: pre-wrap;
+    }
+
+    .review-status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+    }
+
+    .review-status-box {
+      padding: 11px 12px;
+      border: 1px solid #e1e9f2;
+      border-radius: 10px;
+      background: #f8fbff;
+    }
+
+    .review-status-box small {
+      display: block;
+      color: var(--ink-500);
+      font-size: 0.61rem;
+    }
+
+    .review-status-box strong {
+      display: block;
+      margin-top: 4px;
+      color: var(--navy-900);
+      font-size: 0.72rem;
+    }
+
+    .review-attachments {
+      width: min(100%, 900px);
+      margin: 18px auto 0;
+      display: grid;
+      gap: 16px;
+    }
+
+    .review-attachment-card {
+      overflow: hidden;
+      border: 1px solid #dfe7f0;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 8px 22px rgba(4,27,60,.07);
+    }
+
+    .review-attachment-head {
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .review-attachment-head strong {
+      font-size: 0.74rem;
+    }
+
+    .review-attachment-head span {
+      color: var(--ink-500);
+      font-size: 0.65rem;
+    }
+
+    .review-pdf {
+      width: 100%;
+      height: 720px;
+      border: 0;
+      background: #f4f7fb;
+    }
+
+    .review-image-wrap {
+      padding: 18px;
+      display: grid;
+      place-items: center;
+      background: #f4f7fb;
+    }
+
+    .review-image-wrap img {
+      max-width: 100%;
+      max-height: 900px;
+      object-fit: contain;
+    }
+
+    .review-empty {
+      width: min(100%, 900px);
+      margin: 18px auto 0;
+      padding: 28px;
+      border: 1px dashed #ccd8e5;
+      border-radius: 14px;
+      color: var(--ink-500);
+      background: #ffffff;
+      text-align: center;
+      font-size: 0.74rem;
+    }
+
+    .customer-review-actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 9px;
+      flex-wrap: wrap;
+      border-top: 1px solid #dce5ef;
+      background: rgba(255,255,255,.96);
+      backdrop-filter: blur(10px);
+    }
+
+    .review-action-btn {
+      min-height: 40px;
+      padding: 0 15px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .review-action-btn.approve {
+      border: 0;
+      color: #ffffff;
+      background: var(--green-600);
+    }
+
+    .review-action-btn.reject {
+      border: 1px solid #f3b7bc;
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .review-action-btn.close {
+      border: 1px solid var(--line);
+      color: var(--ink-700);
+      background: #ffffff;
+    }
+
+    .review-action-btn:disabled {
+      opacity: .55;
+      cursor: wait;
+    }
+
+    .customer-review-loading {
+      padding: 80px 24px;
+      color: var(--ink-500);
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 760px) {
+      .customer-review-modal {
+        padding: 0;
+      }
+
+      .customer-review-frame {
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        border-radius: 0;
+      }
+
+      .customer-review-body {
+        padding: 12px;
+      }
+
+      .customer-review-paper {
+        padding: 24px 18px;
+      }
+
+      .review-doc-head {
+        grid-template-columns: 1fr;
+      }
+
+      .review-title {
+        text-align: left;
+      }
+
+      .review-data-grid {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+
+      .review-status-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .review-pdf {
+        height: 620px;
+      }
+
+      .customer-review-actions {
+        justify-content: stretch;
+      }
+
+      .review-action-btn {
+        flex: 1;
+      }
+    }
+
     .project-status.active {
       color: #075fc4;
       background: var(--blue-100);
@@ -2186,6 +2589,79 @@
   </div>
 
 
+
+  <div
+    class="customer-review-modal"
+    id="customerReviewModal"
+    aria-hidden="true"
+  >
+    <div
+      class="customer-review-frame"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="customerReviewTitle"
+    >
+      <div class="customer-review-topbar">
+        <div>
+          <strong id="customerReviewTitle">
+            ตรวจสอบเอกสารขึ้นทะเบียนลูกค้า / คู่ค้า
+          </strong>
+          <span id="customerReviewSubtitle">
+            กำลังโหลดข้อมูล...
+          </span>
+        </div>
+
+        <button
+          class="customer-review-close"
+          id="customerReviewCloseX"
+          type="button"
+          aria-label="ปิด"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div
+        class="customer-review-body"
+        id="customerReviewBody"
+      >
+        <div class="customer-review-loading">
+          กำลังโหลดข้อมูลและเอกสาร...
+        </div>
+      </div>
+
+      <div
+        class="customer-review-actions"
+        id="customerReviewActions"
+      >
+        <button
+          class="review-action-btn reject"
+          id="customerRejectButton"
+          type="button"
+        >
+          ⚠ เอกสารไม่เรียบร้อย
+        </button>
+
+        <button
+          class="review-action-btn approve"
+          id="customerApproveButton"
+          type="button"
+        >
+          ✓ อนุมัติขึ้นทะเบียน
+        </button>
+
+        <button
+          class="review-action-btn close"
+          id="customerReviewCloseButton"
+          type="button"
+        >
+          ปิด
+        </button>
+      </div>
+    </div>
+  </div>
+
+
   <div
     class="customer-link-modal"
     id="customerLinkModal"
@@ -2279,6 +2755,14 @@
 
     const CUSTOMERS_API =
       `${API_BASE_URL}/api/admin/customers`;
+
+    const CUSTOMER_REVIEW_API =
+      (customerId) =>
+        `${CUSTOMERS_API}/${encodeURIComponent(customerId)}/review`;
+
+    const CUSTOMER_REVIEW_STATUS_API =
+      (customerId) =>
+        `${CUSTOMERS_API}/${encodeURIComponent(customerId)}/review-status`;
 
     if (AUTH_REQUIRED) {
       const token =
@@ -2450,8 +2934,12 @@
           className: "registered"
         },
         PENDING: {
-          label: "รอตรวจสอบ",
+          label: "รอตรวจสอบเอกสาร",
           className: "pending"
+        },
+        REJECTED: {
+          label: "เอกสารไม่เรียบร้อย",
+          className: "rejected"
         },
         PROSPECT: {
           label: "ยังไม่ขึ้นทะเบียน",
@@ -2547,9 +3035,25 @@
             <td>—</td>
 
             <td>
-              <span class="vendor-status ${vendorStatus.className}">
-                ${vendorStatus.label}
-              </span>
+              <div class="customer-status-actions">
+                <span class="vendor-status ${vendorStatus.className}">
+                  ${vendorStatus.label}
+                </span>
+
+                ${
+                  String(customer.registration_status || "").toUpperCase() === "PENDING"
+                    ? `
+                      <button
+                        class="customer-preview-btn"
+                        type="button"
+                        data-preview-customer-id="${escapeHtml(customer.id)}"
+                      >
+                        👁 พรีวิว
+                      </button>
+                    `
+                    : ""
+                }
+              </div>
             </td>
           </tr>
 
@@ -2805,6 +3309,750 @@
           `แสดง ${shown} จาก ${customerRows.length} ลูกค้า`;
       }
     }
+
+
+    const customerReviewModal =
+      document.getElementById(
+        "customerReviewModal"
+      );
+
+    const customerReviewBody =
+      document.getElementById(
+        "customerReviewBody"
+      );
+
+    const customerReviewSubtitle =
+      document.getElementById(
+        "customerReviewSubtitle"
+      );
+
+    const customerReviewCloseX =
+      document.getElementById(
+        "customerReviewCloseX"
+      );
+
+    const customerReviewCloseButton =
+      document.getElementById(
+        "customerReviewCloseButton"
+      );
+
+    const customerApproveButton =
+      document.getElementById(
+        "customerApproveButton"
+      );
+
+    const customerRejectButton =
+      document.getElementById(
+        "customerRejectButton"
+      );
+
+    let currentReviewCustomerId =
+      null;
+
+
+    function formatReviewDate(value) {
+
+      if (!value) {
+        return "-";
+      }
+
+      try {
+
+        return new Intl.DateTimeFormat(
+          "th-TH",
+          {
+            dateStyle:
+              "long"
+          }
+        ).format(
+          new Date(value)
+        );
+      }
+      catch (error) {
+
+        return value;
+      }
+    }
+
+
+    function reviewValue(value) {
+
+      const cleaned =
+        String(value ?? "").trim();
+
+      return (
+        cleaned
+          ? escapeHtml(cleaned)
+          : "-"
+      );
+    }
+
+
+    function customerTypeText(value) {
+
+      return (
+        String(value).toUpperCase() === "PERSON"
+          ? "บุคคลธรรมดา"
+          : "นิติบุคคล"
+      );
+    }
+
+
+    function branchText(customer) {
+
+      if (
+        String(
+          customer?.customer_type
+        ).toUpperCase() === "PERSON"
+      ) {
+        return "-";
+      }
+
+      if (
+        String(
+          customer?.branch_type
+        ).toUpperCase() === "BRANCH"
+      ) {
+        return (
+          "สาขา " +
+          (
+            customer?.branch_no ||
+            "-"
+          )
+        );
+      }
+
+      return "สำนักงานใหญ่";
+    }
+
+
+    function renderReviewAttachment(document) {
+
+      const mimeType =
+        String(
+          document?.mime_type || ""
+        ).toLowerCase();
+
+      const signedUrl =
+        document?.signed_url || "";
+
+      const fileName =
+        reviewValue(
+          document?.file_name
+        );
+
+      const documentType =
+        String(
+          document?.document_type || ""
+        ) === "COMPANY_CERTIFICATE"
+          ? "หนังสือรับรองบริษัท"
+          : (
+              String(
+                document?.document_type || ""
+              ) === "ID_CARD"
+                ? "สำเนาบัตรประชาชน"
+                : "เอกสารประกอบ"
+            );
+
+
+      if (!signedUrl) {
+
+        return `
+          <div class="review-attachment-card">
+            <div class="review-attachment-head">
+              <div>
+                <strong>${documentType}</strong>
+                <span>${fileName}</span>
+              </div>
+            </div>
+
+            <div class="review-empty">
+              ไม่สามารถสร้างลิงก์พรีวิวเอกสารได้
+            </div>
+          </div>
+        `;
+      }
+
+
+      const content =
+        mimeType === "application/pdf"
+          ? `
+              <iframe
+                class="review-pdf"
+                src="${escapeHtml(signedUrl)}"
+                title="${fileName}"
+              ></iframe>
+            `
+          : `
+              <div class="review-image-wrap">
+                <img
+                  src="${escapeHtml(signedUrl)}"
+                  alt="${fileName}"
+                >
+              </div>
+            `;
+
+
+      return `
+        <div class="review-attachment-card">
+          <div class="review-attachment-head">
+            <div>
+              <strong>${documentType}</strong>
+              <span>${fileName}</span>
+            </div>
+
+            <a
+              href="${escapeHtml(signedUrl)}"
+              target="_blank"
+              rel="noopener"
+              style="color:#1677ff;font-size:.67rem;font-weight:700;text-decoration:none;"
+            >
+              เปิดเอกสาร ↗
+            </a>
+          </div>
+
+          ${content}
+        </div>
+      `;
+    }
+
+
+    function renderCustomerReview(result) {
+
+      const customer =
+        result?.customer || {};
+
+      const documents =
+        Array.isArray(
+          result?.documents
+        )
+          ? result.documents
+          : [];
+
+
+      customerReviewSubtitle.textContent =
+        `${customer.customer_no || "-"} · ${customer.customer_name || "-"}`;
+
+
+      customerReviewBody.innerHTML = `
+        <article class="customer-review-paper">
+
+          <div class="review-doc-head">
+
+            <div class="review-company">
+              <img
+                src="/assets/images/adt-company-logo.png"
+                alt="ADT"
+              >
+
+              <div>
+                <strong>
+                  บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+                </strong>
+
+                <p>
+                  428 หมู่ 1 ต.เทพนคร อ.เมือง จ.กำแพงเพชร 63000<br>
+                  โทร. 092-6191220
+                </p>
+              </div>
+            </div>
+
+            <div class="review-title">
+              <h2>
+                แบบขึ้นทะเบียนลูกค้า / คู่ค้า
+              </h2>
+
+              <span>
+                CUSTOMER / VENDOR REGISTRATION
+              </span>
+
+              <div class="review-ref">
+                <strong>รหัสลูกค้า</strong>
+                <span>${reviewValue(customer.customer_no)}</span>
+
+                <strong>วันที่บันทึก</strong>
+                <span>${formatReviewDate(customer.created_at)}</span>
+
+                <strong>สถานะ</strong>
+                <span>${reviewValue(customer.registration_status)}</span>
+              </div>
+            </div>
+
+          </div>
+
+
+          <section class="review-section">
+            <div class="review-section-title">
+              1. ข้อมูลลูกค้า / Customer Information
+            </div>
+
+            <div class="review-data-grid">
+              <div class="label">ประเภทลูกค้า</div>
+              <div class="value">
+                ${customerTypeText(customer.customer_type)}
+              </div>
+
+              <div class="label">ชื่อ / Name</div>
+              <div class="value">
+                ${reviewValue(customer.customer_name)}
+              </div>
+
+              <div class="label">Tax ID / เลขประจำตัว</div>
+              <div class="value">
+                ${reviewValue(customer.tax_id)}
+              </div>
+
+              <div class="label">สำนักงานใหญ่ / สาขา</div>
+              <div class="value">
+                ${reviewValue(branchText(customer))}
+              </div>
+
+              <div class="label">ที่อยู่สำหรับออกเอกสาร</div>
+              <div class="value">
+                ${reviewValue(customer.address)}
+              </div>
+            </div>
+          </section>
+
+
+          <section class="review-section">
+            <div class="review-section-title">
+              2. ข้อมูลผู้ติดต่อ / Contact Information
+            </div>
+
+            <div class="review-data-grid">
+              <div class="label">ผู้ติดต่อ / Contact Person</div>
+              <div class="value">
+                ${reviewValue(customer.contact_name)}
+              </div>
+
+              <div class="label">โทรศัพท์ / Telephone</div>
+              <div class="value">
+                ${reviewValue(customer.phone)}
+              </div>
+
+              <div class="label">Email</div>
+              <div class="value">
+                ${reviewValue(customer.email)}
+              </div>
+
+              <div class="label">ผู้มีอำนาจลงนาม</div>
+              <div class="value">
+                ${reviewValue(customer.authorized_person)}
+              </div>
+            </div>
+          </section>
+
+
+          <section class="review-section">
+            <div class="review-section-title">
+              3. สถานะลูกค้า / Customer Status
+            </div>
+
+            <div class="review-status-grid">
+              <div class="review-status-box">
+                <small>สถานะทะเบียน</small>
+                <strong>
+                  ${reviewValue(customer.registration_status)}
+                </strong>
+              </div>
+
+              <div class="review-status-box">
+                <small>สถานะการใช้งาน</small>
+                <strong>
+                  ${reviewValue(customer.customer_status)}
+                </strong>
+              </div>
+
+              <div class="review-status-box">
+                <small>สถานะความเสี่ยง</small>
+                <strong>
+                  ${reviewValue(customer.risk_status)}
+                </strong>
+              </div>
+            </div>
+          </section>
+
+        </article>
+
+
+        ${
+          documents.length
+            ? `
+                <div class="review-attachments">
+                  ${documents
+                    .map(
+                      renderReviewAttachment
+                    )
+                    .join("")}
+                </div>
+              `
+            : `
+                <div class="review-empty">
+                  ไม่พบเอกสารแนบของลูกค้ารายนี้
+                </div>
+              `
+        }
+      `;
+
+
+      const status =
+        String(
+          customer.registration_status || ""
+        ).toUpperCase();
+
+
+      customerApproveButton.style.display =
+        status === "PENDING"
+          ? ""
+          : "none";
+
+      customerRejectButton.style.display =
+        status === "PENDING"
+          ? ""
+          : "none";
+    }
+
+
+    function openCustomerReviewModal() {
+
+      customerReviewModal.classList.add(
+        "open"
+      );
+
+      customerReviewModal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+    }
+
+
+    function closeCustomerReviewModal() {
+
+      customerReviewModal.classList.remove(
+        "open"
+      );
+
+      customerReviewModal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      document.body.style.overflow =
+        "";
+
+      currentReviewCustomerId =
+        null;
+    }
+
+
+    async function loadCustomerReview(
+      customerId
+    ) {
+
+      currentReviewCustomerId =
+        customerId;
+
+      openCustomerReviewModal();
+
+
+      customerReviewSubtitle.textContent =
+        "กำลังโหลดข้อมูล...";
+
+      customerReviewBody.innerHTML = `
+        <div class="customer-review-loading">
+          กำลังโหลดข้อมูลและเอกสาร...
+        </div>
+      `;
+
+
+      const token =
+        getAdminToken();
+
+
+      try {
+
+        const response =
+          await fetch(
+            CUSTOMER_REVIEW_API(
+              customerId
+            ),
+            {
+              method:
+                "GET",
+
+              headers: {
+                Accept:
+                  "application/json",
+
+                Authorization:
+                  `Bearer ${token}`
+              }
+            }
+          );
+
+
+        const result =
+          await response
+            .json()
+            .catch(
+              () => ({})
+            );
+
+
+        if (
+          response.status === 401
+        ) {
+
+          window.location.replace(
+            LOGIN_URL
+          );
+
+          return;
+        }
+
+
+        if (
+          !response.ok ||
+          result.success !== true
+        ) {
+
+          throw new Error(
+            result.message ||
+            "ไม่สามารถโหลดข้อมูลลูกค้าได้"
+          );
+        }
+
+
+        renderCustomerReview(
+          result
+        );
+      }
+      catch (error) {
+
+        console.error(
+          "Load customer review error:",
+          error
+        );
+
+
+        customerReviewBody.innerHTML = `
+          <div class="review-empty">
+            ${escapeHtml(
+              error?.message ||
+              "ไม่สามารถโหลดข้อมูลและเอกสารได้"
+            )}
+          </div>
+        `;
+      }
+    }
+
+
+    async function changeCustomerReviewStatus(
+      newStatus
+    ) {
+
+      if (
+        !currentReviewCustomerId
+      ) {
+        return;
+      }
+
+
+      const confirmation =
+        newStatus === "REGISTERED"
+          ? "ยืนยันอนุมัติการขึ้นทะเบียนลูกค้ารายนี้?"
+          : "ยืนยันว่าเอกสารของลูกค้ารายนี้ไม่เรียบร้อย?";
+
+
+      if (
+        !window.confirm(
+          confirmation
+        )
+      ) {
+        return;
+      }
+
+
+      const token =
+        getAdminToken();
+
+
+      customerApproveButton.disabled =
+        true;
+
+      customerRejectButton.disabled =
+        true;
+
+
+      try {
+
+        const response =
+          await fetch(
+            CUSTOMER_REVIEW_STATUS_API(
+              currentReviewCustomerId
+            ),
+            {
+              method:
+                "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+
+                Accept:
+                  "application/json",
+
+                Authorization:
+                  `Bearer ${token}`
+              },
+
+              body:
+                JSON.stringify({
+                  status:
+                    newStatus
+                })
+            }
+          );
+
+
+        const result =
+          await response
+            .json()
+            .catch(
+              () => ({})
+            );
+
+
+        if (
+          !response.ok ||
+          result.success !== true
+        ) {
+
+          throw new Error(
+            result.message ||
+            "ไม่สามารถเปลี่ยนสถานะได้"
+          );
+        }
+
+
+        closeCustomerReviewModal();
+
+        await loadCustomers();
+      }
+      catch (error) {
+
+        console.error(
+          "Change customer review status error:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "ไม่สามารถเปลี่ยนสถานะได้"
+        );
+      }
+      finally {
+
+        customerApproveButton.disabled =
+          false;
+
+        customerRejectButton.disabled =
+          false;
+      }
+    }
+
+
+    document.addEventListener(
+      "click",
+      (event) => {
+
+        const previewButton =
+          event.target.closest(
+            "[data-preview-customer-id]"
+          );
+
+        if (!previewButton) {
+          return;
+        }
+
+
+        loadCustomerReview(
+          previewButton.dataset
+            .previewCustomerId
+        );
+      }
+    );
+
+
+    customerReviewCloseX?.addEventListener(
+      "click",
+      closeCustomerReviewModal
+    );
+
+
+    customerReviewCloseButton?.addEventListener(
+      "click",
+      closeCustomerReviewModal
+    );
+
+
+    customerReviewModal?.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target ===
+          customerReviewModal
+        ) {
+
+          closeCustomerReviewModal();
+        }
+      }
+    );
+
+
+    customerApproveButton?.addEventListener(
+      "click",
+      () => {
+
+        changeCustomerReviewStatus(
+          "REGISTERED"
+        );
+      }
+    );
+
+
+    customerRejectButton?.addEventListener(
+      "click",
+      () => {
+
+        changeCustomerReviewStatus(
+          "REJECTED"
+        );
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+
+        if (
+          event.key === "Escape" &&
+          customerReviewModal
+            ?.classList
+            .contains("open")
+        ) {
+
+          closeCustomerReviewModal();
+        }
+      }
+    );
+
 
     const addAdminCustomerButton =
       document.getElementById(
