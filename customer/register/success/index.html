@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>บันทึกข้อมูลสำเร็จ | ADTSpreadsheet</title>
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="/assets/images/favicon.png"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: "Prompt", sans-serif;
+      color: #142033;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(22,119,255,.14), transparent 30%),
+        #f4f7fb;
+    }
+
+    .card {
+      width: min(100%, 620px);
+      padding: 42px 34px;
+      border: 1px solid #e1e9f2;
+      border-radius: 24px;
+      background: #ffffff;
+      box-shadow: 0 22px 60px rgba(4,27,60,.12);
+      text-align: center;
+    }
+
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 20px;
+      object-fit: contain;
+    }
+
+    .check {
+      width: 66px;
+      height: 66px;
+      margin: 0 auto 20px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #087545;
+      background: #eafaf3;
+      font-size: 1.7rem;
+      font-weight: 800;
+    }
+
+    h1 {
+      margin: 0;
+      color: #06152d;
+      font-size: clamp(1.8rem, 5vw, 2.45rem);
+      letter-spacing: -.035em;
+    }
+
+    p {
+      margin: 12px auto 0;
+      max-width: 500px;
+      color: #6c7a90;
+      font-size: .84rem;
+      line-height: 1.75;
+    }
+
+    .customer-no {
+      display: none;
+      margin: 22px auto 0;
+      padding: 11px 16px;
+      width: fit-content;
+      border-radius: 999px;
+      color: #075fc4;
+      background: #eaf3ff;
+      font: 800 .84rem "Inter", sans-serif;
+    }
+
+    .customer-no.show {
+      display: block;
+    }
+
+    .note {
+      margin-top: 22px;
+      padding: 13px 15px;
+      border-radius: 12px;
+      color: #40506a;
+      background: #f7f9fc;
+      font-size: .7rem;
+      line-height: 1.65;
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: #9aa7b9;
+      font-size: .64rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="card">
+
+    <img
+      class="logo"
+      src="/assets/images/adt-company-logo.png"
+      alt="ADT"
+    >
+
+    <div class="check">✓</div>
+
+    <h1>บันทึกข้อมูลสำเร็จ</h1>
+
+    <p>
+      ขอบคุณสำหรับการส่งข้อมูลขึ้นทะเบียนลูกค้า / คู่ค้า
+      ระบบได้รับข้อมูลของท่านเรียบร้อยแล้ว
+      เจ้าหน้าที่จะตรวจสอบเอกสารและข้อมูลก่อนนำไปใช้งานในระบบ
+    </p>
+
+    <div
+      class="customer-no"
+      id="customerNo"
+    ></div>
+
+    <div class="note">
+      หากจำเป็นต้องแก้ไขข้อมูลหลังจากส่งแบบฟอร์ม
+      กรุณาติดต่อผู้ประสานงานของ ADTSpreadsheet
+    </div>
+
+    <div class="footer">
+      ADTSpreadsheet · Customer / Vendor Registration System
+    </div>
+
+  </main>
+
+
+  <script>
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+    const customerNo =
+      params.get(
+        "customer_no"
+      );
+
+    const customerNoElement =
+      document.getElementById(
+        "customerNo"
+      );
+
+    if (customerNo) {
+
+      customerNoElement.textContent =
+        `เลขอ้างอิง ${customerNo}`;
+
+      customerNoElement.classList.add(
+        "show"
+      );
+    }
+  </script>
+
+</body>
+</html>
