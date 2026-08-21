@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADT Control Center | การเงินและเอกสาร</title>
+  <style>
+    *{box-sizing:border-box}
+    :root{
+      --navy:#071a35;
+      --navy-2:#0a2347;
+      --blue:#2563eb;
+      --blue-2:#1d4ed8;
+      --bg:#f3f7fc;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#64748b;
+      --line:#dbe4ef;
+      --green:#16a34a;
+      --orange:#f59e0b;
+      --red:#ef4444;
+      --purple:#7c3aed;
+      --teal:#0fbaa8;
+      --shadow:0 10px 28px rgba(15,23,42,.06);
+      --radius:16px;
+    }
+
+    body{
+      margin:0;
+      font-family:Tahoma,"Segoe UI",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    button,input,select{font:inherit}
+    a{text-decoration:none;color:inherit}
+
+    .app{
+      min-height:100vh;
+      display:grid;
+      grid-template-columns:240px 1fr;
+    }
+
+    /* SIDEBAR */
+    .sidebar{
+      background:linear-gradient(180deg,var(--navy),#05162d 100%);
+      color:#dbeafe;
+      padding:22px 14px 18px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      overflow:auto;
+    }
+
+    .brand{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      padding:0 8px 20px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+
+    .brand-logo{
+      width:42px;height:42px;border-radius:10px;
+      background:#fff;
+      display:grid;place-items:center;
+      color:#0b3b86;
+      font-weight:900;
+      box-shadow:0 4px 14px rgba(0,0,0,.25);
+    }
+
+    .brand-title{font-weight:800;font-size:14px;color:#fff}
+    .brand-sub{font-size:10px;color:#93a4bd;margin-top:3px;letter-spacing:.5px}
+
+    .workspace{
+      margin:16px 6px 20px;
+      padding:14px 12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:12px;
+    }
+    .workspace small{display:block;color:#8ea2bd;font-size:10px;margin-bottom:6px}
+    .workspace strong{font-size:13px;color:#fff}
+
+    .section-label{
+      font-size:10px;
+      color:#7186a5;
+      margin:18px 8px 8px;
+      font-weight:700;
+    }
+
+    .nav-item{
+      display:flex;align-items:center;gap:10px;
+      padding:11px 12px;
+      margin:3px 0;
+      border-radius:9px;
+      color:#dbeafe;
+      font-size:13px;
+      transition:.18s;
+    }
+    .nav-item:hover{background:rgba(255,255,255,.07)}
+    .nav-item.active{
+      background:linear-gradient(90deg,#1f6feb,#1559c9);
+      color:#fff;
+      box-shadow:0 5px 14px rgba(37,99,235,.25);
+    }
+
+    .nav-icon{
+      width:19px;height:19px;border-radius:6px;
+      background:rgba(255,255,255,.08);
+      display:grid;place-items:center;
+      font-size:11px;
+    }
+
+    .nav-badge{
+      margin-left:auto;
+      background:#ef4444;color:#fff;
+      min-width:21px;height:21px;border-radius:999px;
+      display:grid;place-items:center;
+      font-size:11px;font-weight:700;
+    }
+
+    .nav-group{
+      margin:4px 0 8px 20px;
+      padding-left:12px;
+      border-left:1px solid rgba(255,255,255,.12);
+    }
+    .nav-sub{
+      display:block;
+      padding:8px 10px;
+      color:#b9c8dc;
+      font-size:12px;
+      border-radius:8px;
+      margin:2px 0;
+    }
+    .nav-sub.active{
+      color:#fff;
+      background:rgba(37,99,235,.18);
+    }
+
+    /* MAIN */
+    .main{min-width:0}
+
+    .topbar{
+      height:72px;
+      background:#fff;
+      border-bottom:1px solid var(--line);
+      padding:0 28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      position:sticky;top:0;z-index:20;
+    }
+
+    .top-title h1{font-size:18px;margin:0 0 4px}
+    .breadcrumb{font-size:12px;color:#7a8ba4}
+
+    .top-actions{display:flex;gap:10px;align-items:center}
+    .top-select,.top-input,.icon-btn{
+      height:38px;
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:10px;
+      padding:0 12px;
+      color:#334155;
+    }
+    .icon-btn{cursor:pointer}
+
+    .profile{
+      display:flex;align-items:center;gap:10px;margin-left:6px;
+    }
+    .avatar{
+      width:34px;height:34px;border-radius:50%;
+      display:grid;place-items:center;
+      color:#fff;font-weight:800;
+      background:linear-gradient(135deg,#1d4ed8,#0b3b86);
+    }
+    .profile-name{font-size:12px;font-weight:700}
+    .profile-role{font-size:9px;color:#7c8ba1;margin-top:2px}
+
+    .content{padding:26px 28px 40px;max-width:1600px;margin:0 auto}
+
+    .page-heading{
+      display:flex;justify-content:space-between;align-items:end;
+      gap:18px;margin-bottom:18px;
+    }
+    .page-heading h2{margin:0 0 6px;font-size:21px}
+    .page-heading p{margin:0;color:var(--muted);font-size:13px}
+
+    /* KPI CIRCLES */
+    .kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(6,minmax(160px,1fr));
+      gap:14px;
+      margin-bottom:20px;
+    }
+    .kpi-card{
+      background:#fff;
+      border:1px solid #e5edf6;
+      border-radius:15px;
+      padding:18px 12px 15px;
+      text-align:center;
+      box-shadow:var(--shadow);
+    }
+    .kpi-title{
+      font-size:12px;font-weight:700;margin-bottom:12px;
+      color:#334155;
+      min-height:30px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .ring{
+      --value:78;
+      --ring:#2563eb;
+      --track:#dbeafe;
+      width:132px;height:132px;
+      margin:0 auto 12px;
+      border-radius:50%;
+      background:conic-gradient(var(--ring) calc(var(--value)*1%),var(--track) 0);
+      position:relative;
+      display:grid;place-items:center;
+    }
+    .ring::after{
+      content:"";
+      position:absolute;
+      width:104px;height:104px;border-radius:50%;
+      background:#fff;
+    }
+    .ring-content{
+      position:relative;z-index:2;
+      line-height:1.15;
+    }
+    .ring-number{
+      font-size:23px;
+      font-weight:900;
+      letter-spacing:-.6px;
+    }
+    .ring-unit{font-size:11px;font-weight:700;margin-top:4px}
+    .kpi-detail{font-size:11px;color:#64748b}
+    .kpi-up{font-size:10px;margin-top:7px;color:#16a34a;font-weight:700}
+
+    /* TABLE PANEL */
+    .panel{
+      background:#fff;
+      border:1px solid #e2e8f0;
+      border-radius:16px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .panel-head{
+      display:flex;justify-content:space-between;align-items:center;
+      gap:14px;padding:18px 20px;
+      border-bottom:1px solid #e8eef5;
+      flex-wrap:wrap;
+    }
+    .panel-head h3{margin:0 0 5px;font-size:18px}
+    .panel-sub{font-size:12px;color:#64748b}
+    .panel-tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+    .filter,.search{
+      height:38px;
+      border:1px solid #dbe4ef;
+      border-radius:9px;
+      background:#fff;
+      padding:0 12px;
+      color:#475569;
+    }
+    .search{min-width:310px}
+    .btn-primary{
+      height:38px;
+      border:0;
+      border-radius:9px;
+      background:linear-gradient(90deg,#2563eb,#1d4ed8);
+      color:#fff;
+      padding:0 16px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 5px 13px rgba(37,99,235,.22);
+    }
+    .btn-primary:hover{filter:brightness(.97)}
+
+    .table-wrap{overflow:auto}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:1100px;
+      font-size:12px;
+    }
+    th{
+      text-align:left;
+      color:#475569;
+      font-weight:700;
+      background:#f8fafc;
+      padding:12px 14px;
+      border-bottom:1px solid #e2e8f0;
+      white-space:nowrap;
+    }
+    td{
+      padding:13px 14px;
+      border-bottom:1px solid #edf2f7;
+      vertical-align:middle;
+      color:#1e293b;
+    }
+    tbody tr:hover{background:#fbfdff}
+    .money{text-align:right;font-variant-numeric:tabular-nums}
+    .code{font-weight:800;color:#0f172a}
+
+    .pill{
+      display:inline-block;
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .pill-design{background:#ede9fe;color:#6d28d9}
+    .pill-software{background:#dcfce7;color:#15803d}
+    .pill-wait{background:#fff7d6;color:#b45309}
+    .pill-sent{background:#dbeafe;color:#1d4ed8}
+    .pill-approved{background:#dcfce7;color:#15803d}
+    .pill-draft{background:#f1f5f9;color:#64748b}
+    .pill-cancel{background:#fee2e2;color:#b91c1c}
+
+    .action-box{display:flex;gap:6px}
+    .action-btn{
+      width:32px;height:32px;border:1px solid #dbe4ef;
+      border-radius:8px;background:#fff;cursor:pointer;color:#475569;
+    }
+    .action-btn:hover{background:#f8fafc}
+
+    .panel-foot{
+      padding:14px 20px;
+      display:flex;justify-content:space-between;align-items:center;
+      gap:12px;
+      color:#64748b;font-size:11px;
+    }
+    .pagination{display:flex;gap:6px;align-items:center}
+    .page-btn{
+      width:32px;height:32px;border:1px solid #dbe4ef;
+      border-radius:7px;background:#fff;cursor:pointer;
+    }
+    .page-btn.active{background:#2563eb;color:#fff;border-color:#2563eb}
+
+    @media(max-width:1300px){
+      .kpi-grid{grid-template-columns:repeat(3,1fr)}
+    }
+    @media(max-width:900px){
+      .app{grid-template-columns:1fr}
+      .sidebar{display:none}
+      .topbar{padding:0 16px}
+      .content{padding:20px 14px}
+      .kpi-grid{grid-template-columns:repeat(2,1fr)}
+      .search{min-width:220px}
+    }
+    @media(max-width:560px){
+      .top-actions .top-select,.top-actions .top-input{display:none}
+      .kpi-grid{grid-template-columns:1fr}
+      .panel-tools{width:100%}
+      .filter,.search,.btn-primary{width:100%;min-width:0}
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">ADT</div>
+      <div>
+        <div class="brand-title">ADT Control Center</div>
+        <div class="brand-sub">ADMINISTRATION SYSTEM</div>
+      </div>
+    </div>
+
+    <div class="workspace">
+      <small>WORKSPACE</small>
+      <strong>ADTSpreadsheet</strong>
+    </div>
+
+    <div class="section-label">ภาพรวม</div>
+    <a class="nav-item" href="/admin/">
+      <span class="nav-icon">⌂</span><span>Dashboard</span>
+    </a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">✓</span><span>งานที่ต้องดำเนินการ</span>
+      <span class="nav-badge">9</span>
+    </a>
+
+    <div class="section-label">ระบบธุรกิจ</div>
+    <a class="nav-item active" href="/admin/sales/">
+      <span class="nav-icon">▣</span><span>การเงินและเอกสาร</span>
+    </a>
+
+    <div class="nav-group">
+      <a class="nav-sub active" href="/admin/sales/">Dashboard</a>
+      <a class="nav-sub" href="#">Projects</a>
+      <a class="nav-sub" href="#">Documents</a>
+      <a class="nav-sub" href="#">Payments</a>
+      <a class="nav-sub" href="#">Customers</a>
+      <a class="nav-sub" href="#">Reports</a>
+    </div>
+
+    <a class="nav-item" href="#"><span class="nav-icon">□</span><span>Products</span></a>
+    <a class="nav-item" href="#"><span class="nav-icon">฿</span><span>Sales & Payments</span></a>
+    <a class="nav-item" href="#"><span class="nav-icon">♙</span><span>Members</span></a>
+    <a class="nav-item" href="#"><span class="nav-icon">◎</span><span>Seminars</span></a>
+
+    <div class="section-label">สื่อและการสนับสนุน</div>
+    <a class="nav-item" href="#"><span class="nav-icon">◌</span><span>LINE OA Center</span></a>
+    <a class="nav-item" href="#"><span class="nav-icon">A</span><span>Articles</span></a>
+    <a class="nav-item" href="#"><span class="nav-icon">▤</span><span>Design Portfolio</span></a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="topbar">
+      <div class="top-title">
+        <h1>Dashboard</h1>
+        <div class="breadcrumb">การเงินและเอกสาร &gt; Dashboard</div>
+      </div>
+
+      <div class="top-actions">
+        <input class="top-input" value="1 - 30 พ.ค. 2569" readonly />
+        <select class="top-select">
+          <option>ทั้งหมด</option>
+          <option>งานออกแบบ / บริการ</option>
+          <option>ขายโปรแกรม</option>
+        </select>
+        <button class="icon-btn" onclick="refreshDemo()">↻ รีเฟรช</button>
+
+        <div class="profile">
+          <div class="avatar">AK</div>
+          <div>
+            <div class="profile-name">อ.เก่ง</div>
+            <div class="profile-role">SUPER ADMIN</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <div class="page-heading">
+        <div>
+          <h2>ภาพรวมธุรกิจ</h2>
+          <p>สรุปยอดรายได้ มูลค่างาน และสถานะโครงการ</p>
+        </div>
+      </div>
+
+      <!-- KPI -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-title">รายได้รวม (รับจริง)</div>
+          <div class="ring" style="--value:78;--ring:#2563eb;--track:#dbeafe">
+            <div class="ring-content">
+              <div class="ring-number">185,000</div>
+              <div class="ring-unit">บาท</div>
+            </div>
+          </div>
+          <div class="kpi-detail">จาก 12 รายการ</div>
+          <div class="kpi-up">▲ 12.4% จากเดือนก่อน</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">ยอดรับงาน (มูลค่าโครงการ)</div>
+          <div class="ring" style="--value:68;--ring:#22c55e;--track:#d1fae5">
+            <div class="ring-content">
+              <div class="ring-number">520,000</div>
+              <div class="ring-unit">บาท</div>
+            </div>
+          </div>
+          <div class="kpi-detail">จาก 8 โครงการ</div>
+          <div class="kpi-up">▲ 18.7% จากเดือนก่อน</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">งานออกแบบ / บริการ</div>
+          <div class="ring" style="--value:64;--ring:#7c3aed;--track:#ede9fe">
+            <div class="ring-content">
+              <div class="ring-number">320,000</div>
+              <div class="ring-unit">บาท</div>
+            </div>
+          </div>
+          <div class="kpi-detail">จาก 5 โครงการ</div>
+          <div class="kpi-up">▲ 15.3% จากเดือนก่อน</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">ขายโปรแกรม / ซอฟต์แวร์</div>
+          <div class="ring" style="--value:59;--ring:#f59e0b;--track:#ffedd5">
+            <div class="ring-content">
+              <div class="ring-number">200,000</div>
+              <div class="ring-unit">บาท</div>
+            </div>
+          </div>
+          <div class="kpi-detail">จาก 5 รายการ</div>
+          <div class="kpi-up">▲ 22.1% จากเดือนก่อน</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">ลูกหนี้ค้างรับ</div>
+          <div class="ring" style="--value:71;--ring:#ef4444;--track:#fee2e2">
+            <div class="ring-content">
+              <div class="ring-number">82,500</div>
+              <div class="ring-unit">บาท</div>
+            </div>
+          </div>
+          <div class="kpi-detail">จาก 5 รายการ</div>
+          <div class="kpi-up">▲ 8.2% จากเดือนก่อน</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-title">โครงการที่กำลังดูแล</div>
+          <div class="ring" style="--value:74;--ring:#0fbaa8;--track:#ccfbf1">
+            <div class="ring-content">
+              <div class="ring-number">9</div>
+              <div class="ring-unit">โครงการ</div>
+            </div>
+          </div>
+          <div class="kpi-detail">กำลังดำเนินการ</div>
+          <div class="kpi-up">▲ 1 โครงการใหม่</div>
+        </div>
+      </section>
+
+      <!-- QUOTATION TABLE -->
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <h3>ใบเสนอราคา (Quotation)</h3>
+            <div class="panel-sub">รายการใบเสนอราคาล่าสุด</div>
+          </div>
+
+          <div class="panel-tools">
+            <select class="filter" id="statusFilter" onchange="filterRows()">
+              <option value="ALL">สถานะทั้งหมด</option>
+              <option value="DRAFT">ร่างใบเสนอราคา</option>
+              <option value="SENT">ส่งแล้ว</option>
+              <option value="WAIT">รอลูกค้าตอบ</option>
+              <option value="APPROVED">อนุมัติแล้ว</option>
+              <option value="CANCEL">ยกเลิก</option>
+            </select>
+
+            <input class="search" id="searchInput"
+              oninput="filterRows()"
+              placeholder="ค้นหาเลขที่ใบเสนอราคา / ลูกค้า / โปรเจ็ค" />
+
+            <button class="btn-primary" onclick="addQuotation()">＋ เพิ่มใบเสนอราคา</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>เลขที่ใบเสนอราคา</th>
+                <th>วันที่</th>
+                <th>ลูกค้า</th>
+                <th>โปรเจ็ค</th>
+                <th>ประเภทงาน</th>
+                <th class="money">มูลค่า (บาท)</th>
+                <th>สถานะ</th>
+                <th>วันหมดอายุ</th>
+                <th>ดำเนินการ</th>
+              </tr>
+            </thead>
+
+            <tbody id="quotationTable">
+              <tr data-status="WAIT">
+                <td class="code">QT-2569-0008</td>
+                <td>28 พ.ค. 2569</td>
+                <td>บริษัท เอสอี คอนสตรัคชั่น จำกัด</td>
+                <td>PJ-2569-001</td>
+                <td><span class="pill pill-design">งานออกแบบ</span></td>
+                <td class="money">65,000.00</td>
+                <td><span class="pill pill-wait">รอลูกค้าตอบ</span></td>
+                <td style="color:#ef4444;font-weight:700">12 มิ.ย. 2569</td>
+                <td><div class="action-box">
+                  <button class="action-btn" title="ดู">◉</button>
+                  <button class="action-btn" title="แก้ไข">✎</button>
+                  <button class="action-btn" title="เพิ่มเติม">⋮</button>
+                </div></td>
+              </tr>
+
+              <tr data-status="SENT">
+                <td class="code">QT-2569-0007</td>
+                <td>26 พ.ค. 2569</td>
+                <td>บริษัท พีเอสที เทคโนโลยี จำกัด</td>
+                <td>PJ-2569-003</td>
+                <td><span class="pill pill-software">ขายโปรแกรม</span></td>
+                <td class="money">29,900.00</td>
+                <td><span class="pill pill-sent">ส่งแล้ว</span></td>
+                <td>09 มิ.ย. 2569</td>
+                <td><div class="action-box">
+                  <button class="action-btn">◉</button>
+                  <button class="action-btn">✎</button>
+                  <button class="action-btn">⋮</button>
+                </div></td>
+              </tr>
+
+              <tr data-status="APPROVED">
+                <td class="code">QT-2569-0006</td>
+                <td>23 พ.ค. 2569</td>
+                <td>ห้างหุ้นส่วนจำกัด เอ็มจีเนียริ่ง</td>
+                <td>PJ-2569-002</td>
+                <td><span class="pill pill-design">งานออกแบบ</span></td>
+                <td class="money">120,000.00</td>
+                <td><span class="pill pill-approved">อนุมัติแล้ว</span></td>
+                <td>06 มิ.ย. 2569</td>
+                <td><div class="action-box">
+                  <button class="action-btn">◉</button>
+                  <button class="action-btn">✎</button>
+                  <button class="action-btn">⋮</button>
+                </div></td>
+              </tr>
+
+              <tr data-status="DRAFT">
+                <td class="code">QT-2569-0005</td>
+                <td>20 พ.ค. 2569</td>
+                <td>บริษัท โกลบอล ซีวิล จำกัด</td>
+                <td>PJ-2569-001</td>
+                <td><span class="pill pill-design">งานออกแบบ</span></td>
+                <td class="money">85,000.00</td>
+                <td><span class="pill pill-draft">ร่างใบเสนอราคา</span></td>
+                <td>—</td>
+                <td><div class="action-box">
+                  <button class="action-btn">◉</button>
+                  <button class="action-btn">✎</button>
+                  <button class="action-btn">⋮</button>
+                </div></td>
+              </tr>
+
+              <tr data-status="CANCEL">
+                <td class="code">QT-2569-0004</td>
+                <td>18 พ.ค. 2569</td>
+                <td>บริษัท ดีดี ซอฟต์แวร์ จำกัด</td>
+                <td>PJ-2569-004</td>
+                <td><span class="pill pill-software">ขายโปรแกรม</span></td>
+                <td class="money">49,900.00</td>
+                <td><span class="pill pill-cancel">ยกเลิก</span></td>
+                <td>—</td>
+                <td><div class="action-box">
+                  <button class="action-btn">◉</button>
+                  <button class="action-btn">✎</button>
+                  <button class="action-btn">⋮</button>
+                </div></td>
+              </tr>
+
+              <tr data-status="APPROVED">
+                <td class="code">QT-2569-0003</td>
+                <td>15 พ.ค. 2569</td>
+                <td>บริษัท เจริญทรัพย์ วิศวกรรม จำกัด</td>
+                <td>PJ-2569-002</td>
+                <td><span class="pill pill-design">งานออกแบบ</span></td>
+                <td class="money">150,000.00</td>
+                <td><span class="pill pill-approved">อนุมัติแล้ว</span></td>
+                <td>28 พ.ค. 2569</td>
+                <td><div class="action-box">
+                  <button class="action-btn">◉</button>
+                  <button class="action-btn">✎</button>
+                  <button class="action-btn">⋮</button>
+                </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel-foot">
+          <div id="rowCount">แสดง 1 - 6 จาก 6 รายการ</div>
+          <div class="pagination">
+            <button class="page-btn">‹</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">›</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script>
+  function filterRows(){
+    const status = document.getElementById("statusFilter").value;
+    const q = document.getElementById("searchInput").value.trim().toLowerCase();
+    const rows = [...document.querySelectorAll("#quotationTable tr")];
+    let shown = 0;
+
+    rows.forEach(row=>{
+      const rowStatus = row.dataset.status || "";
+      const text = row.innerText.toLowerCase();
+      const statusOk = status === "ALL" || rowStatus === status;
+      const searchOk = !q || text.includes(q);
+      const visible = statusOk && searchOk;
+      row.style.display = visible ? "" : "none";
+      if(visible) shown++;
+    });
+
+    document.getElementById("rowCount").innerText =
+      `แสดง ${shown.toLocaleString("th-TH")} จาก ${rows.length.toLocaleString("th-TH")} รายการ`;
+  }
+
+  function addQuotation(){
+    alert("ขั้นต่อไป: เปิดฟอร์มสร้างใบเสนอราคาใหม่");
+  }
+
+  function refreshDemo(){
+    alert("ขั้นต่อไป: เชื่อม API เพื่อโหลดข้อมูลจริงจาก Supabase");
+  }
+</script>
+</body>
+</html>
