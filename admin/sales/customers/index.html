@@ -1413,6 +1413,29 @@
       box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.08);
     }
 
+    .customer-add-btn {
+      height: 39px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 0;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .customer-add-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(22, 119, 255, 0.22);
+    }
+
     .customer-name-btn {
       padding: 0;
       border: 0;
@@ -1579,8 +1602,106 @@
       }
 
       .customer-search,
-      .customer-select {
+      .customer-select,
+      .customer-add-btn {
         width: 100%;
+      }
+    }
+
+
+    /* =====================================================
+       CUSTOMER TYPE SUMMARY
+    ===================================================== */
+
+    .customer-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .customer-summary-card {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .customer-summary-ring {
+      --value: 70;
+      --ring-color: var(--blue-600);
+      --track-color: #eaf3ff;
+
+      width: 132px;
+      height: 132px;
+      flex: 0 0 132px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          var(--ring-color) calc(var(--value) * 1%),
+          var(--track-color) 0
+        );
+    }
+
+    .customer-summary-ring::after {
+      content: "";
+      position: absolute;
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .customer-summary-ring-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      line-height: 1.12;
+    }
+
+    .customer-summary-value {
+      color: var(--navy-900);
+      font: 800 1.55rem "Inter", sans-serif;
+      letter-spacing: -0.04em;
+    }
+
+    .customer-summary-unit {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    .customer-summary-copy h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .customer-summary-copy p {
+      margin: 6px 0 0;
+      color: var(--ink-500);
+      font-size: 0.72rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .customer-summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .customer-summary-card {
+        align-items: flex-start;
+        flex-direction: column;
       }
     }
 
@@ -1768,6 +1889,48 @@
           </div>
         </section>
 
+        <section class="customer-summary-grid">
+
+          <article class="customer-summary-card">
+            <div
+              class="customer-summary-ring"
+              style="--value:75;--ring-color:#1677ff;--track-color:#eaf3ff"
+            >
+              <div class="customer-summary-ring-content">
+                <div class="customer-summary-value" id="companyCustomerCount">3</div>
+                <div class="customer-summary-unit">บริษัท</div>
+              </div>
+            </div>
+
+            <div class="customer-summary-copy">
+              <h2>ลูกค้านิติบุคคล</h2>
+              <p>
+                จำนวนบริษัท / นิติบุคคลที่อยู่ใน Customers / Vendor List
+              </p>
+            </div>
+          </article>
+
+          <article class="customer-summary-card">
+            <div
+              class="customer-summary-ring"
+              style="--value:25;--ring-color:#7c3aed;--track-color:#f3edff"
+            >
+              <div class="customer-summary-ring-content">
+                <div class="customer-summary-value" id="personCustomerCount">1</div>
+                <div class="customer-summary-unit">ราย</div>
+              </div>
+            </div>
+
+            <div class="customer-summary-copy">
+              <h2>ลูกค้าบุคคลธรรมดา</h2>
+              <p>
+                จำนวนบุคคลธรรมดาที่อยู่ใน Customers / Vendor List
+              </p>
+            </div>
+          </article>
+
+        </section>
+
         <section class="customer-panel">
 
           <header class="customer-panel-head">
@@ -1807,6 +1970,14 @@
                 placeholder="ค้นหาชื่อลูกค้า / Tax ID / ผู้ติดต่อ"
                 oninput="filterCustomerRows()"
               >
+
+              <button
+                class="customer-add-btn"
+                id="addCustomerButton"
+                type="button"
+              >
+                ＋ เพิ่มลูกค้า
+              </button>
             </div>
           </header>
 
@@ -2272,6 +2443,8 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      updateCustomerTypeSummary();
+
       if (salesSubmenu && salesMenuToggle) {
         salesSubmenu.classList.add("open");
         salesMenuToggle.classList.add("open");
@@ -2307,6 +2480,35 @@
         "open",
         willOpen
       );
+    }
+
+
+    function updateCustomerTypeSummary() {
+      const companyCount =
+        document.querySelectorAll(
+          '.customer-row[data-type="COMPANY"]'
+        ).length;
+
+      const personCount =
+        document.querySelectorAll(
+          '.customer-row[data-type="PERSON"]'
+        ).length;
+
+      const companyElement =
+        document.getElementById("companyCustomerCount");
+
+      const personElement =
+        document.getElementById("personCustomerCount");
+
+      if (companyElement) {
+        companyElement.textContent =
+          companyCount.toLocaleString("th-TH");
+      }
+
+      if (personElement) {
+        personElement.textContent =
+          personCount.toLocaleString("th-TH");
+      }
     }
 
     function filterCustomerRows() {
@@ -2382,6 +2584,13 @@
           `แสดง ${shown} จาก ${customerRows.length} ลูกค้า`;
       }
     }
+
+    const addCustomerButton =
+      document.getElementById("addCustomerButton");
+
+    addCustomerButton?.addEventListener("click", () => {
+      window.location.href = "/admin/sales/customers/new/";
+    });
 
     document.addEventListener("DOMContentLoaded", () => {
       if (salesSubmenu && salesMenuToggle) {
