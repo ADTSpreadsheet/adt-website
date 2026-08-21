@@ -1646,45 +1646,6 @@
       background: #eef2f6;
     }
 
-    .vendor-status.rejected {
-      color: #991b1b;
-      background: var(--red-100);
-    }
-
-    .customer-review-btn {
-      min-height: 31px;
-      padding: 0 10px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      border: 1px solid #bfd7f8;
-      border-radius: 8px;
-      color: var(--blue-600);
-      background: #f7fbff;
-      font-size: 0.66rem;
-      font-weight: 700;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .customer-review-btn.pending {
-      color: #9d5200;
-      border-color: #f6cf8b;
-      background: var(--orange-100);
-    }
-
-    .customer-review-btn.rejected {
-      color: #991b1b;
-      border-color: #f3b7bc;
-      background: var(--red-100);
-    }
-
-    .customer-review-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 5px 12px rgba(4, 27, 60, 0.08);
-    }
-
     .project-status.active {
       color: #075fc4;
       background: var(--blue-100);
@@ -2135,7 +2096,7 @@
             <div>
               <h2>รายชื่อลูกค้า</h2>
               <p>
-                คลิกที่ชื่อลูกค้าเพื่อดูรายการโครงการและประวัติงานของลูกค้ารายนั้น
+                แสดงข้อมูลลูกค้าจริงจากระบบ และสถานะการขึ้นทะเบียนของแต่ละราย
               </p>
             </div>
 
@@ -2209,220 +2170,6 @@
                     กำลังโหลดข้อมูลลูกค้า...
                   </td>
                 </tr>
-              </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                <!-- CUSTOMER 2 -->
-                <tr
-                  class="customer-row"
-                  data-customer-id="CUS-0002"
-                  data-type="COMPANY"
-                  data-vendor-status="REGISTERED"
-                >
-                  <td><strong>CUS-0002</strong></td>
-                  <td>
-                    <button
-                      class="customer-name-btn"
-                      type="button"
-                      onclick="toggleCustomerDetail('CUS-0002')"
-                    >
-                      <span class="customer-expand-icon">›</span>
-                      ห้างหุ้นส่วนจำกัด เอ็มจีเนียริ่ง
-                    </button>
-                  </td>
-                  <td><span class="customer-type company">นิติบุคคล</span></td>
-                  <td>04035XXXXXXX</td>
-                  <td>คุณกิตติ</td>
-                  <td>09X-XXX-XXXX</td>
-                  <td>2</td>
-                  <td>180,000.00</td>
-                  <td><span class="vendor-status registered">ขึ้นทะเบียนแล้ว</span></td>
-                </tr>
-
-                <tr
-                  class="customer-detail-row"
-                  id="detail-CUS-0002"
-                  data-parent="CUS-0002"
-                >
-                  <td class="customer-detail-cell" colspan="9">
-                    <div class="customer-detail-box">
-                      <div class="customer-detail-title">
-                        ประวัติงานของ ห้างหุ้นส่วนจำกัด เอ็มจีเนียริ่ง
-                      </div>
-
-                      <div class="table-wrap">
-                        <table class="customer-project-table">
-                          <thead>
-                            <tr>
-                              <th>เลขโครงการ</th>
-                              <th>วันที่</th>
-                              <th>ประเภทงาน</th>
-                              <th>รายการ</th>
-                              <th>มูลค่า</th>
-                              <th>สถานะ</th>
-                    <th>ACTION</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><strong>PJ-2569-002</strong></td>
-                              <td>19 ส.ค. 2569</td>
-                              <td>งานออกแบบ</td>
-                              <td>ตรวจสอบและออกแบบโครงสร้าง</td>
-                              <td>120,000.00</td>
-                              <td><span class="project-status wait">รอผล</span></td>
-                            </tr>
-                            <tr>
-                              <td><strong>PJ-2568-021</strong></td>
-                              <td>10 ธ.ค. 2568</td>
-                              <td>งานออกแบบ</td>
-                              <td>ออกแบบฐานราก</td>
-                              <td>60,000.00</td>
-                              <td><span class="project-status closed">ปิดงานแล้ว</span></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                <!-- CUSTOMER 3 -->
-                <tr
-                  class="customer-row"
-                  data-customer-id="CUS-0003"
-                  data-type="PERSON"
-                  data-vendor-status="PENDING"
-                >
-                  <td><strong>CUS-0003</strong></td>
-                  <td>
-                    <button
-                      class="customer-name-btn"
-                      type="button"
-                      onclick="toggleCustomerDetail('CUS-0003')"
-                    >
-                      <span class="customer-expand-icon">›</span>
-                      นายตัวอย่าง ลูกค้า
-                    </button>
-                  </td>
-                  <td><span class="customer-type person">บุคคลธรรมดา</span></td>
-                  <td>1-XXXX-XXXXX-XX-X</td>
-                  <td>ติดต่อโดยตรง</td>
-                  <td>06X-XXX-XXXX</td>
-                  <td>1</td>
-                  <td>35,000.00</td>
-                  <td><span class="vendor-status pending">รอตรวจสอบ</span></td>
-                </tr>
-
-                <tr
-                  class="customer-detail-row"
-                  id="detail-CUS-0003"
-                  data-parent="CUS-0003"
-                >
-                  <td class="customer-detail-cell" colspan="9">
-                    <div class="customer-detail-box">
-                      <div class="customer-detail-title">
-                        ประวัติงานของ นายตัวอย่าง ลูกค้า
-                      </div>
-
-                      <div class="table-wrap">
-                        <table class="customer-project-table">
-                          <thead>
-                            <tr>
-                              <th>เลขโครงการ</th>
-                              <th>วันที่</th>
-                              <th>ประเภทงาน</th>
-                              <th>รายการ</th>
-                              <th>มูลค่า</th>
-                              <th>สถานะ</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><strong>PJ-2569-008</strong></td>
-                              <td>15 ส.ค. 2569</td>
-                              <td>งานออกแบบ</td>
-                              <td>ออกแบบต่อเติมอาคาร</td>
-                              <td>35,000.00</td>
-                              <td><span class="project-status active">กำลังดำเนินการ</span></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-                <!-- CUSTOMER 4 -->
-                <tr
-                  class="customer-row"
-                  data-customer-id="CUS-0004"
-                  data-type="COMPANY"
-                  data-vendor-status="PROSPECT"
-                >
-                  <td><strong>CUS-0004</strong></td>
-                  <td>
-                    <button
-                      class="customer-name-btn"
-                      type="button"
-                      onclick="toggleCustomerDetail('CUS-0004')"
-                    >
-                      <span class="customer-expand-icon">›</span>
-                      บริษัท โกลบอล ซีวิล จำกัด
-                    </button>
-                  </td>
-                  <td><span class="customer-type company">นิติบุคคล</span></td>
-                  <td>01055XXXXXXX</td>
-                  <td>คุณวรพล</td>
-                  <td>08X-XXX-XXXX</td>
-                  <td>1</td>
-                  <td>85,000.00</td>
-                  <td><span class="vendor-status prospect">ยังไม่ขึ้นทะเบียน</span></td>
-                </tr>
-
-                <tr
-                  class="customer-detail-row"
-                  id="detail-CUS-0004"
-                  data-parent="CUS-0004"
-                >
-                  <td class="customer-detail-cell" colspan="9">
-                    <div class="customer-detail-box">
-                      <div class="customer-detail-title">
-                        ประวัติงานของ บริษัท โกลบอล ซีวิล จำกัด
-                      </div>
-
-                      <div class="table-wrap">
-                        <table class="customer-project-table">
-                          <thead>
-                            <tr>
-                              <th>เลขโครงการ</th>
-                              <th>วันที่</th>
-                              <th>ประเภทงาน</th>
-                              <th>รายการ</th>
-                              <th>มูลค่า</th>
-                              <th>สถานะ</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><strong>PJ-2569-004</strong></td>
-                              <td>18 ส.ค. 2569</td>
-                              <td>งานออกแบบ</td>
-                              <td>งานออกแบบฐานราก</td>
-                              <td>85,000.00</td>
-                              <td><span class="project-status closed">ปิดงานแล้ว</span></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
               </tbody>
             </table>
           </div>
@@ -2599,28 +2346,6 @@
       requestAnimationFrame(frame);
     }
 
-
-    document.addEventListener("click", (event) => {
-      const reviewButton =
-        event.target.closest(
-          "[data-review-customer-id]"
-        );
-
-      if (!reviewButton) {
-        return;
-      }
-
-      const customerId =
-        reviewButton.dataset.reviewCustomerId;
-
-      if (!customerId) {
-        return;
-      }
-
-      window.location.href =
-        `/admin/sales/customers/review/?id=${encodeURIComponent(customerId)}`;
-    });
-
     document.addEventListener("DOMContentLoaded", () => {
       document
         .querySelectorAll("[data-counter]")
@@ -2740,45 +2465,6 @@
           className: "prospect"
         }
       );
-    }
-
-
-    function getCustomerReviewAction(customer) {
-      const status = String(
-        customer?.registration_status || ""
-      ).toUpperCase();
-
-      const customerId =
-        customer?.id ||
-        customer?.customer_id ||
-        "";
-
-      if (!customerId) {
-        return "";
-      }
-
-      let label = "ดูข้อมูล";
-      let cssClass = "";
-
-      if (status === "PENDING") {
-        label = "ตรวจสอบ";
-        cssClass = " pending";
-      }
-      else if (status === "REJECTED") {
-        label = "ตรวจสอบ";
-        cssClass = " rejected";
-      }
-
-      return `
-        <button
-          class="customer-review-btn${cssClass}"
-          type="button"
-          data-review-customer-id="${escapeHtml(customerId)}"
-          title="${status === "PENDING" ? "ตรวจสอบข้อมูลและเอกสาร" : "ดูข้อมูลลูกค้า"}"
-        >
-          ${status === "PENDING" ? "👁 ตรวจสอบ" : status === "REJECTED" ? "⚠ ตรวจสอบ" : "👁 ดูข้อมูล"}
-        </button>
-      `;
     }
 
     function renderCustomerRows(customers) {
