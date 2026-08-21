@@ -653,6 +653,9 @@
     const ADMIN_STORAGE_KEY =
       "adt_admin";
 
+    const ADMIN_TOKEN_KEY =
+      "adt_admin_access_token";
+
     const form =
       document.getElementById("adminLoginForm");
 
@@ -710,15 +713,19 @@
       );
 
       localStorage.removeItem(
-        "adt_admin_access_token"
+        ADMIN_TOKEN_KEY
       );
 
       sessionStorage.removeItem(
-        "adt_admin_access_token"
+        ADMIN_TOKEN_KEY
       );
     }
 
-    function saveAdminData(admin, rememberMe) {
+    function saveAdminData(
+      admin,
+      adminToken,
+      rememberMe
+    ) {
       clearOldAdminData();
 
       const storage =
@@ -729,6 +736,11 @@
       storage.setItem(
         ADMIN_STORAGE_KEY,
         JSON.stringify(admin)
+      );
+
+      storage.setItem(
+        ADMIN_TOKEN_KEY,
+        adminToken
       );
     }
 
@@ -816,8 +828,15 @@
             );
           }
 
+          if (!result.admin_token) {
+            throw new Error(
+              "API ไม่ได้ส่ง Admin Session Token กลับมา"
+            );
+          }
+
           saveAdminData(
             result.admin,
+            result.admin_token,
             rememberMe
           );
 
