@@ -1646,6 +1646,45 @@
       background: #eef2f6;
     }
 
+    .vendor-status.rejected {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .customer-review-btn {
+      min-height: 31px;
+      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      border: 1px solid #bfd7f8;
+      border-radius: 8px;
+      color: var(--blue-600);
+      background: #f7fbff;
+      font-size: 0.66rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .customer-review-btn.pending {
+      color: #9d5200;
+      border-color: #f6cf8b;
+      background: var(--orange-100);
+    }
+
+    .customer-review-btn.rejected {
+      color: #991b1b;
+      border-color: #f3b7bc;
+      background: var(--red-100);
+    }
+
+    .customer-review-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(4, 27, 60, 0.08);
+    }
+
     .project-status.active {
       color: #075fc4;
       background: var(--blue-100);
@@ -2225,6 +2264,7 @@
                               <th>รายการ</th>
                               <th>มูลค่า</th>
                               <th>สถานะ</th>
+                    <th>ACTION</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -2559,6 +2599,28 @@
       requestAnimationFrame(frame);
     }
 
+
+    document.addEventListener("click", (event) => {
+      const reviewButton =
+        event.target.closest(
+          "[data-review-customer-id]"
+        );
+
+      if (!reviewButton) {
+        return;
+      }
+
+      const customerId =
+        reviewButton.dataset.reviewCustomerId;
+
+      if (!customerId) {
+        return;
+      }
+
+      window.location.href =
+        `/admin/sales/customers/review/?id=${encodeURIComponent(customerId)}`;
+    });
+
     document.addEventListener("DOMContentLoaded", () => {
       document
         .querySelectorAll("[data-counter]")
@@ -2678,6 +2740,45 @@
           className: "prospect"
         }
       );
+    }
+
+
+    function getCustomerReviewAction(customer) {
+      const status = String(
+        customer?.registration_status || ""
+      ).toUpperCase();
+
+      const customerId =
+        customer?.id ||
+        customer?.customer_id ||
+        "";
+
+      if (!customerId) {
+        return "";
+      }
+
+      let label = "ดูข้อมูล";
+      let cssClass = "";
+
+      if (status === "PENDING") {
+        label = "ตรวจสอบ";
+        cssClass = " pending";
+      }
+      else if (status === "REJECTED") {
+        label = "ตรวจสอบ";
+        cssClass = " rejected";
+      }
+
+      return `
+        <button
+          class="customer-review-btn${cssClass}"
+          type="button"
+          data-review-customer-id="${escapeHtml(customerId)}"
+          title="${status === "PENDING" ? "ตรวจสอบข้อมูลและเอกสาร" : "ดูข้อมูลลูกค้า"}"
+        >
+          ${status === "PENDING" ? "👁 ตรวจสอบ" : status === "REJECTED" ? "⚠ ตรวจสอบ" : "👁 ดูข้อมูล"}
+        </button>
+      `;
     }
 
     function renderCustomerRows(customers) {
