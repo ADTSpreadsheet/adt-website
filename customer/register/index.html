@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ขึ้นทะเบียนลูกค้า / คู่ค้า | ADTSpreadsheet</title>
+
+  <meta
+    name="description"
+    content="แบบฟอร์มขึ้นทะเบียนลูกค้าและคู่ค้า ADTSpreadsheet"
+  >
+
+  <link
+    rel="icon"
+    type="image/png"
+    href="/assets/images/favicon.png"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --navy: #06152d;
+      --blue: #1677ff;
+      --blue-dark: #0d57bf;
+      --surface: #f4f7fb;
+      --paper: #ffffff;
+      --line: #dce5ef;
+      --ink: #142033;
+      --muted: #6c7a90;
+      --red: #ef3d48;
+      --green: #17b26a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Prompt", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(22,119,255,.12), transparent 28%),
+        var(--surface);
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .page {
+      min-height: 100vh;
+    }
+
+    .topbar {
+      min-height: 76px;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .brand strong {
+      display: block;
+      color: var(--navy);
+      font: 800 .95rem "Inter", sans-serif;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 2px;
+      color: var(--muted);
+      font-size: .68rem;
+    }
+
+    .secure {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #087545;
+      background: #eafaf3;
+      font-size: .68rem;
+      font-weight: 700;
+    }
+
+    .wrap {
+      width: min(980px, calc(100% - 32px));
+      margin: 34px auto 60px;
+    }
+
+    .page-head {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .page-head h1 {
+      margin: 0;
+      color: var(--navy);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      letter-spacing: -.035em;
+    }
+
+    .page-head p {
+      max-width: 720px;
+      margin: 10px auto 0;
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.75;
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid #e2eaf3;
+      border-radius: 22px;
+      background: var(--paper);
+      box-shadow: 0 18px 50px rgba(4,27,60,.10);
+    }
+
+    .section {
+      padding: 24px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .section:last-child {
+      border-bottom: 0;
+    }
+
+    .section-head {
+      margin-bottom: 16px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      color: var(--navy);
+      font-size: 1rem;
+    }
+
+    .section-head p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: .72rem;
+      line-height: 1.6;
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 12px;
+      max-width: 620px;
+    }
+
+    .type-option {
+      position: relative;
+    }
+
+    .type-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .type-option label {
+      min-height: 84px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .type-option input:checked + label {
+      border-color: #99c5ff;
+      background: #f4f9ff;
+      box-shadow: 0 0 0 3px rgba(22,119,255,.07);
+    }
+
+    .type-icon {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--blue);
+      background: #eaf3ff;
+      font-weight: 700;
+    }
+
+    .type-option strong {
+      display: block;
+      color: var(--navy);
+      font-size: .8rem;
+    }
+
+    .type-option span span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: .67rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 15px 16px;
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0,1fr));
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: #40506a;
+      font-size: .74rem;
+      font-weight: 600;
+    }
+
+    .required {
+      color: var(--red);
+    }
+
+    .input,
+    .select,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--ink);
+      background: #fff;
+      outline: none;
+    }
+
+    .input,
+    .select {
+      height: 44px;
+      padding: 0 12px;
+    }
+
+    .textarea {
+      min-height: 100px;
+      padding: 11px 12px;
+      resize: vertical;
+    }
+
+    .input:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(22,119,255,.08);
+    }
+
+    .company-only,
+    .person-only {
+      display: none;
+    }
+
+    body.customer-company .company-only {
+      display: block;
+    }
+
+    body.customer-person .person-only {
+      display: block;
+    }
+
+    .upload {
+      padding: 18px;
+      border: 1px dashed #c8d6e5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .upload strong {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--navy);
+      font-size: .78rem;
+    }
+
+    .upload small {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: .65rem;
+      line-height: 1.5;
+    }
+
+    .privacy {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: #40506a;
+      background: #f7f9fc;
+      font-size: .68rem;
+      line-height: 1.65;
+    }
+
+    .status {
+      display: none;
+      margin: 0 24px 18px;
+      padding: 12px 14px;
+      border-radius: 11px;
+      font-size: .72rem;
+      line-height: 1.6;
+    }
+
+    .status.show {
+      display: block;
+    }
+
+    .status.error {
+      color: #991b1b;
+      background: #fff0f1;
+      border: 1px solid #f5c9cc;
+    }
+
+    .actions {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: flex-end;
+      background: #fbfdff;
+    }
+
+    .submit {
+      min-width: 210px;
+      height: 46px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 11px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      box-shadow: 0 10px 22px rgba(22,119,255,.20);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .submit:disabled {
+      opacity: .65;
+      cursor: wait;
+    }
+
+    .footnote {
+      margin-top: 16px;
+      color: #8f9caf;
+      font-size: .64rem;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .grid,
+      .grid.three,
+      .type-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        padding: 12px 16px;
+      }
+
+      .secure {
+        display: none;
+      }
+
+      .section {
+        padding: 20px 18px;
+      }
+
+      .actions {
+        padding: 18px;
+      }
+
+      .submit {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body class="customer-company">
+
+  <div class="page">
+
+    <header class="topbar">
+      <div class="brand">
+        <img
+          src="/assets/images/adt-company-logo.png"
+          alt="ADT"
+        >
+
+        <div>
+          <strong>ADTSpreadsheet</strong>
+          <span>Customer / Vendor Registration</span>
+        </div>
+      </div>
+
+      <div class="secure">
+        🔒 Secure Registration
+      </div>
+    </header>
+
+
+    <main class="wrap">
+
+      <section class="page-head">
+        <h1>แบบขึ้นทะเบียนลูกค้า / คู่ค้า</h1>
+
+        <p>
+          กรุณากรอกข้อมูลให้ครบถ้วน
+          เพื่อใช้สำหรับการจัดทำใบเสนอราคา สัญญา
+          และเอกสารที่เกี่ยวข้องกับการให้บริการของบริษัท
+        </p>
+      </section>
+
+
+      <form
+        class="card"
+        id="customerRegistrationForm"
+        novalidate
+      >
+
+        <section class="section">
+          <div class="section-head">
+            <h2>1. ประเภทลูกค้า</h2>
+            <p>เลือกประเภทของผู้ขึ้นทะเบียน</p>
+          </div>
+
+          <div class="type-grid">
+
+            <div class="type-option">
+              <input
+                id="typeCompany"
+                name="customer_type"
+                type="radio"
+                value="COMPANY"
+                checked
+              >
+
+              <label for="typeCompany">
+                <div class="type-icon">▣</div>
+
+                <span>
+                  <strong>นิติบุคคล</strong>
+                  <span>บริษัท / ห้างหุ้นส่วน / องค์กร</span>
+                </span>
+              </label>
+            </div>
+
+            <div class="type-option">
+              <input
+                id="typePerson"
+                name="customer_type"
+                type="radio"
+                value="PERSON"
+              >
+
+              <label for="typePerson">
+                <div class="type-icon">◎</div>
+
+                <span>
+                  <strong>บุคคลธรรมดา</strong>
+                  <span>ลูกค้าบุคคลทั่วไป</span>
+                </span>
+              </label>
+            </div>
+
+          </div>
+        </section>
+
+
+        <section class="section">
+          <div class="section-head">
+            <h2>2. ข้อมูลลูกค้า</h2>
+            <p>ข้อมูลสำหรับจัดทำเอกสารทางธุรกิจ</p>
+          </div>
+
+          <div class="grid">
+
+            <div class="field company-only">
+              <label for="companyName">
+                ชื่อนิติบุคคล
+                <span class="required">*</span>
+              </label>
+
+              <input
+                class="input"
+                id="companyName"
+                name="company_name"
+                type="text"
+                placeholder="เช่น บริษัท เอบีซี จำกัด"
+              >
+            </div>
+
+
+            <div class="field person-only">
+              <label for="personName">
+                ชื่อ-นามสกุล
+                <span class="required">*</span>
+              </label>
+
+              <input
+                class="input"
+                id="personName"
+                name="person_name"
+                type="text"
+                placeholder="ชื่อ-นามสกุล"
+              >
+            </div>
+
+
+            <div class="field">
+              <label for="taxId">
+                Tax ID / เลขประจำตัว
+                <span class="required">*</span>
+              </label>
+
+              <input
+                class="input"
+                id="taxId"
+                name="tax_id"
+                type="text"
+                placeholder="เลขผู้เสียภาษี / เลขบัตรประชาชน"
+              >
+            </div>
+
+
+            <div class="field company-only">
+              <label for="branchType">
+                สำนักงาน / สาขา
+              </label>
+
+              <select
+                class="select"
+                id="branchType"
+                name="branch_type"
+              >
+                <option value="HEAD_OFFICE">
+                  สำนักงานใหญ่
+                </option>
+
+                <option value="BRANCH">
+                  สาขา
+                </option>
+              </select>
+            </div>
+
+
+            <div class="field company-only">
+              <label for="branchNo">
+                เลขที่สาขา
+              </label>
+
+              <input
+                class="input"
+                id="branchNo"
+                name="branch_no"
+                type="text"
+                placeholder="เช่น 00000"
+              >
+            </div>
+
+
+            <div class="field full">
+              <label for="address">
+                ที่อยู่สำหรับออกเอกสาร
+                <span class="required">*</span>
+              </label>
+
+              <textarea
+                class="textarea"
+                id="address"
+                name="address"
+                placeholder="บ้านเลขที่ / อาคาร / ถนน / แขวง-ตำบล / เขต-อำเภอ / จังหวัด / รหัสไปรษณีย์"
+              ></textarea>
+            </div>
+
+          </div>
+        </section>
+
+
+        <section class="section">
+          <div class="section-head">
+            <h2>3. ข้อมูลผู้ติดต่อ</h2>
+            <p>ใช้สำหรับติดต่อประสานงานกับ ADTSpreadsheet</p>
+          </div>
+
+          <div class="grid three">
+
+            <div class="field">
+              <label for="contactName">
+                ผู้ติดต่อ
+                <span class="required">*</span>
+              </label>
+
+              <input
+                class="input"
+                id="contactName"
+                name="contact_name"
+                type="text"
+                placeholder="ชื่อผู้ติดต่อ"
+              >
+            </div>
+
+
+            <div class="field">
+              <label for="phone">
+                โทรศัพท์
+                <span class="required">*</span>
+              </label>
+
+              <input
+                class="input"
+                id="phone"
+                name="phone"
+                type="tel"
+                placeholder="08X-XXX-XXXX"
+              >
+            </div>
+
+
+            <div class="field">
+              <label for="email">
+                Email
+              </label>
+
+              <input
+                class="input"
+                id="email"
+                name="email"
+                type="email"
+                placeholder="name@company.com"
+              >
+            </div>
+
+
+            <div class="field company-only">
+              <label for="authorizedPerson">
+                ผู้มีอำนาจลงนาม
+              </label>
+
+              <input
+                class="input"
+                id="authorizedPerson"
+                name="authorized_person"
+                type="text"
+                placeholder="ชื่อกรรมการ / ผู้มีอำนาจ"
+              >
+            </div>
+
+          </div>
+        </section>
+
+
+        <section class="section">
+          <div class="section-head">
+            <h2>4. เอกสารประกอบ</h2>
+
+            <p>
+              ใช้สำหรับตรวจสอบข้อมูลการขึ้นทะเบียน
+            </p>
+          </div>
+
+
+          <div class="company-only">
+            <div class="upload">
+              <strong>หนังสือรับรองบริษัท</strong>
+
+              <input
+                id="companyDocument"
+                name="company_document"
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+              >
+
+              <small>
+                รองรับ PDF / JPG / JPEG / PNG
+                ขนาดไม่เกิน 10 MB
+              </small>
+            </div>
+          </div>
+
+
+          <div class="person-only">
+            <div class="upload">
+              <strong>สำเนาบัตรประชาชน</strong>
+
+              <input
+                id="personDocument"
+                name="person_document"
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+              >
+
+              <small>
+                รองรับ PDF / JPG / JPEG / PNG
+                ขนาดไม่เกิน 10 MB
+              </small>
+            </div>
+          </div>
+
+
+          <div class="privacy">
+            🔒 เอกสารที่ส่งผ่านแบบฟอร์มนี้ใช้สำหรับการขึ้นทะเบียน
+            และการจัดทำเอกสารที่เกี่ยวข้องกับการให้บริการเท่านั้น
+            ไฟล์เอกสารถูกจัดเก็บในระบบ Private Storage
+          </div>
+        </section>
+
+
+        <div
+          class="status"
+          id="formStatus"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+
+        <div class="actions">
+          <button
+            class="submit"
+            id="submitButton"
+            type="submit"
+          >
+            ส่งข้อมูลขึ้นทะเบียน
+          </button>
+        </div>
+
+      </form>
+
+
+      <div class="footnote">
+        ADTSpreadsheet · Customer / Vendor Registration System
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <script>
+    const API_URL =
+      "https://adt-website-api.onrender.com/api/customer-registration";
+
+    const SUCCESS_URL =
+      "/customer/register/success/";
+
+    const form =
+      document.getElementById(
+        "customerRegistrationForm"
+      );
+
+    const typeCompany =
+      document.getElementById(
+        "typeCompany"
+      );
+
+    const typePerson =
+      document.getElementById(
+        "typePerson"
+      );
+
+    const submitButton =
+      document.getElementById(
+        "submitButton"
+      );
+
+    const formStatus =
+      document.getElementById(
+        "formStatus"
+      );
+
+
+    function valueOf(id) {
+      return (
+        document.getElementById(id)?.value ||
+        ""
+      ).trim();
+    }
+
+
+    function getCustomerType() {
+      return typeCompany.checked
+        ? "COMPANY"
+        : "PERSON";
+    }
+
+
+    function applyCustomerType() {
+
+      document.body.classList.remove(
+        "customer-company",
+        "customer-person"
+      );
+
+      document.body.classList.add(
+        getCustomerType() === "COMPANY"
+          ? "customer-company"
+          : "customer-person"
+      );
+    }
+
+
+    function showError(message) {
+
+      formStatus.className =
+        "status show error";
+
+      formStatus.textContent =
+        message;
+    }
+
+
+    typeCompany.addEventListener(
+      "change",
+      applyCustomerType
+    );
+
+    typePerson.addEventListener(
+      "change",
+      applyCustomerType
+    );
+
+
+    form.addEventListener(
+      "submit",
+
+      async (event) => {
+
+        event.preventDefault();
+
+        formStatus.className =
+          "status";
+
+        const customerType =
+          getCustomerType();
+
+        const customerName =
+          customerType === "COMPANY"
+            ? valueOf("companyName")
+            : valueOf("personName");
+
+        const taxId =
+          valueOf("taxId");
+
+        const address =
+          valueOf("address");
+
+        const contactName =
+          valueOf("contactName");
+
+        const phone =
+          valueOf("phone");
+
+
+        if (
+          !customerName ||
+          !taxId ||
+          !address ||
+          !contactName ||
+          !phone
+        ) {
+
+          showError(
+            "กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบถ้วน"
+          );
+
+          return;
+        }
+
+
+        const formData =
+          new FormData(form);
+
+        formData.set(
+          "customer_type",
+          customerType
+        );
+
+
+        submitButton.disabled =
+          true;
+
+        submitButton.textContent =
+          "กำลังส่งข้อมูล...";
+
+
+        try {
+
+          const response =
+            await fetch(
+              API_URL,
+              {
+                method:
+                  "POST",
+
+                body:
+                  formData
+              }
+            );
+
+
+          const result =
+            await response
+              .json()
+              .catch(
+                () => ({})
+              );
+
+
+          if (
+            !response.ok ||
+            result.success !== true
+          ) {
+
+            throw new Error(
+              result.message ||
+              "ไม่สามารถส่งข้อมูลได้"
+            );
+          }
+
+
+          const customerNo =
+            result?.customer?.customer_no ||
+            "";
+
+
+          const redirectUrl =
+            customerNo
+              ? (
+                  SUCCESS_URL +
+                  "?customer_no=" +
+                  encodeURIComponent(
+                    customerNo
+                  )
+                )
+              : SUCCESS_URL;
+
+
+          window.location.replace(
+            redirectUrl
+          );
+        }
+        catch (error) {
+
+          console.error(
+            "Customer registration error:",
+            error
+          );
+
+          showError(
+            error?.message ||
+            "ไม่สามารถส่งข้อมูลได้ กรุณาลองใหม่อีกครั้ง"
+          );
+        }
+        finally {
+
+          submitButton.disabled =
+            false;
+
+          submitButton.textContent =
+            "ส่งข้อมูลขึ้นทะเบียน";
+        }
+      }
+    );
+
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      applyCustomerType
+    );
+  </script>
+
+</body>
+</html>
