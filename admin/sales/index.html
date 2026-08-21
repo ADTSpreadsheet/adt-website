@@ -1503,7 +1503,7 @@
           <div>
             <h1>ภาพรวม Sales &amp; Payments</h1>
             <p>
-              ภาพรวมรายได้ งานที่กำลังดำเนินการ และรายการใบเสนอราคาของบริษัท
+              ภาพรวมรายได้ งานที่กำลังดำเนินการ และความเคลื่อนไหวล่าสุดของทุกงานในระบบ
             </p>
           </div>
 
@@ -1611,42 +1611,45 @@
 
         </section>
 
-        <!-- QUOTATION TABLE -->
+        <!-- BUSINESS ACTIVITY TABLE -->
         <section class="sales-panel">
 
           <header class="sales-panel-head">
             <div>
-              <h2>ใบเสนอราคา (Quotation)</h2>
-              <p>รายการใบเสนอราคาล่าสุดและสถานะการติดตาม</p>
+              <h2>ความเคลื่อนไหวงานล่าสุด</h2>
+              <p>รวมสถานะและความเคลื่อนไหวของงานออกแบบและงานขายโปรแกรม</p>
             </div>
 
             <div class="sales-tools">
               <select
                 class="sales-select"
-                id="quotationStatusFilter"
-                onchange="filterQuotationRows()"
+                id="activityTypeFilter"
+                onchange="filterActivityRows()"
               >
-                <option value="ALL">สถานะทั้งหมด</option>
-                <option value="DRAFT">ร่างใบเสนอราคา</option>
-                <option value="WAIT">รอลูกค้าตอบ</option>
-                <option value="APPROVED">อนุมัติแล้ว</option>
+                <option value="ALL">ทุกประเภทงาน</option>
+                <option value="DESIGN">งานออกแบบ</option>
+                <option value="SOFTWARE">ขายโปรแกรม</option>
+              </select>
+
+              <select
+                class="sales-select"
+                id="activityStatusFilter"
+                onchange="filterActivityRows()"
+              >
+                <option value="ALL">ทุกสถานะ</option>
+                <option value="WAIT">รอดำเนินการ</option>
+                <option value="ACTIVE">กำลังดำเนินการ</option>
+                <option value="PAID">ชำระแล้ว</option>
+                <option value="CLOSED">ปิดงาน</option>
               </select>
 
               <input
                 class="sales-search"
-                id="quotationSearch"
+                id="activitySearch"
                 type="search"
-                placeholder="ค้นหาเลขที่ / ลูกค้า / โปรเจ็ค"
-                oninput="filterQuotationRows()"
+                placeholder="ค้นหาลูกค้า / เลขอ้างอิง / รายการ"
+                oninput="filterActivityRows()"
               >
-
-              <button
-                class="sales-primary-btn"
-                type="button"
-                onclick="addQuotation()"
-              >
-                ＋ เพิ่มใบเสนอราคา
-              </button>
             </div>
           </header>
 
@@ -1654,81 +1657,61 @@
             <table>
               <thead>
                 <tr>
-                  <th>เลขที่ใบเสนอราคา</th>
                   <th>วันที่</th>
+                  <th>เลขอ้างอิง</th>
                   <th>ลูกค้า</th>
-                  <th>โปรเจ็ค</th>
-                  <th>ประเภทงาน</th>
+                  <th>ประเภท</th>
+                  <th>รายการ / โครงการ</th>
                   <th>มูลค่า (บาท)</th>
                   <th>สถานะ</th>
-                  <th>ดำเนินการ</th>
+                  <th>ความเคลื่อนไหวล่าสุด</th>
                 </tr>
               </thead>
 
-              <tbody id="quotationTableBody">
+              <tbody id="activityTableBody">
 
-                <tr data-status="WAIT">
-                  <td><strong>QT-2569-0008</strong></td>
-                  <td>28 พ.ค. 2569</td>
+                <tr data-type="DESIGN" data-status="ACTIVE">
+                  <td>20 ส.ค. 2569</td>
+                  <td><strong>PJ-2569-001</strong></td>
                   <td>บริษัท เอสอี คอนสตรัคชั่น จำกัด</td>
-                  <td>PJ-2569-001</td>
                   <td><span class="sales-type design">งานออกแบบ</span></td>
+                  <td>งานออกแบบโครงสร้างอาคารโรงงาน</td>
                   <td>65,000.00</td>
-                  <td><span class="sales-status wait">รอลูกค้าตอบ</span></td>
-                  <td>
-                    <span class="sales-action">
-                      <button title="ดู">◉</button>
-                      <button title="แก้ไข">✎</button>
-                    </span>
-                  </td>
+                  <td><span class="sales-status approved">กำลังดำเนินการ</span></td>
+                  <td>รับ PO แล้ว</td>
                 </tr>
 
-                <tr data-status="APPROVED">
-                  <td><strong>QT-2569-0007</strong></td>
-                  <td>26 พ.ค. 2569</td>
+                <tr data-type="SOFTWARE" data-status="PAID">
+                  <td>20 ส.ค. 2569</td>
+                  <td><strong>SW-2569-003</strong></td>
                   <td>บริษัท พีเอสที เทคโนโลยี จำกัด</td>
-                  <td>SW-2569-003</td>
                   <td><span class="sales-type software">ขายโปรแกรม</span></td>
+                  <td>ADT-PILEFiX Professional</td>
                   <td>29,900.00</td>
-                  <td><span class="sales-status approved">อนุมัติแล้ว</span></td>
-                  <td>
-                    <span class="sales-action">
-                      <button title="ดู">◉</button>
-                      <button title="แก้ไข">✎</button>
-                    </span>
-                  </td>
+                  <td><span class="sales-status approved">ชำระแล้ว</span></td>
+                  <td>Auto Pay สำเร็จ</td>
                 </tr>
 
-                <tr data-status="APPROVED">
-                  <td><strong>QT-2569-0006</strong></td>
-                  <td>23 พ.ค. 2569</td>
+                <tr data-type="DESIGN" data-status="WAIT">
+                  <td>19 ส.ค. 2569</td>
+                  <td><strong>PJ-2569-002</strong></td>
                   <td>ห้างหุ้นส่วนจำกัด เอ็มจีเนียริ่ง</td>
-                  <td>PJ-2569-002</td>
                   <td><span class="sales-type design">งานออกแบบ</span></td>
+                  <td>งานตรวจสอบและออกแบบโครงสร้าง</td>
                   <td>120,000.00</td>
-                  <td><span class="sales-status approved">อนุมัติแล้ว</span></td>
-                  <td>
-                    <span class="sales-action">
-                      <button title="ดู">◉</button>
-                      <button title="แก้ไข">✎</button>
-                    </span>
-                  </td>
+                  <td><span class="sales-status wait">รอดำเนินการ</span></td>
+                  <td>ส่งใบเสนอราคาแล้ว</td>
                 </tr>
 
-                <tr data-status="DRAFT">
-                  <td><strong>QT-2569-0005</strong></td>
-                  <td>20 พ.ค. 2569</td>
+                <tr data-type="DESIGN" data-status="CLOSED">
+                  <td>18 ส.ค. 2569</td>
+                  <td><strong>PJ-2569-004</strong></td>
                   <td>บริษัท โกลบอล ซีวิล จำกัด</td>
-                  <td>PJ-2569-004</td>
                   <td><span class="sales-type design">งานออกแบบ</span></td>
+                  <td>งานออกแบบฐานราก</td>
                   <td>85,000.00</td>
-                  <td><span class="sales-status draft">ร่างใบเสนอราคา</span></td>
-                  <td>
-                    <span class="sales-action">
-                      <button title="ดู">◉</button>
-                      <button title="แก้ไข">✎</button>
-                    </span>
-                  </td>
+                  <td><span class="sales-status draft">ปิดงาน</span></td>
+                  <td>ออกใบเสร็จรับเงินแล้ว</td>
                 </tr>
 
               </tbody>
@@ -1736,7 +1719,7 @@
           </div>
 
           <footer class="sales-panel-foot">
-            <span id="quotationRowCount">แสดง 4 จาก 4 รายการ</span>
+            <span id="activityRowCount">แสดง 4 จาก 4 รายการ</span>
             <span>DEMO DATA — รอเชื่อม Supabase API</span>
           </footer>
 
@@ -1835,23 +1818,30 @@
         });
     });
 
-    function filterQuotationRows() {
+    function filterActivityRows() {
+      const type =
+        document.getElementById("activityTypeFilter")?.value || "ALL";
+
       const status =
-        document.getElementById("quotationStatusFilter")?.value || "ALL";
+        document.getElementById("activityStatusFilter")?.value || "ALL";
 
       const keyword =
-        (document.getElementById("quotationSearch")?.value || "")
+        (document.getElementById("activitySearch")?.value || "")
           .trim()
           .toLowerCase();
 
       const rows =
-        [...document.querySelectorAll("#quotationTableBody tr")];
+        [...document.querySelectorAll("#activityTableBody tr")];
 
       let shown = 0;
 
       rows.forEach((row) => {
+        const rowType = row.dataset.type || "";
         const rowStatus = row.dataset.status || "";
         const text = row.innerText.toLowerCase();
+
+        const typeMatch =
+          type === "ALL" || rowType === type;
 
         const statusMatch =
           status === "ALL" || rowStatus === status;
@@ -1860,7 +1850,7 @@
           !keyword || text.includes(keyword);
 
         const visible =
-          statusMatch && keywordMatch;
+          typeMatch && statusMatch && keywordMatch;
 
         row.style.display =
           visible ? "" : "none";
@@ -1871,16 +1861,12 @@
       });
 
       const counter =
-        document.getElementById("quotationRowCount");
+        document.getElementById("activityRowCount");
 
       if (counter) {
         counter.textContent =
           `แสดง ${shown} จาก ${rows.length} รายการ`;
       }
-    }
-
-    function addQuotation() {
-      alert("ขั้นต่อไป: เปิดฟอร์มสร้างใบเสนอราคาใหม่");
     }
 
     document.addEventListener("DOMContentLoaded", () => {
