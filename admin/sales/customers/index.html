@@ -1436,6 +1436,164 @@
       box-shadow: 0 10px 22px rgba(22, 119, 255, 0.22);
     }
 
+    .customer-link-btn {
+      height: 39px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid #bfd7f8;
+      border-radius: 10px;
+      color: var(--blue-600);
+      background: #f7fbff;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .customer-link-btn:hover {
+      background: #eaf3ff;
+      border-color: #99c5ff;
+      transform: translateY(-1px);
+    }
+
+    .customer-link-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(3, 16, 37, 0.55);
+      backdrop-filter: blur(5px);
+    }
+
+    .customer-link-modal.open {
+      display: flex;
+    }
+
+    .customer-link-card {
+      width: min(100%, 560px);
+      border: 1px solid #dce5ef;
+      border-radius: 20px;
+      background: #ffffff;
+      box-shadow: 0 24px 70px rgba(3, 16, 37, 0.24);
+      overflow: hidden;
+    }
+
+    .customer-link-card-head {
+      padding: 18px 20px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .customer-link-card-head h3 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .customer-link-card-head p {
+      margin: 5px 0 0;
+      color: var(--ink-500);
+      font-size: 0.72rem;
+      line-height: 1.6;
+    }
+
+    .customer-link-close {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 34px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: var(--ink-500);
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .customer-link-card-body {
+      padding: 20px;
+    }
+
+    .customer-link-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--ink-700);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .customer-link-copy-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    .customer-link-input {
+      width: 100%;
+      height: 42px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #f8fbff;
+      outline: none;
+      font-size: 0.74rem;
+    }
+
+    .customer-copy-btn {
+      height: 42px;
+      padding: 0 15px;
+      border: 0;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .customer-copy-status {
+      min-height: 20px;
+      margin-top: 10px;
+      color: #087545;
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+
+    .customer-link-note {
+      margin-top: 12px;
+      padding: 11px 12px;
+      border-radius: 10px;
+      color: var(--ink-500);
+      background: #f7f9fc;
+      font-size: 0.68rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 560px) {
+      .customer-link-btn {
+        width: 100%;
+      }
+
+      .customer-link-copy-row {
+        grid-template-columns: 1fr;
+      }
+
+      .customer-copy-btn {
+        width: 100%;
+      }
+    }
+
     .customer-name-btn {
       padding: 0;
       border: 0;
@@ -1603,7 +1761,8 @@
 
       .customer-search,
       .customer-select,
-      .customer-add-btn {
+      .customer-add-btn,
+      .customer-link-btn {
         width: 100%;
       }
     }
@@ -1973,10 +2132,18 @@
 
               <button
                 class="customer-add-btn"
-                id="addCustomerButton"
+                id="addAdminCustomerButton"
                 type="button"
               >
-                ＋ เพิ่มลูกค้า
+                ＋ เพิ่มลูกค้าโดย Admin
+              </button>
+
+              <button
+                class="customer-link-btn"
+                id="addCustomerByCustomerButton"
+                type="button"
+              >
+                🔗 เพิ่มลูกค้าโดย Customer
               </button>
             </div>
           </header>
@@ -2228,6 +2395,80 @@
         </section>
 
       </main>
+    </div>
+  </div>
+
+
+  <div
+    class="customer-link-modal"
+    id="customerLinkModal"
+    aria-hidden="true"
+  >
+    <div
+      class="customer-link-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="customerLinkModalTitle"
+    >
+      <div class="customer-link-card-head">
+        <div>
+          <h3 id="customerLinkModalTitle">
+            ลิงก์ขึ้นทะเบียนลูกค้า / คู่ค้า
+          </h3>
+
+          <p>
+            คัดลอกลิงก์นี้แล้วส่งให้ลูกค้าทาง LINE,
+            Messenger, Email หรือช่องทางอื่น
+          </p>
+        </div>
+
+        <button
+          class="customer-link-close"
+          id="customerLinkCloseButton"
+          type="button"
+          aria-label="ปิด"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div class="customer-link-card-body">
+        <label
+          class="customer-link-label"
+          for="customerRegistrationLink"
+        >
+          Customer Registration Link
+        </label>
+
+        <div class="customer-link-copy-row">
+          <input
+            class="customer-link-input"
+            id="customerRegistrationLink"
+            type="text"
+            value="https://adtspreadsheet.com/customer/register/"
+            readonly
+          >
+
+          <button
+            class="customer-copy-btn"
+            id="copyCustomerLinkButton"
+            type="button"
+          >
+            คัดลอกลิงก์
+          </button>
+        </div>
+
+        <div
+          class="customer-copy-status"
+          id="customerCopyStatus"
+        ></div>
+
+        <div class="customer-link-note">
+          ลูกค้าสามารถเปิดลิงก์ได้โดยตรงโดยไม่ต้อง Login
+          เมื่อส่งข้อมูลสำเร็จ ระบบจะบันทึกเป็นสถานะ
+          <strong>PENDING</strong> เพื่อรอ Admin ตรวจสอบ
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2778,12 +3019,196 @@
       }
     }
 
-    const addCustomerButton =
-      document.getElementById("addCustomerButton");
+    const addAdminCustomerButton =
+      document.getElementById(
+        "addAdminCustomerButton"
+      );
 
-    addCustomerButton?.addEventListener("click", () => {
-      window.location.href = "/admin/sales/customers/new/";
-    });
+    const addCustomerByCustomerButton =
+      document.getElementById(
+        "addCustomerByCustomerButton"
+      );
+
+    const customerLinkModal =
+      document.getElementById(
+        "customerLinkModal"
+      );
+
+    const customerLinkCloseButton =
+      document.getElementById(
+        "customerLinkCloseButton"
+      );
+
+    const copyCustomerLinkButton =
+      document.getElementById(
+        "copyCustomerLinkButton"
+      );
+
+    const customerRegistrationLink =
+      document.getElementById(
+        "customerRegistrationLink"
+      );
+
+    const customerCopyStatus =
+      document.getElementById(
+        "customerCopyStatus"
+      );
+
+
+    addAdminCustomerButton?.addEventListener(
+      "click",
+      () => {
+        window.location.href =
+          "/admin/sales/customers/new/";
+      }
+    );
+
+
+    function openCustomerLinkModal() {
+      customerLinkModal?.classList.add(
+        "open"
+      );
+
+      customerLinkModal?.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      if (customerCopyStatus) {
+        customerCopyStatus.textContent =
+          "";
+      }
+    }
+
+
+    function closeCustomerLinkModal() {
+      customerLinkModal?.classList.remove(
+        "open"
+      );
+
+      customerLinkModal?.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+    }
+
+
+    addCustomerByCustomerButton?.addEventListener(
+      "click",
+      openCustomerLinkModal
+    );
+
+
+    customerLinkCloseButton?.addEventListener(
+      "click",
+      closeCustomerLinkModal
+    );
+
+
+    customerLinkModal?.addEventListener(
+      "click",
+      (event) => {
+        if (
+          event.target ===
+          customerLinkModal
+        ) {
+          closeCustomerLinkModal();
+        }
+      }
+    );
+
+
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          event.key === "Escape" &&
+          customerLinkModal?.classList.contains(
+            "open"
+          )
+        ) {
+          closeCustomerLinkModal();
+        }
+      }
+    );
+
+
+    async function copyCustomerRegistrationLink() {
+
+      const link =
+        customerRegistrationLink?.value ||
+        "https://adtspreadsheet.com/customer/register/";
+
+      try {
+
+        if (
+          navigator.clipboard &&
+          window.isSecureContext
+        ) {
+
+          await navigator.clipboard.writeText(
+            link
+          );
+        }
+        else {
+
+          customerRegistrationLink?.focus();
+          customerRegistrationLink?.select();
+
+          const copied =
+            document.execCommand(
+              "copy"
+            );
+
+          if (!copied) {
+            throw new Error(
+              "Copy command failed"
+            );
+          }
+        }
+
+
+        if (customerCopyStatus) {
+          customerCopyStatus.textContent =
+            "✓ คัดลอกลิงก์แล้ว พร้อมส่งให้ลูกค้า";
+        }
+
+
+        if (copyCustomerLinkButton) {
+          const originalText =
+            copyCustomerLinkButton.textContent;
+
+          copyCustomerLinkButton.textContent =
+            "คัดลอกแล้ว ✓";
+
+          window.setTimeout(
+            () => {
+              copyCustomerLinkButton.textContent =
+                originalText;
+            },
+            1500
+          );
+        }
+      }
+      catch (error) {
+
+        console.error(
+          "Copy customer link error:",
+          error
+        );
+
+        if (customerCopyStatus) {
+          customerCopyStatus.textContent =
+            "คัดลอกอัตโนมัติไม่สำเร็จ กรุณาเลือก URL แล้ว Copy";
+        }
+      }
+    }
+
+
+    copyCustomerLinkButton?.addEventListener(
+      "click",
+      copyCustomerRegistrationLink
+    );
 
   </script>
 </body>
