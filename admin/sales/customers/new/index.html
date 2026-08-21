@@ -2353,6 +2353,191 @@
       }
     }
 
+
+    /* =====================================================
+       ENHANCED CORPORATE DOCUMENT HEADER
+    ===================================================== */
+
+    .doc-header {
+      display: grid;
+      grid-template-columns: 86px minmax(0, 1fr) minmax(230px, 0.72fr);
+      gap: 16px;
+      align-items: center;
+      padding-bottom: 14px;
+      border-bottom: 2px solid #0a2855;
+    }
+
+    .doc-logo-box {
+      width: 78px;
+      height: 78px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+    }
+
+    .doc-logo-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .doc-company-info {
+      min-width: 0;
+    }
+
+    .doc-company-name {
+      color: #0a2855;
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .doc-company-line {
+      margin-top: 2px;
+      color: #334155;
+      font-size: 0.62rem;
+      line-height: 1.55;
+    }
+
+    .doc-title-block {
+      text-align: right;
+    }
+
+    .doc-title-th {
+      color: #0f172a;
+      font-size: 1.05rem;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .doc-title-en {
+      margin-top: 4px;
+      color: #64748b;
+      font-size: 0.64rem;
+      font-weight: 600;
+    }
+
+    .doc-number-grid {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 5px 8px;
+      font-size: 0.62rem;
+    }
+
+    .doc-number-grid .doc-label {
+      text-align: right;
+    }
+
+    .doc-number-grid .doc-value {
+      text-align: left;
+      border-bottom: 1px dotted #cbd5e1;
+    }
+
+    .doc-customer-type-line {
+      margin-top: 18px;
+      padding: 9px 11px;
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      border: 1px solid #dbe6f2;
+      border-radius: 8px;
+      background: #f8fbff;
+      font-size: 0.67rem;
+    }
+
+    .doc-type-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .doc-type-box {
+      width: 13px;
+      height: 13px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid #94a3b8;
+      font-size: 0.56rem;
+      font-weight: 700;
+    }
+
+    .doc-section-title {
+      margin-bottom: 10px;
+      padding: 7px 10px;
+      color: #0a2855;
+      background: #eef5ff;
+      border-left: 4px solid #1677ff;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .doc-field-row {
+      display: grid;
+      grid-template-columns: 165px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .doc-approval-box {
+      margin-top: 20px;
+      padding: 12px;
+      border: 1px solid #dbe3ec;
+      border-radius: 10px;
+      background: #fbfdff;
+    }
+
+    .doc-approval-title {
+      margin-bottom: 8px;
+      color: #0a2855;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+    .doc-approval-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 16px;
+      font-size: 0.65rem;
+    }
+
+    .doc-approval-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .doc-note-box {
+      min-height: 58px;
+      padding: 8px 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #334155;
+      font-size: 0.68rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .doc-footer {
+      margin-top: 24px;
+      padding-top: 10px;
+      border-top: 1px solid #dbe3ec;
+      color: #64748b;
+      font-size: 0.56rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    @media print {
+      .doc-header {
+        grid-template-columns: 22mm 1fr 58mm;
+      }
+    }
+
   </style>
 </head>
 
@@ -2747,51 +2932,75 @@
               <section class="customer-paper" id="customerDocumentPreview">
 
                 <header class="doc-header">
-                  <div class="doc-logo-box">ADT</div>
 
-                  <div>
+                  <div class="doc-logo-box">
+                    <img
+                      src="/assets/images/adt-company-logo.png"
+                      alt="ADT Company Logo"
+                    >
+                  </div>
+
+                  <div class="doc-company-info">
                     <div class="doc-company-name">
-                      ADTSpreadsheet
+                      บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
                     </div>
-                    <div class="doc-company-sub">
-                      Customer / Vendor Registration Form
+
+                    <div class="doc-company-line">
+                      428 หมู่ 1 ต.เทพนคร อ.เมือง จ.กำแพงเพชร 63000
+                    </div>
+
+                    <div class="doc-company-line">
+                      เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1
+                    </div>
+
+                    <div class="doc-company-line">
+                      โทร. 092-6191220 &nbsp;&nbsp; e-mail : 2531kaeng@gmail.com
                     </div>
                   </div>
+
+                  <div class="doc-title-block">
+                    <div class="doc-title-th">
+                      แบบขึ้นทะเบียนลูกค้า / คู่ค้า
+                    </div>
+
+                    <div class="doc-title-en">
+                      CUSTOMER / VENDOR REGISTRATION
+                    </div>
+
+                    <div class="doc-number-grid">
+                      <span class="doc-label">Document No.</span>
+                      <span class="doc-value">CVR-XXXX</span>
+
+                      <span class="doc-label">Customer ID</span>
+                      <span class="doc-value">รอระบบสร้าง</span>
+
+                      <span class="doc-label">Issue Date</span>
+                      <span class="doc-value" id="previewDate">-</span>
+                    </div>
+                  </div>
+
                 </header>
 
-                <div class="doc-title">
-                  แบบขึ้นทะเบียนลูกค้า / คู่ค้า
-                </div>
-
-                <div class="doc-subtitle">
-                  Customer / Vendor Registration
-                </div>
-
-                <div class="doc-meta">
-                  <div class="doc-meta-row">
-                    <span class="doc-label">รหัสลูกค้า</span>
-                    <span class="doc-value">รอระบบสร้าง</span>
+                <div class="doc-customer-type-line">
+                  <div class="doc-type-item">
+                    <span class="doc-type-box" id="previewCompanyCheck">✓</span>
+                    <span>นิติบุคคล / Company</span>
                   </div>
 
-                  <div class="doc-meta-row">
-                    <span class="doc-label">วันที่จัดทำ</span>
-                    <span class="doc-value" id="previewDate">-</span>
+                  <div class="doc-type-item">
+                    <span class="doc-type-box" id="previewPersonCheck"></span>
+                    <span>บุคคลธรรมดา / Individual</span>
                   </div>
                 </div>
 
                 <section class="doc-section">
                   <div class="doc-section-title">
-                    1. ข้อมูลลูกค้า
+                    1. ข้อมูลลูกค้า / Customer Information
                   </div>
 
                   <div class="doc-fields">
                     <div class="doc-field-row">
-                      <span class="doc-label">ประเภทลูกค้า</span>
-                      <span class="doc-value" id="previewCustomerType">นิติบุคคล</span>
-                    </div>
-
-                    <div class="doc-field-row">
-                      <span class="doc-label">ชื่อ</span>
+                      <span class="doc-label">ชื่อ / Name</span>
                       <span class="doc-value" id="previewCustomerName">-</span>
                     </div>
 
@@ -2801,12 +3010,12 @@
                     </div>
 
                     <div class="doc-field-row" id="previewBranchRow">
-                      <span class="doc-label">สำนักงาน / สาขา</span>
+                      <span class="doc-label">สำนักงานใหญ่ / สาขา</span>
                       <span class="doc-value" id="previewBranch">สำนักงานใหญ่</span>
                     </div>
 
                     <div class="doc-field-row doc-address">
-                      <span class="doc-label">ที่อยู่</span>
+                      <span class="doc-label">ที่อยู่สำหรับออกเอกสาร</span>
                       <span class="doc-value" id="previewAddress">-</span>
                     </div>
                   </div>
@@ -2814,17 +3023,17 @@
 
                 <section class="doc-section">
                   <div class="doc-section-title">
-                    2. ข้อมูลผู้ติดต่อ
+                    2. ข้อมูลผู้ติดต่อ / Contact Information
                   </div>
 
                   <div class="doc-fields">
                     <div class="doc-field-row">
-                      <span class="doc-label">ผู้ติดต่อ</span>
+                      <span class="doc-label">ผู้ติดต่อ / Contact Person</span>
                       <span class="doc-value" id="previewContact">-</span>
                     </div>
 
                     <div class="doc-field-row">
-                      <span class="doc-label">โทรศัพท์</span>
+                      <span class="doc-label">โทรศัพท์ / Telephone</span>
                       <span class="doc-value" id="previewPhone">-</span>
                     </div>
 
@@ -2842,7 +3051,7 @@
 
                 <section class="doc-section">
                   <div class="doc-section-title">
-                    3. สถานะลูกค้า
+                    3. สถานะลูกค้า / Customer Status
                   </div>
 
                   <div class="doc-status-grid">
@@ -2865,10 +3074,11 @@
 
                 <section class="doc-section">
                   <div class="doc-section-title">
-                    4. เอกสารประกอบ
+                    4. เอกสารประกอบ / Supporting Documents
                   </div>
 
                   <div class="doc-attachments">
+
                     <div class="doc-check">
                       <span class="doc-check-box" id="previewDocumentCheck"></span>
                       <span id="previewDocumentLabel">หนังสือรับรองบริษัท</span>
@@ -2878,19 +3088,48 @@
                       <span class="doc-label">ชื่อไฟล์</span>
                       <span class="doc-value" id="previewDocumentName">ยังไม่ได้แนบไฟล์</span>
                     </div>
+
                   </div>
                 </section>
 
                 <section class="doc-section">
                   <div class="doc-section-title">
-                    5. หมายเหตุ
+                    5. หมายเหตุ / Remark
                   </div>
 
-                  <div class="doc-field-row doc-address">
-                    <span class="doc-label">หมายเหตุ</span>
-                    <span class="doc-value" id="previewNote">-</span>
-                  </div>
+                  <div
+                    class="doc-note-box"
+                    id="previewNote"
+                  >-</div>
                 </section>
+
+                <div class="doc-approval-box">
+                  <div class="doc-approval-title">
+                    สำหรับเจ้าหน้าที่ / Internal Use
+                  </div>
+
+                  <div class="doc-approval-grid">
+                    <div class="doc-approval-item">
+                      <span class="doc-type-box">✓</span>
+                      <span>ตรวจสอบข้อมูลแล้ว</span>
+                    </div>
+
+                    <div class="doc-approval-item">
+                      <span class="doc-type-box"></span>
+                      <span>เอกสารไม่ครบ</span>
+                    </div>
+
+                    <div class="doc-approval-item">
+                      <span class="doc-type-box"></span>
+                      <span>อนุมัติขึ้นทะเบียน</span>
+                    </div>
+
+                    <div class="doc-approval-item">
+                      <span class="doc-type-box"></span>
+                      <span>ไม่อนุมัติ</span>
+                    </div>
+                  </div>
+                </div>
 
                 <div class="doc-signature-grid">
                   <div class="doc-sign-line">
@@ -2898,12 +3137,14 @@
                   </div>
 
                   <div class="doc-sign-line">
-                    ผู้ตรวจสอบ / ผู้ดูแลระบบ
+                    ผู้ตรวจสอบ / ผู้อนุมัติ
                   </div>
                 </div>
 
                 <div class="doc-footer">
-                  เอกสารนี้เป็นส่วนหนึ่งของระบบ Customers / Vendor List ของ ADTSpreadsheet
+                  บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด |
+                  428 หมู่ 1 ต.เทพนคร อ.เมือง จ.กำแพงเพชร 63000 |
+                  โทร. 092-6191220
                 </div>
 
               </section>
@@ -3332,12 +3573,21 @@
           ? `สาขา ${branchNo || "-"}`
           : "สำนักงานใหญ่";
 
-      setText(
-        "previewCustomerType",
-        customerType === "COMPANY"
-          ? "นิติบุคคล"
-          : "บุคคลธรรมดา"
-      );
+      const previewCompanyCheck =
+        document.getElementById("previewCompanyCheck");
+
+      const previewPersonCheck =
+        document.getElementById("previewPersonCheck");
+
+      if (previewCompanyCheck) {
+        previewCompanyCheck.textContent =
+          customerType === "COMPANY" ? "✓" : "";
+      }
+
+      if (previewPersonCheck) {
+        previewPersonCheck.textContent =
+          customerType === "PERSON" ? "✓" : "";
+      }
 
       setText(
         "previewCustomerName",
