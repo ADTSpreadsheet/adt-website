@@ -1,0 +1,3018 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>ADT Control Center | Dashboard</title>
+
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="description" content="ADTSpreadsheet Control Center Dashboard">
+
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/logo-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Prompt:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --navy-950: #031025;
+      --navy-900: #06152d;
+      --navy-850: #081d3f;
+      --navy-800: #0a2855;
+      --blue-600: #1677ff;
+      --blue-500: #2d8cff;
+      --blue-100: #eaf3ff;
+      --gold-500: #d9a61a;
+      --gold-400: #ffc928;
+      --green-600: #17b26a;
+      --green-100: #eafaf3;
+      --orange-600: #f79009;
+      --orange-100: #fff4e5;
+      --red-600: #ef3d48;
+      --red-100: #fff0f1;
+      --violet-600: #7c3aed;
+      --violet-100: #f3edff;
+      --ink-900: #142033;
+      --ink-700: #40506a;
+      --ink-500: #6c7a90;
+      --ink-400: #8f9caf;
+      --line: #dce5ef;
+      --paper: #ffffff;
+      --surface: #f4f7fb;
+      --surface-2: #eef3f8;
+      --shadow-sm: 0 8px 24px rgba(4, 27, 60, 0.08);
+      --shadow-md: 0 18px 50px rgba(4, 27, 60, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --sidebar-width: 286px;
+      --topbar-height: 74px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Prompt", sans-serif;
+      color: var(--ink-900);
+      background: var(--surface);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 20px 16px;
+      overflow-y: auto;
+      color: #ffffff;
+      background:
+        radial-gradient(circle at 0 0, rgba(22, 119, 255, 0.24), transparent 26%),
+        linear-gradient(180deg, var(--navy-950), var(--navy-850));
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 1200;
+    }
+
+    .sidebar-brand {
+      padding: 8px 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .sidebar-brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .sidebar-brand strong {
+      display: block;
+      font-family: "Inter", sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+
+    .sidebar-brand span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+    }
+
+    .workspace {
+      margin: 0 8px 18px;
+      padding: 13px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .workspace small {
+      display: block;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 0.67rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .workspace strong {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.86rem;
+    }
+
+    .nav-label {
+      margin: 22px 10px 8px;
+      color: rgba(255, 255, 255, 0.38);
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .nav-menu {
+      display: grid;
+      gap: 5px;
+    }
+
+    .nav-item {
+      min-height: 46px;
+      padding: 0 13px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      border-radius: 12px;
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: 0.18s ease;
+    }
+
+    .nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .nav-item.active {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(22, 119, 255, 0.85), rgba(13, 87, 191, 0.85));
+      box-shadow: 0 10px 26px rgba(22, 119, 255, 0.20);
+    }
+
+    .nav-icon {
+      width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+      flex: 0 0 auto;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--red-600);
+      font: 700 0.68rem "Inter", sans-serif;
+    }
+
+    .nav-parent {
+      width: 100%;
+      border: 0;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: left;
+      background: transparent;
+    }
+
+    .nav-parent:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .nav-arrow {
+      margin-left: auto;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 0.72rem;
+      transition: transform 0.22s ease;
+    }
+
+    .nav-parent.open .nav-arrow {
+      transform: rotate(180deg);
+    }
+
+    .nav-submenu {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin: 0 0 0 18px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(255, 255, 255, 0.10);
+      transition:
+        max-height 0.28s ease,
+        opacity 0.20s ease,
+        margin-top 0.20s ease,
+        margin-bottom 0.20s ease;
+    }
+
+    .nav-submenu.open {
+      max-height: 420px;
+      opacity: 1;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .nav-subitem {
+      min-height: 38px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.58);
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 500;
+      transition: 0.18s ease;
+    }
+
+    .nav-subitem:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-subitem.active {
+      color: #ffffff;
+      background: rgba(22, 119, 255, 0.18);
+    }
+
+    .sidebar-footer {
+      margin: 24px 8px 0;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .sidebar-footer a {
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 0.75rem;
+      text-decoration: none;
+    }
+
+    .main-shell {
+      min-width: 0;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1100;
+      height: var(--topbar-height);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mobile-menu {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .topbar-title {
+      min-width: 0;
+    }
+
+    .topbar-title strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .topbar-title span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.74rem;
+    }
+
+    .topbar-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topbar-button {
+      height: 42px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--ink-700);
+      background: #ffffff;
+      text-decoration: none;
+      font-size: 0.79rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .topbar-button:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .admin-profile {
+      padding-left: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), var(--navy-800));
+      font: 800 0.82rem "Inter", sans-serif;
+    }
+
+    .admin-profile strong {
+      display: block;
+      font-size: 0.78rem;
+    }
+
+    .admin-profile span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    .content {
+      padding: 28px;
+    }
+
+    .page-head {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.85rem, 3vw, 2.65rem);
+      letter-spacing: -0.035em;
+    }
+
+    .page-head p {
+      margin: 8px 0 0;
+      color: var(--ink-500);
+      line-height: 1.7;
+    }
+
+    .demo-badge {
+      padding: 8px 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      color: #8a5600;
+      background: #fff4cf;
+      border: 1px solid #f7d772;
+      font-size: 0.73rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .metric-card {
+      padding: 20px;
+      border: 1px solid #e3ebf4;
+      border-radius: var(--radius-lg);
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .metric-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 1.05rem;
+    }
+
+    .metric-icon.blue {
+      color: var(--blue-600);
+      background: var(--blue-100);
+    }
+
+    .metric-icon.green {
+      color: var(--green-600);
+      background: var(--green-100);
+    }
+
+    .metric-icon.violet {
+      color: var(--violet-600);
+      background: var(--violet-100);
+    }
+
+    .metric-icon.orange {
+      color: var(--orange-600);
+      background: var(--orange-100);
+    }
+
+    .trend {
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: #087545;
+      background: #eafaf3;
+      font: 700 0.68rem "Inter", sans-serif;
+    }
+
+    .metric-value {
+      margin-top: 18px;
+      color: var(--navy-900);
+      font: 800 2rem "Inter", sans-serif;
+      line-height: 1;
+    }
+
+    .metric-title {
+      margin-top: 8px;
+      color: var(--ink-700);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .metric-note {
+      margin-top: 5px;
+      color: var(--ink-400);
+      font-size: 0.72rem;
+    }
+
+    .grid-2 {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.55fr);
+      gap: 18px;
+    }
+
+    .grid-equal {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid #e3ebf4;
+      border-radius: var(--radius-xl);
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 70px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.72rem;
+    }
+
+    .panel-link {
+      color: var(--blue-600);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .chart-wrap {
+      min-height: 280px;
+      position: relative;
+    }
+
+    .chart-grid {
+      position: absolute;
+      inset: 14px 0 34px;
+      display: grid;
+      grid-template-rows: repeat(4, 1fr);
+    }
+
+    .chart-grid span {
+      border-top: 1px dashed #e5ebf2;
+    }
+
+    .bars {
+      position: absolute;
+      inset: 14px 4px 34px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      align-items: end;
+      gap: 16px;
+    }
+
+    .bar-column {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .bar {
+      width: min(34px, 72%);
+      min-height: 8px;
+      border-radius: 10px 10px 4px 4px;
+      background: linear-gradient(180deg, var(--blue-500), var(--blue-600));
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+    }
+
+    .bar-label {
+      position: absolute;
+      bottom: 4px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .chart-summary {
+      padding-top: 10px;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      border-top: 1px solid #edf2f7;
+    }
+
+    .chart-summary-item strong {
+      display: block;
+      color: var(--navy-900);
+      font: 800 1.05rem "Inter", sans-serif;
+    }
+
+    .chart-summary-item span {
+      color: var(--ink-500);
+      font-size: 0.7rem;
+    }
+
+    .device-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .device-row {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr) 52px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .device-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink-700);
+      font-size: 0.79rem;
+      font-weight: 600;
+    }
+
+    .progress {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #edf2f7;
+    }
+
+    .progress > span {
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue-600), #54a4ff);
+    }
+
+    .device-value {
+      color: var(--navy-900);
+      font: 700 0.78rem "Inter", sans-serif;
+      text-align: right;
+    }
+
+    .bot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .bot-card {
+      padding: 15px;
+      border: 1px solid #e7edf5;
+      border-radius: 15px;
+      background: #fbfdff;
+    }
+
+    .bot-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .bot-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--ink-900);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .bot-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--violet-600), #5b21b6);
+      font-size: 0.82rem;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green-600);
+      box-shadow: 0 0 0 4px rgba(23, 178, 106, 0.10);
+    }
+
+    .bot-number {
+      margin-top: 12px;
+      color: var(--navy-900);
+      font: 800 1.28rem "Inter", sans-serif;
+    }
+
+    .bot-meta {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+      line-height: 1.55;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px 16px;
+      text-align: left;
+      border-bottom: 1px solid #edf2f7;
+      font-size: 0.75rem;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--ink-500);
+      background: #f8fbff;
+      font-size: 0.67rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      padding: 6px 9px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .badge.blue {
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .badge.orange {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .badge.red {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .badge.gray {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .task-item {
+      padding: 13px 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #e8eef5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .task-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--orange-600);
+      background: var(--orange-100);
+    }
+
+    .task-item strong {
+      display: block;
+      color: var(--ink-900);
+      font-size: 0.77rem;
+    }
+
+    .task-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .task-action {
+      color: var(--blue-600);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .line-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .line-stat {
+      padding: 15px;
+      border: 1px solid #e8eef5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .line-stat strong {
+      display: block;
+      color: var(--navy-900);
+      font: 800 1.25rem "Inter", sans-serif;
+    }
+
+    .line-stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .system-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .system-row {
+      min-height: 48px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border: 1px solid #e8eef5;
+      border-radius: 13px;
+      background: #fbfdff;
+    }
+
+    .system-row strong {
+      font-size: 0.76rem;
+    }
+
+    .system-row span {
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      color: #8a5600;
+      background: #fff8df;
+      border: 1px solid #f5df8c;
+      font-size: 0.72rem;
+      line-height: 1.65;
+    }
+
+    .sidebar-overlay {
+      display: none;
+    }
+
+    @media (max-width: 1240px) {
+      .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-2,
+      .grid-equal {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: var(--sidebar-width);
+        transform: translateX(-100%);
+        transition: transform 0.22s ease;
+      }
+
+      body.sidebar-open .sidebar {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1150;
+        background: rgba(3, 16, 37, 0.48);
+      }
+
+      body.sidebar-open .sidebar-overlay {
+        display: block;
+      }
+
+      .mobile-menu {
+        display: grid;
+        place-items: center;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 22px 18px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .overview-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topbar-button.hide-mobile,
+      .admin-profile > div {
+        display: none;
+      }
+
+      .bot-grid,
+      .line-summary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .device-row {
+        grid-template-columns: 94px minmax(0, 1fr) 44px;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .bot-grid,
+      .line-summary {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        padding: 18px 12px;
+      }
+
+      .topbar {
+        padding: 0 12px;
+      }
+    }
+
+    /* =====================================================
+       SALES & PAYMENTS DASHBOARD
+       Right-side content only
+    ===================================================== */
+
+    .sales-page-head {
+      margin-bottom: 22px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .sales-page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      letter-spacing: -0.035em;
+    }
+
+    .sales-page-head p {
+      margin: 7px 0 0;
+      color: var(--ink-500);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    .sales-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sales-filter {
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.76rem;
+    }
+
+    .sales-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(150px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .sales-kpi-card {
+      padding: 18px 12px 16px;
+      border: 1px solid #e3ebf4;
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .sales-kpi-title {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      color: var(--ink-700);
+      font-size: 0.73rem;
+      font-weight: 600;
+    }
+
+    .sales-ring {
+      --value: 70;
+      --ring-color: var(--blue-600);
+      --track-color: #e8f2ff;
+
+      width: 124px;
+      height: 124px;
+      margin: 0 auto 11px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          var(--ring-color) calc(var(--value) * 1%),
+          var(--track-color) 0
+        );
+    }
+
+    .sales-ring::after {
+      content: "";
+      position: absolute;
+      width: 98px;
+      height: 98px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .sales-ring-content {
+      position: relative;
+      z-index: 2;
+      line-height: 1.12;
+    }
+
+    .sales-ring-value {
+      color: var(--navy-900);
+      font: 800 1.18rem "Inter", sans-serif;
+      letter-spacing: -0.04em;
+    }
+
+    .sales-ring-unit {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.63rem;
+      font-weight: 600;
+    }
+
+    .sales-kpi-note {
+      color: var(--ink-400);
+      font-size: 0.67rem;
+    }
+
+    .sales-panel {
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .sales-panel-head {
+      min-height: 72px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+      flex-wrap: wrap;
+    }
+
+    .sales-panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .sales-panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.71rem;
+    }
+
+    .sales-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sales-search,
+    .sales-select {
+      height: 39px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.72rem;
+    }
+
+    .sales-search {
+      width: 280px;
+    }
+
+    .sales-primary-btn {
+      height: 39px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .sales-type,
+    .sales-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .sales-type.design {
+      color: #6d28d9;
+      background: var(--violet-100);
+    }
+
+    .sales-type.software {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .sales-status.wait {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .sales-status.approved {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .sales-status.draft {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .sales-action {
+      display: inline-flex;
+      gap: 5px;
+    }
+
+    .sales-action button {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink-700);
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .sales-action button:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .sales-panel-foot {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid #edf2f7;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    @media (max-width: 1400px) {
+      .sales-kpi-grid {
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sales-kpi-grid {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+      }
+
+      .sales-page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .sales-tools {
+        width: 100%;
+      }
+
+      .sales-search {
+        flex: 1;
+        width: auto;
+        min-width: 220px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .sales-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sales-tools {
+        flex-direction: column;
+      }
+
+      .sales-search,
+      .sales-select,
+      .sales-primary-btn {
+        width: 100%;
+      }
+    }
+
+
+    /* =====================================================
+       CUSTOMERS / VENDOR LIST
+       Right-side content only
+    ===================================================== */
+
+    .customer-page-head {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .customer-page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      letter-spacing: -0.035em;
+    }
+
+    .customer-page-head p {
+      margin: 7px 0 0;
+      color: var(--ink-500);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    .customer-panel {
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .customer-panel-head {
+      min-height: 72px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+      flex-wrap: wrap;
+    }
+
+    .customer-panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .customer-panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.71rem;
+    }
+
+    .customer-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .customer-search,
+    .customer-select {
+      height: 39px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.72rem;
+    }
+
+    .customer-search {
+      width: 310px;
+    }
+
+    .customer-search:focus,
+    .customer-select:focus {
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.08);
+    }
+
+    .customer-add-btn {
+      height: 39px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 0;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .customer-add-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(22, 119, 255, 0.22);
+    }
+
+    .customer-name-btn {
+      padding: 0;
+      border: 0;
+      color: var(--blue-600);
+      background: transparent;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .customer-name-btn:hover {
+      text-decoration: underline;
+    }
+
+    .customer-type,
+    .vendor-status,
+    .project-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .customer-type.company {
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .customer-type.person {
+      color: #6d28d9;
+      background: var(--violet-100);
+    }
+
+    .vendor-status.registered {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .vendor-status.pending {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .vendor-status.prospect {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .project-status.active {
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .project-status.closed {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .project-status.wait {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .customer-expand-icon {
+      display: inline-block;
+      width: 18px;
+      color: var(--ink-400);
+      transition: transform 0.18s ease;
+    }
+
+    tr.customer-row.open .customer-expand-icon {
+      transform: rotate(90deg);
+    }
+
+    .customer-detail-row {
+      display: none;
+      background: #f8fbff;
+    }
+
+    .customer-detail-row.open {
+      display: table-row;
+    }
+
+    .customer-detail-cell {
+      padding: 0 !important;
+    }
+
+    .customer-detail-box {
+      padding: 16px 18px 18px 52px;
+      border-bottom: 1px solid #e8eef5;
+    }
+
+    .customer-detail-title {
+      margin-bottom: 10px;
+      color: var(--navy-900);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .customer-project-table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid #e4ebf3;
+      border-radius: 12px;
+      background: #ffffff;
+    }
+
+    .customer-project-table th,
+    .customer-project-table td {
+      padding: 10px 12px;
+      font-size: 0.69rem;
+    }
+
+    .customer-project-table th {
+      color: var(--ink-500);
+      background: #f3f7fb;
+    }
+
+    .customer-project-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .customer-foot {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid #edf2f7;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    @media (max-width: 900px) {
+      .customer-page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .customer-tools {
+        width: 100%;
+      }
+
+      .customer-search {
+        flex: 1;
+        width: auto;
+        min-width: 220px;
+      }
+
+      .customer-detail-box {
+        padding-left: 18px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .customer-tools {
+        flex-direction: column;
+      }
+
+      .customer-search,
+      .customer-select,
+      .customer-add-btn {
+        width: 100%;
+      }
+    }
+
+
+    /* =====================================================
+       CUSTOMER TYPE SUMMARY
+    ===================================================== */
+
+    .customer-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .customer-summary-card {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .customer-summary-ring {
+      --value: 70;
+      --ring-color: var(--blue-600);
+      --track-color: #eaf3ff;
+
+      width: 132px;
+      height: 132px;
+      flex: 0 0 132px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          var(--ring-color) calc(var(--value) * 1%),
+          var(--track-color) 0
+        );
+    }
+
+    .customer-summary-ring::after {
+      content: "";
+      position: absolute;
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .customer-summary-ring-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      line-height: 1.12;
+    }
+
+    .customer-summary-value {
+      color: var(--navy-900);
+      font: 800 1.55rem "Inter", sans-serif;
+      letter-spacing: -0.04em;
+    }
+
+    .customer-summary-unit {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+
+    .customer-summary-copy h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .customer-summary-copy p {
+      margin: 6px 0 0;
+      color: var(--ink-500);
+      font-size: 0.72rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .customer-summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .customer-summary-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+
+    /* =====================================================
+       CREATE CUSTOMER FORM
+       Right-side content only
+    ===================================================== */
+
+    .customer-form-head {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .customer-form-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      letter-spacing: -0.035em;
+    }
+
+    .customer-form-head p {
+      margin: 7px 0 0;
+      color: var(--ink-500);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    .customer-form-back {
+      height: 40px;
+      padding: 0 13px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      text-decoration: none;
+      font-size: 0.74rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .customer-form-back:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .customer-form-card {
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .customer-form-section {
+      padding: 20px;
+      border-bottom: 1px solid #edf2f7;
+    }
+
+    .customer-form-section:last-child {
+      border-bottom: 0;
+    }
+
+    .customer-form-section-head {
+      margin-bottom: 16px;
+    }
+
+    .customer-form-section-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 0.95rem;
+    }
+
+    .customer-form-section-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.7rem;
+      line-height: 1.6;
+    }
+
+    .customer-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 16px;
+    }
+
+    .customer-form-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .customer-field {
+      min-width: 0;
+    }
+
+    .customer-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .customer-field label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink-700);
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .customer-field label .required {
+      color: var(--red-600);
+    }
+
+    .customer-input,
+    .customer-textarea,
+    .customer-form-select {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-900);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.76rem;
+    }
+
+    .customer-input,
+    .customer-form-select {
+      height: 42px;
+      padding: 0 12px;
+    }
+
+    .customer-textarea {
+      min-height: 92px;
+      padding: 10px 12px;
+      resize: vertical;
+    }
+
+    .customer-input:focus,
+    .customer-textarea:focus,
+    .customer-form-select:focus {
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.08);
+    }
+
+    .customer-help {
+      margin-top: 5px;
+      color: var(--ink-400);
+      font-size: 0.64rem;
+      line-height: 1.5;
+    }
+
+    .customer-type-switch {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 520px;
+    }
+
+    .customer-type-option {
+      position: relative;
+    }
+
+    .customer-type-option input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .customer-type-option label {
+      min-height: 78px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: 0.18s ease;
+    }
+
+    .customer-type-option input:checked + label {
+      border-color: #9fc7ff;
+      background: #f4f9ff;
+      box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.07);
+    }
+
+    .customer-type-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 38px;
+      border-radius: 11px;
+      color: var(--blue-600);
+      background: var(--blue-100);
+      font-size: 1rem;
+    }
+
+    .customer-type-option strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 0.76rem;
+    }
+
+    .customer-type-option span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-500);
+      font-size: 0.65rem;
+      line-height: 1.5;
+    }
+
+    .customer-upload-box {
+      padding: 16px;
+      border: 1px dashed #c8d6e5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .customer-upload-box input[type="file"] {
+      width: 100%;
+      font-size: 0.72rem;
+    }
+
+    .customer-upload-box small {
+      display: block;
+      margin-top: 7px;
+      color: var(--ink-400);
+      font-size: 0.63rem;
+      line-height: 1.5;
+    }
+
+    .customer-form-actions {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #fbfdff;
+      border-top: 1px solid #edf2f7;
+    }
+
+    .customer-cancel-btn,
+    .customer-submit-btn {
+      height: 42px;
+      padding: 0 16px;
+      border-radius: 10px;
+      font-size: 0.74rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .customer-cancel-btn {
+      border: 1px solid var(--line);
+      color: var(--ink-700);
+      background: #ffffff;
+    }
+
+    .customer-submit-btn {
+      border: 0;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+    }
+
+    .customer-submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .customer-form-message {
+      display: none;
+      margin: 0 20px 18px;
+      padding: 11px 13px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      line-height: 1.6;
+    }
+
+    .customer-form-message.show {
+      display: block;
+    }
+
+    .customer-form-message.success {
+      color: #087545;
+      background: var(--green-100);
+      border: 1px solid #bcebd5;
+    }
+
+    .customer-form-message.error {
+      color: #991b1b;
+      background: var(--red-100);
+      border: 1px solid #f5c9cc;
+    }
+
+    .company-only,
+    .person-only {
+      display: none;
+    }
+
+    body.customer-company .company-only {
+      display: block;
+    }
+
+    body.customer-person .person-only {
+      display: block;
+    }
+
+    @media (max-width: 900px) {
+      .customer-form-head {
+        flex-direction: column;
+      }
+
+      .customer-form-grid,
+      .customer-form-grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .customer-type-switch {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .customer-form-actions {
+        flex-direction: column-reverse;
+      }
+
+      .customer-cancel-btn,
+      .customer-submit-btn {
+        width: 100%;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="sidebar-brand" href="/admin/dashboard/">
+        <img src="/assets/images/logo-icon.png" alt="ADTSpreadsheet">
+        <span>
+          <strong>ADT Control Center</strong>
+          <span>ADMINISTRATION SYSTEM</span>
+        </span>
+      </a>
+
+      <div class="workspace">
+        <small>Workspace</small>
+        <strong>ADTSpreadsheet</strong>
+      </div>
+
+      <div class="nav-label">ภาพรวม</div>
+      <nav class="nav-menu" aria-label="เมนูผู้ดูแล">
+        <a class="nav-item active" href="/admin/dashboard/">
+          <span class="nav-icon">▦</span>
+          Dashboard
+        </a>
+
+        <a class="nav-item" href="/admin/tasks/">
+          <span class="nav-icon">✓</span>
+          งานที่ต้องดำเนินการ
+          <span class="nav-badge">9</span>
+        </a>
+      </nav>
+
+      <div class="nav-label">เว็บไซต์และการค้นหา</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/analytics/">
+          <span class="nav-icon">◫</span>
+          Website Analytics
+        </a>
+
+        <a class="nav-item" href="/admin/search-ai/">
+          <span class="nav-icon">AI</span>
+          Search & AI Center
+        </a>
+
+        <a class="nav-item" href="/admin/system-logs/">
+          <span class="nav-icon">⌁</span>
+          System Logs
+        </a>
+      </nav>
+
+      <div class="nav-label">ธุรกิจ</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/products/">
+          <span class="nav-icon">▣</span>
+          Products
+        </a>
+
+        <button
+          class="nav-item nav-parent"
+          id="salesMenuToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="salesSubmenu"
+        >
+          <span class="nav-icon">฿</span>
+          <span>Sales & Payments</span>
+          <span class="nav-arrow" aria-hidden="true">▼</span>
+        </button>
+
+        <div
+          class="nav-submenu"
+          id="salesSubmenu"
+          aria-label="Sales & Payments submenu"
+        >
+          <a class="nav-subitem" href="/admin/sales/">
+            Dashboard
+          </a>
+
+          <a class="nav-subitem active" href="/admin/sales/customers/">
+            Customers / Vendor List
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/design-projects/">
+            Design Projects
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/software-sales/">
+            Software Sales
+          </a>
+        </div>
+
+        <a class="nav-item" href="/admin/members/">
+          <span class="nav-icon">◎</span>
+          Members
+        </a>
+
+        <a class="nav-item" href="/admin/seminars/">
+          <span class="nav-icon">◉</span>
+          Seminars
+        </a>
+      </nav>
+
+      <div class="nav-label">สื่อและการสนับสนุน</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/line-oa/">
+          <span class="nav-icon">L</span>
+          LINE OA Center
+        </a>
+
+        <a class="nav-item" href="/admin/articles/">
+          <span class="nav-icon">✎</span>
+          Articles
+        </a>
+
+        <a class="nav-item" href="/admin/portfolio/">
+          <span class="nav-icon">▤</span>
+          Design Portfolio
+        </a>
+
+        <a class="nav-item" href="/admin/support/">
+          <span class="nav-icon">?</span>
+          Support Center
+        </a>
+      </nav>
+
+      <div class="nav-label">ระบบ</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/settings/">
+          <span class="nav-icon">⚙</span>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/">← กลับเว็บไซต์หลัก</a>
+      </div>
+    </aside>
+
+    <div class="main-shell">
+
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">
+          ☰
+        </button>
+
+        <div class="topbar-title">
+          <strong>เพิ่มลูกค้า</strong>
+          <span>Customers / Vendor List</span>
+        </div>
+
+        <div class="topbar-actions">
+          <a class="topbar-button hide-mobile" href="/" target="_blank" rel="noopener">
+            ดูเว็บไซต์
+          </a>
+
+          <button class="topbar-button" type="button" id="refreshButton">
+            ↻ รีเฟรช
+          </button>
+
+          <div class="admin-profile">
+            <div class="avatar">AK</div>
+            <div>
+              <strong>อ.เก่ง</strong>
+              <span>SUPER ADMIN</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+
+        <section class="customer-form-head">
+          <div>
+            <h1>เพิ่มลูกค้าใหม่</h1>
+            <p>
+              กรอกข้อมูลที่จำเป็นสำหรับสร้าง Customer Master
+              เพื่อใช้ต่อในใบเสนอราคา สัญญา และเอกสารธุรกิจ
+            </p>
+          </div>
+
+          <a
+            class="customer-form-back"
+            href="/admin/sales/customers/"
+          >
+            ← กลับ Customers / Vendor List
+          </a>
+        </section>
+
+        <form
+          class="customer-form-card"
+          id="customerCreateForm"
+          novalidate
+        >
+
+          <!-- TYPE -->
+          <section class="customer-form-section">
+            <div class="customer-form-section-head">
+              <h2>1. ประเภทลูกค้า</h2>
+              <p>เลือกประเภทก่อน ระบบจะปรับช่องข้อมูลให้เหมาะกับลูกค้า</p>
+            </div>
+
+            <div class="customer-type-switch">
+
+              <div class="customer-type-option">
+                <input
+                  id="typeCompany"
+                  name="customer_type"
+                  type="radio"
+                  value="COMPANY"
+                  checked
+                >
+                <label for="typeCompany">
+                  <span class="customer-type-icon">▣</span>
+                  <span>
+                    <strong>นิติบุคคล</strong>
+                    <span>บริษัท / ห้างหุ้นส่วน / องค์กร</span>
+                  </span>
+                </label>
+              </div>
+
+              <div class="customer-type-option">
+                <input
+                  id="typePerson"
+                  name="customer_type"
+                  type="radio"
+                  value="PERSON"
+                >
+                <label for="typePerson">
+                  <span class="customer-type-icon">◎</span>
+                  <span>
+                    <strong>บุคคลธรรมดา</strong>
+                    <span>ลูกค้าบุคคลทั่วไป</span>
+                  </span>
+                </label>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- MASTER DATA -->
+          <section class="customer-form-section">
+            <div class="customer-form-section-head">
+              <h2>2. ข้อมูลลูกค้า</h2>
+              <p>ข้อมูลชุดนี้จะเป็น Master Data สำหรับออกเอกสารในระบบ</p>
+            </div>
+
+            <div class="customer-form-grid">
+
+              <div class="customer-field company-only">
+                <label for="companyName">
+                  ชื่อนิติบุคคล <span class="required">*</span>
+                </label>
+                <input
+                  class="customer-input"
+                  id="companyName"
+                  name="company_name"
+                  type="text"
+                  placeholder="เช่น บริษัท เอบีซี จำกัด"
+                >
+              </div>
+
+              <div class="customer-field person-only">
+                <label for="personName">
+                  ชื่อ-นามสกุล <span class="required">*</span>
+                </label>
+                <input
+                  class="customer-input"
+                  id="personName"
+                  name="person_name"
+                  type="text"
+                  placeholder="ชื่อ-นามสกุล"
+                >
+              </div>
+
+              <div class="customer-field">
+                <label for="taxId">
+                  Tax ID / เลขประจำตัว <span class="required">*</span>
+                </label>
+                <input
+                  class="customer-input"
+                  id="taxId"
+                  name="tax_id"
+                  type="text"
+                  placeholder="เลขผู้เสียภาษี / เลขบัตรประชาชน"
+                >
+              </div>
+
+              <div class="customer-field company-only">
+                <label for="branchType">
+                  สำนักงาน / สาขา
+                </label>
+                <select
+                  class="customer-form-select"
+                  id="branchType"
+                  name="branch_type"
+                >
+                  <option value="HEAD_OFFICE">สำนักงานใหญ่</option>
+                  <option value="BRANCH">สาขา</option>
+                </select>
+              </div>
+
+              <div class="customer-field company-only">
+                <label for="branchNo">
+                  เลขที่สาขา
+                </label>
+                <input
+                  class="customer-input"
+                  id="branchNo"
+                  name="branch_no"
+                  type="text"
+                  placeholder="เช่น 00000"
+                >
+              </div>
+
+              <div class="customer-field full">
+                <label for="address">
+                  ที่อยู่สำหรับออกเอกสาร <span class="required">*</span>
+                </label>
+                <textarea
+                  class="customer-textarea"
+                  id="address"
+                  name="address"
+                  placeholder="บ้านเลขที่ / อาคาร / ถนน / แขวง-ตำบล / เขต-อำเภอ / จังหวัด / รหัสไปรษณีย์"
+                ></textarea>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- CONTACT -->
+          <section class="customer-form-section">
+            <div class="customer-form-section-head">
+              <h2>3. ข้อมูลผู้ติดต่อ</h2>
+              <p>ใช้สำหรับติดต่อประสานงานและจัดทำเอกสาร</p>
+            </div>
+
+            <div class="customer-form-grid three">
+
+              <div class="customer-field">
+                <label for="contactName">
+                  ผู้ติดต่อ <span class="required">*</span>
+                </label>
+                <input
+                  class="customer-input"
+                  id="contactName"
+                  name="contact_name"
+                  type="text"
+                  placeholder="ชื่อผู้ติดต่อ"
+                >
+              </div>
+
+              <div class="customer-field">
+                <label for="phone">
+                  โทรศัพท์ <span class="required">*</span>
+                </label>
+                <input
+                  class="customer-input"
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  placeholder="08X-XXX-XXXX"
+                >
+              </div>
+
+              <div class="customer-field">
+                <label for="email">
+                  Email
+                </label>
+                <input
+                  class="customer-input"
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="name@company.com"
+                >
+              </div>
+
+              <div class="customer-field company-only">
+                <label for="authorizedPerson">
+                  ผู้มีอำนาจลงนาม
+                </label>
+                <input
+                  class="customer-input"
+                  id="authorizedPerson"
+                  name="authorized_person"
+                  type="text"
+                  placeholder="ชื่อกรรมการ / ผู้มีอำนาจ"
+                >
+              </div>
+
+            </div>
+          </section>
+
+          <!-- STATUS -->
+          <section class="customer-form-section">
+            <div class="customer-form-section-head">
+              <h2>4. สถานะลูกค้า</h2>
+              <p>ใช้สำหรับควบคุมการทำธุรกรรมและประเมินความเสี่ยง</p>
+            </div>
+
+            <div class="customer-form-grid three">
+
+              <div class="customer-field">
+                <label for="registrationStatus">สถานะทะเบียน</label>
+                <select
+                  class="customer-form-select"
+                  id="registrationStatus"
+                  name="registration_status"
+                >
+                  <option value="REGISTERED">ขึ้นทะเบียนแล้ว</option>
+                  <option value="PENDING">รอตรวจสอบ</option>
+                  <option value="PROSPECT">ยังไม่ขึ้นทะเบียน</option>
+                </select>
+              </div>
+
+              <div class="customer-field">
+                <label for="customerStatus">สถานะการใช้งาน</label>
+                <select
+                  class="customer-form-select"
+                  id="customerStatus"
+                  name="customer_status"
+                >
+                  <option value="ACTIVE">ACTIVE</option>
+                  <option value="INACTIVE">INACTIVE</option>
+                </select>
+              </div>
+
+              <div class="customer-field">
+                <label for="riskStatus">สถานะความเสี่ยง</label>
+                <select
+                  class="customer-form-select"
+                  id="riskStatus"
+                  name="risk_status"
+                >
+                  <option value="NORMAL">NORMAL</option>
+                  <option value="WATCHLIST">WATCHLIST</option>
+                  <option value="CREDIT_HOLD">CREDIT HOLD</option>
+                  <option value="BLOCKED">BLOCKED</option>
+                </select>
+              </div>
+
+              <div class="customer-field full">
+                <label for="note">หมายเหตุ</label>
+                <textarea
+                  class="customer-textarea"
+                  id="note"
+                  name="note"
+                  placeholder="หมายเหตุเกี่ยวกับลูกค้า / เครดิต / เงื่อนไขพิเศษ"
+                ></textarea>
+              </div>
+
+            </div>
+          </section>
+
+          <!-- DOCUMENTS -->
+          <section class="customer-form-section">
+            <div class="customer-form-section-head">
+              <h2>5. เอกสารประกอบ</h2>
+              <p>
+                รอบนี้เป็น UI สำหรับเลือกไฟล์ก่อน
+                ภายหลังจะเชื่อม Supabase Storage แบบ Private
+              </p>
+            </div>
+
+            <div class="company-only">
+              <div class="customer-upload-box">
+                <label for="companyDocument">
+                  <strong>หนังสือรับรองบริษัท</strong>
+                </label>
+                <input
+                  id="companyDocument"
+                  name="company_document"
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                >
+                <small>รองรับ PDF, JPG, JPEG, PNG</small>
+              </div>
+            </div>
+
+            <div class="person-only">
+              <div class="customer-upload-box">
+                <label for="personDocument">
+                  <strong>สำเนาบัตรประชาชน</strong>
+                </label>
+                <input
+                  id="personDocument"
+                  name="person_document"
+                  type="file"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                >
+                <small>รองรับ PDF, JPG, JPEG, PNG</small>
+              </div>
+            </div>
+          </section>
+
+          <div
+            class="customer-form-message"
+            id="customerFormMessage"
+            role="status"
+            aria-live="polite"
+          ></div>
+
+          <div class="customer-form-actions">
+            <button
+              class="customer-cancel-btn"
+              id="customerCancelButton"
+              type="button"
+            >
+              ยกเลิก
+            </button>
+
+            <button
+              class="customer-submit-btn"
+              id="customerSubmitButton"
+              type="submit"
+            >
+              บันทึกข้อมูลลูกค้า
+            </button>
+          </div>
+
+        </form>
+
+      </main>
+    </div>
+  </div>
+
+  <script>
+    /*
+      ============================================================
+      DEVELOPMENT MODE
+      ============================================================
+      ตอนนี้ยังไม่บังคับตรวจ Token เพื่อให้เปิดดูหน้า Dashboard
+      และพัฒนา UI ได้ก่อน
+
+      เมื่อสร้าง API Login และ Supabase Auth เสร็จ ให้เปลี่ยนเป็น true
+    */
+    const AUTH_REQUIRED = false;
+
+    const LOGIN_URL = "/admin/";
+    const TOKEN_KEY = "adt_admin_access_token";
+
+    if (AUTH_REQUIRED) {
+      const token =
+        sessionStorage.getItem(TOKEN_KEY) ||
+        localStorage.getItem(TOKEN_KEY);
+
+      if (!token) {
+        window.location.replace(LOGIN_URL);
+      }
+    }
+
+    const body = document.body;
+    const mobileMenu = document.getElementById("mobileMenu");
+    const sidebarOverlay = document.getElementById("sidebarOverlay");
+    const refreshButton = document.getElementById("refreshButton");
+    const salesMenuToggle = document.getElementById("salesMenuToggle");
+    const salesSubmenu = document.getElementById("salesSubmenu");
+
+    mobileMenu?.addEventListener("click", () => {
+      body.classList.toggle("sidebar-open");
+    });
+
+    salesMenuToggle?.addEventListener("click", () => {
+      const isOpen = salesSubmenu?.classList.toggle("open");
+
+      salesMenuToggle.classList.toggle("open", Boolean(isOpen));
+      salesMenuToggle.setAttribute(
+        "aria-expanded",
+        String(Boolean(isOpen))
+      );
+    });
+
+    sidebarOverlay?.addEventListener("click", () => {
+      body.classList.remove("sidebar-open");
+    });
+
+    refreshButton?.addEventListener("click", () => {
+      refreshButton.disabled = true;
+      refreshButton.textContent = "↻ กำลังรีเฟรช...";
+
+      window.setTimeout(() => {
+        refreshButton.disabled = false;
+        refreshButton.textContent = "↻ รีเฟรช";
+      }, 700);
+    });
+
+    function animateCounter(element, target, duration = 900) {
+      const start = performance.now();
+
+      function frame(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+
+        element.textContent =
+          Math.round(target * eased).toLocaleString("th-TH");
+
+        if (progress < 1) {
+          requestAnimationFrame(frame);
+        }
+      }
+
+      requestAnimationFrame(frame);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document
+        .querySelectorAll("[data-counter]")
+        .forEach((element) => {
+          animateCounter(
+            element,
+            Number(element.dataset.counter || 0)
+          );
+        });
+    });
+
+    function filterActivityRows() {
+      const type =
+        document.getElementById("activityTypeFilter")?.value || "ALL";
+
+      const status =
+        document.getElementById("activityStatusFilter")?.value || "ALL";
+
+      const keyword =
+        (document.getElementById("activitySearch")?.value || "")
+          .trim()
+          .toLowerCase();
+
+      const rows =
+        [...document.querySelectorAll("#activityTableBody tr")];
+
+      let shown = 0;
+
+      rows.forEach((row) => {
+        const rowType = row.dataset.type || "";
+        const rowStatus = row.dataset.status || "";
+        const text = row.innerText.toLowerCase();
+
+        const typeMatch =
+          type === "ALL" || rowType === type;
+
+        const statusMatch =
+          status === "ALL" || rowStatus === status;
+
+        const keywordMatch =
+          !keyword || text.includes(keyword);
+
+        const visible =
+          typeMatch && statusMatch && keywordMatch;
+
+        row.style.display =
+          visible ? "" : "none";
+
+        if (visible) {
+          shown++;
+        }
+      });
+
+      const counter =
+        document.getElementById("activityRowCount");
+
+      if (counter) {
+        counter.textContent =
+          `แสดง ${shown} จาก ${rows.length} รายการ`;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateCustomerTypeSummary();
+
+      if (salesSubmenu && salesMenuToggle) {
+        salesSubmenu.classList.add("open");
+        salesMenuToggle.classList.add("open");
+        salesMenuToggle.setAttribute("aria-expanded", "true");
+      }
+    });
+
+
+    function toggleCustomerDetail(customerId) {
+      const row =
+        document.querySelector(
+          `.customer-row[data-customer-id="${customerId}"]`
+        );
+
+      const detail =
+        document.getElementById(
+          `detail-${customerId}`
+        );
+
+      if (!row || !detail) {
+        return;
+      }
+
+      const willOpen =
+        !detail.classList.contains("open");
+
+      detail.classList.toggle(
+        "open",
+        willOpen
+      );
+
+      row.classList.toggle(
+        "open",
+        willOpen
+      );
+    }
+
+
+    function updateCustomerTypeSummary() {
+      const companyCount =
+        document.querySelectorAll(
+          '.customer-row[data-type="COMPANY"]'
+        ).length;
+
+      const personCount =
+        document.querySelectorAll(
+          '.customer-row[data-type="PERSON"]'
+        ).length;
+
+      const companyElement =
+        document.getElementById("companyCustomerCount");
+
+      const personElement =
+        document.getElementById("personCustomerCount");
+
+      if (companyElement) {
+        companyElement.textContent =
+          companyCount.toLocaleString("th-TH");
+      }
+
+      if (personElement) {
+        personElement.textContent =
+          personCount.toLocaleString("th-TH");
+      }
+    }
+
+    function filterCustomerRows() {
+      const type =
+        document.getElementById("customerTypeFilter")?.value || "ALL";
+
+      const vendorStatus =
+        document.getElementById("vendorStatusFilter")?.value || "ALL";
+
+      const keyword =
+        (document.getElementById("customerSearch")?.value || "")
+          .trim()
+          .toLowerCase();
+
+      const customerRows =
+        [...document.querySelectorAll(".customer-row")];
+
+      let shown = 0;
+
+      customerRows.forEach((row) => {
+        const customerId =
+          row.dataset.customerId || "";
+
+        const rowType =
+          row.dataset.type || "";
+
+        const rowVendorStatus =
+          row.dataset.vendorStatus || "";
+
+        const text =
+          row.innerText.toLowerCase();
+
+        const typeMatch =
+          type === "ALL" || rowType === type;
+
+        const vendorMatch =
+          vendorStatus === "ALL" ||
+          rowVendorStatus === vendorStatus;
+
+        const keywordMatch =
+          !keyword || text.includes(keyword);
+
+        const visible =
+          typeMatch &&
+          vendorMatch &&
+          keywordMatch;
+
+        row.style.display =
+          visible ? "" : "none";
+
+        const detail =
+          document.getElementById(
+            `detail-${customerId}`
+          );
+
+        if (!visible && detail) {
+          detail.classList.remove("open");
+          row.classList.remove("open");
+        }
+
+        if (visible) {
+          shown++;
+        }
+      });
+
+      const counter =
+        document.getElementById(
+          "customerRowCount"
+        );
+
+      if (counter) {
+        counter.textContent =
+          `แสดง ${shown} จาก ${customerRows.length} ลูกค้า`;
+      }
+    }
+
+    const addCustomerButton =
+      document.getElementById("addCustomerButton");
+
+    addCustomerButton?.addEventListener("click", () => {
+      window.location.href = "/admin/sales/customers/new/";
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      if (salesSubmenu && salesMenuToggle) {
+        salesSubmenu.classList.add("open");
+        salesMenuToggle.classList.add("open");
+        salesMenuToggle.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+      }
+    });
+
+
+    const customerCreateForm =
+      document.getElementById("customerCreateForm");
+
+    const typeCompany =
+      document.getElementById("typeCompany");
+
+    const typePerson =
+      document.getElementById("typePerson");
+
+    const customerCancelButton =
+      document.getElementById("customerCancelButton");
+
+    const customerSubmitButton =
+      document.getElementById("customerSubmitButton");
+
+    const customerFormMessage =
+      document.getElementById("customerFormMessage");
+
+    function applyCustomerType() {
+      document.body.classList.remove(
+        "customer-company",
+        "customer-person"
+      );
+
+      if (typeCompany?.checked) {
+        document.body.classList.add("customer-company");
+      } else {
+        document.body.classList.add("customer-person");
+      }
+    }
+
+    typeCompany?.addEventListener(
+      "change",
+      applyCustomerType
+    );
+
+    typePerson?.addEventListener(
+      "change",
+      applyCustomerType
+    );
+
+    customerCancelButton?.addEventListener(
+      "click",
+      () => {
+        window.location.href =
+          "/admin/sales/customers/";
+      }
+    );
+
+    customerCreateForm?.addEventListener(
+      "submit",
+      (event) => {
+        event.preventDefault();
+
+        customerFormMessage.className =
+          "customer-form-message";
+
+        const customerType =
+          typeCompany?.checked
+            ? "COMPANY"
+            : "PERSON";
+
+        const customerName =
+          customerType === "COMPANY"
+            ? document.getElementById("companyName")?.value.trim()
+            : document.getElementById("personName")?.value.trim();
+
+        const taxId =
+          document.getElementById("taxId")?.value.trim();
+
+        const address =
+          document.getElementById("address")?.value.trim();
+
+        const contactName =
+          document.getElementById("contactName")?.value.trim();
+
+        const phone =
+          document.getElementById("phone")?.value.trim();
+
+        if (
+          !customerName ||
+          !taxId ||
+          !address ||
+          !contactName ||
+          !phone
+        ) {
+          customerFormMessage.textContent =
+            "กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบก่อนบันทึก";
+
+          customerFormMessage.classList.add(
+            "show",
+            "error"
+          );
+
+          return;
+        }
+
+        customerSubmitButton.disabled = true;
+        customerSubmitButton.textContent =
+          "กำลังบันทึก...";
+
+        /*
+          DEMO MODE
+          ขั้นต่อไปจะเปลี่ยนส่วนนี้เป็น:
+          1) POST /api/admin/customers
+          2) Upload document → Supabase Storage
+          3) Insert Customer Master → Supabase
+          4) Return CUS-XXXX
+        */
+
+        window.setTimeout(() => {
+          customerFormMessage.textContent =
+            "ตรวจสอบข้อมูลผ่านแล้ว — ขั้นต่อไปจะเชื่อม Submit เข้ากับ Supabase API";
+
+          customerFormMessage.classList.add(
+            "show",
+            "success"
+          );
+
+          customerSubmitButton.disabled = false;
+          customerSubmitButton.textContent =
+            "บันทึกข้อมูลลูกค้า";
+        }, 600);
+      }
+    );
+
+    document.addEventListener("DOMContentLoaded", () => {
+      applyCustomerType();
+
+      if (salesSubmenu && salesMenuToggle) {
+        salesSubmenu.classList.add("open");
+        salesMenuToggle.classList.add("open");
+        salesMenuToggle.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+      }
+    });
+
+  </script>
+</body>
+</html>
