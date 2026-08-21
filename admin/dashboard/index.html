@@ -223,6 +223,75 @@
       font: 700 0.68rem "Inter", sans-serif;
     }
 
+    .nav-parent {
+      width: 100%;
+      border: 0;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: left;
+      background: transparent;
+    }
+
+    .nav-parent:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .nav-arrow {
+      margin-left: auto;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 0.72rem;
+      transition: transform 0.22s ease;
+    }
+
+    .nav-parent.open .nav-arrow {
+      transform: rotate(180deg);
+    }
+
+    .nav-submenu {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin: 0 0 0 18px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(255, 255, 255, 0.10);
+      transition:
+        max-height 0.28s ease,
+        opacity 0.20s ease,
+        margin-top 0.20s ease,
+        margin-bottom 0.20s ease;
+    }
+
+    .nav-submenu.open {
+      max-height: 420px;
+      opacity: 1;
+      margin-top: 4px;
+      margin-bottom: 4px;
+    }
+
+    .nav-subitem {
+      min-height: 38px;
+      padding: 0 12px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, 0.58);
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 500;
+      transition: 0.18s ease;
+    }
+
+    .nav-subitem:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-subitem.active {
+      color: #ffffff;
+      background: rgba(22, 119, 255, 0.18);
+    }
+
     .sidebar-footer {
       margin: 24px 8px 0;
       padding-top: 18px;
@@ -1011,10 +1080,51 @@
           Products
         </a>
 
-        <a class="nav-item" href="/admin/sales/">
+        <button
+          class="nav-item nav-parent"
+          id="salesMenuToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="salesSubmenu"
+        >
           <span class="nav-icon">฿</span>
-          Sales & Payments
-        </a>
+          <span>Sales & Payments</span>
+          <span class="nav-arrow" aria-hidden="true">▼</span>
+        </button>
+
+        <div
+          class="nav-submenu"
+          id="salesSubmenu"
+          aria-label="Sales & Payments submenu"
+        >
+          <a class="nav-subitem" href="/admin/sales/">
+            Dashboard
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/projects/">
+            Projects
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/quotations/">
+            ใบเสนอราคา
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/documents/">
+            เอกสาร
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/payments/">
+            การรับชำระเงิน
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/customers/">
+            ลูกค้า
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/reports/">
+            รายงาน
+          </a>
+        </div>
 
         <a class="nav-item" href="/admin/members/">
           <span class="nav-icon">◎</span>
@@ -1564,9 +1674,21 @@
     const mobileMenu = document.getElementById("mobileMenu");
     const sidebarOverlay = document.getElementById("sidebarOverlay");
     const refreshButton = document.getElementById("refreshButton");
+    const salesMenuToggle = document.getElementById("salesMenuToggle");
+    const salesSubmenu = document.getElementById("salesSubmenu");
 
     mobileMenu?.addEventListener("click", () => {
       body.classList.toggle("sidebar-open");
+    });
+
+    salesMenuToggle?.addEventListener("click", () => {
+      const isOpen = salesSubmenu?.classList.toggle("open");
+
+      salesMenuToggle.classList.toggle("open", Boolean(isOpen));
+      salesMenuToggle.setAttribute(
+        "aria-expanded",
+        String(Boolean(isOpen))
+      );
     });
 
     sidebarOverlay?.addEventListener("click", () => {
