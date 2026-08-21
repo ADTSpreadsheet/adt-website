@@ -2972,7 +2972,7 @@
                       <span class="doc-value">CVR-XXXX</span>
 
                       <span class="doc-label">Customer ID</span>
-                      <span class="doc-value">รอระบบสร้าง</span>
+                      <span class="doc-value" id="previewCustomerId">รอระบบสร้าง</span>
 
                       <span class="doc-label">Issue Date</span>
                       <span class="doc-value" id="previewDate">-</span>
@@ -3168,10 +3168,18 @@
 
       เมื่อสร้าง API Login และ Supabase Auth เสร็จ ให้เปลี่ยนเป็น true
     */
-    const AUTH_REQUIRED = false;
+    const AUTH_REQUIRED = true;
 
     const LOGIN_URL = "/admin/";
     const TOKEN_KEY = "adt_admin_access_token";
+
+    // =====================================================
+    // Backend API
+    // หาก Render Service URL จริงของพี่ต่างจากนี้
+    // ให้แก้เพียงบรรทัดเดียวด้านล่าง
+    // =====================================================
+    const API_BASE_URL =
+      "https://adt-website-api.onrender.com";
 
     if (AUTH_REQUIRED) {
       const token =
@@ -3762,7 +3770,7 @@
 
     customerCreateForm?.addEventListener(
       "submit",
-      (event) => {
+      async (event) => {
         event.preventDefault();
 
         customerFormMessage.className =
@@ -3806,36 +3814,166 @@
           return;
         }
 
+        const adminToken =
+          sessionStorage.getItem(TOKEN_KEY) ||
+          localStorage.getItem(TOKEN_KEY);
+
+        if (!adminToken) {
+          customerFormMessage.textContent =
+            "ไม่พบ Admin Session กรุณา Login ใหม่";
+
+          customerFormMessage.classList.add(
+            "show",
+            "error"
+          );
+
+          window.setTimeout(() => {
+            window.location.replace(LOGIN_URL);
+          }, 1200);
+
+          return;
+        }
+
+        const formData =
+          new FormData(customerCreateForm);
+
+        // ให้แน่ใจว่า field ที่ส่งตรงกับ API
+        formData.set(
+          "customer_type",
+          customerType
+        );
+
         customerSubmitButton.disabled =
           true;
 
         customerSubmitButton.textContent =
           "กำลังบันทึก...";
 
-        /*
-          DEMO MODE
-          รอบต่อไปจะเชื่อม:
-          POST /api/admin/customers
-          + Supabase Customer Master
-          + Supabase Storage (Private)
-          + Customer ID CUS-XXXX
-        */
+        try {
+          const response =
+            await fetch(
+              `${API_BASE_URL}/api/admin/customers`,
+              {
+                method: "POST",
 
-        window.setTimeout(() => {
+                headers: {
+                  Authorization:
+                    `Bearer ${adminToken}`
+                },
+
+                body:
+                  formData
+              }
+            );
+
+          let result = null;
+
+          try {
+            result =
+              await response.json();
+          }
+          catch (jsonError) {
+            result = null;
+          }
+
+          if (
+            response.status === 401
+          ) {
+            sessionStorage.removeItem(
+              TOKEN_KEY
+            );
+
+            localStorage.removeItem(
+              TOKEN_KEY
+            );
+
+            customerFormMessage.textContent =
+              "Admin Session หมดอายุ กรุณา Login ใหม่";
+
+            customerFormMessage.classList.add(
+              "show",
+              "error"
+            );
+
+            window.setTimeout(() => {
+              window.location.replace(
+                LOGIN_URL
+              );
+            }, 1200);
+
+            return;
+          }
+
+          if (!response.ok) {
+            const message =
+              result?.message ||
+              `บันทึกข้อมูลไม่สำเร็จ (${response.status})`;
+
+            customerFormMessage.textContent =
+              message;
+
+            customerFormMessage.classList.add(
+              "show",
+              "error"
+            );
+
+            return;
+          }
+
+          const customerNo =
+            result?.customer?.customer_no ||
+            "CUS-XXXX";
+
+          const customerNameResult =
+            result?.customer?.customer_name ||
+            customerName;
+
           customerFormMessage.textContent =
-            "ตรวจสอบข้อมูลผ่านแล้ว — หน้า Preview พร้อม Export PDF แล้ว ขั้นต่อไปจึงค่อยเชื่อม Supabase API";
+            `บันทึกข้อมูลสำเร็จ ${customerNo} — ${customerNameResult}`;
 
           customerFormMessage.classList.add(
             "show",
             "success"
           );
 
+          // อัปเดตเลข Customer ID ใน Preview
+          const previewCustomerId =
+            document.getElementById(
+              "previewCustomerId"
+            );
+
+          if (previewCustomerId) {
+            previewCustomerId.textContent =
+              customerNo;
+          }
+
+          // หลังบันทึกสำเร็จ กลับหน้า Customer List
+          window.setTimeout(() => {
+            window.location.href =
+              "/admin/sales/customers/";
+          }, 1600);
+        }
+        catch (error) {
+          console.error(
+            "Create customer request error:",
+            error
+          );
+
+          customerFormMessage.textContent =
+            "ไม่สามารถเชื่อมต่อ Backend API ได้ กรุณาตรวจสอบ Render Service";
+
+          customerFormMessage.classList.add(
+            "show",
+            "error"
+          );
+        }
+        finally {
           customerSubmitButton.disabled =
             false;
 
           customerSubmitButton.textContent =
             "บันทึกข้อมูลลูกค้า";
-        }, 600);
+        }
       }
     );
 
