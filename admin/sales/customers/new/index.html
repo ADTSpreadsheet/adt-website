@@ -2043,6 +2043,316 @@
       }
     }
 
+
+    /* =====================================================
+       CUSTOMER FORM + LIVE DOCUMENT PREVIEW
+    ===================================================== */
+
+    .customer-create-layout {
+      display: grid;
+      grid-template-columns: minmax(420px, 0.95fr) minmax(520px, 1.05fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .customer-preview-panel {
+      position: sticky;
+      top: calc(var(--topbar-height) + 18px);
+      min-width: 0;
+    }
+
+    .customer-preview-toolbar {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .customer-preview-toolbar strong {
+      color: var(--navy-900);
+      font-size: 0.82rem;
+    }
+
+    .customer-preview-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .customer-preview-btn,
+    .customer-export-btn {
+      height: 39px;
+      padding: 0 13px;
+      border-radius: 10px;
+      font-size: 0.71rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .customer-preview-btn {
+      border: 1px solid var(--line);
+      color: var(--ink-700);
+      background: #ffffff;
+    }
+
+    .customer-export-btn {
+      border: 0;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+    }
+
+    .customer-paper-wrap {
+      padding: 16px;
+      overflow: auto;
+      border: 1px solid #e3ebf4;
+      border-radius: 18px;
+      background: #e9eef4;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .customer-paper {
+      width: 100%;
+      max-width: 794px;
+      min-height: 1123px;
+      margin: 0 auto;
+      padding: 54px 58px 48px;
+      color: #111827;
+      background: #ffffff;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.10);
+      font-family: "Prompt", sans-serif;
+    }
+
+    .doc-header {
+      display: grid;
+      grid-template-columns: 84px 1fr;
+      gap: 16px;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #0a2855;
+    }
+
+    .doc-logo-box {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #d9e3ef;
+      border-radius: 12px;
+      color: #0a2855;
+      background: #f8fbff;
+      font: 800 0.9rem "Inter", sans-serif;
+    }
+
+    .doc-company-name {
+      color: #0a2855;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .doc-company-sub {
+      margin-top: 3px;
+      color: #64748b;
+      font-size: 0.68rem;
+    }
+
+    .doc-title {
+      margin: 24px 0 6px;
+      text-align: center;
+      color: #0f172a;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .doc-subtitle {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.68rem;
+    }
+
+    .doc-meta {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 18px;
+      font-size: 0.72rem;
+    }
+
+    .doc-meta-row,
+    .doc-field-row {
+      display: grid;
+      grid-template-columns: 150px 1fr;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .doc-label {
+      color: #475569;
+      font-weight: 600;
+    }
+
+    .doc-value {
+      min-height: 20px;
+      color: #111827;
+      border-bottom: 1px dotted #cbd5e1;
+      padding-bottom: 2px;
+      word-break: break-word;
+    }
+
+    .doc-section {
+      margin-top: 22px;
+    }
+
+    .doc-section-title {
+      margin-bottom: 10px;
+      padding: 7px 10px;
+      color: #0a2855;
+      background: #eef5ff;
+      border-left: 4px solid #1677ff;
+      font-size: 0.74rem;
+      font-weight: 700;
+    }
+
+    .doc-fields {
+      display: grid;
+      gap: 8px;
+      font-size: 0.72rem;
+    }
+
+    .doc-address .doc-value {
+      min-height: 46px;
+    }
+
+    .doc-status-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .doc-status-card {
+      padding: 10px;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      background: #f8fafc;
+    }
+
+    .doc-status-card strong {
+      display: block;
+      color: #334155;
+      font-size: 0.63rem;
+    }
+
+    .doc-status-card span {
+      display: block;
+      margin-top: 4px;
+      color: #0f172a;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .doc-attachments {
+      display: grid;
+      gap: 8px;
+      font-size: 0.72rem;
+    }
+
+    .doc-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #334155;
+    }
+
+    .doc-check-box {
+      width: 14px;
+      height: 14px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid #94a3b8;
+      font-size: 0.58rem;
+    }
+
+    .doc-signature-grid {
+      margin-top: 42px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 52px;
+      text-align: center;
+      font-size: 0.7rem;
+    }
+
+    .doc-sign-line {
+      padding-top: 36px;
+      border-top: 1px solid #94a3b8;
+    }
+
+    .doc-footer {
+      margin-top: 28px;
+      padding-top: 10px;
+      border-top: 1px solid #e2e8f0;
+      color: #94a3b8;
+      font-size: 0.58rem;
+      text-align: center;
+    }
+
+    @media (max-width: 1320px) {
+      .customer-create-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .customer-preview-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .customer-paper {
+        min-height: auto;
+        padding: 30px 24px;
+      }
+
+      .doc-meta,
+      .doc-status-grid,
+      .doc-signature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .doc-meta-row,
+      .doc-field-row {
+        grid-template-columns: 120px 1fr;
+      }
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+
+      #customerDocumentPreview,
+      #customerDocumentPreview * {
+        visibility: visible !important;
+      }
+
+      #customerDocumentPreview {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm !important;
+        min-height: 297mm !important;
+        margin: 0 !important;
+        padding: 14mm 16mm !important;
+        box-shadow: none !important;
+        border: 0 !important;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    }
+
   </style>
 </head>
 
@@ -2221,8 +2531,7 @@
           <div>
             <h1>เพิ่มลูกค้าใหม่</h1>
             <p>
-              กรอกข้อมูลที่จำเป็นสำหรับสร้าง Customer Master
-              เพื่อใช้ต่อในใบเสนอราคา สัญญา และเอกสารธุรกิจ
+              กรอกข้อมูลฝั่งซ้าย ระบบจะแสดงตัวอย่างเอกสารขึ้นทะเบียนลูกค้า / คู่ค้าแบบ Live Preview ทางขวา
             </p>
           </div>
 
@@ -2234,339 +2543,375 @@
           </a>
         </section>
 
-        <form
-          class="customer-form-card"
-          id="customerCreateForm"
-          novalidate
-        >
+        <div class="customer-create-layout">
 
-          <!-- TYPE -->
-          <section class="customer-form-section">
-            <div class="customer-form-section-head">
-              <h2>1. ประเภทลูกค้า</h2>
-              <p>เลือกประเภทก่อน ระบบจะปรับช่องข้อมูลให้เหมาะกับลูกค้า</p>
+          <!-- LEFT: FORM -->
+          <form
+            class="customer-form-card"
+            id="customerCreateForm"
+            novalidate
+          >
+
+            <section class="customer-form-section">
+              <div class="customer-form-section-head">
+                <h2>1. ประเภทลูกค้า</h2>
+                <p>เลือกประเภทก่อน ระบบจะปรับช่องข้อมูลและเอกสารประกอบให้เหมาะสม</p>
+              </div>
+
+              <div class="customer-type-switch">
+                <div class="customer-type-option">
+                  <input id="typeCompany" name="customer_type" type="radio" value="COMPANY" checked>
+                  <label for="typeCompany">
+                    <span class="customer-type-icon">▣</span>
+                    <span>
+                      <strong>นิติบุคคล</strong>
+                      <span>บริษัท / ห้างหุ้นส่วน / องค์กร</span>
+                    </span>
+                  </label>
+                </div>
+
+                <div class="customer-type-option">
+                  <input id="typePerson" name="customer_type" type="radio" value="PERSON">
+                  <label for="typePerson">
+                    <span class="customer-type-icon">◎</span>
+                    <span>
+                      <strong>บุคคลธรรมดา</strong>
+                      <span>ลูกค้าบุคคลทั่วไป</span>
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="customer-form-section">
+              <div class="customer-form-section-head">
+                <h2>2. ข้อมูลลูกค้า</h2>
+                <p>ข้อมูลชุดนี้จะเป็น Master Data สำหรับออกเอกสารในระบบ</p>
+              </div>
+
+              <div class="customer-form-grid">
+                <div class="customer-field company-only">
+                  <label for="companyName">ชื่อนิติบุคคล <span class="required">*</span></label>
+                  <input class="customer-input" id="companyName" name="company_name" type="text" placeholder="เช่น บริษัท เอบีซี จำกัด">
+                </div>
+
+                <div class="customer-field person-only">
+                  <label for="personName">ชื่อ-นามสกุล <span class="required">*</span></label>
+                  <input class="customer-input" id="personName" name="person_name" type="text" placeholder="ชื่อ-นามสกุล">
+                </div>
+
+                <div class="customer-field">
+                  <label for="taxId">Tax ID / เลขประจำตัว <span class="required">*</span></label>
+                  <input class="customer-input" id="taxId" name="tax_id" type="text" placeholder="เลขผู้เสียภาษี / เลขบัตรประชาชน">
+                </div>
+
+                <div class="customer-field company-only">
+                  <label for="branchType">สำนักงาน / สาขา</label>
+                  <select class="customer-form-select" id="branchType" name="branch_type">
+                    <option value="HEAD_OFFICE">สำนักงานใหญ่</option>
+                    <option value="BRANCH">สาขา</option>
+                  </select>
+                </div>
+
+                <div class="customer-field company-only">
+                  <label for="branchNo">เลขที่สาขา</label>
+                  <input class="customer-input" id="branchNo" name="branch_no" type="text" placeholder="เช่น 00000">
+                </div>
+
+                <div class="customer-field full">
+                  <label for="address">ที่อยู่สำหรับออกเอกสาร <span class="required">*</span></label>
+                  <textarea class="customer-textarea" id="address" name="address" placeholder="บ้านเลขที่ / อาคาร / ถนน / แขวง-ตำบล / เขต-อำเภอ / จังหวัด / รหัสไปรษณีย์"></textarea>
+                </div>
+              </div>
+            </section>
+
+            <section class="customer-form-section">
+              <div class="customer-form-section-head">
+                <h2>3. ข้อมูลผู้ติดต่อ</h2>
+                <p>ใช้สำหรับติดต่อประสานงานและจัดทำเอกสาร</p>
+              </div>
+
+              <div class="customer-form-grid three">
+                <div class="customer-field">
+                  <label for="contactName">ผู้ติดต่อ <span class="required">*</span></label>
+                  <input class="customer-input" id="contactName" name="contact_name" type="text" placeholder="ชื่อผู้ติดต่อ">
+                </div>
+
+                <div class="customer-field">
+                  <label for="phone">โทรศัพท์ <span class="required">*</span></label>
+                  <input class="customer-input" id="phone" name="phone" type="tel" placeholder="08X-XXX-XXXX">
+                </div>
+
+                <div class="customer-field">
+                  <label for="email">Email</label>
+                  <input class="customer-input" id="email" name="email" type="email" placeholder="name@company.com">
+                </div>
+
+                <div class="customer-field company-only">
+                  <label for="authorizedPerson">ผู้มีอำนาจลงนาม</label>
+                  <input class="customer-input" id="authorizedPerson" name="authorized_person" type="text" placeholder="ชื่อกรรมการ / ผู้มีอำนาจ">
+                </div>
+              </div>
+            </section>
+
+            <section class="customer-form-section">
+              <div class="customer-form-section-head">
+                <h2>4. สถานะลูกค้า</h2>
+                <p>ใช้สำหรับควบคุมการทำธุรกรรมและประเมินความเสี่ยง</p>
+              </div>
+
+              <div class="customer-form-grid three">
+                <div class="customer-field">
+                  <label for="registrationStatus">สถานะทะเบียน</label>
+                  <select class="customer-form-select" id="registrationStatus" name="registration_status">
+                    <option value="REGISTERED">ขึ้นทะเบียนแล้ว</option>
+                    <option value="PENDING">รอตรวจสอบ</option>
+                    <option value="PROSPECT">ยังไม่ขึ้นทะเบียน</option>
+                  </select>
+                </div>
+
+                <div class="customer-field">
+                  <label for="customerStatus">สถานะการใช้งาน</label>
+                  <select class="customer-form-select" id="customerStatus" name="customer_status">
+                    <option value="ACTIVE">ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                  </select>
+                </div>
+
+                <div class="customer-field">
+                  <label for="riskStatus">สถานะความเสี่ยง</label>
+                  <select class="customer-form-select" id="riskStatus" name="risk_status">
+                    <option value="NORMAL">NORMAL</option>
+                    <option value="WATCHLIST">WATCHLIST</option>
+                    <option value="CREDIT_HOLD">CREDIT HOLD</option>
+                    <option value="BLOCKED">BLOCKED</option>
+                  </select>
+                </div>
+
+                <div class="customer-field full">
+                  <label for="note">หมายเหตุ</label>
+                  <textarea class="customer-textarea" id="note" name="note" placeholder="หมายเหตุเกี่ยวกับลูกค้า / เครดิต / เงื่อนไขพิเศษ"></textarea>
+                </div>
+              </div>
+            </section>
+
+            <section class="customer-form-section">
+              <div class="customer-form-section-head">
+                <h2>5. เอกสารประกอบ</h2>
+                <p>รองรับ PDF / JPG / JPEG / PNG</p>
+              </div>
+
+              <div class="company-only">
+                <div class="customer-upload-box">
+                  <label for="companyDocument"><strong>หนังสือรับรองบริษัท</strong></label>
+                  <input id="companyDocument" name="company_document" type="file" accept=".pdf,.jpg,.jpeg,.png">
+                  <small>ภายหลังจะอัปโหลดเข้า Supabase Storage แบบ Private</small>
+                </div>
+              </div>
+
+              <div class="person-only">
+                <div class="customer-upload-box">
+                  <label for="personDocument"><strong>สำเนาบัตรประชาชน</strong></label>
+                  <input id="personDocument" name="person_document" type="file" accept=".pdf,.jpg,.jpeg,.png">
+                  <small>ภายหลังจะอัปโหลดเข้า Supabase Storage แบบ Private</small>
+                </div>
+              </div>
+            </section>
+
+            <div class="customer-form-message" id="customerFormMessage" role="status" aria-live="polite"></div>
+
+            <div class="customer-form-actions">
+              <button class="customer-cancel-btn" id="customerCancelButton" type="button">ยกเลิก</button>
+              <button class="customer-submit-btn" id="customerSubmitButton" type="submit">บันทึกข้อมูลลูกค้า</button>
             </div>
+          </form>
 
-            <div class="customer-type-switch">
+          <!-- RIGHT: LIVE PREVIEW -->
+          <aside class="customer-preview-panel">
 
-              <div class="customer-type-option">
-                <input
-                  id="typeCompany"
-                  name="customer_type"
-                  type="radio"
-                  value="COMPANY"
-                  checked
-                >
-                <label for="typeCompany">
-                  <span class="customer-type-icon">▣</span>
-                  <span>
-                    <strong>นิติบุคคล</strong>
-                    <span>บริษัท / ห้างหุ้นส่วน / องค์กร</span>
-                  </span>
-                </label>
-              </div>
+            <div class="customer-preview-toolbar">
+              <strong>พรีวิวเอกสารขึ้นทะเบียนลูกค้า / คู่ค้า</strong>
 
-              <div class="customer-type-option">
-                <input
-                  id="typePerson"
-                  name="customer_type"
-                  type="radio"
-                  value="PERSON"
-                >
-                <label for="typePerson">
-                  <span class="customer-type-icon">◎</span>
-                  <span>
-                    <strong>บุคคลธรรมดา</strong>
-                    <span>ลูกค้าบุคคลทั่วไป</span>
-                  </span>
-                </label>
-              </div>
+              <div class="customer-preview-actions">
+                <button class="customer-preview-btn" id="refreshPreviewButton" type="button">
+                  ↻ อัปเดตพรีวิว
+                </button>
 
-            </div>
-          </section>
-
-          <!-- MASTER DATA -->
-          <section class="customer-form-section">
-            <div class="customer-form-section-head">
-              <h2>2. ข้อมูลลูกค้า</h2>
-              <p>ข้อมูลชุดนี้จะเป็น Master Data สำหรับออกเอกสารในระบบ</p>
-            </div>
-
-            <div class="customer-form-grid">
-
-              <div class="customer-field company-only">
-                <label for="companyName">
-                  ชื่อนิติบุคคล <span class="required">*</span>
-                </label>
-                <input
-                  class="customer-input"
-                  id="companyName"
-                  name="company_name"
-                  type="text"
-                  placeholder="เช่น บริษัท เอบีซี จำกัด"
-                >
-              </div>
-
-              <div class="customer-field person-only">
-                <label for="personName">
-                  ชื่อ-นามสกุล <span class="required">*</span>
-                </label>
-                <input
-                  class="customer-input"
-                  id="personName"
-                  name="person_name"
-                  type="text"
-                  placeholder="ชื่อ-นามสกุล"
-                >
-              </div>
-
-              <div class="customer-field">
-                <label for="taxId">
-                  Tax ID / เลขประจำตัว <span class="required">*</span>
-                </label>
-                <input
-                  class="customer-input"
-                  id="taxId"
-                  name="tax_id"
-                  type="text"
-                  placeholder="เลขผู้เสียภาษี / เลขบัตรประชาชน"
-                >
-              </div>
-
-              <div class="customer-field company-only">
-                <label for="branchType">
-                  สำนักงาน / สาขา
-                </label>
-                <select
-                  class="customer-form-select"
-                  id="branchType"
-                  name="branch_type"
-                >
-                  <option value="HEAD_OFFICE">สำนักงานใหญ่</option>
-                  <option value="BRANCH">สาขา</option>
-                </select>
-              </div>
-
-              <div class="customer-field company-only">
-                <label for="branchNo">
-                  เลขที่สาขา
-                </label>
-                <input
-                  class="customer-input"
-                  id="branchNo"
-                  name="branch_no"
-                  type="text"
-                  placeholder="เช่น 00000"
-                >
-              </div>
-
-              <div class="customer-field full">
-                <label for="address">
-                  ที่อยู่สำหรับออกเอกสาร <span class="required">*</span>
-                </label>
-                <textarea
-                  class="customer-textarea"
-                  id="address"
-                  name="address"
-                  placeholder="บ้านเลขที่ / อาคาร / ถนน / แขวง-ตำบล / เขต-อำเภอ / จังหวัด / รหัสไปรษณีย์"
-                ></textarea>
-              </div>
-
-            </div>
-          </section>
-
-          <!-- CONTACT -->
-          <section class="customer-form-section">
-            <div class="customer-form-section-head">
-              <h2>3. ข้อมูลผู้ติดต่อ</h2>
-              <p>ใช้สำหรับติดต่อประสานงานและจัดทำเอกสาร</p>
-            </div>
-
-            <div class="customer-form-grid three">
-
-              <div class="customer-field">
-                <label for="contactName">
-                  ผู้ติดต่อ <span class="required">*</span>
-                </label>
-                <input
-                  class="customer-input"
-                  id="contactName"
-                  name="contact_name"
-                  type="text"
-                  placeholder="ชื่อผู้ติดต่อ"
-                >
-              </div>
-
-              <div class="customer-field">
-                <label for="phone">
-                  โทรศัพท์ <span class="required">*</span>
-                </label>
-                <input
-                  class="customer-input"
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  placeholder="08X-XXX-XXXX"
-                >
-              </div>
-
-              <div class="customer-field">
-                <label for="email">
-                  Email
-                </label>
-                <input
-                  class="customer-input"
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="name@company.com"
-                >
-              </div>
-
-              <div class="customer-field company-only">
-                <label for="authorizedPerson">
-                  ผู้มีอำนาจลงนาม
-                </label>
-                <input
-                  class="customer-input"
-                  id="authorizedPerson"
-                  name="authorized_person"
-                  type="text"
-                  placeholder="ชื่อกรรมการ / ผู้มีอำนาจ"
-                >
-              </div>
-
-            </div>
-          </section>
-
-          <!-- STATUS -->
-          <section class="customer-form-section">
-            <div class="customer-form-section-head">
-              <h2>4. สถานะลูกค้า</h2>
-              <p>ใช้สำหรับควบคุมการทำธุรกรรมและประเมินความเสี่ยง</p>
-            </div>
-
-            <div class="customer-form-grid three">
-
-              <div class="customer-field">
-                <label for="registrationStatus">สถานะทะเบียน</label>
-                <select
-                  class="customer-form-select"
-                  id="registrationStatus"
-                  name="registration_status"
-                >
-                  <option value="REGISTERED">ขึ้นทะเบียนแล้ว</option>
-                  <option value="PENDING">รอตรวจสอบ</option>
-                  <option value="PROSPECT">ยังไม่ขึ้นทะเบียน</option>
-                </select>
-              </div>
-
-              <div class="customer-field">
-                <label for="customerStatus">สถานะการใช้งาน</label>
-                <select
-                  class="customer-form-select"
-                  id="customerStatus"
-                  name="customer_status"
-                >
-                  <option value="ACTIVE">ACTIVE</option>
-                  <option value="INACTIVE">INACTIVE</option>
-                </select>
-              </div>
-
-              <div class="customer-field">
-                <label for="riskStatus">สถานะความเสี่ยง</label>
-                <select
-                  class="customer-form-select"
-                  id="riskStatus"
-                  name="risk_status"
-                >
-                  <option value="NORMAL">NORMAL</option>
-                  <option value="WATCHLIST">WATCHLIST</option>
-                  <option value="CREDIT_HOLD">CREDIT HOLD</option>
-                  <option value="BLOCKED">BLOCKED</option>
-                </select>
-              </div>
-
-              <div class="customer-field full">
-                <label for="note">หมายเหตุ</label>
-                <textarea
-                  class="customer-textarea"
-                  id="note"
-                  name="note"
-                  placeholder="หมายเหตุเกี่ยวกับลูกค้า / เครดิต / เงื่อนไขพิเศษ"
-                ></textarea>
-              </div>
-
-            </div>
-          </section>
-
-          <!-- DOCUMENTS -->
-          <section class="customer-form-section">
-            <div class="customer-form-section-head">
-              <h2>5. เอกสารประกอบ</h2>
-              <p>
-                รอบนี้เป็น UI สำหรับเลือกไฟล์ก่อน
-                ภายหลังจะเชื่อม Supabase Storage แบบ Private
-              </p>
-            </div>
-
-            <div class="company-only">
-              <div class="customer-upload-box">
-                <label for="companyDocument">
-                  <strong>หนังสือรับรองบริษัท</strong>
-                </label>
-                <input
-                  id="companyDocument"
-                  name="company_document"
-                  type="file"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                >
-                <small>รองรับ PDF, JPG, JPEG, PNG</small>
+                <button class="customer-export-btn" id="exportPdfButton" type="button">
+                  Export PDF
+                </button>
               </div>
             </div>
 
-            <div class="person-only">
-              <div class="customer-upload-box">
-                <label for="personDocument">
-                  <strong>สำเนาบัตรประชาชน</strong>
-                </label>
-                <input
-                  id="personDocument"
-                  name="person_document"
-                  type="file"
-                  accept=".pdf,.jpg,.jpeg,.png"
-                >
-                <small>รองรับ PDF, JPG, JPEG, PNG</small>
-              </div>
+            <div class="customer-paper-wrap">
+              <section class="customer-paper" id="customerDocumentPreview">
+
+                <header class="doc-header">
+                  <div class="doc-logo-box">ADT</div>
+
+                  <div>
+                    <div class="doc-company-name">
+                      ADTSpreadsheet
+                    </div>
+                    <div class="doc-company-sub">
+                      Customer / Vendor Registration Form
+                    </div>
+                  </div>
+                </header>
+
+                <div class="doc-title">
+                  แบบขึ้นทะเบียนลูกค้า / คู่ค้า
+                </div>
+
+                <div class="doc-subtitle">
+                  Customer / Vendor Registration
+                </div>
+
+                <div class="doc-meta">
+                  <div class="doc-meta-row">
+                    <span class="doc-label">รหัสลูกค้า</span>
+                    <span class="doc-value">รอระบบสร้าง</span>
+                  </div>
+
+                  <div class="doc-meta-row">
+                    <span class="doc-label">วันที่จัดทำ</span>
+                    <span class="doc-value" id="previewDate">-</span>
+                  </div>
+                </div>
+
+                <section class="doc-section">
+                  <div class="doc-section-title">
+                    1. ข้อมูลลูกค้า
+                  </div>
+
+                  <div class="doc-fields">
+                    <div class="doc-field-row">
+                      <span class="doc-label">ประเภทลูกค้า</span>
+                      <span class="doc-value" id="previewCustomerType">นิติบุคคล</span>
+                    </div>
+
+                    <div class="doc-field-row">
+                      <span class="doc-label">ชื่อ</span>
+                      <span class="doc-value" id="previewCustomerName">-</span>
+                    </div>
+
+                    <div class="doc-field-row">
+                      <span class="doc-label">Tax ID / เลขประจำตัว</span>
+                      <span class="doc-value" id="previewTaxId">-</span>
+                    </div>
+
+                    <div class="doc-field-row" id="previewBranchRow">
+                      <span class="doc-label">สำนักงาน / สาขา</span>
+                      <span class="doc-value" id="previewBranch">สำนักงานใหญ่</span>
+                    </div>
+
+                    <div class="doc-field-row doc-address">
+                      <span class="doc-label">ที่อยู่</span>
+                      <span class="doc-value" id="previewAddress">-</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="doc-section">
+                  <div class="doc-section-title">
+                    2. ข้อมูลผู้ติดต่อ
+                  </div>
+
+                  <div class="doc-fields">
+                    <div class="doc-field-row">
+                      <span class="doc-label">ผู้ติดต่อ</span>
+                      <span class="doc-value" id="previewContact">-</span>
+                    </div>
+
+                    <div class="doc-field-row">
+                      <span class="doc-label">โทรศัพท์</span>
+                      <span class="doc-value" id="previewPhone">-</span>
+                    </div>
+
+                    <div class="doc-field-row">
+                      <span class="doc-label">Email</span>
+                      <span class="doc-value" id="previewEmail">-</span>
+                    </div>
+
+                    <div class="doc-field-row" id="previewAuthorizedRow">
+                      <span class="doc-label">ผู้มีอำนาจลงนาม</span>
+                      <span class="doc-value" id="previewAuthorized">-</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="doc-section">
+                  <div class="doc-section-title">
+                    3. สถานะลูกค้า
+                  </div>
+
+                  <div class="doc-status-grid">
+                    <div class="doc-status-card">
+                      <strong>สถานะทะเบียน</strong>
+                      <span id="previewRegistrationStatus">ขึ้นทะเบียนแล้ว</span>
+                    </div>
+
+                    <div class="doc-status-card">
+                      <strong>สถานะการใช้งาน</strong>
+                      <span id="previewCustomerStatus">ACTIVE</span>
+                    </div>
+
+                    <div class="doc-status-card">
+                      <strong>สถานะความเสี่ยง</strong>
+                      <span id="previewRiskStatus">NORMAL</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="doc-section">
+                  <div class="doc-section-title">
+                    4. เอกสารประกอบ
+                  </div>
+
+                  <div class="doc-attachments">
+                    <div class="doc-check">
+                      <span class="doc-check-box" id="previewDocumentCheck"></span>
+                      <span id="previewDocumentLabel">หนังสือรับรองบริษัท</span>
+                    </div>
+
+                    <div class="doc-field-row">
+                      <span class="doc-label">ชื่อไฟล์</span>
+                      <span class="doc-value" id="previewDocumentName">ยังไม่ได้แนบไฟล์</span>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="doc-section">
+                  <div class="doc-section-title">
+                    5. หมายเหตุ
+                  </div>
+
+                  <div class="doc-field-row doc-address">
+                    <span class="doc-label">หมายเหตุ</span>
+                    <span class="doc-value" id="previewNote">-</span>
+                  </div>
+                </section>
+
+                <div class="doc-signature-grid">
+                  <div class="doc-sign-line">
+                    ผู้ให้ข้อมูล / ผู้แทนลูกค้า
+                  </div>
+
+                  <div class="doc-sign-line">
+                    ผู้ตรวจสอบ / ผู้ดูแลระบบ
+                  </div>
+                </div>
+
+                <div class="doc-footer">
+                  เอกสารนี้เป็นส่วนหนึ่งของระบบ Customers / Vendor List ของ ADTSpreadsheet
+                </div>
+
+              </section>
             </div>
-          </section>
 
-          <div
-            class="customer-form-message"
-            id="customerFormMessage"
-            role="status"
-            aria-live="polite"
-          ></div>
+          </aside>
 
-          <div class="customer-form-actions">
-            <button
-              class="customer-cancel-btn"
-              id="customerCancelButton"
-              type="button"
-            >
-              ยกเลิก
-            </button>
-
-            <button
-              class="customer-submit-btn"
-              id="customerSubmitButton"
-              type="submit"
-            >
-              บันทึกข้อมูลลูกค้า
-            </button>
-          </div>
-
-        </form>
+        </div>
 
       </main>
     </div>
@@ -2874,6 +3219,7 @@
     });
 
 
+
     const customerCreateForm =
       document.getElementById("customerCreateForm");
 
@@ -2892,18 +3238,246 @@
     const customerFormMessage =
       document.getElementById("customerFormMessage");
 
+    const refreshPreviewButton =
+      document.getElementById("refreshPreviewButton");
+
+    const exportPdfButton =
+      document.getElementById("exportPdfButton");
+
+    function valueOf(id) {
+      return (
+        document.getElementById(id)?.value || ""
+      ).trim();
+    }
+
+    function textOrDash(value) {
+      return value || "-";
+    }
+
+    function setText(id, value) {
+      const element =
+        document.getElementById(id);
+
+      if (element) {
+        element.textContent =
+          textOrDash(value);
+      }
+    }
+
+    function getCustomerType() {
+      return typeCompany?.checked
+        ? "COMPANY"
+        : "PERSON";
+    }
+
     function applyCustomerType() {
+      const customerType =
+        getCustomerType();
+
       document.body.classList.remove(
         "customer-company",
         "customer-person"
       );
 
-      if (typeCompany?.checked) {
-        document.body.classList.add("customer-company");
-      } else {
-        document.body.classList.add("customer-person");
+      document.body.classList.add(
+        customerType === "COMPANY"
+          ? "customer-company"
+          : "customer-person"
+      );
+
+      const previewBranchRow =
+        document.getElementById(
+          "previewBranchRow"
+        );
+
+      const previewAuthorizedRow =
+        document.getElementById(
+          "previewAuthorizedRow"
+        );
+
+      if (previewBranchRow) {
+        previewBranchRow.style.display =
+          customerType === "COMPANY"
+            ? "grid"
+            : "none";
       }
+
+      if (previewAuthorizedRow) {
+        previewAuthorizedRow.style.display =
+          customerType === "COMPANY"
+            ? "grid"
+            : "none";
+      }
+
+      updateDocumentPreview();
     }
+
+    function updateDocumentPreview() {
+      const customerType =
+        getCustomerType();
+
+      const customerName =
+        customerType === "COMPANY"
+          ? valueOf("companyName")
+          : valueOf("personName");
+
+      const branchType =
+        valueOf("branchType");
+
+      const branchNo =
+        valueOf("branchNo");
+
+      const branchText =
+        branchType === "BRANCH"
+          ? `สาขา ${branchNo || "-"}`
+          : "สำนักงานใหญ่";
+
+      setText(
+        "previewCustomerType",
+        customerType === "COMPANY"
+          ? "นิติบุคคล"
+          : "บุคคลธรรมดา"
+      );
+
+      setText(
+        "previewCustomerName",
+        customerName
+      );
+
+      setText(
+        "previewTaxId",
+        valueOf("taxId")
+      );
+
+      setText(
+        "previewBranch",
+        branchText
+      );
+
+      setText(
+        "previewAddress",
+        valueOf("address")
+      );
+
+      setText(
+        "previewContact",
+        valueOf("contactName")
+      );
+
+      setText(
+        "previewPhone",
+        valueOf("phone")
+      );
+
+      setText(
+        "previewEmail",
+        valueOf("email")
+      );
+
+      setText(
+        "previewAuthorized",
+        valueOf("authorizedPerson")
+      );
+
+      const registrationStatus =
+        valueOf("registrationStatus");
+
+      const registrationMap = {
+        REGISTERED: "ขึ้นทะเบียนแล้ว",
+        PENDING: "รอตรวจสอบ",
+        PROSPECT: "ยังไม่ขึ้นทะเบียน"
+      };
+
+      setText(
+        "previewRegistrationStatus",
+        registrationMap[registrationStatus] ||
+        registrationStatus
+      );
+
+      setText(
+        "previewCustomerStatus",
+        valueOf("customerStatus")
+      );
+
+      setText(
+        "previewRiskStatus",
+        valueOf("riskStatus")
+      );
+
+      setText(
+        "previewNote",
+        valueOf("note")
+      );
+
+      const documentInput =
+        customerType === "COMPANY"
+          ? document.getElementById("companyDocument")
+          : document.getElementById("personDocument");
+
+      const documentLabel =
+        customerType === "COMPANY"
+          ? "หนังสือรับรองบริษัท"
+          : "สำเนาบัตรประชาชน";
+
+      setText(
+        "previewDocumentLabel",
+        documentLabel
+      );
+
+      const fileName =
+        documentInput?.files?.[0]?.name || "";
+
+      const check =
+        document.getElementById(
+          "previewDocumentCheck"
+        );
+
+      if (check) {
+        check.textContent =
+          fileName ? "✓" : "";
+      }
+
+      setText(
+        "previewDocumentName",
+        fileName || "ยังไม่ได้แนบไฟล์"
+      );
+    }
+
+    function setPreviewDate() {
+      const today =
+        new Date();
+
+      const dateText =
+        today.toLocaleDateString(
+          "th-TH",
+          {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+          }
+        );
+
+      setText(
+        "previewDate",
+        dateText
+      );
+    }
+
+    document
+      .querySelectorAll(
+        "#customerCreateForm input, #customerCreateForm textarea, #customerCreateForm select"
+      )
+      .forEach((element) => {
+        element.addEventListener(
+          "input",
+          updateDocumentPreview
+        );
+
+        element.addEventListener(
+          "change",
+          updateDocumentPreview
+        );
+      });
 
     typeCompany?.addEventListener(
       "change",
@@ -2913,6 +3487,19 @@
     typePerson?.addEventListener(
       "change",
       applyCustomerType
+    );
+
+    refreshPreviewButton?.addEventListener(
+      "click",
+      updateDocumentPreview
+    );
+
+    exportPdfButton?.addEventListener(
+      "click",
+      () => {
+        updateDocumentPreview();
+        window.print();
+      }
     );
 
     customerCancelButton?.addEventListener(
@@ -2932,26 +3519,24 @@
           "customer-form-message";
 
         const customerType =
-          typeCompany?.checked
-            ? "COMPANY"
-            : "PERSON";
+          getCustomerType();
 
         const customerName =
           customerType === "COMPANY"
-            ? document.getElementById("companyName")?.value.trim()
-            : document.getElementById("personName")?.value.trim();
+            ? valueOf("companyName")
+            : valueOf("personName");
 
         const taxId =
-          document.getElementById("taxId")?.value.trim();
+          valueOf("taxId");
 
         const address =
-          document.getElementById("address")?.value.trim();
+          valueOf("address");
 
         const contactName =
-          document.getElementById("contactName")?.value.trim();
+          valueOf("contactName");
 
         const phone =
-          document.getElementById("phone")?.value.trim();
+          valueOf("phone");
 
         if (
           !customerName ||
@@ -2971,47 +3556,65 @@
           return;
         }
 
-        customerSubmitButton.disabled = true;
+        customerSubmitButton.disabled =
+          true;
+
         customerSubmitButton.textContent =
           "กำลังบันทึก...";
 
         /*
           DEMO MODE
-          ขั้นต่อไปจะเปลี่ยนส่วนนี้เป็น:
-          1) POST /api/admin/customers
-          2) Upload document → Supabase Storage
-          3) Insert Customer Master → Supabase
-          4) Return CUS-XXXX
+          รอบต่อไปจะเชื่อม:
+          POST /api/admin/customers
+          + Supabase Customer Master
+          + Supabase Storage (Private)
+          + Customer ID CUS-XXXX
         */
 
         window.setTimeout(() => {
           customerFormMessage.textContent =
-            "ตรวจสอบข้อมูลผ่านแล้ว — ขั้นต่อไปจะเชื่อม Submit เข้ากับ Supabase API";
+            "ตรวจสอบข้อมูลผ่านแล้ว — หน้า Preview พร้อม Export PDF แล้ว ขั้นต่อไปจึงค่อยเชื่อม Supabase API";
 
           customerFormMessage.classList.add(
             "show",
             "success"
           );
 
-          customerSubmitButton.disabled = false;
+          customerSubmitButton.disabled =
+            false;
+
           customerSubmitButton.textContent =
             "บันทึกข้อมูลลูกค้า";
         }, 600);
       }
     );
 
-    document.addEventListener("DOMContentLoaded", () => {
-      applyCustomerType();
+    document.addEventListener(
+      "DOMContentLoaded",
+      () => {
+        setPreviewDate();
+        applyCustomerType();
+        updateDocumentPreview();
 
-      if (salesSubmenu && salesMenuToggle) {
-        salesSubmenu.classList.add("open");
-        salesMenuToggle.classList.add("open");
-        salesMenuToggle.setAttribute(
-          "aria-expanded",
-          "true"
-        );
+        if (
+          salesSubmenu &&
+          salesMenuToggle
+        ) {
+          salesSubmenu.classList.add(
+            "open"
+          );
+
+          salesMenuToggle.classList.add(
+            "open"
+          );
+
+          salesMenuToggle.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+        }
       }
-    });
+    );
 
   </script>
 </body>
