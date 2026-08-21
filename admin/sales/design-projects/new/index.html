@@ -1048,14 +1048,28 @@
 
                 <div class="field full">
                   <label for="projectName">
-                    ชื่องาน / Project <span class="req">*</span>
+                    ชื่อโครงการ / Project Name <span class="req">*</span>
                   </label>
 
                   <input
                     class="input"
                     id="projectName"
                     type="text"
-                    placeholder="เช่น งานออกแบบปรับปรุงอาคารผู้ป่วยนอก..."
+                    placeholder="เช่น งานออกแบบปรับปรุงอาคารผู้ป่วยนอก ขนาด 30 เตียง"
+                    required
+                  >
+                </div>
+
+                <div class="field full">
+                  <label for="projectLocation">
+                    ที่ตั้งโครงการ / Project Location <span class="req">*</span>
+                  </label>
+
+                  <input
+                    class="input"
+                    id="projectLocation"
+                    type="text"
+                    placeholder="เช่น โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน จ.สกลนคร"
                     required
                   >
                 </div>
@@ -1358,12 +1372,22 @@
 
                 <div class="client-block">
                   <div>
+                    <strong>โครงการ / Project :</strong>
+                    <span id="previewProjectName">-</span>
+                  </div>
+
+                  <div>
+                    <strong>สถานที่ / Location :</strong>
+                    <span id="previewProjectLocation">-</span>
+                  </div>
+
+                  <div style="margin-top:8px;">
                     <strong>ลูกค้า / Customer :</strong>
                     <span id="previewCustomerName">-</span>
                   </div>
 
                   <div>
-                    <strong>ที่อยู่ :</strong>
+                    <strong>ที่อยู่ / Address :</strong>
                     <span id="previewCustomerAddress">-</span>
                   </div>
 
@@ -1419,14 +1443,12 @@
 
                   <tbody id="previewItemBody">
                     <tr>
-                      <td>-</td>
-                      <td class="preview-description">
-                        <strong id="previewProjectTitle">กรุณากรอกชื่องาน / Project</strong>
-                      </td>
-                      <td>-</td>
-                      <td class="money">-</td>
-                      <td class="money">-</td>
-                      <td class="money">-</td>
+                      <td>1</td>
+                      <td class="preview-description">กรุณาเพิ่มรายการบริการที่คิดเงิน</td>
+                      <td style="text-align:center;">L.S.</td>
+                      <td class="money">1.00</td>
+                      <td class="money">0.00</td>
+                      <td class="money">0.00</td>
                     </tr>
                   </tbody>
                 </table>
@@ -1546,6 +1568,9 @@
     const projectName =
       document.getElementById("projectName");
 
+    const projectLocation =
+      document.getElementById("projectLocation");
+
     const projectType =
       document.getElementById("projectType");
 
@@ -1607,8 +1632,8 @@
 
     function getAdminToken() {
       return (
-        sessionStorage.getItem("adt_admin_token") ||
-        localStorage.getItem("adt_admin_token") ||
+        sessionStorage.getItem("adt_admin_access_token") ||
+        localStorage.getItem("adt_admin_access_token") ||
         ""
       );
     }
@@ -2133,12 +2158,6 @@
           "previewItemBody"
         );
 
-      const title =
-        quotationSubject.value.trim() ||
-        projectName.value.trim() ||
-        "กรุณากรอกชื่องาน / Project";
-
-
       if (!items.length) {
         previewItemBody.innerHTML =
           "";
@@ -2151,12 +2170,6 @@
                 <td>${escapeHtml(item.item_no || index + 1)}</td>
 
                 <td class="preview-description">
-                  ${
-                    index === 0
-                      ? `<strong>${escapeHtml(title)}</strong><br><br>`
-                      : ""
-                  }
-
                   ${escapeHtml(item.description || "-")}
                 </td>
 
@@ -2182,8 +2195,16 @@
 
 
       document.getElementById(
-        "previewProjectTitle"
-      )?.remove();
+        "previewProjectName"
+      ).textContent =
+        projectName.value.trim() ||
+        "-";
+
+      document.getElementById(
+        "previewProjectLocation"
+      ).textContent =
+        projectLocation.value.trim() ||
+        "-";
 
 
       document.getElementById(
@@ -2270,6 +2291,9 @@
           project_name:
             projectName.value.trim(),
 
+          project_location:
+            projectLocation.value.trim(),
+
           project_description:
             projectDescription.value.trim(),
 
@@ -2346,6 +2370,7 @@
 
     [
       projectName,
+      projectLocation,
       quotationDisplayNo,
       quotationDate,
       quotationSubject,
@@ -2420,6 +2445,7 @@
           !payload.project.customer_id ||
           !payload.project.project_type ||
           !payload.project.project_name ||
+          !payload.project.project_location ||
           !payload.quotation.quotation_date
         ) {
           showStatus(
