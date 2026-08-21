@@ -1987,6 +1987,16 @@
       background: #ffffff;
     }
 
+    .review-action-btn.print {
+      border: 1px solid #bfd7f8;
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .review-action-btn.print:hover {
+      background: #dcecff;
+    }
+
     .review-action-btn:disabled {
       opacity: .55;
       cursor: wait;
@@ -2651,6 +2661,14 @@
         </button>
 
         <button
+          class="review-action-btn print"
+          id="customerReviewPrintButton"
+          type="button"
+        >
+          🖨 พิมพ์ / PDF
+        </button>
+
+        <button
           class="review-action-btn close"
           id="customerReviewCloseButton"
           type="button"
@@ -3040,19 +3058,17 @@
                   ${vendorStatus.label}
                 </span>
 
-                ${
-                  String(customer.registration_status || "").toUpperCase() === "PENDING"
-                    ? `
-                      <button
-                        class="customer-preview-btn"
-                        type="button"
-                        data-preview-customer-id="${escapeHtml(customer.id)}"
-                      >
-                        👁 พรีวิว
-                      </button>
-                    `
-                    : ""
-                }
+                <button
+                  class="customer-preview-btn"
+                  type="button"
+                  data-preview-customer-id="${escapeHtml(customer.id)}"
+                >
+                  ${
+                    String(customer.registration_status || "").toUpperCase() === "PENDING"
+                      ? "👁 ตรวจสอบ"
+                      : "👁 พรีวิวเอกสาร"
+                  }
+                </button>
               </div>
             </td>
           </tr>
@@ -3334,6 +3350,11 @@
     const customerReviewCloseButton =
       document.getElementById(
         "customerReviewCloseButton"
+      );
+
+    const customerReviewPrintButton =
+      document.getElementById(
+        "customerReviewPrintButton"
       );
 
     const customerApproveButton =
@@ -3703,7 +3724,10 @@
 
 
       customerApproveButton.style.display =
-        status === "PENDING"
+        (
+          status === "PENDING" ||
+          status === "REJECTED"
+        )
           ? ""
           : "none";
 
@@ -3848,6 +3872,253 @@
           </div>
         `;
       }
+    }
+
+
+
+    function printCustomerReview() {
+
+      const customerTitle =
+        customerReviewSubtitle?.textContent ||
+        "Customer Registration";
+
+      const printableContent =
+        customerReviewBody?.innerHTML ||
+        "";
+
+      if (!printableContent) {
+        return;
+      }
+
+      const printWindow =
+        window.open(
+          "",
+          "_blank",
+          "width=1000,height=800"
+        );
+
+      if (!printWindow) {
+        window.alert(
+          "เบราว์เซอร์บล็อกหน้าต่างพิมพ์ กรุณาอนุญาต Pop-up แล้วลองใหม่"
+        );
+        return;
+      }
+
+      printWindow.document.open();
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="th">
+        <head>
+          <meta charset="UTF-8">
+          <title>${escapeHtml(customerTitle)}</title>
+
+          <style>
+            * {
+              box-sizing: border-box;
+            }
+
+            body {
+              margin: 0;
+              padding: 16mm 12mm;
+              font-family: Arial, "Tahoma", sans-serif;
+              color: #142033;
+              background: #ffffff;
+            }
+
+            .customer-review-paper {
+              width: 100%;
+              margin: 0 auto;
+              padding: 0;
+              border: 0;
+              background: #ffffff;
+              box-shadow: none;
+            }
+
+            .review-doc-head {
+              display: grid;
+              grid-template-columns: minmax(0, 1fr) 250px;
+              gap: 22px;
+              padding-bottom: 16px;
+              border-bottom: 2px solid #06152d;
+            }
+
+            .review-company {
+              display: flex;
+              align-items: center;
+              gap: 14px;
+            }
+
+            .review-company img {
+              width: 68px;
+              height: 68px;
+              object-fit: contain;
+            }
+
+            .review-company strong {
+              display: block;
+              font-size: 14px;
+            }
+
+            .review-company p,
+            .review-title span,
+            .review-ref {
+              font-size: 10px;
+              line-height: 1.5;
+            }
+
+            .review-title {
+              text-align: right;
+            }
+
+            .review-title h2 {
+              margin: 0;
+              font-size: 18px;
+            }
+
+            .review-ref {
+              margin-top: 10px;
+              display: grid;
+              grid-template-columns: 85px 1fr;
+              gap: 4px 8px;
+              text-align: left;
+            }
+
+            .review-section {
+              margin-top: 18px;
+              break-inside: avoid;
+            }
+
+            .review-section-title {
+              margin-bottom: 10px;
+              padding: 7px 10px;
+              background: #eaf3ff;
+              border-left: 4px solid #1677ff;
+              font-size: 12px;
+              font-weight: 700;
+            }
+
+            .review-data-grid {
+              display: grid;
+              grid-template-columns: 170px minmax(0, 1fr);
+              gap: 7px 12px;
+              font-size: 11px;
+            }
+
+            .review-data-grid .label {
+              font-weight: 600;
+              color: #40506a;
+            }
+
+            .review-data-grid .value {
+              min-height: 20px;
+              padding-bottom: 4px;
+              border-bottom: 1px dotted #cfd9e5;
+              white-space: pre-wrap;
+            }
+
+            .review-status-grid {
+              display: grid;
+              grid-template-columns: repeat(3, minmax(0, 1fr));
+              gap: 8px;
+            }
+
+            .review-status-box {
+              padding: 9px 10px;
+              border: 1px solid #dfe7f0;
+            }
+
+            .review-status-box small {
+              display: block;
+              font-size: 9px;
+            }
+
+            .review-status-box strong {
+              display: block;
+              margin-top: 3px;
+              font-size: 10px;
+            }
+
+            .review-attachments {
+              margin-top: 20px;
+              display: grid;
+              gap: 16px;
+            }
+
+            .review-attachment-card {
+              break-before: page;
+              border: 1px solid #dfe7f0;
+            }
+
+            .review-attachment-head {
+              padding: 10px 12px;
+              display: flex;
+              justify-content: space-between;
+              gap: 10px;
+              border-bottom: 1px solid #e5ebf2;
+            }
+
+            .review-attachment-head a {
+              display: none;
+            }
+
+            .review-image-wrap {
+              padding: 12px;
+              text-align: center;
+            }
+
+            .review-image-wrap img {
+              max-width: 100%;
+              max-height: 245mm;
+              object-fit: contain;
+            }
+
+            .review-pdf {
+              width: 100%;
+              height: 245mm;
+              border: 0;
+            }
+
+            .review-empty {
+              padding: 20px;
+              text-align: center;
+              border: 1px dashed #cfd9e5;
+            }
+
+            @page {
+              size: A4;
+              margin: 10mm;
+            }
+
+            @media print {
+              body {
+                padding: 0;
+              }
+            }
+          </style>
+        </head>
+
+        <body>
+          ${printableContent}
+
+          <script>
+            window.addEventListener(
+              "load",
+              () => {
+                window.setTimeout(
+                  () => {
+                    window.print();
+                  },
+                  500
+                );
+              }
+            );
+          <\/script>
+        </body>
+        </html>
+      `);
+
+      printWindow.document.close();
     }
 
 
@@ -3997,6 +4268,12 @@
     customerReviewCloseButton?.addEventListener(
       "click",
       closeCustomerReviewModal
+    );
+
+
+    customerReviewPrintButton?.addEventListener(
+      "click",
+      printCustomerReview
     );
 
 
