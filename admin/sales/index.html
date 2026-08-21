@@ -138,6 +138,39 @@
       background:rgba(37,99,235,.18);
     }
 
+    .nav-parent{
+      width:100%;
+      border:0;
+      font-family:inherit;
+      text-align:left;
+      cursor:pointer;
+    }
+
+    .nav-arrow{
+      margin-left:auto;
+      font-size:10px;
+      color:#aebfd4;
+      transition:transform .2s ease;
+    }
+
+    .nav-arrow.open{
+      transform:rotate(180deg);
+    }
+
+    .nav-group{
+      max-height:360px;
+      overflow:hidden;
+      opacity:1;
+      transition:max-height .25s ease,opacity .2s ease,margin .25s ease;
+    }
+
+    .nav-group.closed{
+      max-height:0;
+      opacity:0;
+      margin-top:0;
+      margin-bottom:0;
+    }
+
     /* MAIN */
     .main{min-width:0}
 
@@ -377,38 +410,87 @@
       <strong>ADTSpreadsheet</strong>
     </div>
 
+    <!-- โครงเมนูหลัก: คงรูปแบบเดียวกับ Admin Dashboard -->
     <div class="section-label">ภาพรวม</div>
-    <a class="nav-item" href="/admin/">
-      <span class="nav-icon">⌂</span><span>Dashboard</span>
+
+    <a class="nav-item" href="/admin/dashboard/">
+      <span class="nav-icon">⌂</span>
+      <span>Dashboard</span>
     </a>
+
     <a class="nav-item" href="#">
-      <span class="nav-icon">✓</span><span>งานที่ต้องดำเนินการ</span>
+      <span class="nav-icon">✓</span>
+      <span>งานที่ต้องดำเนินการ</span>
       <span class="nav-badge">9</span>
     </a>
 
-    <div class="section-label">ระบบธุรกิจ</div>
-    <a class="nav-item active" href="/admin/sales/">
-      <span class="nav-icon">▣</span><span>การเงินและเอกสาร</span>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">◫</span>
+      <span>Website Analytics</span>
     </a>
 
-    <div class="nav-group">
+    <a class="nav-item" href="#">
+      <span class="nav-icon">AI</span>
+      <span>Search &amp; AI Center</span>
+    </a>
+
+    <div class="section-label">ธุรกิจ</div>
+
+    <a class="nav-item" href="#">
+      <span class="nav-icon">□</span>
+      <span>Products</span>
+    </a>
+
+    <!-- Sales & Payments เดิม: แค่กางเมนูย่อยเมื่อเข้าระบบนี้ -->
+    <button
+      class="nav-item nav-parent active"
+      type="button"
+      id="salesMenuButton"
+      onclick="toggleSalesMenu()"
+      aria-expanded="true"
+      aria-controls="salesSubmenu"
+    >
+      <span class="nav-icon">฿</span>
+      <span>Sales &amp; Payments</span>
+      <span class="nav-arrow open" id="salesArrow">▼</span>
+    </button>
+
+    <div class="nav-group" id="salesSubmenu">
       <a class="nav-sub active" href="/admin/sales/">Dashboard</a>
-      <a class="nav-sub" href="#">Projects</a>
-      <a class="nav-sub" href="#">Documents</a>
-      <a class="nav-sub" href="#">Payments</a>
-      <a class="nav-sub" href="#">Customers</a>
-      <a class="nav-sub" href="#">Reports</a>
+      <a class="nav-sub" href="/admin/sales/projects/">Projects</a>
+      <a class="nav-sub" href="/admin/sales/quotations/">Quotations</a>
+      <a class="nav-sub" href="/admin/sales/documents/">Documents</a>
+      <a class="nav-sub" href="/admin/sales/payments/">Payments</a>
+      <a class="nav-sub" href="/admin/sales/customers/">Customers</a>
+      <a class="nav-sub" href="/admin/sales/reports/">Reports</a>
     </div>
 
-    <a class="nav-item" href="#"><span class="nav-icon">□</span><span>Products</span></a>
-    <a class="nav-item" href="#"><span class="nav-icon">฿</span><span>Sales & Payments</span></a>
-    <a class="nav-item" href="#"><span class="nav-icon">♙</span><span>Members</span></a>
-    <a class="nav-item" href="#"><span class="nav-icon">◎</span><span>Seminars</span></a>
+    <a class="nav-item" href="#">
+      <span class="nav-icon">♙</span>
+      <span>Members</span>
+    </a>
+
+    <a class="nav-item" href="#">
+      <span class="nav-icon">◎</span>
+      <span>Seminars</span>
+    </a>
 
     <div class="section-label">สื่อและการสนับสนุน</div>
-    <a class="nav-item" href="#"><span class="nav-icon">◌</span><span>LINE OA Center</span></a>
-    <a class="nav-item" href="#"><span class="nav-icon">A</span><span>Articles</span></a>
-    <a class="nav-item" href="#"><span class="nav-icon">▤</span><span>Design Portfolio</span></a>
+
+    <a class="nav-item" href="#">
+      <span class="nav-icon">◌</span>
+      <span>LINE OA Center</span>
+    </a>
+
+    <a class="nav-item" href="#">
+      <span class="nav-icon">A</span>
+      <span>Articles</span>
+    </a>
+
+    <a class="nav-item" href="#">
+      <span class="nav-icon">▤</span>
+      <span>Design Portfolio</span>
+    </a>
   </aside>
 
   <!-- MAIN -->
@@ -680,6 +762,16 @@
 </div>
 
 <script>
+  function toggleSalesMenu(){
+    const menu = document.getElementById("salesSubmenu");
+    const arrow = document.getElementById("salesArrow");
+    const button = document.getElementById("salesMenuButton");
+
+    const isClosed = menu.classList.toggle("closed");
+    arrow.classList.toggle("open", !isClosed);
+    button.setAttribute("aria-expanded", String(!isClosed));
+  }
+
   function filterRows(){
     const status = document.getElementById("statusFilter").value;
     const q = document.getElementById("searchInput").value.trim().toLowerCase();
