@@ -1998,83 +1998,12 @@
               </thead>
 
               <tbody id="customerTableBody">
-
-                <!-- CUSTOMER 1 -->
-                <tr
-                  class="customer-row"
-                  data-customer-id="CUS-0001"
-                  data-type="COMPANY"
-                  data-vendor-status="REGISTERED"
-                >
-                  <td><strong>CUS-0001</strong></td>
-                  <td>
-                    <button
-                      class="customer-name-btn"
-                      type="button"
-                      onclick="toggleCustomerDetail('CUS-0001')"
-                    >
-                      <span class="customer-expand-icon">›</span>
-                      บริษัท เอสอี คอนสตรัคชั่น จำกัด
-                    </button>
+                <tr id="customerLoadingRow">
+                  <td colspan="9" style="text-align:center;color:#6c7a90;padding:28px;">
+                    กำลังโหลดข้อมูลลูกค้า...
                   </td>
-                  <td><span class="customer-type company">นิติบุคคล</span></td>
-                  <td>01055XXXXXXX</td>
-                  <td>คุณสมชาย</td>
-                  <td>08X-XXX-XXXX</td>
-                  <td>3</td>
-                  <td>215,000.00</td>
-                  <td><span class="vendor-status registered">ขึ้นทะเบียนแล้ว</span></td>
                 </tr>
-
-                <tr
-                  class="customer-detail-row"
-                  id="detail-CUS-0001"
-                  data-parent="CUS-0001"
-                >
-                  <td class="customer-detail-cell" colspan="9">
-                    <div class="customer-detail-box">
-                      <div class="customer-detail-title">
-                        ประวัติงานของ บริษัท เอสอี คอนสตรัคชั่น จำกัด
-                      </div>
-
-                      <div class="table-wrap">
-                        <table class="customer-project-table">
-                          <thead>
-                            <tr>
-                              <th>เลขโครงการ</th>
-                              <th>วันที่</th>
-                              <th>ประเภทงาน</th>
-                              <th>รายการ</th>
-                              <th>มูลค่า</th>
-                              <th>สถานะ</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td><strong>PJ-2569-001</strong></td>
-                              <td>20 ส.ค. 2569</td>
-                              <td>งานออกแบบ</td>
-                              <td>ออกแบบโครงสร้างอาคารโรงงาน</td>
-                              <td>65,000.00</td>
-                              <td><span class="project-status active">กำลังดำเนินการ</span></td>
-                            </tr>
-                            <tr>
-                              <td><strong>PJ-2568-014</strong></td>
-                              <td>18 พ.ย. 2568</td>
-                              <td>งานออกแบบ</td>
-                              <td>ตรวจสอบโครงสร้างเดิม</td>
-                              <td>95,000.00</td>
-                              <td><span class="project-status closed">ปิดงานแล้ว</span></td>
-                            </tr>
-                            <tr>
-                              <td><strong>SW-2569-003</strong></td>
-                              <td>12 ก.ค. 2569</td>
-                              <td>ขายโปรแกรม</td>
-                              <td>ADT-PILEFiX Professional</td>
-                              <td>55,000.00</td>
-                              <td><span class="project-status closed">ชำระแล้ว</span></td>
-                            </tr>
-                          </tbody>
+              </tbody>
                         </table>
                       </div>
                     </div>
@@ -2292,8 +2221,8 @@
           </div>
 
           <footer class="customer-foot">
-            <span id="customerRowCount">แสดง 4 จาก 4 ลูกค้า</span>
-            <span>DEMO DATA — รอเชื่อม Supabase API</span>
+            <span id="customerRowCount">กำลังโหลดข้อมูล...</span>
+            <span id="customerDataSource">LIVE DATA — ADTWebsite API</span>
           </footer>
 
         </section>
@@ -2312,10 +2241,16 @@
 
       เมื่อสร้าง API Login และ Supabase Auth เสร็จ ให้เปลี่ยนเป็น true
     */
-    const AUTH_REQUIRED = false;
+    const AUTH_REQUIRED = true;
 
     const LOGIN_URL = "/admin/";
     const TOKEN_KEY = "adt_admin_access_token";
+
+    const API_BASE_URL =
+      "https://adt-website-api.onrender.com";
+
+    const CUSTOMERS_API =
+      `${API_BASE_URL}/api/admin/customers`;
 
     if (AUTH_REQUIRED) {
       const token =
@@ -2352,14 +2287,17 @@
       body.classList.remove("sidebar-open");
     });
 
-    refreshButton?.addEventListener("click", () => {
+    refreshButton?.addEventListener("click", async () => {
       refreshButton.disabled = true;
       refreshButton.textContent = "↻ กำลังรีเฟรช...";
 
-      window.setTimeout(() => {
+      try {
+        await loadCustomers();
+      }
+      finally {
         refreshButton.disabled = false;
         refreshButton.textContent = "↻ รีเฟรช";
-      }, 700);
+      }
     });
 
     function animateCounter(element, target, duration = 900) {
@@ -2443,7 +2381,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      updateCustomerTypeSummary();
+      loadCustomers();
 
       if (salesSubmenu && salesMenuToggle) {
         salesSubmenu.classList.add("open");
@@ -2451,6 +2389,261 @@
         salesMenuToggle.setAttribute("aria-expanded", "true");
       }
     });
+
+
+
+    function getAdminToken() {
+      return (
+        sessionStorage.getItem(TOKEN_KEY) ||
+        localStorage.getItem(TOKEN_KEY) ||
+        ""
+      );
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function getCustomerTypeLabel(type) {
+      return type === "PERSON"
+        ? "บุคคลธรรมดา"
+        : "นิติบุคคล";
+    }
+
+    function getVendorStatusMeta(status) {
+      const map = {
+        REGISTERED: {
+          label: "ขึ้นทะเบียนแล้ว",
+          className: "registered"
+        },
+        PENDING: {
+          label: "รอตรวจสอบ",
+          className: "pending"
+        },
+        PROSPECT: {
+          label: "ยังไม่ขึ้นทะเบียน",
+          className: "prospect"
+        }
+      };
+
+      return (
+        map[status] || {
+          label: status || "-",
+          className: "prospect"
+        }
+      );
+    }
+
+    function renderCustomerRows(customers) {
+      const tbody =
+        document.getElementById("customerTableBody");
+
+      if (!tbody) {
+        return;
+      }
+
+      if (!customers.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align:center;color:#6c7a90;padding:30px;">
+              ยังไม่มีข้อมูลลูกค้าในระบบ
+            </td>
+          </tr>
+        `;
+        updateCustomerTypeSummary();
+        filterCustomerRows();
+        return;
+      }
+
+      tbody.innerHTML = customers.map((customer) => {
+        const customerNo =
+          escapeHtml(customer.customer_no);
+
+        const customerName =
+          escapeHtml(customer.customer_name);
+
+        const customerType =
+          customer.customer_type === "PERSON"
+            ? "PERSON"
+            : "COMPANY";
+
+        const typeLabel =
+          getCustomerTypeLabel(customerType);
+
+        const typeClass =
+          customerType === "PERSON"
+            ? "person"
+            : "company";
+
+        const vendorStatus =
+          getVendorStatusMeta(
+            customer.registration_status
+          );
+
+        return `
+          <tr
+            class="customer-row"
+            data-customer-id="${customerNo}"
+            data-type="${customerType}"
+            data-vendor-status="${escapeHtml(customer.registration_status)}"
+          >
+            <td><strong>${customerNo}</strong></td>
+
+            <td>
+              <button
+                class="customer-name-btn"
+                type="button"
+                onclick="toggleCustomerDetail('${customerNo}')"
+              >
+                <span class="customer-expand-icon">›</span>
+                ${customerName}
+              </button>
+            </td>
+
+            <td>
+              <span class="customer-type ${typeClass}">
+                ${typeLabel}
+              </span>
+            </td>
+
+            <td>${escapeHtml(customer.tax_id || "-")}</td>
+            <td>${escapeHtml(customer.contact_name || "-")}</td>
+            <td>${escapeHtml(customer.phone || "-")}</td>
+
+            <td>0</td>
+            <td>—</td>
+
+            <td>
+              <span class="vendor-status ${vendorStatus.className}">
+                ${vendorStatus.label}
+              </span>
+            </td>
+          </tr>
+
+          <tr
+            class="customer-detail-row"
+            id="detail-${customerNo}"
+            data-parent="${customerNo}"
+          >
+            <td class="customer-detail-cell" colspan="9">
+              <div class="customer-detail-box">
+                <div class="customer-detail-title">
+                  ประวัติงานของ ${customerName}
+                </div>
+
+                <div style="color:#6c7a90;font-size:0.72rem;">
+                  ยังไม่มีข้อมูลโครงการที่เชื่อมกับลูกค้ารายนี้
+                  — จะอัปเดตอัตโนมัติเมื่อเชื่อมระบบ Design Projects
+                </div>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      updateCustomerTypeSummary();
+      filterCustomerRows();
+    }
+
+    async function loadCustomers() {
+      const token =
+        getAdminToken();
+
+      if (!token) {
+        window.location.replace(LOGIN_URL);
+        return;
+      }
+
+      const tbody =
+        document.getElementById("customerTableBody");
+
+      const counter =
+        document.getElementById("customerRowCount");
+
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align:center;color:#6c7a90;padding:28px;">
+              กำลังโหลดข้อมูลลูกค้า...
+            </td>
+          </tr>
+        `;
+      }
+
+      if (counter) {
+        counter.textContent =
+          "กำลังโหลดข้อมูล...";
+      }
+
+      try {
+        const response =
+          await fetch(
+            CUSTOMERS_API,
+            {
+              method: "GET",
+              headers: {
+                Accept:
+                  "application/json",
+                Authorization:
+                  `Bearer ${token}`
+              }
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(() => ({}));
+
+        if (response.status === 401) {
+          sessionStorage.removeItem(TOKEN_KEY);
+          localStorage.removeItem(TOKEN_KEY);
+          window.location.replace(LOGIN_URL);
+          return;
+        }
+
+        if (
+          !response.ok ||
+          result.success !== true
+        ) {
+          throw new Error(
+            result.message ||
+            "ไม่สามารถโหลดข้อมูลลูกค้าได้"
+          );
+        }
+
+        renderCustomerRows(
+          Array.isArray(result.customers)
+            ? result.customers
+            : []
+        );
+      }
+      catch (error) {
+        console.error(
+          "Load customers error:",
+          error
+        );
+
+        if (tbody) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="9" style="text-align:center;color:#991b1b;padding:28px;">
+                ${escapeHtml(error?.message || "ไม่สามารถโหลดข้อมูลลูกค้าได้")}
+              </td>
+            </tr>
+          `;
+        }
+
+        if (counter) {
+          counter.textContent =
+            "โหลดข้อมูลไม่สำเร็จ";
+        }
+      }
+    }
 
 
     function toggleCustomerDetail(customerId) {
@@ -2590,17 +2783,6 @@
 
     addCustomerButton?.addEventListener("click", () => {
       window.location.href = "/admin/sales/customers/new/";
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-      if (salesSubmenu && salesMenuToggle) {
-        salesSubmenu.classList.add("open");
-        salesMenuToggle.classList.add("open");
-        salesMenuToggle.setAttribute(
-          "aria-expanded",
-          "true"
-        );
-      }
     });
 
   </script>
