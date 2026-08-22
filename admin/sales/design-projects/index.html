@@ -2554,438 +2554,27 @@
               </thead>
 
               <tbody id="designTableBody">
-
-                <!-- PROJECT 1 : ได้รับ PO / กำลังดำเนินการ -->
-                <tr
-                  class="design-row"
-                  data-project-id="PJ-2569-001"
-                  data-status="ACTIVE"
-                  data-quotation-status="ACCEPTED"
-                  data-po="RECEIVED"
-                  data-amount="65000"
-                  data-deletable="false"
-                >
-                  <td><strong>PJ-2569-001</strong></td>
-                  <td>ADT-08/69</td>
-                  <td><span class="revision-badge">R0</span></td>
-                  <td>บริษัท เอสอี คอนสตรัคชั่น จำกัด</td>
-                  <td>
-                    <button
-                      class="project-name-btn"
-                      type="button"
-                      onclick="toggleDesignDetail('PJ-2569-001')"
-                    >
-                      <span class="project-expand-icon">›</span>
-                      งานออกแบบโครงสร้างอาคารโรงงาน
-                    </button>
-                  </td>
-                  <td>65,000.00</td>
-                  <td><span class="quotation-status accepted">ได้งาน</span></td>
-                  <td><span class="po-status received">ได้รับแล้ว</span></td>
-                  <td><span class="payment-status partial">รับแล้ว 50%</span></td>
-                  <td><span class="design-status active">กำลังดำเนินการ</span></td>
-                  <td>
-                    <div class="design-actions">
-                      <button
-                        class="design-icon-btn"
-                        type="button"
-                        title="พรีวิวใบเสนอราคา"
-                        onclick="previewDesignDocument('PJ-2569-001')"
-                      >👁</button>
-
-                      <button
-                        class="design-icon-btn"
-                        type="button"
-                        title="จัดการ"
-                        onclick="toggleDesignActionMenu(event, 'menu-PJ-2569-001')"
-                      >⋮</button>
-                    </div>
+                <tr id="designLoadingRow">
+                  <td colspan="11" style="text-align:center; padding:28px 16px; color:var(--ink-500);">
+                    กำลังโหลดข้อมูล Project / Quotation...
                   </td>
                 </tr>
-
-                <tr
-                  class="design-detail-row"
-                  id="detail-PJ-2569-001"
-                  data-parent="PJ-2569-001"
-                >
-                  <td class="design-detail-cell" colspan="11">
-                    <div class="design-detail-box">
-                      <div class="design-detail-title">
-                        Workflow — PJ-2569-001 / ADT-08/69
-                      </div>
-
-                      <div class="workflow-grid">
-                        <div class="workflow-card done">
-                          <strong>Quotation</strong>
-                          <span>ADT-08/69<br>ลูกค้าตกลง</span>
-                        </div>
-
-                        <div class="workflow-card done">
-                          <strong>PO</strong>
-                          <span>ได้รับ PO แล้ว</span>
-                        </div>
-
-                        <div class="workflow-card done">
-                          <strong>Project</strong>
-                          <span>เปิด PJ-2569-001 แล้ว</span>
-                        </div>
-
-                        <div class="workflow-card wait">
-                          <strong>Billing / Invoice</strong>
-                          <span>งวดที่ 2 รอวางบิล</span>
-                        </div>
-
-                        <div class="workflow-card wait">
-                          <strong>Payment</strong>
-                          <span>รับแล้ว 50%</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Receipt / Tax</strong>
-                          <span>รอรับเงินครบ</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-
-                <!-- PROJECT 2 : เสนอราคาแล้ว / รอผล -->
-                <tr
-                  class="design-row"
-                  data-project-id="ADT-09-69"
-                  data-status="WAIT"
-                  data-quotation-status="WAITING"
-                  data-po="NONE"
-                  data-amount="120000"
-                  data-deletable="false"
-                >
-                  <td>—</td>
-                  <td><strong>ADT-09/69</strong></td>
-                  <td><span class="revision-badge">R0</span></td>
-                  <td>ห้างหุ้นส่วนจำกัด เอ็มจีเนียริ่ง</td>
-                  <td>
-                    <button
-                      class="project-name-btn"
-                      type="button"
-                      onclick="toggleDesignDetail('ADT-09-69')"
-                    >
-                      <span class="project-expand-icon">›</span>
-                      งานตรวจสอบและออกแบบโครงสร้าง
-                    </button>
-                  </td>
-                  <td>120,000.00</td>
-                  <td><span class="quotation-status wait">รอผล</span></td>
-                  <td><span class="po-status none">—</span></td>
-                  <td><span class="payment-status none">—</span></td>
-                  <td><span class="design-status wait">รอผลเสนอราคา</span></td>
-                  <td>
-                    <div class="design-actions">
-                      <button
-                        class="design-icon-btn"
-                        type="button"
-                        title="พรีวิวใบเสนอราคา"
-                        onclick="previewDesignDocument('ADT-09-69')"
-                      >👁</button>
-
-                      <button
-                        class="design-icon-btn"
-                        type="button"
-                        title="จัดการ"
-                        onclick="toggleDesignActionMenu(event, 'menu-ADT-09-69')"
-                      >⋮</button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr
-                  class="design-detail-row"
-                  id="detail-ADT-09-69"
-                  data-parent="ADT-09-69"
-                >
-                  <td class="design-detail-cell" colspan="11">
-                    <div class="design-detail-box">
-                      <div class="design-detail-title">
-                        Workflow — ADT-09/69
-                      </div>
-
-                      <div class="workflow-grid">
-                        <div class="workflow-card wait">
-                          <strong>Quotation</strong>
-                          <span>ส่งลูกค้าแล้ว<br>รอผล</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>PO</strong>
-                          <span>ยังไม่มี</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Project</strong>
-                          <span>ยังไม่สร้างเลข PJ</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Billing / Invoice</strong>
-                          <span>ยังไม่เริ่ม</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Payment</strong>
-                          <span>ยังไม่เริ่ม</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Receipt / Tax</strong>
-                          <span>ยังไม่เริ่ม</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-
-                <!-- PROJECT 3 : ปิดงานแล้ว -->
-                <tr
-                  class="design-row"
-                  data-project-id="PJ-2569-003"
-                  data-status="CLOSED"
-                  data-quotation-status="ACCEPTED"
-                  data-po="NO_PO"
-                  data-amount="85000"
-                  data-deletable="false"
-                >
-                  <td><strong>PJ-2569-003</strong></td>
-                  <td>ADT-06/69</td>
-                  <td><span class="revision-badge">R1</span></td>
-                  <td>บริษัท เจริญทรัพย์ วิศวกรรม จำกัด</td>
-                  <td>
-                    <button
-                      class="project-name-btn"
-                      type="button"
-                      onclick="toggleDesignDetail('PJ-2569-003')"
-                    >
-                      <span class="project-expand-icon">›</span>
-                      งานออกแบบฐานราก
-                    </button>
-                  </td>
-                  <td>85,000.00</td>
-                  <td><span class="quotation-status accepted">ได้งาน</span></td>
-                  <td><span class="po-status none">ไม่มี PO</span></td>
-                  <td><span class="payment-status paid">ชำระครบ</span></td>
-                  <td><span class="design-status closed">ปิดงาน</span></td>
-                  <td>
-                    <div class="design-actions">
-                      <button
-                        class="design-icon-btn"
-                        type="button"
-                        title="พรีวิวใบเสนอราคา"
-                        onclick="previewDesignDocument('PJ-2569-003')"
-                      >👁</button>
-
-                      <button
-                        class="design-icon-btn"
-                        type="button"
-                        title="จัดการ"
-                        onclick="toggleDesignActionMenu(event, 'menu-PJ-2569-003')"
-                      >⋮</button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr
-                  class="design-detail-row"
-                  id="detail-PJ-2569-003"
-                  data-parent="PJ-2569-003"
-                >
-                  <td class="design-detail-cell" colspan="11">
-                    <div class="design-detail-box">
-                      <div class="design-detail-title">
-                        Workflow — PJ-2569-003 / ADT-06/69
-                      </div>
-
-                      <div class="workflow-grid">
-                        <div class="workflow-card done">
-                          <strong>Quotation</strong>
-                          <span>Rev.1 ลูกค้าตกลง</span>
-                        </div>
-
-                        <div class="workflow-card done">
-                          <strong>PO</strong>
-                          <span>ลูกค้าไม่มี PO</span>
-                        </div>
-
-                        <div class="workflow-card done">
-                          <strong>Project</strong>
-                          <span>ดำเนินงานเสร็จแล้ว</span>
-                        </div>
-
-                        <div class="workflow-card done">
-                          <strong>Billing / Invoice</strong>
-                          <span>ออกเอกสารแล้ว</span>
-                        </div>
-
-                        <div class="workflow-card done">
-                          <strong>Payment</strong>
-                          <span>ชำระครบแล้ว</span>
-                        </div>
-
-                        <div class="workflow-card done">
-                          <strong>Receipt / Tax</strong>
-                          <span>ออกเอกสารแล้ว</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
-
-                <!-- PROJECT 4 : เสนอแล้วไม่ได้งาน -->
-                <tr
-                  class="design-row"
-                  data-project-id="ADT-04-69"
-                  data-status="LOST"
-                  data-quotation-status="LOST"
-                  data-po="NONE"
-                  data-amount="95000"
-                  data-deletable="false"
-                >
-                  <td>—</td>
-                  <td><strong>ADT-04/69</strong></td>
-                  <td><span class="revision-badge">R0</span></td>
-                  <td>บริษัท ตัวอย่าง จำกัด</td>
-                  <td>
-                    <button
-                      class="project-name-btn"
-                      type="button"
-                      onclick="toggleDesignDetail('ADT-04-69')"
-                    >
-                      <span class="project-expand-icon">›</span>
-                      งานออกแบบอาคารสำนักงาน
-                    </button>
-                  </td>
-                  <td>95,000.00</td>
-                  <td><span class="quotation-status lost">ไม่ได้งาน</span></td>
-                  <td><span class="po-status none">—</span></td>
-                  <td><span class="payment-status none">—</span></td>
-                  <td><span class="design-status lost">ไม่ได้งาน</span></td>
-                  <td>
-                    <div class="design-actions">
-                      <button
-                        class="design-icon-btn"
-                        type="button"
-                        title="พรีวิวใบเสนอราคา"
-                        onclick="previewDesignDocument('ADT-04-69')"
-                      >👁</button>
-
-                      <button
-                        class="design-icon-btn"
-                        type="button"
-                        title="จัดการ"
-                        onclick="toggleDesignActionMenu(event, 'menu-ADT-04-69')"
-                      >⋮</button>
-                    </div>
-                  </td>
-                </tr>
-
-                <tr
-                  class="design-detail-row"
-                  id="detail-ADT-04-69"
-                  data-parent="ADT-04-69"
-                >
-                  <td class="design-detail-cell" colspan="11">
-                    <div class="design-detail-box">
-                      <div class="design-detail-title">
-                        Workflow — ADT-04/69
-                      </div>
-
-                      <div class="workflow-grid">
-                        <div class="workflow-card done">
-                          <strong>Quotation</strong>
-                          <span>ส่งลูกค้าแล้ว</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Result</strong>
-                          <span>ไม่ได้งาน</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Project</strong>
-                          <span>ไม่สร้างเลข PJ</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Billing / Invoice</strong>
-                          <span>—</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Payment</strong>
-                          <span>—</span>
-                        </div>
-
-                        <div class="workflow-card off">
-                          <strong>Receipt / Tax</strong>
-                          <span>—</span>
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-
               </tbody>
             </table>
           </div>
 
           <footer class="design-foot">
-            <span id="designRowCount">แสดง 4 จาก 4 รายการ</span>
+            <span id="designRowCount">กำลังโหลดข้อมูล...</span>
 
-            <span class="design-table-note">
-              <strong>หมายเหตุ:</strong>
-              Draft ที่ยังไม่ออกเอกสารสามารถลบได้ /
-              ใบที่ส่งลูกค้าแล้วให้เก็บเป็นประวัติ
+            <span class="design-table-note" id="designDataSource">
+              LIVE DATA — ADTWebsite API
             </span>
           </footer>
 
         </section>
 
 
-        <!-- =====================================================
-             ACTION MENUS
-             ตอนเชื่อม API จริง ให้ส่ง quotation/project id แทน demo id
-        ====================================================== -->
-        <div class="design-action-menu" id="menu-PJ-2569-001">
-          <button type="button" onclick="previewDesignDocument('PJ-2569-001')">👁 พรีวิวใบเสนอราคา</button>
-          <button type="button" onclick="editDesignItem('PJ-2569-001')">✏ แก้ไข / ทำ Revision</button>
-          <button type="button" onclick="openProjectWorkflow('PJ-2569-001')">▦ ดู Workflow Project</button>
-          <div class="design-action-divider"></div>
-          <button type="button" onclick="cancelQuotation('PJ-2569-001')">⊘ ยกเลิกใบเสนอราคา</button>
-          <button type="button" class="danger" disabled title="เอกสารนี้ถูกใช้งานแล้ว">🗑 ลบรายการ</button>
-        </div>
-
-        <div class="design-action-menu" id="menu-ADT-09-69">
-          <button type="button" onclick="previewDesignDocument('ADT-09-69')">👁 พรีวิวใบเสนอราคา</button>
-          <button type="button" onclick="editDesignItem('ADT-09-69')">✏ แก้ไข / ทำ Revision</button>
-          <div class="design-action-divider"></div>
-          <button type="button" onclick="markQuotationLost('ADT-09-69')">✕ บันทึกว่าไม่ได้งาน</button>
-          <button type="button" onclick="cancelQuotation('ADT-09-69')">⊘ ยกเลิกใบเสนอราคา</button>
-          <button type="button" class="danger" disabled title="ส่งใบเสนอราคาแล้ว จึงไม่ควรลบถาวร">🗑 ลบรายการ</button>
-        </div>
-
-        <div class="design-action-menu" id="menu-PJ-2569-003">
-          <button type="button" onclick="previewDesignDocument('PJ-2569-003')">👁 พรีวิวใบเสนอราคา</button>
-          <button type="button" onclick="openProjectWorkflow('PJ-2569-003')">▦ ดู Workflow Project</button>
-          <div class="design-action-divider"></div>
-          <button type="button" class="danger" disabled title="Project ปิดงานแล้ว">🗑 ลบรายการ</button>
-        </div>
-
-        <div class="design-action-menu" id="menu-ADT-04-69">
-          <button type="button" onclick="previewDesignDocument('ADT-04-69')">👁 พรีวิวใบเสนอราคา</button>
-          <button type="button" onclick="openProjectWorkflow('ADT-04-69')">▦ ดูประวัติการเสนอราคา</button>
-          <div class="design-action-divider"></div>
-          <button type="button" class="danger" disabled title="เก็บไว้เป็นประวัติ Lost">🗑 ลบรายการ</button>
-        </div>
+        <div id="designActionMenus"></div>
 
 
       </main>
@@ -2993,274 +2582,223 @@
   </div>
 
   <script>
-    /*
-      ============================================================
-      DEVELOPMENT MODE
-      ============================================================
-      ตอนนี้ยังไม่บังคับตรวจ Token เพื่อให้เปิดดูหน้า Dashboard
-      และพัฒนา UI ได้ก่อน
+    // ============================================================
+    // ADT DESIGN PROJECTS — LIVE DATA
+    // ============================================================
 
-      เมื่อสร้าง API Login และ Supabase Auth เสร็จ ให้เปลี่ยนเป็น true
-    */
-    const AUTH_REQUIRED = false;
+    const AUTH_REQUIRED = true;
 
-    const LOGIN_URL = "/admin/";
-    const TOKEN_KEY = "adt_admin_access_token";
+    const LOGIN_URL =
+      "/admin/";
 
-    if (AUTH_REQUIRED) {
+    const TOKEN_KEY =
+      "adt_admin_access_token";
+
+    const API_BASE_URL =
+      "https://adt-website-api.onrender.com";
+
+    const DESIGN_PROJECTS_API =
+      `${API_BASE_URL}/api/admin/design-projects`;
+
+    let activeDesignQuickFilter =
+      "ALL";
+
+    let designProjectsCache =
+      [];
+
+    let designSummaryCache =
+      null;
+
+
+    // ============================================================
+    // AUTH
+    // ============================================================
+
+    function getAdminToken() {
+      return (
+        sessionStorage.getItem(
+          TOKEN_KEY
+        ) ||
+        localStorage.getItem(
+          TOKEN_KEY
+        ) ||
+        ""
+      );
+    }
+
+
+    function ensureAdminToken() {
       const token =
-        sessionStorage.getItem(TOKEN_KEY) ||
-        localStorage.getItem(TOKEN_KEY);
+        getAdminToken();
 
-      if (!token) {
-        window.location.replace(LOGIN_URL);
-      }
-    }
-
-    const body = document.body;
-    const mobileMenu = document.getElementById("mobileMenu");
-    const sidebarOverlay = document.getElementById("sidebarOverlay");
-    const refreshButton = document.getElementById("refreshButton");
-    const salesMenuToggle = document.getElementById("salesMenuToggle");
-    const salesSubmenu = document.getElementById("salesSubmenu");
-
-    mobileMenu?.addEventListener("click", () => {
-      body.classList.toggle("sidebar-open");
-    });
-
-    salesMenuToggle?.addEventListener("click", () => {
-      const isOpen = salesSubmenu?.classList.toggle("open");
-
-      salesMenuToggle.classList.toggle("open", Boolean(isOpen));
-      salesMenuToggle.setAttribute(
-        "aria-expanded",
-        String(Boolean(isOpen))
-      );
-    });
-
-    sidebarOverlay?.addEventListener("click", () => {
-      body.classList.remove("sidebar-open");
-    });
-
-    refreshButton?.addEventListener("click", () => {
-      refreshButton.disabled = true;
-      refreshButton.textContent = "↻ กำลังรีเฟรช...";
-
-      window.setTimeout(() => {
-        refreshButton.disabled = false;
-        refreshButton.textContent = "↻ รีเฟรช";
-      }, 700);
-    });
-
-    function animateCounter(element, target, duration = 900) {
-      const start = performance.now();
-
-      function frame(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-
-        element.textContent =
-          Math.round(target * eased).toLocaleString("th-TH");
-
-        if (progress < 1) {
-          requestAnimationFrame(frame);
-        }
-      }
-
-      requestAnimationFrame(frame);
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document
-        .querySelectorAll("[data-counter]")
-        .forEach((element) => {
-          animateCounter(
-            element,
-            Number(element.dataset.counter || 0)
-          );
-        });
-    });
-
-    function filterActivityRows() {
-      const type =
-        document.getElementById("activityTypeFilter")?.value || "ALL";
-
-      const status =
-        document.getElementById("activityStatusFilter")?.value || "ALL";
-
-      const keyword =
-        (document.getElementById("activitySearch")?.value || "")
-          .trim()
-          .toLowerCase();
-
-      const rows =
-        [...document.querySelectorAll("#activityTableBody tr")];
-
-      let shown = 0;
-
-      rows.forEach((row) => {
-        const rowType = row.dataset.type || "";
-        const rowStatus = row.dataset.status || "";
-        const text = row.innerText.toLowerCase();
-
-        const typeMatch =
-          type === "ALL" || rowType === type;
-
-        const statusMatch =
-          status === "ALL" || rowStatus === status;
-
-        const keywordMatch =
-          !keyword || text.includes(keyword);
-
-        const visible =
-          typeMatch && statusMatch && keywordMatch;
-
-        row.style.display =
-          visible ? "" : "none";
-
-        if (visible) {
-          shown++;
-        }
-      });
-
-      const counter =
-        document.getElementById("activityRowCount");
-
-      if (counter) {
-        counter.textContent =
-          `แสดง ${shown} จาก ${rows.length} รายการ`;
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      if (salesSubmenu && salesMenuToggle) {
-        salesSubmenu.classList.add("open");
-        salesMenuToggle.classList.add("open");
-        salesMenuToggle.setAttribute("aria-expanded", "true");
-      }
-    });
-
-
-    function toggleCustomerDetail(customerId) {
-      const row =
-        document.querySelector(
-          `.customer-row[data-customer-id="${customerId}"]`
+      if (
+        AUTH_REQUIRED &&
+        !token
+      ) {
+        window.location.replace(
+          LOGIN_URL
         );
 
-      const detail =
-        document.getElementById(
-          `detail-${customerId}`
-        );
-
-      if (!row || !detail) {
-        return;
+        return null;
       }
 
-      const willOpen =
-        !detail.classList.contains("open");
-
-      detail.classList.toggle(
-        "open",
-        willOpen
-      );
-
-      row.classList.toggle(
-        "open",
-        willOpen
-      );
+      return token;
     }
 
-    function filterCustomerRows() {
-      const type =
-        document.getElementById("customerTypeFilter")?.value || "ALL";
 
-      const vendorStatus =
-        document.getElementById("vendorStatusFilter")?.value || "ALL";
+    // ============================================================
+    // COMMON UI
+    // ============================================================
 
-      const keyword =
-        (document.getElementById("customerSearch")?.value || "")
-          .trim()
-          .toLowerCase();
+    const body =
+      document.body;
 
-      const customerRows =
-        [...document.querySelectorAll(".customer-row")];
+    const mobileMenu =
+      document.getElementById(
+        "mobileMenu"
+      );
 
-      let shown = 0;
+    const sidebarOverlay =
+      document.getElementById(
+        "sidebarOverlay"
+      );
 
-      customerRows.forEach((row) => {
-        const customerId =
-          row.dataset.customerId || "";
+    const refreshButton =
+      document.getElementById(
+        "refreshButton"
+      );
 
-        const rowType =
-          row.dataset.type || "";
+    const salesMenuToggle =
+      document.getElementById(
+        "salesMenuToggle"
+      );
 
-        const rowVendorStatus =
-          row.dataset.vendorStatus || "";
+    const salesSubmenu =
+      document.getElementById(
+        "salesSubmenu"
+      );
 
-        const text =
-          row.innerText.toLowerCase();
 
-        const typeMatch =
-          type === "ALL" || rowType === type;
+    mobileMenu?.addEventListener(
+      "click",
+      () => {
+        body.classList.toggle(
+          "sidebar-open"
+        );
+      }
+    );
 
-        const vendorMatch =
-          vendorStatus === "ALL" ||
-          rowVendorStatus === vendorStatus;
 
-        const keywordMatch =
-          !keyword || text.includes(keyword);
-
-        const visible =
-          typeMatch &&
-          vendorMatch &&
-          keywordMatch;
-
-        row.style.display =
-          visible ? "" : "none";
-
-        const detail =
-          document.getElementById(
-            `detail-${customerId}`
+    salesMenuToggle?.addEventListener(
+      "click",
+      () => {
+        const isOpen =
+          salesSubmenu?.classList.toggle(
+            "open"
           );
 
-        if (!visible && detail) {
-          detail.classList.remove("open");
-          row.classList.remove("open");
-        }
-
-        if (visible) {
-          shown++;
-        }
-      });
-
-      const counter =
-        document.getElementById(
-          "customerRowCount"
+        salesMenuToggle.classList.toggle(
+          "open",
+          Boolean(isOpen)
         );
 
-      if (counter) {
-        counter.textContent =
-          `แสดง ${shown} จาก ${customerRows.length} ลูกค้า`;
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      if (salesSubmenu && salesMenuToggle) {
-        salesSubmenu.classList.add("open");
-        salesMenuToggle.classList.add("open");
         salesMenuToggle.setAttribute(
           "aria-expanded",
-          "true"
+          String(Boolean(isOpen))
         );
       }
-    });
+    );
 
 
-    let activeDesignQuickFilter = "ALL";
+    sidebarOverlay?.addEventListener(
+      "click",
+      () => {
+        body.classList.remove(
+          "sidebar-open"
+        );
+      }
+    );
+
+
+    refreshButton?.addEventListener(
+      "click",
+      async () => {
+
+        refreshButton.disabled =
+          true;
+
+        refreshButton.textContent =
+          "↻ กำลังรีเฟรช...";
+
+        try {
+          await loadDesignProjects();
+        }
+        finally {
+          refreshButton.disabled =
+            false;
+
+          refreshButton.textContent =
+            "↻ รีเฟรช";
+        }
+      }
+    );
+
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+
+    function escapeHtml(value) {
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+    }
+
+
+    function safeId(value) {
+      return String(
+        value || ""
+      )
+        .replace(
+          /[^a-zA-Z0-9_-]/g,
+          "-"
+        );
+    }
+
+
+    function normalizeStatus(value) {
+      return String(
+        value || ""
+      )
+        .trim()
+        .toUpperCase();
+    }
 
 
     function formatDesignMoney(value) {
-      return Number(value || 0).toLocaleString(
+      return Number(
+        value || 0
+      ).toLocaleString(
         "th-TH",
         {
           minimumFractionDigits: 2,
@@ -3270,23 +2808,1169 @@
     }
 
 
-    function toggleDesignDetail(projectId) {
+    function setDesignDataSource(
+      text,
+      isError = false
+    ) {
+      const element =
+        document.getElementById(
+          "designDataSource"
+        );
+
+      if (!element) {
+        return;
+      }
+
+      element.textContent =
+        text;
+
+      element.style.color =
+        isError
+          ? "#b42318"
+          : "";
+    }
+
+
+    function setRingValue(
+      ringId,
+      count,
+      maxCount
+    ) {
+      const ring =
+        document.getElementById(
+          ringId
+        );
+
+      if (!ring) {
+        return;
+      }
+
+      const percent =
+        Number(count) <= 0
+          ? 0
+          : Math.max(
+              14,
+              Math.round(
+                (
+                  Number(count) /
+                  Math.max(
+                    1,
+                    Number(maxCount)
+                  )
+                ) * 100
+              )
+            );
+
+      ring.style.setProperty(
+        "--value",
+        String(percent)
+      );
+    }
+
+
+    // ============================================================
+    // STATUS DISPLAY
+    // ============================================================
+
+    function quotationStatusView(status) {
+      const value =
+        normalizeStatus(status);
+
+      if (
+        [
+          "ACCEPTED",
+          "APPROVED",
+          "WON"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "accepted",
+          label:
+            "ได้งาน"
+        };
+      }
+
+      if (
+        [
+          "LOST",
+          "NOT_WON"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "lost",
+          label:
+            "ไม่ได้งาน"
+        };
+      }
+
+      if (
+        value === "CANCELLED"
+      ) {
+        return {
+          className:
+            "lost",
+          label:
+            "ยกเลิก"
+        };
+      }
+
+      if (
+        [
+          "ISSUED",
+          "WAITING",
+          "WAITING_RESULT",
+          "QUOTATION_SENT",
+          "WAIT"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "wait",
+          label:
+            "รอผล"
+        };
+      }
+
+      return {
+        className:
+          "draft",
+        label:
+          "Draft"
+      };
+    }
+
+
+    function projectStatusView(status) {
+      const value =
+        normalizeStatus(status);
+
+      if (
+        [
+          "COMPLETED",
+          "CLOSED"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "closed",
+          label:
+            "ปิดงาน"
+        };
+      }
+
+      if (
+        value === "ACTIVE"
+      ) {
+        return {
+          className:
+            "active",
+          label:
+            "กำลังดำเนินการ"
+        };
+      }
+
+      if (
+        [
+          "LOST",
+          "CANCELLED"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "lost",
+          label:
+            value === "CANCELLED"
+              ? "ยกเลิก"
+              : "ไม่ได้งาน"
+        };
+      }
+
+      if (
+        [
+          "QUOTATION_SENT",
+          "WAITING_RESULT",
+          "WAIT"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "wait",
+          label:
+            "รอผลเสนอราคา"
+        };
+      }
+
+      return {
+        className:
+          "wait",
+        label:
+          "Draft"
+      };
+    }
+
+
+    function poStatusView(status) {
+      const value =
+        normalizeStatus(status);
+
+      if (
+        value === "RECEIVED"
+      ) {
+        return {
+          className:
+            "received",
+          label:
+            "ได้รับแล้ว"
+        };
+      }
+
+      if (
+        value === "PENDING"
+      ) {
+        return {
+          className:
+            "pending",
+          label:
+            "รอ PO"
+        };
+      }
+
+      if (
+        value === "NO_PO"
+      ) {
+        return {
+          className:
+            "none",
+          label:
+            "ไม่มี PO"
+        };
+      }
+
+      return {
+        className:
+          "none",
+        label:
+          "—"
+      };
+    }
+
+
+    function paymentStatusView(
+      status,
+      percent
+    ) {
+      const value =
+        normalizeStatus(status);
+
+      const paymentPercent =
+        Number(
+          percent || 0
+        );
+
+      if (
+        value === "PAID" ||
+        paymentPercent >= 100
+      ) {
+        return {
+          className:
+            "paid",
+          label:
+            "ชำระครบ"
+        };
+      }
+
+      if (
+        value === "PARTIAL" ||
+        paymentPercent > 0
+      ) {
+        return {
+          className:
+            "partial",
+          label:
+            `รับแล้ว ${paymentPercent}%`
+        };
+      }
+
+      return {
+        className:
+          "none",
+        label:
+          "—"
+      };
+    }
+
+
+    // ============================================================
+    // KPI
+    // ============================================================
+
+    function renderDesignSummary(summary) {
+      const data =
+        summary || {};
+
+      const items = [
+        {
+          source:
+            data.quoted_waiting,
+          countId:
+            "designCountQuoted",
+          valueId:
+            "designValueQuoted",
+          ringId:
+            "designRingQuoted"
+        },
+        {
+          source:
+            data.won,
+          countId:
+            "designCountPo",
+          valueId:
+            "designValuePo",
+          ringId:
+            "designRingPo"
+        },
+        {
+          source:
+            data.active,
+          countId:
+            "designCountActive",
+          valueId:
+            "designValueActive",
+          ringId:
+            "designRingActive"
+        },
+        {
+          source:
+            data.closed,
+          countId:
+            "designCountClosed",
+          valueId:
+            "designValueClosed",
+          ringId:
+            "designRingClosed"
+        },
+        {
+          source:
+            data.lost,
+          countId:
+            "designCountLost",
+          valueId:
+            "designValueLost",
+          ringId:
+            "designRingLost"
+        }
+      ];
+
+      const maxCount =
+        Math.max(
+          1,
+          ...items.map(
+            item =>
+              Number(
+                item.source?.count ||
+                0
+              )
+          )
+        );
+
+      items.forEach(
+        item => {
+          const count =
+            Number(
+              item.source?.count ||
+              0
+            );
+
+          const amount =
+            Number(
+              item.source?.amount ||
+              0
+            );
+
+          const countElement =
+            document.getElementById(
+              item.countId
+            );
+
+          const valueElement =
+            document.getElementById(
+              item.valueId
+            );
+
+          if (countElement) {
+            countElement.textContent =
+              count.toLocaleString(
+                "th-TH"
+              );
+          }
+
+          if (valueElement) {
+            valueElement.textContent =
+              `${formatDesignMoney(amount)} บาท`;
+          }
+
+          setRingValue(
+            item.ringId,
+            count,
+            maxCount
+          );
+        }
+      );
+    }
+
+
+    // ============================================================
+    // TABLE
+    // ============================================================
+
+    function buildWorkflowHtml(project) {
+      const quotationStatus =
+        quotationStatusView(
+          project.quotation_status
+        );
+
+      const projectStatus =
+        projectStatusView(
+          project.project_status
+        );
+
+      const poStatus =
+        poStatusView(
+          project.po_status
+        );
+
+      const paymentStatus =
+        paymentStatusView(
+          project.payment_status,
+          project.payment_percent
+        );
+
+      return `
+        <div class="design-detail-box">
+          <div class="design-detail-title">
+            Workflow —
+            ${escapeHtml(
+              project.project_no ||
+              project.quotation_no ||
+              "-"
+            )}
+          </div>
+
+          <div class="workflow-grid">
+
+            <div class="workflow-card ${
+              project.quotation_id
+                ? "done"
+                : "off"
+            }">
+              <strong>Quotation</strong>
+              <span>
+                ${
+                  escapeHtml(
+                    project.quotation_no ||
+                    "ยังไม่มีใบเสนอราคา"
+                  )
+                }
+                <br>
+                ${
+                  escapeHtml(
+                    quotationStatus.label
+                  )
+                }
+              </span>
+            </div>
+
+            <div class="workflow-card ${
+              normalizeStatus(
+                project.po_status
+              ) === "RECEIVED"
+                ? "done"
+                : "off"
+            }">
+              <strong>PO</strong>
+              <span>
+                ${escapeHtml(
+                  poStatus.label
+                )}
+              </span>
+            </div>
+
+            <div class="workflow-card ${
+              [
+                "ACTIVE",
+                "COMPLETED",
+                "CLOSED"
+              ].includes(
+                normalizeStatus(
+                  project.project_status
+                )
+              )
+                ? "done"
+                : "off"
+            }">
+              <strong>Project</strong>
+              <span>
+                ${escapeHtml(
+                  projectStatus.label
+                )}
+              </span>
+            </div>
+
+            <div class="workflow-card off">
+              <strong>Billing / Invoice</strong>
+              <span>
+                รอเชื่อมระบบ
+              </span>
+            </div>
+
+            <div class="workflow-card ${
+              Number(
+                project.payment_percent ||
+                0
+              ) > 0
+                ? "wait"
+                : "off"
+            }">
+              <strong>Payment</strong>
+              <span>
+                ${escapeHtml(
+                  paymentStatus.label
+                )}
+              </span>
+            </div>
+
+            <div class="workflow-card off">
+              <strong>Receipt / Tax</strong>
+              <span>
+                รอเชื่อมระบบ
+              </span>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+
+    function buildActionMenuHtml(
+      project,
+      rowKey
+    ) {
+      const quotationStatus =
+        normalizeStatus(
+          project.quotation_status
+        );
+
+      const projectStatus =
+        normalizeStatus(
+          project.project_status
+        );
+
+      const canDelete =
+        (
+          [
+            "",
+            "DRAFT"
+          ].includes(
+            quotationStatus
+          ) &&
+          [
+            "",
+            "DRAFT"
+          ].includes(
+            projectStatus
+          )
+        );
+
+      return `
+        <div
+          class="design-action-menu"
+          id="menu-${rowKey}"
+        >
+          <button
+            type="button"
+            onclick="previewDesignDocument('${rowKey}')"
+          >
+            👁 พรีวิวใบเสนอราคา
+          </button>
+
+          <button
+            type="button"
+            onclick="editDesignItem('${rowKey}')"
+          >
+            ✏ แก้ไข / ทำ Revision
+          </button>
+
+          <button
+            type="button"
+            onclick="openProjectWorkflow('${rowKey}')"
+          >
+            ▦ ดู Workflow Project
+          </button>
+
+          <div class="design-action-divider"></div>
+
+          <button
+            type="button"
+            onclick="markQuotationLost('${rowKey}')"
+            ${
+              project.quotation_id
+                ? ""
+                : "disabled"
+            }
+          >
+            ✕ บันทึกว่าไม่ได้งาน
+          </button>
+
+          <button
+            type="button"
+            onclick="cancelQuotation('${rowKey}')"
+            ${
+              project.quotation_id
+                ? ""
+                : "disabled"
+            }
+          >
+            ⊘ ยกเลิกใบเสนอราคา
+          </button>
+
+          <button
+            type="button"
+            class="danger"
+            onclick="deleteDesignItem('${rowKey}')"
+            ${
+              canDelete
+                ? ""
+                : "disabled"
+            }
+            title="${
+              canDelete
+                ? "ลบ Draft ออกจากระบบ"
+                : "รายการนี้ถูกใช้งานแล้ว จึงไม่เปิดให้ลบถาวร"
+            }"
+          >
+            🗑 ลบรายการ
+          </button>
+        </div>
+      `;
+    }
+
+
+    function renderDesignRows(projects) {
+      const body =
+        document.getElementById(
+          "designTableBody"
+        );
+
+      const menuContainer =
+        document.getElementById(
+          "designActionMenus"
+        );
+
+      if (
+        !body ||
+        !menuContainer
+      ) {
+        return;
+      }
+
+      designProjectsCache =
+        Array.isArray(projects)
+          ? projects
+          : [];
+
+      if (
+        designProjectsCache.length === 0
+      ) {
+        body.innerHTML = `
+          <tr>
+            <td
+              colspan="11"
+              style="
+                text-align:center;
+                padding:34px 16px;
+                color:var(--ink-500);
+              "
+            >
+              ยังไม่มีข้อมูล Project / Quotation ในระบบ
+            </td>
+          </tr>
+        `;
+
+        menuContainer.innerHTML =
+          "";
+
+        const counter =
+          document.getElementById(
+            "designRowCount"
+          );
+
+        if (counter) {
+          counter.textContent =
+            "แสดง 0 จาก 0 รายการ";
+        }
+
+        return;
+      }
+
+      const rowsHtml =
+        [];
+
+      const menusHtml =
+        [];
+
+      designProjectsCache.forEach(
+        (
+          project,
+          index
+        ) => {
+
+          const rawKey =
+            project.project_id ||
+            project.quotation_id ||
+            `row-${index + 1}`;
+
+          const rowKey =
+            safeId(rawKey);
+
+          const quotation =
+            quotationStatusView(
+              project.quotation_status
+            );
+
+          const projectStatus =
+            projectStatusView(
+              project.project_status
+            );
+
+          const po =
+            poStatusView(
+              project.po_status
+            );
+
+          const payment =
+            paymentStatusView(
+              project.payment_status,
+              project.payment_percent
+            );
+
+          const quotationStatus =
+            normalizeStatus(
+              project.quotation_status
+            );
+
+          const projectStatusCode =
+            normalizeStatus(
+              project.project_status
+            );
+
+          const poStatus =
+            normalizeStatus(
+              project.po_status
+            );
+
+          rowsHtml.push(`
+            <tr
+              class="design-row"
+              data-row-key="${rowKey}"
+              data-project-id="${rowKey}"
+              data-project-uuid="${escapeHtml(
+                project.project_id ||
+                ""
+              )}"
+              data-quotation-id="${escapeHtml(
+                project.quotation_id ||
+                ""
+              )}"
+              data-status="${escapeHtml(
+                projectStatusCode
+              )}"
+              data-quotation-status="${escapeHtml(
+                quotationStatus
+              )}"
+              data-po="${escapeHtml(
+                poStatus
+              )}"
+              data-amount="${Number(
+                project.grand_total ||
+                0
+              )}"
+            >
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    project.project_no ||
+                    "—"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  project.quotation_no ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                <span class="revision-badge">
+                  R${Number(
+                    project.revision_no ||
+                    0
+                  )}
+                </span>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  project.customer_name ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                <button
+                  class="project-name-btn"
+                  type="button"
+                  onclick="toggleDesignDetail('${rowKey}')"
+                >
+                  <span class="project-expand-icon">›</span>
+                  ${escapeHtml(
+                    project.project_name ||
+                    "-"
+                  )}
+                </button>
+              </td>
+
+              <td>
+                ${formatDesignMoney(
+                  project.grand_total
+                )}
+              </td>
+
+              <td>
+                <span
+                  class="quotation-status ${quotation.className}"
+                >
+                  ${escapeHtml(
+                    quotation.label
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  class="po-status ${po.className}"
+                >
+                  ${escapeHtml(
+                    po.label
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  class="payment-status ${payment.className}"
+                >
+                  ${escapeHtml(
+                    payment.label
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  class="design-status ${projectStatus.className}"
+                >
+                  ${escapeHtml(
+                    projectStatus.label
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <div class="design-actions">
+
+                  <button
+                    class="design-icon-btn"
+                    type="button"
+                    title="พรีวิวใบเสนอราคา"
+                    onclick="previewDesignDocument('${rowKey}')"
+                    ${
+                      project.quotation_id
+                        ? ""
+                        : "disabled"
+                    }
+                  >
+                    👁
+                  </button>
+
+                  <button
+                    class="design-icon-btn"
+                    type="button"
+                    title="จัดการ"
+                    onclick="toggleDesignActionMenu(event, 'menu-${rowKey}')"
+                  >
+                    ⋮
+                  </button>
+
+                </div>
+              </td>
+            </tr>
+
+            <tr
+              class="design-detail-row"
+              id="detail-${rowKey}"
+              data-parent="${rowKey}"
+            >
+              <td
+                class="design-detail-cell"
+                colspan="11"
+              >
+                ${buildWorkflowHtml(
+                  project
+                )}
+              </td>
+            </tr>
+          `);
+
+          menusHtml.push(
+            buildActionMenuHtml(
+              project,
+              rowKey
+            )
+          );
+        }
+      );
+
+      body.innerHTML =
+        rowsHtml.join("");
+
+      menuContainer.innerHTML =
+        menusHtml.join("");
+
+      filterDesignRows();
+    }
+
+
+    function getProjectByRowKey(
+      rowKey
+    ) {
       const row =
         document.querySelector(
-          `.design-row[data-project-id="${projectId}"]`
+          `.design-row[data-row-key="${rowKey}"]`
+        );
+
+      if (!row) {
+        return null;
+      }
+
+      const projectUuid =
+        row.dataset.projectUuid ||
+        "";
+
+      const quotationId =
+        row.dataset.quotationId ||
+        "";
+
+      return (
+        designProjectsCache.find(
+          item =>
+            (
+              projectUuid &&
+              item.project_id ===
+                projectUuid
+            ) ||
+            (
+              quotationId &&
+              item.quotation_id ===
+                quotationId
+            )
+        ) ||
+        null
+      );
+    }
+
+
+    // ============================================================
+    // FETCH API
+    // ============================================================
+
+    async function loadDesignProjects() {
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      setDesignDataSource(
+        "กำลังโหลด LIVE DATA..."
+      );
+
+      try {
+        const response =
+          await fetch(
+            DESIGN_PROJECTS_API,
+            {
+              method:
+                "GET",
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json"
+              },
+
+              cache:
+                "no-store"
+            }
+          );
+
+        let result =
+          null;
+
+        try {
+          result =
+            await response.json();
+        }
+        catch (error) {
+          result =
+            null;
+        }
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          window.location.replace(
+            LOGIN_URL
+          );
+
+          return;
+        }
+
+        if (
+          !response.ok ||
+          !result?.success
+        ) {
+          throw new Error(
+            result?.message ||
+            `HTTP ${response.status}`
+          );
+        }
+
+        designSummaryCache =
+          result.summary ||
+          null;
+
+        renderDesignSummary(
+          result.summary
+        );
+
+        renderDesignRows(
+          result.projects
+        );
+
+        setDesignDataSource(
+          "LIVE DATA — ADTWebsite API"
+        );
+      }
+      catch (error) {
+        console.error(
+          "Load Design Projects Error:",
+          error
+        );
+
+        const body =
+          document.getElementById(
+            "designTableBody"
+          );
+
+        if (body) {
+          body.innerHTML = `
+            <tr>
+              <td
+                colspan="11"
+                style="
+                  text-align:center;
+                  padding:34px 16px;
+                  color:#b42318;
+                "
+              >
+                โหลดข้อมูล Project ไม่สำเร็จ
+                <br>
+                <small>
+                  ${escapeHtml(
+                    error?.message ||
+                    "Unknown error"
+                  )}
+                </small>
+              </td>
+            </tr>
+          `;
+        }
+
+        renderDesignSummary(
+          null
+        );
+
+        setDesignDataSource(
+          "เชื่อมต่อ ADTWebsite API ไม่สำเร็จ",
+          true
+        );
+
+        const counter =
+          document.getElementById(
+            "designRowCount"
+          );
+
+        if (counter) {
+          counter.textContent =
+            "โหลดข้อมูลไม่สำเร็จ";
+        }
+      }
+    }
+
+
+    // ============================================================
+    // DETAIL / FILTER
+    // ============================================================
+
+    function toggleDesignDetail(
+      rowKey
+    ) {
+      const row =
+        document.querySelector(
+          `.design-row[data-row-key="${rowKey}"]`
         );
 
       const detail =
         document.getElementById(
-          `detail-${projectId}`
+          `detail-${rowKey}`
         );
 
-      if (!row || !detail) {
+      if (
+        !row ||
+        !detail
+      ) {
         return;
       }
 
       const willOpen =
-        !detail.classList.contains("open");
+        !detail.classList.contains(
+          "open"
+        );
 
       detail.classList.toggle(
         "open",
@@ -3300,133 +3984,19 @@
     }
 
 
-    function updateDesignKpis() {
-      const rows =
-        [...document.querySelectorAll(".design-row")];
-
-      const definitions = {
-        QUOTED: {
-          rows: rows.filter(
-            row =>
-              row.dataset.quotationStatus === "WAITING"
-          ),
-          countId: "designCountQuoted",
-          valueId: "designValueQuoted",
-          ringId: "designRingQuoted"
-        },
-
-        PO: {
-          rows: rows.filter(
-            row =>
-              row.dataset.po === "RECEIVED" ||
-              row.dataset.quotationStatus === "ACCEPTED"
-          ),
-          countId: "designCountPo",
-          valueId: "designValuePo",
-          ringId: "designRingPo"
-        },
-
-        ACTIVE: {
-          rows: rows.filter(
-            row =>
-              row.dataset.status === "ACTIVE"
-          ),
-          countId: "designCountActive",
-          valueId: "designValueActive",
-          ringId: "designRingActive"
-        },
-
-        CLOSED: {
-          rows: rows.filter(
-            row =>
-              row.dataset.status === "CLOSED"
-          ),
-          countId: "designCountClosed",
-          valueId: "designValueClosed",
-          ringId: "designRingClosed"
-        },
-
-        LOST: {
-          rows: rows.filter(
-            row =>
-              row.dataset.status === "LOST"
-          ),
-          countId: "designCountLost",
-          valueId: "designValueLost",
-          ringId: "designRingLost"
-        }
-      };
-
-      const maxCount =
-        Math.max(
-          1,
-          ...Object.values(definitions)
-            .map(item => item.rows.length)
-        );
-
-      Object.values(definitions)
-        .forEach(
-          item => {
-            const count =
-              item.rows.length;
-
-            const total =
-              item.rows.reduce(
-                (sum, row) =>
-                  sum +
-                  Number(row.dataset.amount || 0),
-                0
-              );
-
-            const countElement =
-              document.getElementById(item.countId);
-
-            const valueElement =
-              document.getElementById(item.valueId);
-
-            const ringElement =
-              document.getElementById(item.ringId);
-
-            if (countElement) {
-              countElement.textContent =
-                count.toLocaleString("th-TH");
-            }
-
-            if (valueElement) {
-              valueElement.textContent =
-                `${formatDesignMoney(total)} บาท`;
-            }
-
-            if (ringElement) {
-              const percent =
-                count === 0
-                  ? 0
-                  : Math.max(
-                      14,
-                      Math.round(
-                        (count / maxCount) * 100
-                      )
-                    );
-
-              ringElement.style.setProperty(
-                "--value",
-                String(percent)
-              );
-            }
-          }
-        );
-    }
-
-
     function resetDesignQuickFilter() {
       activeDesignQuickFilter =
         "ALL";
 
       document
-        .querySelectorAll(".design-summary-card")
+        .querySelectorAll(
+          ".design-summary-card"
+        )
         .forEach(
           card =>
-            card.classList.remove("active")
+            card.classList.remove(
+              "active"
+            )
         );
     }
 
@@ -3436,7 +4006,8 @@
       element
     ) {
       if (
-        activeDesignQuickFilter === mode
+        activeDesignQuickFilter ===
+        mode
       ) {
         resetDesignQuickFilter();
       }
@@ -3445,10 +4016,14 @@
           mode;
 
         document
-          .querySelectorAll(".design-summary-card")
+          .querySelectorAll(
+            ".design-summary-card"
+          )
           .forEach(
             card =>
-              card.classList.remove("active")
+              card.classList.remove(
+                "active"
+              )
           );
 
         element?.classList.add(
@@ -3470,39 +4045,85 @@
     }
 
 
-    function quickFilterMatches(row) {
+    function quickFilterMatches(
+      row
+    ) {
+      const quotationStatus =
+        normalizeStatus(
+          row.dataset.quotationStatus
+        );
+
+      const projectStatus =
+        normalizeStatus(
+          row.dataset.status
+        );
+
+      const poStatus =
+        normalizeStatus(
+          row.dataset.po
+        );
+
       switch (
         activeDesignQuickFilter
       ) {
         case "QUOTED":
           return (
-            row.dataset.quotationStatus ===
-            "WAITING"
+            [
+              "ISSUED",
+              "WAITING",
+              "WAITING_RESULT",
+              "QUOTATION_SENT",
+              "WAIT"
+            ].includes(
+              quotationStatus
+            ) ||
+            [
+              "QUOTATION_SENT",
+              "WAITING_RESULT",
+              "WAIT"
+            ].includes(
+              projectStatus
+            )
           );
 
         case "PO":
           return (
-            row.dataset.po === "RECEIVED" ||
-            row.dataset.quotationStatus ===
-              "ACCEPTED"
+            poStatus === "RECEIVED" ||
+            quotationStatus ===
+              "ACCEPTED" ||
+            [
+              "ACCEPTED",
+              "PO_RECEIVED",
+              "ACTIVE",
+              "COMPLETED",
+              "CLOSED"
+            ].includes(
+              projectStatus
+            )
           );
 
         case "ACTIVE":
           return (
-            row.dataset.status ===
+            projectStatus ===
             "ACTIVE"
           );
 
         case "CLOSED":
           return (
-            row.dataset.status ===
-            "CLOSED"
+            [
+              "COMPLETED",
+              "CLOSED"
+            ].includes(
+              projectStatus
+            )
           );
 
         case "LOST":
           return (
-            row.dataset.status ===
-            "LOST"
+            quotationStatus ===
+              "LOST" ||
+            projectStatus ===
+              "LOST"
           );
 
         default:
@@ -3533,18 +4154,23 @@
           )
         ];
 
-      let shown = 0;
+      let shown =
+        0;
 
       rows.forEach(
         row => {
-          const projectId =
-            row.dataset.projectId || "";
+          const rowKey =
+            row.dataset.rowKey ||
+            "";
 
           const rowStatus =
-            row.dataset.status || "";
+            normalizeStatus(
+              row.dataset.status
+            );
 
           const text =
-            row.innerText.toLowerCase();
+            row.innerText
+              .toLowerCase();
 
           const statusMatch =
             status === "ALL" ||
@@ -3552,10 +4178,14 @@
 
           const keywordMatch =
             !keyword ||
-            text.includes(keyword);
+            text.includes(
+              keyword
+            );
 
           const quickMatch =
-            quickFilterMatches(row);
+            quickFilterMatches(
+              row
+            );
 
           const visible =
             statusMatch &&
@@ -3569,7 +4199,7 @@
 
           const detail =
             document.getElementById(
-              `detail-${projectId}`
+              `detail-${rowKey}`
             );
 
           if (
@@ -3613,6 +4243,10 @@
       }
     }
 
+
+    // ============================================================
+    // ACTION MENU
+    // ============================================================
 
     function closeAllDesignActionMenus() {
       document
@@ -3686,7 +4320,10 @@
         `${left}px`;
 
       menu.style.top =
-        `${Math.max(10, top)}px`;
+        `${Math.max(
+          10,
+          top
+        )}px`;
 
       menu.classList.add(
         "open"
@@ -3694,45 +4331,126 @@
     }
 
 
-    function previewDesignDocument(projectId) {
+    // ============================================================
+    // CURRENT ACTIONS
+    // STEP นี้เชื่อม READ ก่อน
+    // WRITE / PREVIEW จะต่อ Endpoint ใน Step ถัดไป
+    // ============================================================
+
+    function previewDesignDocument(
+      rowKey
+    ) {
       closeAllDesignActionMenus();
 
-      // เตรียมไว้สำหรับ Quotation Preview Modal / PDF Viewer
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      if (
+        !project?.quotation_id
+      ) {
+        window.alert(
+          "รายการนี้ยังไม่มีใบเสนอราคา"
+        );
+
+        return;
+      }
+
       window.alert(
-        `พรีวิวเอกสาร: ${projectId}\n\nขั้นต่อไปจะเชื่อมข้อมูลจริงจาก 12_quotations / 13_quotation_items และ PDF Storage`
+        `Quotation: ${
+          project.quotation_no ||
+          "-"
+        }\n\nขั้นต่อไปจะเชื่อม Preview + Quotation Items`
       );
     }
 
 
-    function editDesignItem(projectId) {
+    function editDesignItem(
+      rowKey
+    ) {
       closeAllDesignActionMenus();
 
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
       window.alert(
-        `แก้ไข / Revision: ${projectId}\n\nระบบ Revision จะอนุญาต R1 - R3 ตามกติกาที่กำหนด`
+        `แก้ไข / Revision: ${
+          project?.quotation_no ||
+          project?.project_no ||
+          "-"
+        }\n\nระบบ Revision จะเชื่อมใน Step ถัดไป`
       );
     }
 
 
-    function openProjectWorkflow(projectId) {
-      closeAllDesignActionMenus();
-      toggleDesignDetail(projectId);
-    }
-
-
-    function markQuotationLost(projectId) {
+    function openProjectWorkflow(
+      rowKey
+    ) {
       closeAllDesignActionMenus();
 
-      window.alert(
-        `บันทึกผลไม่ได้งาน: ${projectId}\n\nเมื่อเชื่อม API จริง รายการจะถูกเก็บเป็น LOST และยังคงอยู่ในรายงานประวัติ`
+      toggleDesignDetail(
+        rowKey
       );
     }
 
 
-    function cancelQuotation(projectId) {
+    function markQuotationLost(
+      rowKey
+    ) {
       closeAllDesignActionMenus();
 
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
       window.alert(
-        `ยกเลิกใบเสนอราคา: ${projectId}\n\nเมื่อเชื่อม API จริง จะเปลี่ยนสถานะเป็น CANCELLED โดยไม่ลบประวัติเอกสาร`
+        `บันทึกว่าไม่ได้งาน: ${
+          project?.quotation_no ||
+          "-"
+        }\n\nยังไม่ได้เปิด PATCH Endpoint ใน Step นี้`
+      );
+    }
+
+
+    function cancelQuotation(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      window.alert(
+        `ยกเลิกใบเสนอราคา: ${
+          project?.quotation_no ||
+          "-"
+        }\n\nยังไม่ได้เปิด PATCH Endpoint ใน Step นี้`
+      );
+    }
+
+
+    function deleteDesignItem(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      window.alert(
+        `ลบ Draft: ${
+          project?.quotation_no ||
+          project?.project_name ||
+          "-"
+        }\n\nยังไม่ได้เปิด DELETE Endpoint ใน Step นี้`
       );
     }
 
@@ -3742,6 +4460,10 @@
         "/admin/sales/design-projects/new/";
     }
 
+
+    // ============================================================
+    // GLOBAL EVENTS
+    // ============================================================
 
     document.addEventListener(
       "click",
@@ -3757,19 +4479,38 @@
     );
 
 
-    document.addEventListener("DOMContentLoaded", () => {
-      if (salesSubmenu && salesMenuToggle) {
-        salesSubmenu.classList.add("open");
-        salesMenuToggle.classList.add("open");
-        salesMenuToggle.setAttribute(
-          "aria-expanded",
-          "true"
-        );
-      }
+    document.addEventListener(
+      "DOMContentLoaded",
+      async () => {
 
-      updateDesignKpis();
-      filterDesignRows();
-    });
+        if (
+          salesSubmenu &&
+          salesMenuToggle
+        ) {
+          salesSubmenu.classList.add(
+            "open"
+          );
+
+          salesMenuToggle.classList.add(
+            "open"
+          );
+
+          salesMenuToggle.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+        }
+
+        const token =
+          ensureAdminToken();
+
+        if (!token) {
+          return;
+        }
+
+        await loadDesignProjects();
+      }
+    );
 
   </script>
 </body>
