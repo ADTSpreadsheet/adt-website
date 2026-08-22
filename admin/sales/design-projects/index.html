@@ -2635,8 +2635,13 @@
         AUTH_REQUIRED &&
         !token
       ) {
-        window.location.replace(
-          LOGIN_URL
+        console.warn(
+          "Admin token not found. Auto redirect disabled to prevent redirect loop."
+        );
+
+        setDesignDataSource(
+          "ไม่พบ Admin Token — กรุณาเข้าสู่ระบบใหม่",
+          true
         );
 
         return null;
@@ -3853,11 +3858,14 @@
             TOKEN_KEY
           );
 
-          window.location.replace(
-            LOGIN_URL
+          setDesignDataSource(
+            "Admin Token หมดอายุหรือไม่ถูกต้อง — กรุณาเข้าสู่ระบบใหม่",
+            true
           );
 
-          return;
+          throw new Error(
+            "Unauthorized (401)"
+          );
         }
 
         if (
@@ -4505,6 +4513,42 @@
           ensureAdminToken();
 
         if (!token) {
+          const tableBody =
+            document.getElementById(
+              "designTableBody"
+            );
+
+          if (tableBody) {
+            tableBody.innerHTML = `
+              <tr>
+                <td
+                  colspan="11"
+                  style="
+                    text-align:center;
+                    padding:34px 16px;
+                    color:#b42318;
+                  "
+                >
+                  ไม่พบ Admin Token
+                  <br>
+                  <small>
+                    กรุณาเข้าสู่ระบบใหม่ก่อนเชื่อม Live Data
+                  </small>
+                </td>
+              </tr>
+            `;
+          }
+
+          const counter =
+            document.getElementById(
+              "designRowCount"
+            );
+
+          if (counter) {
+            counter.textContent =
+              "ยังไม่ได้เชื่อม Live Data";
+          }
+
           return;
         }
 
