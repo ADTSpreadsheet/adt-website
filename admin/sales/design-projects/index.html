@@ -1899,6 +1899,287 @@
       }
     }
 
+
+    /* =====================================================
+       DESIGN PROJECTS — STATUS OVERVIEW / ACTIONS
+    ===================================================== */
+
+    .design-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(155px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .design-summary-card {
+      width: 100%;
+      padding: 16px 12px 15px;
+      border: 1px solid #e3ebf4;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      text-align: center;
+      transition: 0.18s ease;
+    }
+
+    .design-summary-card:hover,
+    .design-summary-card.active {
+      transform: translateY(-2px);
+      border-color: #bfd7f8;
+      box-shadow: 0 12px 28px rgba(4, 27, 60, 0.11);
+    }
+
+    .design-summary-card.active {
+      outline: 3px solid rgba(22, 119, 255, 0.08);
+    }
+
+    .design-summary-title {
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-700);
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .design-summary-ring {
+      --value: 65;
+      --ring-color: var(--blue-600);
+      --track-color: #e8f2ff;
+
+      width: 106px;
+      height: 106px;
+      margin: 8px auto 9px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          var(--ring-color) calc(var(--value) * 1%),
+          var(--track-color) 0
+        );
+    }
+
+    .design-summary-ring::after {
+      content: "";
+      position: absolute;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .design-summary-ring.orange {
+      --ring-color: var(--orange-600);
+      --track-color: #fff0d8;
+    }
+
+    .design-summary-ring.green {
+      --ring-color: var(--green-600);
+      --track-color: #def7eb;
+    }
+
+    .design-summary-ring.blue {
+      --ring-color: var(--blue-600);
+      --track-color: #e3efff;
+    }
+
+    .design-summary-ring.violet {
+      --ring-color: var(--violet-600);
+      --track-color: #eee6ff;
+    }
+
+    .design-summary-ring.red {
+      --ring-color: var(--red-600);
+      --track-color: #ffe6e8;
+    }
+
+    .design-summary-ring-content {
+      position: relative;
+      z-index: 2;
+      line-height: 1.1;
+    }
+
+    .design-summary-count {
+      color: var(--navy-900);
+      font: 800 1.38rem "Inter", sans-serif;
+    }
+
+    .design-summary-unit {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.61rem;
+      font-weight: 600;
+    }
+
+    .design-summary-value {
+      min-height: 18px;
+      color: var(--ink-500);
+      font-size: 0.66rem;
+      font-weight: 600;
+    }
+
+    .quotation-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 0.63rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .quotation-status.draft {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .quotation-status.wait {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .quotation-status.accepted {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .quotation-status.lost {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .revision-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      padding: 5px 7px;
+      border-radius: 8px;
+      color: #5b21b6;
+      background: #f3edff;
+      font: 700 0.62rem "Inter", sans-serif;
+    }
+
+    .design-actions {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .design-icon-btn {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink-700);
+      background: #ffffff;
+      cursor: pointer;
+      transition: 0.16s ease;
+    }
+
+    .design-icon-btn:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .design-action-menu {
+      position: fixed;
+      z-index: 5000;
+      width: 210px;
+      padding: 7px;
+      display: none;
+      border: 1px solid #dfe7f0;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 18px 44px rgba(4, 27, 60, 0.16);
+    }
+
+    .design-action-menu.open {
+      display: grid;
+      gap: 3px;
+    }
+
+    .design-action-menu button {
+      width: 100%;
+      min-height: 36px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--ink-700);
+      background: transparent;
+      font-size: 0.69rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .design-action-menu button:hover {
+      color: var(--blue-600);
+      background: #f3f8ff;
+    }
+
+    .design-action-menu button.danger {
+      color: #b42318;
+    }
+
+    .design-action-menu button.danger:hover {
+      background: #fff3f3;
+    }
+
+    .design-action-menu button:disabled {
+      color: #aab4c2;
+      background: transparent;
+      cursor: not-allowed;
+    }
+
+    .design-action-divider {
+      height: 1px;
+      margin: 4px 2px;
+      background: #edf2f7;
+    }
+
+    .design-table-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--ink-400);
+      font-size: 0.65rem;
+    }
+
+    .design-table-note strong {
+      color: var(--ink-700);
+    }
+
+    @media (max-width: 1500px) {
+      .design-summary-grid {
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .design-summary-grid {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .design-summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 
@@ -2077,19 +2358,145 @@
           <div>
             <h1>Design Projects</h1>
             <p>
-              ติดตามงานออกแบบตั้งแต่ใบเสนอราคา รอผล ได้งาน
-              รับ PO รับชำระเงิน และปิดงาน
+              ศูนย์กลางติดตามงาน ตั้งแต่จัดทำใบเสนอราคา รอผล ได้รับ PO
+              ดำเนินโครงการ รับชำระเงิน จนถึงปิดงาน
             </p>
           </div>
         </section>
 
+
+        <!-- =====================================================
+             PROJECT STATUS OVERVIEW
+        ====================================================== -->
+        <section class="design-summary-grid" aria-label="สรุปสถานะโครงการ">
+
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="QUOTED"
+            onclick="applyDesignQuickFilter('QUOTED', this)"
+          >
+            <div class="design-summary-title">
+              เสนอราคาแล้ว / รอผล
+            </div>
+
+            <div class="design-summary-ring orange" id="designRingQuoted">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountQuoted">0</div>
+                <div class="design-summary-unit">รายการ</div>
+              </div>
+            </div>
+
+            <div class="design-summary-value" id="designValueQuoted">
+              0.00 บาท
+            </div>
+          </button>
+
+
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="PO"
+            onclick="applyDesignQuickFilter('PO', this)"
+          >
+            <div class="design-summary-title">
+              ได้รับ PO / ได้งาน
+            </div>
+
+            <div class="design-summary-ring green" id="designRingPo">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountPo">0</div>
+                <div class="design-summary-unit">Project</div>
+              </div>
+            </div>
+
+            <div class="design-summary-value" id="designValuePo">
+              0.00 บาท
+            </div>
+          </button>
+
+
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="ACTIVE"
+            onclick="applyDesignQuickFilter('ACTIVE', this)"
+          >
+            <div class="design-summary-title">
+              กำลังดำเนินการ
+            </div>
+
+            <div class="design-summary-ring blue" id="designRingActive">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountActive">0</div>
+                <div class="design-summary-unit">Project</div>
+              </div>
+            </div>
+
+            <div class="design-summary-value" id="designValueActive">
+              0.00 บาท
+            </div>
+          </button>
+
+
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="CLOSED"
+            onclick="applyDesignQuickFilter('CLOSED', this)"
+          >
+            <div class="design-summary-title">
+              งานสำเร็จ / ปิดงาน
+            </div>
+
+            <div class="design-summary-ring violet" id="designRingClosed">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountClosed">0</div>
+                <div class="design-summary-unit">Project</div>
+              </div>
+            </div>
+
+            <div class="design-summary-value" id="designValueClosed">
+              0.00 บาท
+            </div>
+          </button>
+
+
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="LOST"
+            onclick="applyDesignQuickFilter('LOST', this)"
+          >
+            <div class="design-summary-title">
+              เสนอราคาแล้วไม่ได้งาน
+            </div>
+
+            <div class="design-summary-ring red" id="designRingLost">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountLost">0</div>
+                <div class="design-summary-unit">รายการ</div>
+              </div>
+            </div>
+
+            <div class="design-summary-value" id="designValueLost">
+              0.00 บาท
+            </div>
+          </button>
+
+        </section>
+
+
+        <!-- =====================================================
+             PROJECT / QUOTATION LIST
+        ====================================================== -->
         <section class="design-panel">
 
           <header class="design-panel-head">
             <div>
-              <h2>รายการงานออกแบบ</h2>
+              <h2>รายการ Project / Quotation</h2>
               <p>
-                คลิกที่ชื่องานเพื่อดูขั้นตอนและสถานะของโครงการ
+                แสดงประวัติตั้งแต่เสนอราคา จนถึงได้รับงานและปิด Project
               </p>
             </div>
 
@@ -2098,20 +2505,22 @@
               <select
                 class="design-select"
                 id="designStatusFilter"
-                onchange="filterDesignRows()"
+                onchange="resetDesignQuickFilter(); filterDesignRows();"
               >
                 <option value="ALL">ทุกสถานะ</option>
+                <option value="DRAFT">Draft / ยังไม่ออกเอกสาร</option>
                 <option value="WAIT">รอผลเสนอราคา</option>
                 <option value="ACTIVE">กำลังดำเนินการ</option>
                 <option value="CLOSED">ปิดงาน</option>
                 <option value="LOST">ไม่ได้งาน</option>
+                <option value="CANCELLED">ยกเลิก</option>
               </select>
 
               <input
                 class="design-search"
                 id="designSearch"
                 type="search"
-                placeholder="ค้นหาลูกค้า / โครงการ / เลขที่ใบเสนอราคา"
+                placeholder="ค้นหาเลข Project / ใบเสนอราคา / ลูกค้า / ชื่องาน"
                 oninput="filterDesignRows()"
               >
 
@@ -2125,32 +2534,40 @@
             </div>
           </header>
 
+
           <div class="table-wrap">
-            <table>
+            <table style="min-width: 1450px;">
               <thead>
                 <tr>
-                  <th>เลขโครงการ</th>
+                  <th>เลข Project</th>
                   <th>เลขที่ใบเสนอราคา</th>
+                  <th>REV.</th>
                   <th>ลูกค้า</th>
-                  <th>ชื่องาน / โครงการ</th>
+                  <th>ชื่อ Project</th>
                   <th>มูลค่า (บาท)</th>
-                  <th>วันที่เสนอราคา</th>
+                  <th>สถานะใบเสนอราคา</th>
                   <th>PO</th>
                   <th>การชำระเงิน</th>
-                  <th>สถานะงาน</th>
+                  <th>สถานะ Project</th>
+                  <th>ACTION</th>
                 </tr>
               </thead>
 
               <tbody id="designTableBody">
 
-                <!-- DESIGN 1 -->
+                <!-- PROJECT 1 : ได้รับ PO / กำลังดำเนินการ -->
                 <tr
                   class="design-row"
                   data-project-id="PJ-2569-001"
                   data-status="ACTIVE"
+                  data-quotation-status="ACCEPTED"
+                  data-po="RECEIVED"
+                  data-amount="65000"
+                  data-deletable="false"
                 >
                   <td><strong>PJ-2569-001</strong></td>
-                  <td>QT-2569-0008</td>
+                  <td>ADT-08/69</td>
+                  <td><span class="revision-badge">R0</span></td>
                   <td>บริษัท เอสอี คอนสตรัคชั่น จำกัด</td>
                   <td>
                     <button
@@ -2163,10 +2580,27 @@
                     </button>
                   </td>
                   <td>65,000.00</td>
-                  <td>18 ส.ค. 2569</td>
+                  <td><span class="quotation-status accepted">ได้งาน</span></td>
                   <td><span class="po-status received">ได้รับแล้ว</span></td>
                   <td><span class="payment-status partial">รับแล้ว 50%</span></td>
                   <td><span class="design-status active">กำลังดำเนินการ</span></td>
+                  <td>
+                    <div class="design-actions">
+                      <button
+                        class="design-icon-btn"
+                        type="button"
+                        title="พรีวิวใบเสนอราคา"
+                        onclick="previewDesignDocument('PJ-2569-001')"
+                      >👁</button>
+
+                      <button
+                        class="design-icon-btn"
+                        type="button"
+                        title="จัดการ"
+                        onclick="toggleDesignActionMenu(event, 'menu-PJ-2569-001')"
+                      >⋮</button>
+                    </div>
+                  </td>
                 </tr>
 
                 <tr
@@ -2174,16 +2608,16 @@
                   id="detail-PJ-2569-001"
                   data-parent="PJ-2569-001"
                 >
-                  <td class="design-detail-cell" colspan="9">
+                  <td class="design-detail-cell" colspan="11">
                     <div class="design-detail-box">
                       <div class="design-detail-title">
-                        Workflow — PJ-2569-001
+                        Workflow — PJ-2569-001 / ADT-08/69
                       </div>
 
                       <div class="workflow-grid">
                         <div class="workflow-card done">
                           <strong>Quotation</strong>
-                          <span>QT-2569-0008<br>อนุมัติแล้ว</span>
+                          <span>ADT-08/69<br>ลูกค้าตกลง</span>
                         </div>
 
                         <div class="workflow-card done">
@@ -2192,8 +2626,8 @@
                         </div>
 
                         <div class="workflow-card done">
-                          <strong>Contract</strong>
-                          <span>จัดทำสัญญาแล้ว</span>
+                          <strong>Project</strong>
+                          <span>เปิด PJ-2569-001 แล้ว</span>
                         </div>
 
                         <div class="workflow-card wait">
@@ -2215,47 +2649,70 @@
                   </td>
                 </tr>
 
-                <!-- DESIGN 2 -->
+
+                <!-- PROJECT 2 : เสนอราคาแล้ว / รอผล -->
                 <tr
                   class="design-row"
-                  data-project-id="QT-2569-0009"
+                  data-project-id="ADT-09-69"
                   data-status="WAIT"
+                  data-quotation-status="WAITING"
+                  data-po="NONE"
+                  data-amount="120000"
+                  data-deletable="false"
                 >
                   <td>—</td>
-                  <td><strong>QT-2569-0009</strong></td>
+                  <td><strong>ADT-09/69</strong></td>
+                  <td><span class="revision-badge">R0</span></td>
                   <td>ห้างหุ้นส่วนจำกัด เอ็มจีเนียริ่ง</td>
                   <td>
                     <button
                       class="project-name-btn"
                       type="button"
-                      onclick="toggleDesignDetail('QT-2569-0009')"
+                      onclick="toggleDesignDetail('ADT-09-69')"
                     >
                       <span class="project-expand-icon">›</span>
                       งานตรวจสอบและออกแบบโครงสร้าง
                     </button>
                   </td>
                   <td>120,000.00</td>
-                  <td>20 ส.ค. 2569</td>
+                  <td><span class="quotation-status wait">รอผล</span></td>
                   <td><span class="po-status none">—</span></td>
                   <td><span class="payment-status none">—</span></td>
                   <td><span class="design-status wait">รอผลเสนอราคา</span></td>
+                  <td>
+                    <div class="design-actions">
+                      <button
+                        class="design-icon-btn"
+                        type="button"
+                        title="พรีวิวใบเสนอราคา"
+                        onclick="previewDesignDocument('ADT-09-69')"
+                      >👁</button>
+
+                      <button
+                        class="design-icon-btn"
+                        type="button"
+                        title="จัดการ"
+                        onclick="toggleDesignActionMenu(event, 'menu-ADT-09-69')"
+                      >⋮</button>
+                    </div>
+                  </td>
                 </tr>
 
                 <tr
                   class="design-detail-row"
-                  id="detail-QT-2569-0009"
-                  data-parent="QT-2569-0009"
+                  id="detail-ADT-09-69"
+                  data-parent="ADT-09-69"
                 >
-                  <td class="design-detail-cell" colspan="9">
+                  <td class="design-detail-cell" colspan="11">
                     <div class="design-detail-box">
                       <div class="design-detail-title">
-                        Workflow — QT-2569-0009
+                        Workflow — ADT-09/69
                       </div>
 
                       <div class="workflow-grid">
                         <div class="workflow-card wait">
                           <strong>Quotation</strong>
-                          <span>ส่งแล้ว<br>รอลูกค้าตอบ</span>
+                          <span>ส่งลูกค้าแล้ว<br>รอผล</span>
                         </div>
 
                         <div class="workflow-card off">
@@ -2264,8 +2721,8 @@
                         </div>
 
                         <div class="workflow-card off">
-                          <strong>Contract</strong>
-                          <span>ยังไม่เริ่ม</span>
+                          <strong>Project</strong>
+                          <span>ยังไม่สร้างเลข PJ</span>
                         </div>
 
                         <div class="workflow-card off">
@@ -2287,14 +2744,20 @@
                   </td>
                 </tr>
 
-                <!-- DESIGN 3 -->
+
+                <!-- PROJECT 3 : ปิดงานแล้ว -->
                 <tr
                   class="design-row"
                   data-project-id="PJ-2569-003"
                   data-status="CLOSED"
+                  data-quotation-status="ACCEPTED"
+                  data-po="NO_PO"
+                  data-amount="85000"
+                  data-deletable="false"
                 >
                   <td><strong>PJ-2569-003</strong></td>
-                  <td>QT-2569-0006</td>
+                  <td>ADT-06/69</td>
+                  <td><span class="revision-badge">R1</span></td>
                   <td>บริษัท เจริญทรัพย์ วิศวกรรม จำกัด</td>
                   <td>
                     <button
@@ -2307,10 +2770,27 @@
                     </button>
                   </td>
                   <td>85,000.00</td>
-                  <td>10 ส.ค. 2569</td>
+                  <td><span class="quotation-status accepted">ได้งาน</span></td>
                   <td><span class="po-status none">ไม่มี PO</span></td>
                   <td><span class="payment-status paid">ชำระครบ</span></td>
                   <td><span class="design-status closed">ปิดงาน</span></td>
+                  <td>
+                    <div class="design-actions">
+                      <button
+                        class="design-icon-btn"
+                        type="button"
+                        title="พรีวิวใบเสนอราคา"
+                        onclick="previewDesignDocument('PJ-2569-003')"
+                      >👁</button>
+
+                      <button
+                        class="design-icon-btn"
+                        type="button"
+                        title="จัดการ"
+                        onclick="toggleDesignActionMenu(event, 'menu-PJ-2569-003')"
+                      >⋮</button>
+                    </div>
+                  </td>
                 </tr>
 
                 <tr
@@ -2318,16 +2798,16 @@
                   id="detail-PJ-2569-003"
                   data-parent="PJ-2569-003"
                 >
-                  <td class="design-detail-cell" colspan="9">
+                  <td class="design-detail-cell" colspan="11">
                     <div class="design-detail-box">
                       <div class="design-detail-title">
-                        Workflow — PJ-2569-003
+                        Workflow — PJ-2569-003 / ADT-06/69
                       </div>
 
                       <div class="workflow-grid">
                         <div class="workflow-card done">
                           <strong>Quotation</strong>
-                          <span>อนุมัติแล้ว</span>
+                          <span>Rev.1 ลูกค้าตกลง</span>
                         </div>
 
                         <div class="workflow-card done">
@@ -2336,8 +2816,8 @@
                         </div>
 
                         <div class="workflow-card done">
-                          <strong>Contract</strong>
-                          <span>ดำเนินการแล้ว</span>
+                          <strong>Project</strong>
+                          <span>ดำเนินงานเสร็จแล้ว</span>
                         </div>
 
                         <div class="workflow-card done">
@@ -2359,57 +2839,80 @@
                   </td>
                 </tr>
 
-                <!-- DESIGN 4 -->
+
+                <!-- PROJECT 4 : เสนอแล้วไม่ได้งาน -->
                 <tr
                   class="design-row"
-                  data-project-id="QT-2569-0004"
+                  data-project-id="ADT-04-69"
                   data-status="LOST"
+                  data-quotation-status="LOST"
+                  data-po="NONE"
+                  data-amount="95000"
+                  data-deletable="false"
                 >
                   <td>—</td>
-                  <td><strong>QT-2569-0004</strong></td>
+                  <td><strong>ADT-04/69</strong></td>
+                  <td><span class="revision-badge">R0</span></td>
                   <td>บริษัท ตัวอย่าง จำกัด</td>
                   <td>
                     <button
                       class="project-name-btn"
                       type="button"
-                      onclick="toggleDesignDetail('QT-2569-0004')"
+                      onclick="toggleDesignDetail('ADT-04-69')"
                     >
                       <span class="project-expand-icon">›</span>
                       งานออกแบบอาคารสำนักงาน
                     </button>
                   </td>
                   <td>95,000.00</td>
-                  <td>05 ส.ค. 2569</td>
+                  <td><span class="quotation-status lost">ไม่ได้งาน</span></td>
                   <td><span class="po-status none">—</span></td>
                   <td><span class="payment-status none">—</span></td>
                   <td><span class="design-status lost">ไม่ได้งาน</span></td>
+                  <td>
+                    <div class="design-actions">
+                      <button
+                        class="design-icon-btn"
+                        type="button"
+                        title="พรีวิวใบเสนอราคา"
+                        onclick="previewDesignDocument('ADT-04-69')"
+                      >👁</button>
+
+                      <button
+                        class="design-icon-btn"
+                        type="button"
+                        title="จัดการ"
+                        onclick="toggleDesignActionMenu(event, 'menu-ADT-04-69')"
+                      >⋮</button>
+                    </div>
+                  </td>
                 </tr>
 
                 <tr
                   class="design-detail-row"
-                  id="detail-QT-2569-0004"
-                  data-parent="QT-2569-0004"
+                  id="detail-ADT-04-69"
+                  data-parent="ADT-04-69"
                 >
-                  <td class="design-detail-cell" colspan="9">
+                  <td class="design-detail-cell" colspan="11">
                     <div class="design-detail-box">
                       <div class="design-detail-title">
-                        Workflow — QT-2569-0004
+                        Workflow — ADT-04/69
                       </div>
 
                       <div class="workflow-grid">
                         <div class="workflow-card done">
                           <strong>Quotation</strong>
-                          <span>ส่งแล้ว</span>
+                          <span>ส่งลูกค้าแล้ว</span>
                         </div>
 
                         <div class="workflow-card off">
                           <strong>Result</strong>
-                          <span>ลูกค้าไม่อนุมัติ</span>
+                          <span>ไม่ได้งาน</span>
                         </div>
 
                         <div class="workflow-card off">
                           <strong>Project</strong>
-                          <span>ไม่สร้างเลข Project</span>
+                          <span>ไม่สร้างเลข PJ</span>
                         </div>
 
                         <div class="workflow-card off">
@@ -2437,10 +2940,53 @@
 
           <footer class="design-foot">
             <span id="designRowCount">แสดง 4 จาก 4 รายการ</span>
-            <span>DEMO DATA — รอเชื่อม Supabase API</span>
+
+            <span class="design-table-note">
+              <strong>หมายเหตุ:</strong>
+              Draft ที่ยังไม่ออกเอกสารสามารถลบได้ /
+              ใบที่ส่งลูกค้าแล้วให้เก็บเป็นประวัติ
+            </span>
           </footer>
 
         </section>
+
+
+        <!-- =====================================================
+             ACTION MENUS
+             ตอนเชื่อม API จริง ให้ส่ง quotation/project id แทน demo id
+        ====================================================== -->
+        <div class="design-action-menu" id="menu-PJ-2569-001">
+          <button type="button" onclick="previewDesignDocument('PJ-2569-001')">👁 พรีวิวใบเสนอราคา</button>
+          <button type="button" onclick="editDesignItem('PJ-2569-001')">✏ แก้ไข / ทำ Revision</button>
+          <button type="button" onclick="openProjectWorkflow('PJ-2569-001')">▦ ดู Workflow Project</button>
+          <div class="design-action-divider"></div>
+          <button type="button" onclick="cancelQuotation('PJ-2569-001')">⊘ ยกเลิกใบเสนอราคา</button>
+          <button type="button" class="danger" disabled title="เอกสารนี้ถูกใช้งานแล้ว">🗑 ลบรายการ</button>
+        </div>
+
+        <div class="design-action-menu" id="menu-ADT-09-69">
+          <button type="button" onclick="previewDesignDocument('ADT-09-69')">👁 พรีวิวใบเสนอราคา</button>
+          <button type="button" onclick="editDesignItem('ADT-09-69')">✏ แก้ไข / ทำ Revision</button>
+          <div class="design-action-divider"></div>
+          <button type="button" onclick="markQuotationLost('ADT-09-69')">✕ บันทึกว่าไม่ได้งาน</button>
+          <button type="button" onclick="cancelQuotation('ADT-09-69')">⊘ ยกเลิกใบเสนอราคา</button>
+          <button type="button" class="danger" disabled title="ส่งใบเสนอราคาแล้ว จึงไม่ควรลบถาวร">🗑 ลบรายการ</button>
+        </div>
+
+        <div class="design-action-menu" id="menu-PJ-2569-003">
+          <button type="button" onclick="previewDesignDocument('PJ-2569-003')">👁 พรีวิวใบเสนอราคา</button>
+          <button type="button" onclick="openProjectWorkflow('PJ-2569-003')">▦ ดู Workflow Project</button>
+          <div class="design-action-divider"></div>
+          <button type="button" class="danger" disabled title="Project ปิดงานแล้ว">🗑 ลบรายการ</button>
+        </div>
+
+        <div class="design-action-menu" id="menu-ADT-04-69">
+          <button type="button" onclick="previewDesignDocument('ADT-04-69')">👁 พรีวิวใบเสนอราคา</button>
+          <button type="button" onclick="openProjectWorkflow('ADT-04-69')">▦ ดูประวัติการเสนอราคา</button>
+          <div class="design-action-divider"></div>
+          <button type="button" class="danger" disabled title="เก็บไว้เป็นประวัติ Lost">🗑 ลบรายการ</button>
+        </div>
+
 
       </main>
     </div>
@@ -2710,6 +3256,20 @@
     });
 
 
+    let activeDesignQuickFilter = "ALL";
+
+
+    function formatDesignMoney(value) {
+      return Number(value || 0).toLocaleString(
+        "th-TH",
+        {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        }
+      );
+    }
+
+
     function toggleDesignDetail(projectId) {
       const row =
         document.querySelector(
@@ -2739,59 +3299,308 @@
       );
     }
 
+
+    function updateDesignKpis() {
+      const rows =
+        [...document.querySelectorAll(".design-row")];
+
+      const definitions = {
+        QUOTED: {
+          rows: rows.filter(
+            row =>
+              row.dataset.quotationStatus === "WAITING"
+          ),
+          countId: "designCountQuoted",
+          valueId: "designValueQuoted",
+          ringId: "designRingQuoted"
+        },
+
+        PO: {
+          rows: rows.filter(
+            row =>
+              row.dataset.po === "RECEIVED" ||
+              row.dataset.quotationStatus === "ACCEPTED"
+          ),
+          countId: "designCountPo",
+          valueId: "designValuePo",
+          ringId: "designRingPo"
+        },
+
+        ACTIVE: {
+          rows: rows.filter(
+            row =>
+              row.dataset.status === "ACTIVE"
+          ),
+          countId: "designCountActive",
+          valueId: "designValueActive",
+          ringId: "designRingActive"
+        },
+
+        CLOSED: {
+          rows: rows.filter(
+            row =>
+              row.dataset.status === "CLOSED"
+          ),
+          countId: "designCountClosed",
+          valueId: "designValueClosed",
+          ringId: "designRingClosed"
+        },
+
+        LOST: {
+          rows: rows.filter(
+            row =>
+              row.dataset.status === "LOST"
+          ),
+          countId: "designCountLost",
+          valueId: "designValueLost",
+          ringId: "designRingLost"
+        }
+      };
+
+      const maxCount =
+        Math.max(
+          1,
+          ...Object.values(definitions)
+            .map(item => item.rows.length)
+        );
+
+      Object.values(definitions)
+        .forEach(
+          item => {
+            const count =
+              item.rows.length;
+
+            const total =
+              item.rows.reduce(
+                (sum, row) =>
+                  sum +
+                  Number(row.dataset.amount || 0),
+                0
+              );
+
+            const countElement =
+              document.getElementById(item.countId);
+
+            const valueElement =
+              document.getElementById(item.valueId);
+
+            const ringElement =
+              document.getElementById(item.ringId);
+
+            if (countElement) {
+              countElement.textContent =
+                count.toLocaleString("th-TH");
+            }
+
+            if (valueElement) {
+              valueElement.textContent =
+                `${formatDesignMoney(total)} บาท`;
+            }
+
+            if (ringElement) {
+              const percent =
+                count === 0
+                  ? 0
+                  : Math.max(
+                      14,
+                      Math.round(
+                        (count / maxCount) * 100
+                      )
+                    );
+
+              ringElement.style.setProperty(
+                "--value",
+                String(percent)
+              );
+            }
+          }
+        );
+    }
+
+
+    function resetDesignQuickFilter() {
+      activeDesignQuickFilter =
+        "ALL";
+
+      document
+        .querySelectorAll(".design-summary-card")
+        .forEach(
+          card =>
+            card.classList.remove("active")
+        );
+    }
+
+
+    function applyDesignQuickFilter(
+      mode,
+      element
+    ) {
+      if (
+        activeDesignQuickFilter === mode
+      ) {
+        resetDesignQuickFilter();
+      }
+      else {
+        activeDesignQuickFilter =
+          mode;
+
+        document
+          .querySelectorAll(".design-summary-card")
+          .forEach(
+            card =>
+              card.classList.remove("active")
+          );
+
+        element?.classList.add(
+          "active"
+        );
+
+        const statusFilter =
+          document.getElementById(
+            "designStatusFilter"
+          );
+
+        if (statusFilter) {
+          statusFilter.value =
+            "ALL";
+        }
+      }
+
+      filterDesignRows();
+    }
+
+
+    function quickFilterMatches(row) {
+      switch (
+        activeDesignQuickFilter
+      ) {
+        case "QUOTED":
+          return (
+            row.dataset.quotationStatus ===
+            "WAITING"
+          );
+
+        case "PO":
+          return (
+            row.dataset.po === "RECEIVED" ||
+            row.dataset.quotationStatus ===
+              "ACCEPTED"
+          );
+
+        case "ACTIVE":
+          return (
+            row.dataset.status ===
+            "ACTIVE"
+          );
+
+        case "CLOSED":
+          return (
+            row.dataset.status ===
+            "CLOSED"
+          );
+
+        case "LOST":
+          return (
+            row.dataset.status ===
+            "LOST"
+          );
+
+        default:
+          return true;
+      }
+    }
+
+
     function filterDesignRows() {
       const status =
-        document.getElementById("designStatusFilter")?.value || "ALL";
+        document.getElementById(
+          "designStatusFilter"
+        )?.value || "ALL";
 
       const keyword =
-        (document.getElementById("designSearch")?.value || "")
+        (
+          document.getElementById(
+            "designSearch"
+          )?.value || ""
+        )
           .trim()
           .toLowerCase();
 
       const rows =
-        [...document.querySelectorAll(".design-row")];
+        [
+          ...document.querySelectorAll(
+            ".design-row"
+          )
+        ];
 
       let shown = 0;
 
-      rows.forEach((row) => {
-        const projectId =
-          row.dataset.projectId || "";
+      rows.forEach(
+        row => {
+          const projectId =
+            row.dataset.projectId || "";
 
-        const rowStatus =
-          row.dataset.status || "";
+          const rowStatus =
+            row.dataset.status || "";
 
-        const text =
-          row.innerText.toLowerCase();
+          const text =
+            row.innerText.toLowerCase();
 
-        const statusMatch =
-          status === "ALL" ||
-          rowStatus === status;
+          const statusMatch =
+            status === "ALL" ||
+            rowStatus === status;
 
-        const keywordMatch =
-          !keyword ||
-          text.includes(keyword);
+          const keywordMatch =
+            !keyword ||
+            text.includes(keyword);
 
-        const visible =
-          statusMatch &&
-          keywordMatch;
+          const quickMatch =
+            quickFilterMatches(row);
 
-        row.style.display =
-          visible ? "" : "none";
+          const visible =
+            statusMatch &&
+            keywordMatch &&
+            quickMatch;
 
-        const detail =
-          document.getElementById(
-            `detail-${projectId}`
-          );
+          row.style.display =
+            visible
+              ? ""
+              : "none";
 
-        if (!visible && detail) {
-          detail.classList.remove("open");
-          row.classList.remove("open");
+          const detail =
+            document.getElementById(
+              `detail-${projectId}`
+            );
+
+          if (
+            !visible &&
+            detail
+          ) {
+            detail.classList.remove(
+              "open"
+            );
+
+            row.classList.remove(
+              "open"
+            );
+
+            detail.style.display =
+              "none";
+          }
+          else if (detail) {
+            detail.style.display =
+              detail.classList.contains(
+                "open"
+              )
+                ? "table-row"
+                : "";
+          }
+
+          if (visible) {
+            shown++;
+          }
         }
-
-        if (visible) {
-          shown++;
-        }
-      });
+      );
 
       const counter =
         document.getElementById(
@@ -2804,9 +3613,149 @@
       }
     }
 
+
+    function closeAllDesignActionMenus() {
+      document
+        .querySelectorAll(
+          ".design-action-menu.open"
+        )
+        .forEach(
+          menu =>
+            menu.classList.remove(
+              "open"
+            )
+        );
+    }
+
+
+    function toggleDesignActionMenu(
+      event,
+      menuId
+    ) {
+      event.stopPropagation();
+
+      const menu =
+        document.getElementById(
+          menuId
+        );
+
+      if (!menu) {
+        return;
+      }
+
+      const wasOpen =
+        menu.classList.contains(
+          "open"
+        );
+
+      closeAllDesignActionMenus();
+
+      if (wasOpen) {
+        return;
+      }
+
+      const button =
+        event.currentTarget;
+
+      const rect =
+        button.getBoundingClientRect();
+
+      const menuWidth =
+        210;
+
+      const left =
+        Math.max(
+          10,
+          Math.min(
+            window.innerWidth -
+              menuWidth -
+              10,
+            rect.right -
+              menuWidth
+          )
+        );
+
+      const top =
+        Math.min(
+          window.innerHeight -
+            260,
+          rect.bottom + 6
+        );
+
+      menu.style.left =
+        `${left}px`;
+
+      menu.style.top =
+        `${Math.max(10, top)}px`;
+
+      menu.classList.add(
+        "open"
+      );
+    }
+
+
+    function previewDesignDocument(projectId) {
+      closeAllDesignActionMenus();
+
+      // เตรียมไว้สำหรับ Quotation Preview Modal / PDF Viewer
+      window.alert(
+        `พรีวิวเอกสาร: ${projectId}\n\nขั้นต่อไปจะเชื่อมข้อมูลจริงจาก 12_quotations / 13_quotation_items และ PDF Storage`
+      );
+    }
+
+
+    function editDesignItem(projectId) {
+      closeAllDesignActionMenus();
+
+      window.alert(
+        `แก้ไข / Revision: ${projectId}\n\nระบบ Revision จะอนุญาต R1 - R3 ตามกติกาที่กำหนด`
+      );
+    }
+
+
+    function openProjectWorkflow(projectId) {
+      closeAllDesignActionMenus();
+      toggleDesignDetail(projectId);
+    }
+
+
+    function markQuotationLost(projectId) {
+      closeAllDesignActionMenus();
+
+      window.alert(
+        `บันทึกผลไม่ได้งาน: ${projectId}\n\nเมื่อเชื่อม API จริง รายการจะถูกเก็บเป็น LOST และยังคงอยู่ในรายงานประวัติ`
+      );
+    }
+
+
+    function cancelQuotation(projectId) {
+      closeAllDesignActionMenus();
+
+      window.alert(
+        `ยกเลิกใบเสนอราคา: ${projectId}\n\nเมื่อเชื่อม API จริง จะเปลี่ยนสถานะเป็น CANCELLED โดยไม่ลบประวัติเอกสาร`
+      );
+    }
+
+
     function addQuotation() {
-      window.location.href = "/admin/sales/design-projects/new/";
-  }
+      window.location.href =
+        "/admin/sales/design-projects/new/";
+    }
+
+
+    document.addEventListener(
+      "click",
+      () => {
+        closeAllDesignActionMenus();
+      }
+    );
+
+
+    window.addEventListener(
+      "resize",
+      closeAllDesignActionMenus
+    );
+
 
     document.addEventListener("DOMContentLoaded", () => {
       if (salesSubmenu && salesMenuToggle) {
@@ -2817,6 +3766,9 @@
           "true"
         );
       }
+
+      updateDesignKpis();
+      filterDesignRows();
     });
 
   </script>
