@@ -1805,16 +1805,18 @@
 
     .workflow-grid {
       display: grid;
-      grid-template-columns: repeat(6, minmax(120px, 1fr));
-      gap: 8px;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 10px;
     }
 
     .workflow-card {
-      min-height: 72px;
-      padding: 10px 11px;
+      min-height: 118px;
+      padding: 12px 12px 11px;
       border: 1px solid #e4ebf3;
-      border-radius: 12px;
+      border-radius: 14px;
       background: #ffffff;
+      display: flex;
+      flex-direction: column;
     }
 
     .workflow-card strong {
@@ -1843,6 +1845,64 @@
 
     .workflow-card.off {
       background: #f7f9fb;
+    }
+
+    .workflow-card .workflow-value {
+      margin-top: 5px;
+      color: var(--navy-900);
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .workflow-card .workflow-meta {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.62rem;
+      line-height: 1.45;
+    }
+
+    .workflow-card .workflow-action {
+      margin-top: auto;
+      padding-top: 9px;
+    }
+
+    .workflow-mini-btn {
+      width: 100%;
+      min-height: 30px;
+      padding: 5px 8px;
+      border: 1px solid #cfe0f5;
+      border-radius: 8px;
+      color: #075fc4;
+      background: #f7fbff;
+      font-size: 0.61rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .workflow-mini-btn:hover {
+      border-color: #9fc5f5;
+      background: #eaf3ff;
+    }
+
+    .workflow-mini-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.48;
+    }
+
+    .workflow-progress {
+      height: 7px;
+      margin-top: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e7edf4;
+    }
+
+    .workflow-progress > span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue-600), #54a4ff);
     }
 
     .design-foot {
@@ -2922,6 +2982,17 @@
       }
 
       if (
+        value === "SUCCESS"
+      ) {
+        return {
+          className:
+            "accepted",
+          label:
+            "Success - เสนอราคาสำเร็จ"
+        };
+      }
+
+      if (
         [
           "ISSUED",
           "WAITING",
@@ -2934,7 +3005,7 @@
           className:
             "wait",
           label:
-            "รอผล"
+            "Success - เสนอราคาสำเร็จ"
         };
       }
 
@@ -2942,7 +3013,7 @@
         className:
           "draft",
         label:
-          "Draft"
+          "Draft - รอเสนอราคา"
       };
     }
 
@@ -3236,11 +3307,6 @@
           project.quotation_status
         );
 
-      const projectStatus =
-        projectStatusView(
-          project.project_status
-        );
-
       const poStatus =
         poStatusView(
           project.po_status
@@ -3251,6 +3317,56 @@
           project.payment_status,
           project.payment_percent
         );
+
+      const paymentPercent =
+        Math.max(
+          0,
+          Math.min(
+            100,
+            Number(
+              project.payment_percent ||
+              0
+            )
+          )
+        );
+
+      const contractAmount =
+        Number(
+          project.contract_amount ||
+          project.po_amount ||
+          project.awarded_amount ||
+          0
+        );
+
+      const billedAmount =
+        Number(
+          project.billed_amount ||
+          project.billing_amount ||
+          0
+        );
+
+      const paidAmount =
+        Number(
+          project.paid_amount ||
+          project.payment_amount ||
+          0
+        );
+
+      const latestBillingNo =
+        project.latest_billing_no ||
+        project.latest_payment_request_no ||
+        null;
+
+      const latestPaymentNo =
+        project.latest_payment_no ||
+        project.latest_payment_receipt_no ||
+        null;
+
+      const poNo =
+        project.po_no ||
+        project.contract_no ||
+        project.award_document_no ||
+        null;
 
       return `
         <div class="design-detail-box">
@@ -3270,21 +3386,39 @@
                 ? "done"
                 : "off"
             }">
-              <strong>Quotation</strong>
-              <span>
-                ${
-                  escapeHtml(
-                    project.quotation_no ||
-                    "ยังไม่มีใบเสนอราคา"
-                  )
-                }
-                <br>
-                ${
-                  escapeHtml(
-                    quotationStatus.label
-                  )
-                }
-              </span>
+              <strong>1. Quotation</strong>
+
+              <div class="workflow-value">
+                ${escapeHtml(
+                  project.quotation_no ||
+                  "ยังไม่มีใบเสนอราคา"
+                )}
+              </div>
+
+              <div class="workflow-meta">
+                ${escapeHtml(
+                  quotationStatus.label
+                )}
+              </div>
+
+              <div class="workflow-action">
+                <button
+                  class="workflow-mini-btn"
+                  type="button"
+                  onclick="previewDesignDocument('${safeId(
+                    project.project_id ||
+                    project.quotation_id ||
+                    ""
+                  )}')"
+                  ${
+                    project.quotation_id
+                      ? ""
+                      : "disabled"
+                  }
+                >
+                  ดูใบเสนอราคา
+                </button>
+              </div>
             </div>
 
             <div class="workflow-card ${
@@ -3294,69 +3428,167 @@
                 ? "done"
                 : "off"
             }">
-              <strong>PO</strong>
-              <span>
+              <strong>2. PO / Contract</strong>
+
+              <div class="workflow-value">
+                ${escapeHtml(
+                  poNo ||
+                  "ยังไม่มีเอกสารสั่งจ้าง"
+                )}
+              </div>
+
+              <div class="workflow-meta">
                 ${escapeHtml(
                   poStatus.label
                 )}
-              </span>
+                ${
+                  contractAmount > 0
+                    ? `<br>มูลค่าสั่งจ้าง ${formatDesignMoney(contractAmount)} บาท`
+                    : ""
+                }
+              </div>
+
+              <div class="workflow-action">
+                <button
+                  class="workflow-mini-btn"
+                  type="button"
+                  onclick="openWorkflowPlaceholder('PO / Contract')"
+                >
+                  + บันทึกการสั่งจ้าง / Upload PO
+                </button>
+              </div>
             </div>
 
             <div class="workflow-card ${
-              [
-                "ACTIVE",
-                "COMPLETED",
-                "CLOSED"
-              ].includes(
-                normalizeStatus(
-                  project.project_status
-                )
-              )
-                ? "done"
-                : "off"
-            }">
-              <strong>Project</strong>
-              <span>
-                ${escapeHtml(
-                  projectStatus.label
-                )}
-              </span>
-            </div>
-
-            <div class="workflow-card off">
-              <strong>Billing / Invoice</strong>
-              <span>
-                รอเชื่อมระบบ
-              </span>
-            </div>
-
-            <div class="workflow-card ${
-              Number(
-                project.payment_percent ||
-                0
-              ) > 0
+              billedAmount > 0
                 ? "wait"
                 : "off"
             }">
-              <strong>Payment</strong>
-              <span>
+              <strong>3. Billing Request</strong>
+
+              <div class="workflow-value">
+                ${escapeHtml(
+                  latestBillingNo ||
+                  "ยังไม่มีงวดตั้งเบิก"
+                )}
+              </div>
+
+              <div class="workflow-meta">
+                ${
+                  billedAmount > 0
+                    ? `ตั้งเบิกสะสม ${formatDesignMoney(billedAmount)} บาท`
+                    : "หนังสือส่งมอบงาน + ใบวางบิล/ใบแจ้งหนี้"
+                }
+              </div>
+
+              <div class="workflow-action">
+                <button
+                  class="workflow-mini-btn"
+                  type="button"
+                  onclick="openWorkflowPlaceholder('Billing Request')"
+                >
+                  + สร้างงวดเบิก
+                </button>
+              </div>
+            </div>
+
+            <div class="workflow-card ${
+              paidAmount > 0 ||
+              paymentPercent > 0
+                ? "done"
+                : "off"
+            }">
+              <strong>4. Payment Received</strong>
+
+              <div class="workflow-value">
+                ${escapeHtml(
+                  latestPaymentNo ||
+                  "ยังไม่มีหลักฐานชำระ"
+                )}
+              </div>
+
+              <div class="workflow-meta">
                 ${escapeHtml(
                   paymentStatus.label
                 )}
-              </span>
+                ${
+                  paidAmount > 0
+                    ? `<br>รับแล้ว ${formatDesignMoney(paidAmount)} บาท`
+                    : ""
+                }
+              </div>
+
+              <div class="workflow-action">
+                <button
+                  class="workflow-mini-btn"
+                  type="button"
+                  onclick="openWorkflowPlaceholder('Payment Received')"
+                >
+                  + บันทึกรับชำระ / Upload Slip
+                </button>
+              </div>
             </div>
 
-            <div class="workflow-card off">
-              <strong>Receipt / Tax</strong>
-              <span>
-                รอเชื่อมระบบ
-              </span>
+            <div class="workflow-card ${
+              contractAmount > 0
+                ? "wait"
+                : "off"
+            }">
+              <strong>5. Financial Progress</strong>
+
+              <div class="workflow-value">
+                ${
+                  contractAmount > 0
+                    ? `${formatDesignMoney(billedAmount)} / ${formatDesignMoney(contractAmount)} บาท`
+                    : "รอข้อมูล PO / Contract"
+                }
+              </div>
+
+              <div class="workflow-meta">
+                ตั้งเบิก ${
+                  contractAmount > 0
+                    ? Math.min(
+                        100,
+                        Math.max(
+                          0,
+                          billedAmount /
+                          contractAmount *
+                          100
+                        )
+                      ).toFixed(0)
+                    : "0"
+                }%
+                <br>
+                รับเงินจริง ${paymentPercent.toFixed(0)}%
+              </div>
+
+              <div class="workflow-progress">
+                <span style="width:${paymentPercent}%"></span>
+              </div>
+
+              <div class="workflow-action">
+                <button
+                  class="workflow-mini-btn"
+                  type="button"
+                  onclick="openWorkflowPlaceholder('Financial Progress')"
+                >
+                  ดูรายละเอียดการเงิน
+                </button>
+              </div>
             </div>
 
           </div>
         </div>
       `;
     }
+
+
+    function openWorkflowPlaceholder(moduleName) {
+      window.alert(
+        `${moduleName}\n\nขึ้นโครง UI แล้ว — ขั้นต่อไปเชื่อม Endpoint และตารางข้อมูลของโมดูลนี้`
+      );
+    }
+
 
 
     function buildActionMenuHtml(
