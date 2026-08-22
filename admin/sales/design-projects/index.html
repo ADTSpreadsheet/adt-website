@@ -2541,6 +2541,394 @@
       }
     }
 
+  
+    .revision-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 7100;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 22px;
+      background: rgba(3, 16, 37, 0.70);
+      backdrop-filter: blur(4px);
+      overflow-y: auto;
+    }
+
+    .revision-modal.open {
+      display: flex;
+    }
+
+    .revision-frame {
+      width: min(1240px, 100%);
+      margin: auto;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #f5f8fc;
+      box-shadow: 0 28px 80px rgba(3, 16, 37, 0.30);
+    }
+
+    .revision-toolbar {
+      min-height: 64px;
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid #dce5ef;
+      background: rgba(255, 255, 255, 0.97);
+      backdrop-filter: blur(16px);
+    }
+
+    .revision-toolbar strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 0.88rem;
+    }
+
+    .revision-toolbar span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    .revision-toolbar-actions {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .revision-btn {
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      font-size: 0.70rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .revision-btn:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .revision-btn.primary {
+      color: #ffffff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+    }
+
+    .revision-btn.primary:hover {
+      color: #ffffff;
+      background: linear-gradient(135deg, #126ce8, #0a4fae);
+    }
+
+    .revision-btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .revision-body {
+      padding: 18px;
+    }
+
+    .revision-alert {
+      margin-bottom: 14px;
+      padding: 11px 13px;
+      border: 1px solid #f3cc86;
+      border-radius: 11px;
+      color: #8a5600;
+      background: #fff8e8;
+      font-size: 0.70rem;
+      line-height: 1.65;
+    }
+
+    .revision-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+      gap: 14px;
+    }
+
+    .revision-card {
+      padding: 16px;
+      border: 1px solid #e1e9f2;
+      border-radius: 15px;
+      background: #ffffff;
+    }
+
+    .revision-card + .revision-card {
+      margin-top: 14px;
+    }
+
+    .revision-card h3 {
+      margin: 0 0 12px;
+      color: var(--navy-900);
+      font-size: 0.82rem;
+    }
+
+    .revision-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 11px;
+    }
+
+    .revision-form-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .revision-field {
+      min-width: 0;
+    }
+
+    .revision-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .revision-field label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink-700);
+      font-size: 0.66rem;
+      font-weight: 700;
+    }
+
+    .revision-field input,
+    .revision-field select,
+    .revision-field textarea {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid #d9e3ee;
+      border-radius: 9px;
+      color: var(--ink-900);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.70rem;
+    }
+
+    .revision-field textarea {
+      min-height: 78px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    .revision-field input:focus,
+    .revision-field select:focus,
+    .revision-field textarea:focus {
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.08);
+    }
+
+    .revision-readonly {
+      min-height: 38px;
+      padding: 9px 10px;
+      border: 1px solid #e3eaf2;
+      border-radius: 9px;
+      color: var(--ink-700);
+      background: #f8fafc;
+      font-size: 0.70rem;
+      line-height: 1.45;
+    }
+
+    .revision-items-wrap {
+      overflow-x: auto;
+    }
+
+    .revision-items-table {
+      width: 100%;
+      min-width: 850px;
+      border-collapse: collapse;
+    }
+
+    .revision-items-table th,
+    .revision-items-table td {
+      padding: 7px 6px;
+      border: 1px solid #e1e8f0;
+      font-size: 0.66rem;
+      vertical-align: top;
+    }
+
+    .revision-items-table th {
+      color: var(--ink-500);
+      background: #f7faff;
+      text-align: center;
+    }
+
+    .revision-items-table input,
+    .revision-items-table select,
+    .revision-items-table textarea {
+      width: 100%;
+      min-height: 34px;
+      padding: 6px 7px;
+      border: 1px solid #d9e3ee;
+      border-radius: 7px;
+      font-size: 0.66rem;
+      outline: none;
+      background: #ffffff;
+    }
+
+    .revision-items-table textarea {
+      min-height: 60px;
+      resize: vertical;
+      line-height: 1.4;
+    }
+
+    .revision-items-table .revision-item-amount {
+      padding-top: 8px;
+      text-align: right;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .revision-remove-item {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #f1b7b7;
+      border-radius: 8px;
+      color: #b42318;
+      background: #fff5f5;
+      cursor: pointer;
+    }
+
+    .revision-add-item {
+      margin-top: 10px;
+      min-height: 34px;
+      padding: 0 11px;
+      border: 1px dashed #9fc5f5;
+      border-radius: 9px;
+      color: #075fc4;
+      background: #f7fbff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .revision-summary-box {
+      display: grid;
+      gap: 8px;
+    }
+
+    .revision-summary-row {
+      min-height: 38px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid #e3eaf2;
+      border-radius: 9px;
+      background: #fbfdff;
+      font-size: 0.68rem;
+    }
+
+    .revision-summary-row strong {
+      color: var(--navy-900);
+    }
+
+    .revision-summary-row.grand {
+      color: #075fc4;
+      border-color: #bfd7f8;
+      background: #eef6ff;
+      font-size: 0.74rem;
+    }
+
+    .revision-loading,
+    .revision-error {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--ink-500);
+      font-size: 0.80rem;
+    }
+
+    .revision-error {
+      color: #991b1b;
+    }
+
+    .revision-confirm-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 7300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(3, 16, 37, 0.58);
+    }
+
+    .revision-confirm-modal.open {
+      display: flex;
+    }
+
+    .revision-confirm-card {
+      width: min(480px, 100%);
+      padding: 20px;
+      border-radius: 16px;
+      background: #ffffff;
+      box-shadow: 0 24px 70px rgba(3, 16, 37, 0.28);
+    }
+
+    .revision-confirm-card h3 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 0.92rem;
+    }
+
+    .revision-confirm-card p {
+      margin: 10px 0 0;
+      color: var(--ink-700);
+      font-size: 0.72rem;
+      line-height: 1.7;
+    }
+
+    .revision-confirm-actions {
+      margin-top: 18px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    @media (max-width: 980px) {
+      .revision-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .revision-form-grid.three {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .revision-modal {
+        padding: 6px;
+      }
+
+      .revision-body {
+        padding: 10px;
+      }
+
+      .revision-form-grid,
+      .revision-form-grid.three {
+        grid-template-columns: 1fr;
+      }
+
+      .revision-toolbar {
+        align-items: flex-start;
+      }
+
+      .revision-toolbar-actions {
+        flex-direction: column;
+      }
+    }
+
   </style>
 </head>
 
@@ -2943,6 +3331,104 @@
   </div>
 
   
+
+  <div
+    class="revision-modal"
+    id="revisionModal"
+    aria-hidden="true"
+  >
+    <section
+      class="revision-frame"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="revisionModalTitle"
+    >
+      <div class="revision-toolbar">
+        <div>
+          <strong id="revisionModalTitle">
+            แก้ไข / ทำ Revision
+          </strong>
+          <span id="revisionModalSubTitle">
+            กำลังโหลดข้อมูล...
+          </span>
+        </div>
+
+        <div class="revision-toolbar-actions">
+          <button
+            class="revision-btn"
+            type="button"
+            onclick="previewRevisionDraft()"
+          >
+            พรีวิวก่อนบันทึก
+          </button>
+
+          <button
+            class="revision-btn"
+            type="button"
+            onclick="closeRevisionModal()"
+          >
+            ยกเลิก
+          </button>
+
+          <button
+            class="revision-btn primary"
+            id="revisionSaveButton"
+            type="button"
+            onclick="openRevisionConfirm()"
+          >
+            บันทึกเป็น Revision ใหม่
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="revision-body"
+        id="revisionBody"
+      >
+        <div class="revision-loading">
+          กำลังโหลดข้อมูลใบเสนอราคา...
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div
+    class="revision-confirm-modal"
+    id="revisionConfirmModal"
+    aria-hidden="true"
+  >
+    <div class="revision-confirm-card">
+      <h3 id="revisionConfirmTitle">
+        ยืนยันสร้าง Revision ใหม่
+      </h3>
+
+      <p id="revisionConfirmText">
+        การดำเนินการนี้จะสร้างใบเสนอราคา Revision ใหม่
+        และเก็บฉบับเดิมไว้ในประวัติ ต้องการดำเนินการต่อหรือไม่?
+      </p>
+
+      <div class="revision-confirm-actions">
+        <button
+          class="revision-btn"
+          type="button"
+          onclick="closeRevisionConfirm()"
+        >
+          ยกเลิก
+        </button>
+
+        <button
+          class="revision-btn primary"
+          id="revisionConfirmButton"
+          type="button"
+          onclick="submitRevision()"
+        >
+          ยืนยันสร้าง Revision
+        </button>
+      </div>
+    </div>
+  </div>
+
+
   <div
     class="quotation-preview-modal"
     id="quotationPreviewModal"
@@ -3019,6 +3505,9 @@
       [];
 
     let designSummaryCache =
+      null;
+
+    let revisionEditState =
       null;
 
 
@@ -5491,7 +5980,1283 @@
     }
 
 
-    function editDesignItem(
+    function revisionNumber(value) {
+      const number =
+        Number(value);
+
+      return Number.isFinite(number)
+        ? number
+        : 0;
+    }
+
+
+    function closeRevisionConfirm() {
+      const modal =
+        document.getElementById(
+          "revisionConfirmModal"
+        );
+
+      if (!modal) {
+        return;
+      }
+
+      modal.classList.remove(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+    }
+
+
+    function closeRevisionModal() {
+      closeRevisionConfirm();
+
+      const modal =
+        document.getElementById(
+          "revisionModal"
+        );
+
+      if (!modal) {
+        return;
+      }
+
+      modal.classList.remove(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      revisionEditState =
+        null;
+
+      document.body.style.overflow =
+        "";
+    }
+
+
+    function buildRevisionItemRow(
+      item = {},
+      index = 0
+    ) {
+      const itemNo =
+        item.item_no ||
+        index + 1;
+
+      const quantity =
+        Number(
+          item.quantity ?? 1
+        );
+
+      const unitPrice =
+        Number(
+          item.unit_price ?? 0
+        );
+
+      return `
+        <tr
+          class="revision-item-row"
+          data-index="${index}"
+        >
+          <td>
+            <input
+              class="revision-item-no"
+              type="text"
+              value="${escapeHtml(itemNo)}"
+              oninput="recalculateRevisionTotals()"
+            >
+          </td>
+
+          <td>
+            <textarea
+              class="revision-item-description"
+              oninput="recalculateRevisionTotals()"
+            >${escapeHtml(
+              item.description || ""
+            )}</textarea>
+          </td>
+
+          <td>
+            <input
+              class="revision-item-unit"
+              type="text"
+              value="${escapeHtml(
+                item.unit || "L.S."
+              )}"
+              oninput="recalculateRevisionTotals()"
+            >
+          </td>
+
+          <td>
+            <input
+              class="revision-item-quantity"
+              type="number"
+              min="0"
+              step="0.01"
+              value="${Number.isFinite(quantity) ? quantity : 1}"
+              oninput="recalculateRevisionTotals()"
+            >
+          </td>
+
+          <td>
+            <input
+              class="revision-item-unit-price"
+              type="number"
+              min="0"
+              step="0.01"
+              value="${Number.isFinite(unitPrice) ? unitPrice : 0}"
+              oninput="recalculateRevisionTotals()"
+            >
+          </td>
+
+          <td
+            class="revision-item-amount"
+          >
+            ${formatDesignMoney(
+              quantity *
+              unitPrice
+            )}
+          </td>
+
+          <td style="text-align:center;">
+            <button
+              class="revision-remove-item"
+              type="button"
+              title="ลบรายการ"
+              onclick="removeRevisionItemRow(this)"
+            >
+              ✕
+            </button>
+          </td>
+        </tr>
+      `;
+    }
+
+
+    function addRevisionItemRow() {
+      const body =
+        document.getElementById(
+          "revisionItemsBody"
+        );
+
+      if (!body) {
+        return;
+      }
+
+      const index =
+        body.querySelectorAll(
+          ".revision-item-row"
+        ).length;
+
+      body.insertAdjacentHTML(
+        "beforeend",
+        buildRevisionItemRow(
+          {
+            item_no:
+              index + 1,
+            unit:
+              "L.S.",
+            quantity:
+              1,
+            unit_price:
+              0
+          },
+          index
+        )
+      );
+
+      recalculateRevisionTotals();
+    }
+
+
+    function removeRevisionItemRow(button) {
+      const row =
+        button?.closest(
+          ".revision-item-row"
+        );
+
+      if (!row) {
+        return;
+      }
+
+      const body =
+        document.getElementById(
+          "revisionItemsBody"
+        );
+
+      if (
+        body &&
+        body.querySelectorAll(
+          ".revision-item-row"
+        ).length <= 1
+      ) {
+        window.alert(
+          "ใบเสนอราคาต้องมีอย่างน้อย 1 รายการ"
+        );
+
+        return;
+      }
+
+      row.remove();
+
+      recalculateRevisionTotals();
+    }
+
+
+    function collectRevisionItems() {
+      return [
+        ...document.querySelectorAll(
+          "#revisionItemsBody .revision-item-row"
+        )
+      ].map(
+        (row, index) => {
+          const quantity =
+            Math.max(
+              0,
+              Number(
+                row.querySelector(
+                  ".revision-item-quantity"
+                )?.value || 0
+              )
+            );
+
+          const unitPrice =
+            Math.max(
+              0,
+              Number(
+                row.querySelector(
+                  ".revision-item-unit-price"
+                )?.value || 0
+              )
+            );
+
+          return {
+            item_no:
+              row.querySelector(
+                ".revision-item-no"
+              )?.value?.trim() ||
+              String(index + 1),
+
+            description:
+              row.querySelector(
+                ".revision-item-description"
+              )?.value?.trim() ||
+              "",
+
+            unit:
+              row.querySelector(
+                ".revision-item-unit"
+              )?.value?.trim() ||
+              "L.S.",
+
+            quantity,
+
+            unit_price:
+              unitPrice,
+
+            amount:
+              quantity *
+              unitPrice
+          };
+        }
+      );
+    }
+
+
+    function getRevisionTotals() {
+      const items =
+        collectRevisionItems();
+
+      const subtotal =
+        items.reduce(
+          (sum, item) =>
+            sum +
+            Number(
+              item.amount || 0
+            ),
+          0
+        );
+
+      const discountAmount =
+        Math.min(
+          subtotal,
+          Math.max(
+            0,
+            Number(
+              document.getElementById(
+                "revisionDiscountAmount"
+              )?.value || 0
+            )
+          )
+        );
+
+      const preVatAmount =
+        Math.max(
+          0,
+          subtotal -
+          discountAmount
+        );
+
+      const vatRate =
+        Math.max(
+          0,
+          Number(
+            document.getElementById(
+              "revisionVatRate"
+            )?.value || 0
+          )
+        );
+
+      const vatAmount =
+        preVatAmount *
+        vatRate /
+        100;
+
+      const grandTotal =
+        preVatAmount +
+        vatAmount;
+
+      return {
+        subtotal,
+        discount_amount:
+          discountAmount,
+        pre_vat_amount:
+          preVatAmount,
+        vat_rate:
+          vatRate,
+        vat_amount:
+          vatAmount,
+        grand_total:
+          grandTotal
+      };
+    }
+
+
+    function recalculateRevisionTotals() {
+      const rows =
+        [
+          ...document.querySelectorAll(
+            "#revisionItemsBody .revision-item-row"
+          )
+        ];
+
+      rows.forEach(
+        row => {
+          const quantity =
+            Math.max(
+              0,
+              Number(
+                row.querySelector(
+                  ".revision-item-quantity"
+                )?.value || 0
+              )
+            );
+
+          const unitPrice =
+            Math.max(
+              0,
+              Number(
+                row.querySelector(
+                  ".revision-item-unit-price"
+                )?.value || 0
+              )
+            );
+
+          const amountCell =
+            row.querySelector(
+              ".revision-item-amount"
+            );
+
+          if (amountCell) {
+            amountCell.textContent =
+              formatDesignMoney(
+                quantity *
+                unitPrice
+              );
+          }
+        }
+      );
+
+      const totals =
+        getRevisionTotals();
+
+      const map = {
+        revisionSubtotal:
+          totals.subtotal,
+        revisionDiscountDisplay:
+          totals.discount_amount,
+        revisionPreVat:
+          totals.pre_vat_amount,
+        revisionVatAmount:
+          totals.vat_amount,
+        revisionGrandTotal:
+          totals.grand_total
+      };
+
+      Object.entries(
+        map
+      ).forEach(
+        ([id, value]) => {
+          const element =
+            document.getElementById(
+              id
+            );
+
+          if (element) {
+            element.textContent =
+              `${formatDesignMoney(value)} บาท`;
+          }
+        }
+      );
+    }
+
+
+    function buildRevisionFormHtml(result) {
+      const quotation =
+        result?.quotation || {};
+
+      const project =
+        result?.project || {};
+
+      const customer =
+        result?.customer || {};
+
+      const items =
+        Array.isArray(result?.items)
+          ? result.items
+          : [];
+
+      const currentRevision =
+        revisionNumber(
+          quotation.revision_no
+        );
+
+      const nextRevision =
+        currentRevision + 1;
+
+      const itemRows =
+        (
+          items.length
+            ? items
+            : [
+                {
+                  item_no:
+                    1,
+                  unit:
+                    "L.S.",
+                  quantity:
+                    1,
+                  unit_price:
+                    0
+                }
+              ]
+        )
+          .map(
+            (item, index) =>
+              buildRevisionItemRow(
+                item,
+                index
+              )
+          )
+          .join("");
+
+      return `
+        <div class="revision-alert">
+          ใบเสนอราคานี้อยู่ในสถานะ SUCCESS แล้ว
+          การบันทึกครั้งนี้จะไม่แก้ทับฉบับเดิม
+          แต่จะสร้าง Revision ใหม่เป็น
+          <strong>R${nextRevision}</strong>
+          และเก็บ R${currentRevision} ไว้ในประวัติ
+        </div>
+
+        <div class="revision-grid">
+          <div>
+            <div class="revision-card">
+              <h3>1. ข้อมูล Project / ลูกค้า</h3>
+
+              <div class="revision-form-grid">
+                <div class="revision-field">
+                  <label>ลูกค้า / Customer</label>
+                  <div class="revision-readonly">
+                    ${escapeHtml(
+                      customer.customer_name ||
+                      "-"
+                    )}
+                  </div>
+                </div>
+
+                <div class="revision-field">
+                  <label>เลขที่ใบเสนอราคา</label>
+                  <div class="revision-readonly">
+                    ${escapeHtml(
+                      quotation.quotation_no ||
+                      "-"
+                    )}
+                    &nbsp; · &nbsp;
+                    R${currentRevision} → R${nextRevision}
+                  </div>
+                </div>
+
+                <div class="revision-field full">
+                  <label>ชื่อ Project</label>
+                  <input
+                    id="revisionProjectName"
+                    type="text"
+                    value="${escapeHtml(
+                      project.project_name ||
+                      quotation.subject ||
+                      ""
+                    )}"
+                  >
+                </div>
+
+                <div class="revision-field full">
+                  <label>สถานที่ / Location</label>
+                  <textarea
+                    id="revisionProjectLocation"
+                  >${escapeHtml(
+                    project.project_location ||
+                    ""
+                  )}</textarea>
+                </div>
+
+                <div class="revision-field">
+                  <label>ประเภท Project</label>
+                  <input
+                    id="revisionProjectType"
+                    type="text"
+                    value="${escapeHtml(
+                      project.project_type ||
+                      ""
+                    )}"
+                  >
+                </div>
+
+                <div class="revision-field">
+                  <label>หัวข้อใบเสนอราคา / Subject</label>
+                  <input
+                    id="revisionSubject"
+                    type="text"
+                    value="${escapeHtml(
+                      quotation.subject ||
+                      project.project_name ||
+                      ""
+                    )}"
+                  >
+                </div>
+
+                <div class="revision-field full">
+                  <label>รายละเอียด Project</label>
+                  <textarea
+                    id="revisionProjectDescription"
+                  >${escapeHtml(
+                    project.project_description ||
+                    ""
+                  )}</textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="revision-card">
+              <h3>2. รายการสินค้า / บริการ</h3>
+
+              <div class="revision-items-wrap">
+                <table class="revision-items-table">
+                  <thead>
+                    <tr>
+                      <th style="width:70px;">ลำดับ</th>
+                      <th>รายละเอียด</th>
+                      <th style="width:90px;">หน่วย</th>
+                      <th style="width:90px;">จำนวน</th>
+                      <th style="width:120px;">ราคาต่อหน่วย</th>
+                      <th style="width:120px;">Amount</th>
+                      <th style="width:48px;"></th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="revisionItemsBody">
+                    ${itemRows}
+                  </tbody>
+                </table>
+              </div>
+
+              <button
+                class="revision-add-item"
+                type="button"
+                onclick="addRevisionItemRow()"
+              >
+                + เพิ่มรายการ
+              </button>
+            </div>
+
+            <div class="revision-card">
+              <h3>3. เงื่อนไขและหมายเหตุ</h3>
+
+              <div class="revision-form-grid">
+                <div class="revision-field full">
+                  <label>เงื่อนไขการชำระเงิน</label>
+                  <textarea
+                    id="revisionPaymentTerms"
+                  >${escapeHtml(
+                    quotation.payment_terms ||
+                    ""
+                  )}</textarea>
+                </div>
+
+                <div class="revision-field full">
+                  <label>หมายเหตุ / Remark</label>
+                  <textarea
+                    id="revisionRemark"
+                  >${escapeHtml(
+                    quotation.remark ||
+                    ""
+                  )}</textarea>
+                </div>
+
+                <div class="revision-field">
+                  <label>ผู้จัดทำ / Prepared by</label>
+                  <input
+                    id="revisionPreparedBy"
+                    type="text"
+                    value="${escapeHtml(
+                      quotation.prepared_by ||
+                      ""
+                    )}"
+                  >
+                </div>
+
+                <div class="revision-field">
+                  <label>ตำแหน่ง / วิชาชีพ</label>
+                  <input
+                    id="revisionPreparedPosition"
+                    type="text"
+                    value="${escapeHtml(
+                      quotation.prepared_by_position ||
+                      ""
+                    )}"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="revision-card">
+              <h3>4. ข้อมูลเอกสาร</h3>
+
+              <div class="revision-form-grid">
+                <div class="revision-field">
+                  <label>วันที่ใบเสนอราคา</label>
+                  <input
+                    id="revisionQuotationDate"
+                    type="date"
+                    value="${escapeHtml(
+                      String(
+                        quotation.quotation_date ||
+                        ""
+                      ).slice(0, 10)
+                    )}"
+                  >
+                </div>
+
+                <div class="revision-field">
+                  <label>อายุใบเสนอราคา (วัน)</label>
+                  <input
+                    id="revisionValidDays"
+                    type="number"
+                    min="1"
+                    step="1"
+                    value="${Math.max(
+                      1,
+                      Number(
+                        quotation.valid_days ||
+                        30
+                      )
+                    )}"
+                  >
+                </div>
+
+                <div class="revision-field">
+                  <label>ส่วนลด (บาท)</label>
+                  <input
+                    id="revisionDiscountAmount"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="${Number(
+                      quotation.discount_amount ||
+                      0
+                    )}"
+                    oninput="recalculateRevisionTotals()"
+                  >
+                </div>
+
+                <div class="revision-field">
+                  <label>VAT (%)</label>
+                  <select
+                    id="revisionVatRate"
+                    onchange="recalculateRevisionTotals()"
+                  >
+                    <option
+                      value="0"
+                      ${
+                        Number(
+                          quotation.vat_rate ||
+                          0
+                        ) === 0
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      ไม่คิด VAT
+                    </option>
+
+                    <option
+                      value="7"
+                      ${
+                        Number(
+                          quotation.vat_rate ||
+                          0
+                        ) === 7
+                          ? "selected"
+                          : ""
+                      }
+                    >
+                      VAT 7%
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="revision-card">
+              <h3>สรุปยอด</h3>
+
+              <div class="revision-summary-box">
+                <div class="revision-summary-row">
+                  <span>รวมก่อนส่วนลด</span>
+                  <strong id="revisionSubtotal">
+                    0.00 บาท
+                  </strong>
+                </div>
+
+                <div class="revision-summary-row">
+                  <span>ส่วนลด</span>
+                  <strong id="revisionDiscountDisplay">
+                    0.00 บาท
+                  </strong>
+                </div>
+
+                <div class="revision-summary-row">
+                  <span>มูลค่าก่อน VAT</span>
+                  <strong id="revisionPreVat">
+                    0.00 บาท
+                  </strong>
+                </div>
+
+                <div class="revision-summary-row">
+                  <span>VAT</span>
+                  <strong id="revisionVatAmount">
+                    0.00 บาท
+                  </strong>
+                </div>
+
+                <div class="revision-summary-row grand">
+                  <span>Grand Total</span>
+                  <strong id="revisionGrandTotal">
+                    0.00 บาท
+                  </strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+
+    function collectRevisionPayload() {
+      const items =
+        collectRevisionItems();
+
+      return {
+        project: {
+          project_name:
+            document.getElementById(
+              "revisionProjectName"
+            )?.value?.trim() ||
+            "",
+
+          project_location:
+            document.getElementById(
+              "revisionProjectLocation"
+            )?.value?.trim() ||
+            "",
+
+          project_type:
+            document.getElementById(
+              "revisionProjectType"
+            )?.value?.trim() ||
+            "",
+
+          project_description:
+            document.getElementById(
+              "revisionProjectDescription"
+            )?.value?.trim() ||
+            ""
+        },
+
+        quotation: {
+          quotation_date:
+            document.getElementById(
+              "revisionQuotationDate"
+            )?.value ||
+            "",
+
+          validity_days:
+            Number(
+              document.getElementById(
+                "revisionValidDays"
+              )?.value || 30
+            ),
+
+          subject:
+            document.getElementById(
+              "revisionSubject"
+            )?.value?.trim() ||
+            "",
+
+          discount_amount:
+            Number(
+              document.getElementById(
+                "revisionDiscountAmount"
+              )?.value || 0
+            ),
+
+          vat_rate:
+            Number(
+              document.getElementById(
+                "revisionVatRate"
+              )?.value || 0
+            ),
+
+          payment_terms:
+            document.getElementById(
+              "revisionPaymentTerms"
+            )?.value?.trim() ||
+            "",
+
+          remark:
+            document.getElementById(
+              "revisionRemark"
+            )?.value?.trim() ||
+            "",
+
+          prepared_by:
+            document.getElementById(
+              "revisionPreparedBy"
+            )?.value?.trim() ||
+            "",
+
+          prepared_by_position:
+            document.getElementById(
+              "revisionPreparedPosition"
+            )?.value?.trim() ||
+            "",
+
+          items
+        }
+      };
+    }
+
+
+    function validateRevisionPayload(payload) {
+      if (
+        !payload?.project?.project_name ||
+        !payload?.project?.project_location ||
+        !payload?.project?.project_type ||
+        !payload?.quotation?.quotation_date
+      ) {
+        window.alert(
+          "กรุณากรอกข้อมูล Project และวันที่ใบเสนอราคาให้ครบ"
+        );
+
+        return false;
+      }
+
+      if (
+        !Array.isArray(
+          payload?.quotation?.items
+        ) ||
+        payload.quotation.items.length === 0
+      ) {
+        window.alert(
+          "กรุณาระบุรายการอย่างน้อย 1 รายการ"
+        );
+
+        return false;
+      }
+
+      if (
+        payload.quotation.items.some(
+          item =>
+            !String(
+              item.description || ""
+            ).trim()
+        )
+      ) {
+        window.alert(
+          "กรุณากรอกรายละเอียดของทุกรายการ"
+        );
+
+        return false;
+      }
+
+      return true;
+    }
+
+
+    function previewRevisionDraft() {
+      if (
+        !revisionEditState?.source
+      ) {
+        return;
+      }
+
+      const payload =
+        collectRevisionPayload();
+
+      if (
+        !validateRevisionPayload(
+          payload
+        )
+      ) {
+        return;
+      }
+
+      const totals =
+        getRevisionTotals();
+
+      const current =
+        revisionEditState.source;
+
+      const currentRevision =
+        revisionNumber(
+          current?.quotation?.revision_no
+        );
+
+      const previewResult = {
+        customer:
+          current.customer || {},
+
+        project: {
+          ...(
+            current.project || {}
+          ),
+          ...payload.project
+        },
+
+        quotation: {
+          ...(
+            current.quotation || {}
+          ),
+          ...payload.quotation,
+          revision_no:
+            currentRevision + 1,
+          subtotal:
+            totals.subtotal,
+          discount_amount:
+            totals.discount_amount,
+          pre_vat_amount:
+            totals.pre_vat_amount,
+          vat_rate:
+            totals.vat_rate,
+          vat_amount:
+            totals.vat_amount,
+          grand_total:
+            totals.grand_total,
+          quotation_status:
+            "SUCCESS"
+        },
+
+        items:
+          payload.quotation.items.map(
+            (item, index) => ({
+              ...item,
+              sort_order:
+                index + 1
+            })
+          )
+      };
+
+      const modal =
+        document.getElementById(
+          "quotationPreviewModal"
+        );
+
+      const body =
+        document.getElementById(
+          "quotationPreviewBody"
+        );
+
+      const subTitle =
+        document.getElementById(
+          "quotationPreviewModalSubTitle"
+        );
+
+      if (
+        !modal ||
+        !body
+      ) {
+        return;
+      }
+
+      body.innerHTML =
+        buildQuotationPreviewHtml(
+          previewResult
+        );
+
+      if (subTitle) {
+        subTitle.textContent =
+          `${
+            current?.quotation?.quotation_no ||
+            "-"
+          } · Preview R${currentRevision + 1} ก่อนบันทึก`;
+      }
+
+      modal.classList.add(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+    }
+
+
+    function openRevisionConfirm() {
+      if (
+        !revisionEditState?.source
+      ) {
+        return;
+      }
+
+      const payload =
+        collectRevisionPayload();
+
+      if (
+        !validateRevisionPayload(
+          payload
+        )
+      ) {
+        return;
+      }
+
+      const currentRevision =
+        revisionNumber(
+          revisionEditState
+            .source
+            ?.quotation
+            ?.revision_no
+        );
+
+      const nextRevision =
+        currentRevision + 1;
+
+      const title =
+        document.getElementById(
+          "revisionConfirmTitle"
+        );
+
+      const text =
+        document.getElementById(
+          "revisionConfirmText"
+        );
+
+      const button =
+        document.getElementById(
+          "revisionConfirmButton"
+        );
+
+      if (title) {
+        title.textContent =
+          `ยืนยันสร้าง Revision R${nextRevision}`;
+      }
+
+      if (text) {
+        text.textContent =
+          `การดำเนินการนี้จะบันทึกใบเสนอราคาเป็น Revision R${nextRevision} ทันที โดยเก็บ R${currentRevision} ไว้ในประวัติและไม่แก้ทับฉบับเดิม ต้องการบันทึกเลยหรือไม่?`;
+      }
+
+      if (button) {
+        button.textContent =
+          `ยืนยันสร้าง R${nextRevision}`;
+      }
+
+      const modal =
+        document.getElementById(
+          "revisionConfirmModal"
+        );
+
+      modal?.classList.add(
+        "open"
+      );
+
+      modal?.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+    }
+
+
+    async function submitRevision() {
+      if (
+        !revisionEditState?.quotationId
+      ) {
+        return;
+      }
+
+      const payload =
+        collectRevisionPayload();
+
+      if (
+        !validateRevisionPayload(
+          payload
+        )
+      ) {
+        return;
+      }
+
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      const saveButton =
+        document.getElementById(
+          "revisionSaveButton"
+        );
+
+      const confirmButton =
+        document.getElementById(
+          "revisionConfirmButton"
+        );
+
+      if (saveButton) {
+        saveButton.disabled =
+          true;
+      }
+
+      if (confirmButton) {
+        confirmButton.disabled =
+          true;
+
+        confirmButton.textContent =
+          "กำลังบันทึก...";
+      }
+
+      try {
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              revisionEditState.quotationId
+            )}/revisions`,
+            {
+              method:
+                "POST",
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json",
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify(
+                  payload
+                )
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+          );
+        }
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            `บันทึก Revision ไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        closeRevisionConfirm();
+        closeRevisionModal();
+
+        window.alert(
+          result.message ||
+          "สร้าง Revision ใหม่สำเร็จ"
+        );
+
+        await loadDesignProjects();
+      }
+      catch (error) {
+        console.error(
+          "Submit revision error:",
+          error
+        );
+
+        window.alert(
+          error.message ||
+          "ไม่สามารถบันทึก Revision ได้"
+        );
+      }
+      finally {
+        if (saveButton) {
+          saveButton.disabled =
+            false;
+        }
+
+        if (confirmButton) {
+          confirmButton.disabled =
+            false;
+        }
+      }
+    }
+
+
+    async function editDesignItem(
       rowKey
     ) {
       closeAllDesignActionMenus();
@@ -5501,13 +7266,178 @@
           rowKey
         );
 
-      window.alert(
-        `แก้ไข / Revision: ${
-          project?.quotation_no ||
-          project?.project_no ||
-          "-"
-        }\n\nระบบ Revision จะเชื่อมใน Step ถัดไป`
+      if (
+        !project?.quotation_id
+      ) {
+        window.alert(
+          "รายการนี้ยังไม่มีใบเสนอราคา"
+        );
+
+        return;
+      }
+
+      if (
+        normalizeStatus(
+          project.quotation_status
+        ) !== "SUCCESS"
+      ) {
+        window.alert(
+          "Stage นี้รองรับการทำ Revision หลังใบเสนอราคาเป็น SUCCESS แล้วเท่านั้น"
+        );
+
+        return;
+      }
+
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      const modal =
+        document.getElementById(
+          "revisionModal"
+        );
+
+      const body =
+        document.getElementById(
+          "revisionBody"
+        );
+
+      const subTitle =
+        document.getElementById(
+          "revisionModalSubTitle"
+        );
+
+      if (
+        !modal ||
+        !body
+      ) {
+        window.alert(
+          "ไม่พบ Frame สำหรับ Revision"
+        );
+
+        return;
+      }
+
+      body.innerHTML =
+        `
+          <div class="revision-loading">
+            กำลังโหลดข้อมูลใบเสนอราคา...
+          </div>
+        `;
+
+      modal.classList.add(
+        "open"
       );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+
+      try {
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              project.quotation_id
+            )}/preview`,
+            {
+              method:
+                "GET",
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json"
+              },
+
+              cache:
+                "no-store"
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+          );
+        }
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            `โหลดข้อมูลสำหรับ Revision ไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        revisionEditState = {
+          rowKey,
+          quotationId:
+            project.quotation_id,
+          source:
+            result
+        };
+
+        const currentRevision =
+          revisionNumber(
+            result?.quotation?.revision_no
+          );
+
+        if (subTitle) {
+          subTitle.textContent =
+            `${
+              result?.quotation?.quotation_no ||
+              "-"
+            } · R${currentRevision} → R${currentRevision + 1}`;
+        }
+
+        body.innerHTML =
+          buildRevisionFormHtml(
+            result
+          );
+
+        recalculateRevisionTotals();
+      }
+      catch (error) {
+        console.error(
+          "Open revision error:",
+          error
+        );
+
+        body.innerHTML =
+          `
+            <div class="revision-error">
+              ${escapeHtml(
+                error.message ||
+                "ไม่สามารถโหลดข้อมูล Revision ได้"
+              )}
+            </div>
+          `;
+      }
     }
 
 
@@ -5690,13 +7620,69 @@
         }
       );
 
+
+    document
+      .getElementById(
+        "revisionModal"
+      )
+      ?.addEventListener(
+        "click",
+        event => {
+          if (
+            event.target.id ===
+            "revisionModal"
+          ) {
+            closeRevisionModal();
+          }
+        }
+      );
+
+    document
+      .getElementById(
+        "revisionConfirmModal"
+      )
+      ?.addEventListener(
+        "click",
+        event => {
+          if (
+            event.target.id ===
+            "revisionConfirmModal"
+          ) {
+            closeRevisionConfirm();
+          }
+        }
+      );
+
+
     document.addEventListener(
       "keydown",
       event => {
         if (
           event.key === "Escape"
         ) {
-          closeQuotationPreview();
+          if (
+            document.getElementById(
+              "revisionConfirmModal"
+            )?.classList.contains(
+              "open"
+            )
+          ) {
+            closeRevisionConfirm();
+            return;
+          }
+
+          if (
+            document.getElementById(
+              "quotationPreviewModal"
+            )?.classList.contains(
+              "open"
+            )
+          ) {
+            closeQuotationPreview();
+            return;
+          }
+
+          closeRevisionModal();
         }
       }
     );
