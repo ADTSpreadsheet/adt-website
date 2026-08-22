@@ -7153,17 +7153,29 @@
             .quotation-preview-table,
             .quotation-preview-summary,
             .quotation-preview-payment {
-              width: 100%;
-              box-sizing: border-box;
+              box-sizing: border-box !important;
+              max-width: 100% !important;
+              min-width: 0 !important;
             }
 
             .quotation-preview-table {
+              width: 100% !important;
               table-layout: fixed !important;
             }
 
             .quotation-preview-summary {
               width: 48% !important;
+              min-width: 0 !important;
+              max-width: 48% !important;
               margin-left: auto !important;
+              margin-right: 0 !important;
+              table-layout: fixed !important;
+            }
+
+            .quotation-preview-payment {
+              width: 100% !important;
+              min-width: 0 !important;
+              max-width: 100% !important;
             }
 
             .quotation-doc-head,
@@ -7184,6 +7196,11 @@
             @media print {
               body * {
                 visibility: visible !important;
+              }
+
+              #quotationPreviewPaper table {
+                min-width: 0 !important;
+                max-width: 100% !important;
               }
 
               #quotationPreviewPaper {
