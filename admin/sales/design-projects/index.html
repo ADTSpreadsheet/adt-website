@@ -3167,6 +3167,128 @@
     @media(max-width:1150px){.award-grid{grid-template-columns:1fr}.award-preview-side{position:static}.award-paper{zoom:.82}}
     @media(max-width:650px){.award-modal{padding:0}.award-frame{width:100vw;height:100vh;border-radius:0}.award-fields{grid-template-columns:1fr}.award-plan-head{display:none}.award-plan-row{grid-template-columns:42px 1fr 74px 100px 36px}.award-paper{zoom:.58}.award-toolbar{align-items:flex-start}.award-toolbar-actions{flex-direction:column}}
 
+  
+    .award-company-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .award-company-head img {
+      width: 62px;
+      height: 62px;
+      object-fit: contain;
+      flex: 0 0 auto;
+    }
+
+    .award-company-head strong {
+      display: block;
+      color: #06152d;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .award-company-head p {
+      margin: 5px 0 0;
+      color: #6c7a90;
+      font-size: 9px;
+      line-height: 1.55;
+    }
+
+    .award-doc-title {
+      min-width: 270px;
+      text-align: right;
+    }
+
+    .award-doc-title h2 {
+      margin: 0;
+      color: #06152d;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .award-doc-title p {
+      margin: 9px 0 0;
+      color: #40506a;
+      font-size: 9px;
+      line-height: 1.65;
+    }
+
+    .award-paper-items {
+      width: 100%;
+      min-width: 0;
+      margin-top: 8px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .award-paper-items th,
+    .award-paper-items td {
+      padding: 7px 6px;
+      border: 1px solid #dce5ef;
+      font-size: 9px;
+      vertical-align: top;
+    }
+
+    .award-paper-items th {
+      color: #40506a;
+      background: #f3f7fb;
+      text-align: center;
+      font-weight: 700;
+      line-height: 1.35;
+    }
+
+    .award-paper-items td {
+      color: #172033;
+      line-height: 1.5;
+    }
+
+    .award-paper-items .award-item-money {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .award-paper-items .award-item-center {
+      text-align: center;
+    }
+
+    .award-paper-total-box {
+      margin-top: 0;
+      margin-left: auto;
+      width: 48%;
+      min-width: 300px;
+      border-collapse: collapse;
+    }
+
+    .award-paper-total-box td {
+      padding: 6px 8px;
+      border: 1px solid #dce5ef;
+      font-size: 9px;
+    }
+
+    .award-paper-total-box td:first-child {
+      color: #40506a;
+      background: #f7f9fc;
+      font-weight: 600;
+    }
+
+    .award-paper-total-box td:last-child {
+      text-align: right;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+    .award-paper-compare {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border: 1px solid #dce5ef;
+      background: #fbfdff;
+      color: #40506a;
+      font-size: 9px;
+      line-height: 1.55;
+    }
+
   </style>
 </head>
 
@@ -4790,37 +4912,709 @@
     function awardTypeLabel(value) { return ({PO:'PO / หนังสือสั่งจ้าง',SIGNED_QUOTATION:'ใบเสนอราคาที่ลูกค้าลงนามอนุมัติ',DEPOSIT_PAYMENT:'หลักฐานชำระเงิน / เงินมัดจำ'})[value] || '-'; }
 
     function renderJobAwardPreview() {
-      const paper = document.getElementById('jobAwardPaper');
-      if (!paper || !jobAwardState) return;
-      const rows = [...document.querySelectorAll('#awardPlanRows .award-plan-row')];
-      const planHtml = rows.length ? rows.map((r,i)=>`<tr><td style="text-align:center">${i+1}</td><td>${escapeHtml(r.querySelector('.award-plan-desc')?.value || '-')}</td><td style="text-align:right">${Number(r.querySelector('.award-plan-percent')?.value||0).toFixed(2)}%</td><td style="text-align:right">${formatDesignMoney(Number(r.querySelector('.award-plan-amount')?.value||0))}</td></tr>`).join('') : `<tr><td colspan="4" style="text-align:center;color:#8f9caf">ไม่ได้กำหนดแผนงวดงาน — Billing จริงสามารถสร้างตามการเบิกจริงภายหลัง</td></tr>`;
-      const file = document.getElementById('awardEvidenceFile')?.files?.[0];
+      const paper =
+        document.getElementById(
+          'jobAwardPaper'
+        );
+
+      if (
+        !paper ||
+        !jobAwardState
+      ) {
+        return;
+      }
+
+      const rows =
+        [
+          ...document.querySelectorAll(
+            '#awardPlanRows .award-plan-row'
+          )
+        ];
+
+      const planHtml =
+        rows.length
+          ? rows.map(
+              (r, i) => `
+                <tr>
+                  <td style="text-align:center">
+                    ${i + 1}
+                  </td>
+                  <td>
+                    ${escapeHtml(
+                      r.querySelector(
+                        '.award-plan-desc'
+                      )?.value || '-'
+                    )}
+                  </td>
+                  <td style="text-align:right">
+                    ${Number(
+                      r.querySelector(
+                        '.award-plan-percent'
+                      )?.value || 0
+                    ).toFixed(2)}%
+                  </td>
+                  <td style="text-align:right">
+                    ${formatDesignMoney(
+                      Number(
+                        r.querySelector(
+                          '.award-plan-amount'
+                        )?.value || 0
+                      )
+                    )}
+                  </td>
+                </tr>
+              `
+            ).join('')
+          : `
+              <tr>
+                <td
+                  colspan="4"
+                  style="text-align:center;color:#8f9caf"
+                >
+                  ไม่ได้กำหนดแผนงวดงาน — Billing จริงสามารถสร้างตามการเบิกจริงภายหลัง
+                </td>
+              </tr>
+            `;
+
+      const quotationItems =
+        Array.isArray(
+          jobAwardState?.preview?.items
+        )
+          ? jobAwardState.preview.items
+          : [];
+
+      const quotation =
+        jobAwardState?.preview?.quotation ||
+        {};
+
+      const itemRows =
+        quotationItems.length
+          ? quotationItems.map(
+              (item, index) => `
+                <tr>
+                  <td class="award-item-center">
+                    ${escapeHtml(
+                      item.item_no ||
+                      index + 1
+                    )}
+                  </td>
+
+                  <td style="white-space:pre-wrap;">
+                    ${escapeHtml(
+                      item.description ||
+                      '-'
+                    )}
+                  </td>
+
+                  <td class="award-item-center">
+                    ${escapeHtml(
+                      item.unit ||
+                      '-'
+                    )}
+                  </td>
+
+                  <td class="award-item-money">
+                    ${formatDesignMoney(
+                      Number(
+                        item.quantity || 0
+                      )
+                    )}
+                  </td>
+
+                  <td class="award-item-money">
+                    ${formatDesignMoney(
+                      Number(
+                        item.unit_price || 0
+                      )
+                    )}
+                  </td>
+
+                  <td class="award-item-money">
+                    ${formatDesignMoney(
+                      Number(
+                        item.amount || 0
+                      )
+                    )}
+                  </td>
+                </tr>
+              `
+            ).join('')
+          : `
+              <tr>
+                <td
+                  colspan="6"
+                  style="text-align:center;color:#8f9caf;padding:18px 8px;"
+                >
+                  ${
+                    jobAwardState.previewLoading
+                      ? 'กำลังโหลดรายการจากใบเสนอราคา...'
+                      : 'ไม่พบรายการสินค้า / บริการในใบเสนอราคานี้'
+                  }
+                </td>
+              </tr>
+            `;
+
+      const quotedAmount =
+        Number(
+          quotation.grand_total ??
+          jobAwardState.project?.grand_total ??
+          0
+        );
+
+      const contractAmount =
+        Number(
+          awardValue(
+            'awardContractAmount'
+          ) || 0
+        );
+
+      const difference =
+        contractAmount -
+        quotedAmount;
+
+      const file =
+        document.getElementById(
+          'awardEvidenceFile'
+        )?.files?.[0];
+
       paper.innerHTML = `
-        <div class="award-paper-header"><div class="award-paper-brand"><strong>ADTSpreadsheet</strong><span>JOB AWARD / ORDER CONFIRMATION RECORD</span></div><div class="award-paper-ref">อ้างอิงใบเสนอราคา<br><strong>${escapeHtml(awardValue('awardQuotationNo'))}</strong> · ${escapeHtml(awardValue('awardRevision'))}</div></div>
-        <div class="award-paper-title"><h2>บันทึกการรับการสั่งจ้าง</h2><div>Job Award Record / ใบปะหน้าชุดเอกสารการสั่งจ้าง</div></div>
-        <table class="award-paper-table"><tr><td>ลูกค้า</td><td>${escapeHtml(awardValue('awardCustomer'))}</td></tr><tr><td>โครงการ / งาน</td><td>${escapeHtml(awardValue('awardProjectName'))}</td></tr><tr><td>ประเภทหลักฐาน</td><td>${escapeHtml(awardTypeLabel(awardValue('awardType')))}</td></tr><tr><td>เลขที่เอกสารสั่งจ้าง</td><td>${escapeHtml(awardValue('awardDocumentNo') || '-')}</td></tr><tr><td>วันที่สั่งจ้าง / ยืนยัน</td><td>${escapeHtml(awardValue('awardDate') || '-')}</td></tr><tr><td>มูลค่าการสั่งจ้างจริง</td><td><strong>${formatDesignMoney(Number(awardValue('awardContractAmount')||0))} บาท</strong></td></tr><tr><td>ระยะเวลางาน</td><td>${escapeHtml(awardValue('awardStartDate') || '-')} ถึง ${escapeHtml(awardValue('awardEndDate') || '-')}</td></tr><tr><td>ขอบเขต / รายละเอียด</td><td>${escapeHtml(awardValue('awardScope') || '-')}</td></tr></table>
-        <div class="award-paper-section">แผนการเบิกจ่ายต้นฉบับ</div><table class="award-paper-plan"><thead><tr><th>งวด</th><th>เงื่อนไข / รายละเอียด</th><th>%</th><th>จำนวนเงิน (บาท)</th></tr></thead><tbody>${planHtml}</tbody></table>
-        <div class="award-paper-section">หมายเหตุ</div><div class="award-paper-note">${escapeHtml(awardValue('awardNote') || '-')}</div>
-        <div class="award-paper-attachment">เอกสารแนบจากลูกค้า — ${escapeHtml(file?.name || 'ยังไม่ได้เลือกไฟล์')}<br><small>เมื่อเชื่อม Backend เอกสารต้นฉบับจะถูกรวมต่อจากใบปะหน้านี้เป็น PDF ชุดเดียว</small></div>`;
+        <div class="award-paper-header">
+          <div class="award-company-head">
+            <img
+              src="/assets/images/adt-company-logo.png"
+              alt="ADT"
+            >
+
+            <div>
+              <strong>
+                บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+              </strong>
+
+              <p>
+                428 หมู่ 1 ต.เทพนคร อ.เมือง จ.กำแพงเพชร 63000<br>
+                เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>
+                โทร. : 092-6191220 &nbsp; e-mail : 2531kaeng@gmail.com
+              </p>
+            </div>
+          </div>
+
+          <div class="award-doc-title">
+            <h2>
+              บันทึกการรับการสั่งจ้าง<br>
+              JOB AWARD RECORD
+            </h2>
+
+            <p>
+              อ้างอิงใบเสนอราคา :
+              <strong>
+                ${escapeHtml(
+                  awardValue(
+                    'awardQuotationNo'
+                  )
+                )}
+              </strong>
+              <br>
+
+              Revision :
+              <strong>
+                ${escapeHtml(
+                  awardValue(
+                    'awardRevision'
+                  )
+                )}
+              </strong>
+              <br>
+
+              วันที่รับการสั่งจ้าง :
+              <strong>
+                ${escapeHtml(
+                  awardValue(
+                    'awardDate'
+                  ) || '-'
+                )}
+              </strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="award-paper-title">
+          <h2>
+            บันทึกการรับการสั่งจ้าง
+          </h2>
+
+          <div>
+            ใบปะหน้าชุดเอกสารการสั่งจ้าง
+          </div>
+        </div>
+
+        <table class="award-paper-table">
+          <tr>
+            <td>ลูกค้า</td>
+            <td>
+              ${escapeHtml(
+                awardValue(
+                  'awardCustomer'
+                )
+              )}
+            </td>
+          </tr>
+
+          <tr>
+            <td>โครงการ / งาน</td>
+            <td>
+              ${escapeHtml(
+                awardValue(
+                  'awardProjectName'
+                )
+              )}
+            </td>
+          </tr>
+
+          <tr>
+            <td>ประเภทหลักฐาน</td>
+            <td>
+              ${escapeHtml(
+                awardTypeLabel(
+                  awardValue(
+                    'awardType'
+                  )
+                )
+              )}
+            </td>
+          </tr>
+
+          <tr>
+            <td>เลขที่เอกสารสั่งจ้าง</td>
+            <td>
+              ${escapeHtml(
+                awardValue(
+                  'awardDocumentNo'
+                ) || '-'
+              )}
+            </td>
+          </tr>
+
+          <tr>
+            <td>วันที่สั่งจ้าง / ยืนยัน</td>
+            <td>
+              ${escapeHtml(
+                awardValue(
+                  'awardDate'
+                ) || '-'
+              )}
+            </td>
+          </tr>
+
+          <tr>
+            <td>มูลค่าการสั่งจ้างจริง</td>
+            <td>
+              <strong>
+                ${formatDesignMoney(
+                  contractAmount
+                )} บาท
+              </strong>
+            </td>
+          </tr>
+
+          <tr>
+            <td>ระยะเวลางาน</td>
+            <td>
+              ${escapeHtml(
+                awardValue(
+                  'awardStartDate'
+                ) || '-'
+              )}
+              ถึง
+              ${escapeHtml(
+                awardValue(
+                  'awardEndDate'
+                ) || '-'
+              )}
+            </td>
+          </tr>
+
+          <tr>
+            <td>ขอบเขต / รายละเอียด</td>
+            <td>
+              ${escapeHtml(
+                awardValue(
+                  'awardScope'
+                ) || '-'
+              )}
+            </td>
+          </tr>
+        </table>
+
+        <div class="award-paper-section">
+          รายการสินค้า / บริการตามใบเสนอราคา
+        </div>
+
+        <table class="award-paper-items">
+          <colgroup>
+            <col style="width:8%">
+            <col style="width:43%">
+            <col style="width:9%">
+            <col style="width:11%">
+            <col style="width:14%">
+            <col style="width:15%">
+          </colgroup>
+
+          <thead>
+            <tr>
+              <th>
+                รหัส<br>ID NO.
+              </th>
+              <th>
+                รายละเอียดสินค้า / บริการ<br>
+                SERVICE DESCRIPTION
+              </th>
+              <th>
+                หน่วย<br>UNIT
+              </th>
+              <th>
+                ปริมาณ<br>QUANTITY
+              </th>
+              <th>
+                ราคาต่อหน่วย<br>UNIT PRICE
+              </th>
+              <th>
+                มูลค่าก่อนภาษี<br>PRE-TAX AMOUNT
+              </th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${itemRows}
+          </tbody>
+        </table>
+
+        <table class="award-paper-total-box">
+          <tr>
+            <td>
+              มูลค่าตามใบเสนอราคา
+            </td>
+            <td>
+              ${formatDesignMoney(
+                quotedAmount
+              )} บาท
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              มูลค่าการสั่งจ้างจริง
+            </td>
+            <td>
+              ${formatDesignMoney(
+                contractAmount
+              )} บาท
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              ส่วนต่าง
+            </td>
+            <td>
+              ${
+                difference > 0
+                  ? '+'
+                  : ''
+              }${formatDesignMoney(
+                difference
+              )} บาท
+            </td>
+          </tr>
+        </table>
+
+        <div class="award-paper-compare">
+          รายการด้านบนเป็นข้อมูลตามใบเสนอราคา
+          ${escapeHtml(
+            awardValue(
+              'awardQuotationNo'
+            ) || '-'
+          )}
+          ${escapeHtml(
+            awardValue(
+              'awardRevision'
+            ) || ''
+          )}
+          ส่วนมูลค่าการสั่งจ้างจริงเป็นกรอบมูลค่าที่ใช้ควบคุมการตั้งเบิกในขั้นตอนถัดไป
+        </div>
+
+        <div class="award-paper-section">
+          แผนการเบิกจ่ายต้นฉบับ
+        </div>
+
+        <table class="award-paper-plan">
+          <thead>
+            <tr>
+              <th>งวด</th>
+              <th>เงื่อนไข / รายละเอียด</th>
+              <th>%</th>
+              <th>จำนวนเงิน (บาท)</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${planHtml}
+          </tbody>
+        </table>
+
+        <div class="award-paper-section">
+          หมายเหตุ
+        </div>
+
+        <div class="award-paper-note">
+          ${escapeHtml(
+            awardValue(
+              'awardNote'
+            ) || '-'
+          )}
+        </div>
+
+        <div class="award-paper-attachment">
+          เอกสารแนบจากลูกค้า —
+          ${escapeHtml(
+            file?.name ||
+            'ยังไม่ได้เลือกไฟล์'
+          )}
+          <br>
+
+          <small>
+            เมื่อเชื่อม Backend
+            เอกสารต้นฉบับจะถูกรวมต่อจากใบปะหน้านี้เป็น PDF ชุดเดียว
+          </small>
+        </div>
+      `;
     }
 
-    function openJobAwardFrame(quotationId) {
+
+    async function openJobAwardFrame(
+      quotationId
+    ) {
       closeAllDesignActionMenus();
-      const project = getProjectByQuotationId(quotationId);
-      if (!project) { window.alert('ไม่พบข้อมูลใบเสนอราคาที่ต้องการบันทึกการสั่งจ้าง'); return; }
-      if (normalizeStatus(project.quotation_status) !== 'SUCCESS') { window.alert('ต้องออกใบเสนอราคาเป็น SUCCESS ก่อน จึงจะบันทึกการสั่งจ้างได้'); return; }
-      const modal = document.getElementById('jobAwardModal');
-      const body = document.getElementById('jobAwardBody');
-      const sub = document.getElementById('jobAwardModalSubTitle');
-      if (!modal || !body) return;
-      jobAwardState = { quotationId, project };
-      if (sub) sub.textContent = `${project.quotation_no || '-'} · ${project.customer_name || project.client_name || '-'}`;
-      body.innerHTML = buildJobAwardForm(project);
-      body.addEventListener('input', event => { if (event.target.id === 'awardContractAmount') document.querySelectorAll('#awardPlanRows .award-plan-percent').forEach(el => syncAwardPlanRow(el)); updateAwardPlanSummary(); renderJobAwardPreview(); });
-      body.addEventListener('change', () => { updateAwardPlanSummary(); renderJobAwardPreview(); });
-      modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+
+      const project =
+        getProjectByQuotationId(
+          quotationId
+        );
+
+      if (!project) {
+        window.alert(
+          'ไม่พบข้อมูลใบเสนอราคาที่ต้องการบันทึกการสั่งจ้าง'
+        );
+        return;
+      }
+
+      if (
+        normalizeStatus(
+          project.quotation_status
+        ) !== 'SUCCESS'
+      ) {
+        window.alert(
+          'ต้องออกใบเสนอราคาเป็น SUCCESS ก่อน จึงจะบันทึกการสั่งจ้างได้'
+        );
+        return;
+      }
+
+      const modal =
+        document.getElementById(
+          'jobAwardModal'
+        );
+
+      const body =
+        document.getElementById(
+          'jobAwardBody'
+        );
+
+      const sub =
+        document.getElementById(
+          'jobAwardModalSubTitle'
+        );
+
+      if (
+        !modal ||
+        !body
+      ) {
+        return;
+      }
+
+      jobAwardState = {
+        quotationId,
+        project,
+        preview: null,
+        previewLoading: true
+      };
+
+      if (sub) {
+        sub.textContent =
+          `${project.quotation_no || '-'} · ${project.customer_name || project.client_name || '-'}`;
+      }
+
+      body.innerHTML =
+        buildJobAwardForm(
+          project
+        );
+
+      body.addEventListener(
+        'input',
+        event => {
+          if (
+            event.target.id ===
+            'awardContractAmount'
+          ) {
+            document
+              .querySelectorAll(
+                '#awardPlanRows .award-plan-percent'
+              )
+              .forEach(
+                el =>
+                  syncAwardPlanRow(
+                    el
+                  )
+              );
+          }
+
+          updateAwardPlanSummary();
+          renderJobAwardPreview();
+        }
+      );
+
+      body.addEventListener(
+        'change',
+        () => {
+          updateAwardPlanSummary();
+          renderJobAwardPreview();
+        }
+      );
+
+      modal.classList.add(
+        'open'
+      );
+
+      modal.setAttribute(
+        'aria-hidden',
+        'false'
+      );
+
+      document.body.style.overflow =
+        'hidden';
+
       renderJobAwardPreview();
+
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        jobAwardState.previewLoading =
+          false;
+
+        renderJobAwardPreview();
+        return;
+      }
+
+      try {
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              quotationId
+            )}/preview`,
+            {
+              method: 'GET',
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  'application/json'
+              },
+
+              cache:
+                'no-store'
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            'Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่'
+          );
+        }
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            `โหลดรายการใบเสนอราคาไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        if (
+          !jobAwardState ||
+          String(
+            jobAwardState.quotationId
+          ) !==
+          String(
+            quotationId
+          )
+        ) {
+          return;
+        }
+
+        jobAwardState.preview =
+          result;
+
+        jobAwardState.previewLoading =
+          false;
+
+        renderJobAwardPreview();
+      }
+      catch (error) {
+        console.error(
+          'Load Job Award quotation items error:',
+          error
+        );
+
+        if (
+          jobAwardState &&
+          String(
+            jobAwardState.quotationId
+          ) ===
+          String(
+            quotationId
+          )
+        ) {
+          jobAwardState.previewLoading =
+            false;
+
+          renderJobAwardPreview();
+        }
+
+        window.alert(
+          error.message ||
+          'ไม่สามารถโหลดรายการจากใบเสนอราคาได้'
+        );
+      }
     }
+
 
     function closeJobAwardFrame() {
       const modal = document.getElementById('jobAwardModal');
