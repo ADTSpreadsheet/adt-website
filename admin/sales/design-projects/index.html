@@ -3056,6 +3056,52 @@
       }
     }
 
+  
+    tr.design-row.status-lost > td {
+      background: #fff1f3;
+    }
+
+    tr.design-row.status-lost:hover > td {
+      background: #ffe8ec;
+    }
+
+    tr.design-detail-row.status-lost {
+      background: #fff7f8;
+    }
+
+    tr.design-detail-row.status-lost .design-detail-box {
+      background: #fff7f8;
+    }
+
+    tr.design-row.status-cancelled > td {
+      color: #667085;
+      background: #f2f4f7;
+    }
+
+    tr.design-row.status-cancelled:hover > td {
+      background: #eaecf0;
+    }
+
+    tr.design-detail-row.status-cancelled {
+      background: #f7f8fa;
+    }
+
+    tr.design-detail-row.status-cancelled .design-detail-box {
+      background: #f7f8fa;
+    }
+
+    tr.design-detail-row.status-lost .workflow-mini-btn,
+    tr.design-detail-row.status-cancelled .workflow-mini-btn {
+      pointer-events: none;
+      opacity: 0.42;
+      filter: grayscale(0.35);
+    }
+
+    .quotation-status.cancelled {
+      color: #596779;
+      background: #eef2f6;
+    }
+
   </style>
 </head>
 
@@ -3424,7 +3470,7 @@
                   <th>สถานะใบเสนอราคา</th>
                   <th>PO</th>
                   <th>การชำระเงิน</th>
-                  <th>สถานะ Project</th>
+                  <th>สถานะ Quotation</th>
                   <th>ACTION</th>
                 </tr>
               </thead>
@@ -3935,9 +3981,9 @@
       ) {
         return {
           className:
-            "lost",
+            "cancelled",
           label:
-            "ยกเลิก"
+            "Cancelled - ยกเลิก"
         };
       }
 
@@ -4568,21 +4614,58 @@
           project.project_status
         );
 
-      const canDelete =
-        (
-          [
-            "",
-            "DRAFT"
-          ].includes(
-            quotationStatus
-          ) &&
-          [
-            "",
-            "DRAFT"
-          ].includes(
-            projectStatus
-          )
+      const isLost =
+        quotationStatus === "LOST";
+
+      const isCancelled =
+        quotationStatus === "CANCELLED";
+
+      const isTerminal =
+        isLost ||
+        isCancelled;
+
+      const contractStarted =
+        quotationStatus === "ACCEPTED" ||
+        [
+          "ACCEPTED",
+          "PO_RECEIVED",
+          "ACTIVE",
+          "COMPLETED",
+          "CLOSED"
+        ].includes(
+          projectStatus
         );
+
+      const canLostOrCancel =
+        Boolean(
+          project.quotation_id
+        ) &&
+        !isTerminal &&
+        !contractStarted &&
+        [
+          "SUCCESS",
+          "ISSUED",
+          "WAITING",
+          "WAITING_RESULT",
+          "QUOTATION_SENT",
+          "WAIT"
+        ].includes(
+          quotationStatus
+        );
+
+      const canDelete =
+        Boolean(
+          project.quotation_id
+        ) &&
+        !contractStarted;
+
+      const canRevision =
+        Boolean(
+          project.quotation_id
+        ) &&
+        !isTerminal &&
+        !contractStarted &&
+        quotationStatus === "SUCCESS";
 
       return `
         <div
@@ -4592,6 +4675,11 @@
           <button
             type="button"
             onclick="previewDesignDocument('${rowKey}')"
+            ${
+              project.quotation_id
+                ? ""
+                : "disabled"
+            }
           >
             👁 พรีวิวใบเสนอราคา
           </button>
@@ -4599,6 +4687,11 @@
           <button
             type="button"
             onclick="editDesignItem('${rowKey}')"
+            ${
+              canRevision
+                ? ""
+                : "disabled"
+            }
           >
             ✏ แก้ไข / ทำ Revision
           </button>
@@ -4616,7 +4709,7 @@
             type="button"
             onclick="markQuotationLost('${rowKey}')"
             ${
-              project.quotation_id
+              canLostOrCancel
                 ? ""
                 : "disabled"
             }
@@ -4628,7 +4721,7 @@
             type="button"
             onclick="cancelQuotation('${rowKey}')"
             ${
-              project.quotation_id
+              canLostOrCancel
                 ? ""
                 : "disabled"
             }
@@ -4647,8 +4740,8 @@
             }
             title="${
               canDelete
-                ? "ลบ Draft ออกจากระบบ"
-                : "รายการนี้ถูกใช้งานแล้ว จึงไม่เปิดให้ลบถาวร"
+                ? "ลบใบเสนอราคาและ Revision ที่เกี่ยวข้องออกจากระบบ"
+                : "รายการนี้เข้าสู่สัญญาแล้ว จึงไม่เปิดให้ลบถาวร"
             }"
           >
             🗑 ลบรายการ
@@ -4771,9 +4864,16 @@
               project.po_status
             );
 
+          const rowStatusClass =
+            quotationStatus === "LOST"
+              ? "status-lost"
+              : quotationStatus === "CANCELLED"
+                ? "status-cancelled"
+                : "";
+
           rowsHtml.push(`
             <tr
-              class="design-row"
+              class="design-row ${rowStatusClass}"
               data-row-key="${rowKey}"
               data-project-id="${rowKey}"
               data-project-uuid="${escapeHtml(
@@ -4921,7 +5021,7 @@
             </tr>
 
             <tr
-              class="design-detail-row"
+              class="design-detail-row ${rowStatusClass}"
               id="detail-${rowKey}"
               data-parent="${rowKey}"
             >
@@ -7633,9 +7733,13 @@
     }
 
 
-    function markQuotationLost(
-      rowKey
-    ) {
+    async function runQuotationAction({
+      rowKey,
+      action,
+      method,
+      confirmMessage,
+      successFallback
+    }) {
       closeAllDesignActionMenus();
 
       const project =
@@ -7643,51 +7747,185 @@
           rowKey
         );
 
-      window.alert(
-        `บันทึกว่าไม่ได้งาน: ${
-          project?.quotation_no ||
-          "-"
-        }\n\nยังไม่ได้เปิด PATCH Endpoint ใน Step นี้`
-      );
+      if (
+        !project?.quotation_id
+      ) {
+        window.alert(
+          "ไม่พบใบเสนอราคาที่ต้องการดำเนินการ"
+        );
+
+        return;
+      }
+
+      const confirmed =
+        window.confirm(
+          confirmMessage
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      try {
+        setDesignDataSource(
+          "กำลังบันทึกข้อมูล..."
+        );
+
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              project.quotation_id
+            )}${action}`,
+            {
+              method,
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json"
+              }
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+          );
+        }
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            `ดำเนินการไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        window.alert(
+          result?.message ||
+          successFallback
+        );
+
+        await loadDesignProjects();
+      }
+      catch (error) {
+        console.error(
+          "Quotation action error:",
+          error
+        );
+
+        setDesignDataSource(
+          error.message ||
+          "ดำเนินการไม่สำเร็จ",
+          true
+        );
+
+        window.alert(
+          error.message ||
+          "ไม่สามารถดำเนินการได้"
+        );
+      }
     }
 
 
-    function cancelQuotation(
+    async function markQuotationLost(
       rowKey
     ) {
-      closeAllDesignActionMenus();
-
       const project =
         getProjectByRowKey(
           rowKey
         );
 
-      window.alert(
-        `ยกเลิกใบเสนอราคา: ${
-          project?.quotation_no ||
-          "-"
-        }\n\nยังไม่ได้เปิด PATCH Endpoint ใน Step นี้`
-      );
+      await runQuotationAction({
+        rowKey,
+        action:
+          "/lost",
+        method:
+          "POST",
+        confirmMessage:
+          `ยืนยันบันทึกว่าไม่ได้งาน?\n\nใบเสนอราคา: ${
+            project?.quotation_no ||
+            "-"
+          }\n\nรายการนี้จะถูกเปลี่ยนเป็น LOST และยอดจะย้ายไปอยู่ในวงกลม "เสนอราคาแล้วไม่ได้งาน"`,
+        successFallback:
+          "บันทึกว่าไม่ได้งานเรียบร้อยแล้ว"
+      });
     }
 
 
-    function deleteDesignItem(
+    async function cancelQuotation(
       rowKey
     ) {
-      closeAllDesignActionMenus();
-
       const project =
         getProjectByRowKey(
           rowKey
         );
 
-      window.alert(
-        `ลบ Draft: ${
-          project?.quotation_no ||
-          project?.project_name ||
-          "-"
-        }\n\nยังไม่ได้เปิด DELETE Endpoint ใน Step นี้`
-      );
+      await runQuotationAction({
+        rowKey,
+        action:
+          "/cancel",
+        method:
+          "POST",
+        confirmMessage:
+          `ยืนยันยกเลิกใบเสนอราคา?\n\nใบเสนอราคา: ${
+            project?.quotation_no ||
+            "-"
+          }\n\nรายการนี้จะเป็น CANCELLED และจะไม่นับในวงกลม KPI ใด`,
+        successFallback:
+          "ยกเลิกใบเสนอราคาเรียบร้อยแล้ว"
+      });
+    }
+
+
+    async function deleteDesignItem(
+      rowKey
+    ) {
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      await runQuotationAction({
+        rowKey,
+        action:
+          "",
+        method:
+          "DELETE",
+        confirmMessage:
+          `ยืนยันลบรายการนี้ถาวร?\n\nใบเสนอราคา: ${
+            project?.quotation_no ||
+            "-"
+          }\n\nระบบจะลบใบเสนอราคา Revision ที่เกี่ยวข้องและรายการบริการทั้งหมด การดำเนินการนี้ย้อนกลับไม่ได้`,
+        successFallback:
+          "ลบรายการเรียบร้อยแล้ว"
+      });
     }
 
 
