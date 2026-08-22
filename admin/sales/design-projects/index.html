@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>เพิ่ม Project | ADT Control Center</title>
+  <title>ADT Control Center | Dashboard</title>
+
   <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="description" content="ADTSpreadsheet Control Center Dashboard">
 
   <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/images/logo-icon.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -24,6 +28,8 @@
       --blue-600: #1677ff;
       --blue-500: #2d8cff;
       --blue-100: #eaf3ff;
+      --gold-500: #d9a61a;
+      --gold-400: #ffc928;
       --green-600: #17b26a;
       --green-100: #eafaf3;
       --orange-600: #f79009;
@@ -42,11 +48,20 @@
       --surface-2: #eef3f8;
       --shadow-sm: 0 8px 24px rgba(4, 27, 60, 0.08);
       --shadow-md: 0 18px 50px rgba(4, 27, 60, 0.12);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
       --sidebar-width: 286px;
       --topbar-height: 74px;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     body {
       margin: 0;
@@ -57,14 +72,17 @@
 
     button,
     input,
-    select,
-    textarea {
+    select {
       font: inherit;
     }
 
     a {
       color: inherit;
-      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
     }
 
     .app {
@@ -79,11 +97,12 @@
       height: 100vh;
       padding: 20px 16px;
       overflow-y: auto;
-      color: #fff;
+      color: #ffffff;
       background:
-        radial-gradient(circle at 0 0, rgba(22,119,255,.24), transparent 26%),
+        radial-gradient(circle at 0 0, rgba(22, 119, 255, 0.24), transparent 26%),
         linear-gradient(180deg, var(--navy-950), var(--navy-850));
-      border-right: 1px solid rgba(255,255,255,.08);
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 1200;
     }
 
     .sidebar-brand {
@@ -91,6 +110,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
+      text-decoration: none;
     }
 
     .sidebar-brand img {
@@ -98,50 +118,53 @@
       height: 48px;
       object-fit: contain;
       border-radius: 12px;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.96);
     }
 
     .sidebar-brand strong {
       display: block;
-      font: 800 .95rem "Inter", sans-serif;
+      font-family: "Inter", sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
     }
 
-    .sidebar-brand span span {
+    .sidebar-brand span {
       display: block;
       margin-top: 3px;
-      color: rgba(255,255,255,.56);
-      font-size: .66rem;
-      letter-spacing: .12em;
+      color: rgba(255, 255, 255, 0.56);
+      font-size: 0.66rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
     }
 
     .workspace {
       margin: 0 8px 18px;
       padding: 13px 14px;
-      border: 1px solid rgba(255,255,255,.11);
+      border: 1px solid rgba(255, 255, 255, 0.11);
       border-radius: 14px;
-      background: rgba(255,255,255,.06);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .workspace small {
       display: block;
-      color: rgba(255,255,255,.48);
-      font-size: .67rem;
-      letter-spacing: .12em;
+      color: rgba(255, 255, 255, 0.48);
+      font-size: 0.67rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
     }
 
     .workspace strong {
       display: block;
       margin-top: 4px;
-      font-size: .86rem;
+      font-size: 0.86rem;
     }
 
     .nav-label {
       margin: 22px 10px 8px;
-      color: rgba(255,255,255,.38);
-      font-size: .67rem;
+      color: rgba(255, 255, 255, 0.38);
+      font-size: 0.67rem;
       font-weight: 700;
-      letter-spacing: .14em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
     }
 
@@ -150,44 +173,135 @@
       gap: 5px;
     }
 
-    .nav-item,
-    .nav-subitem {
-      min-height: 44px;
+    .nav-item {
+      min-height: 46px;
       padding: 0 13px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
       border-radius: 12px;
-      color: rgba(255,255,255,.72);
-      font-size: .8rem;
+      color: rgba(255, 255, 255, 0.72);
+      text-decoration: none;
+      font-size: 0.85rem;
       font-weight: 500;
+      transition: 0.18s ease;
     }
 
-    .nav-item:hover,
-    .nav-subitem:hover {
-      color: #fff;
-      background: rgba(255,255,255,.07);
+    .nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
     }
 
-    .nav-sub {
-      margin-left: 18px;
-      padding-left: 12px;
-      border-left: 1px solid rgba(255,255,255,.10);
+    .nav-item.active {
+      color: #ffffff;
+      background: linear-gradient(135deg, rgba(22, 119, 255, 0.85), rgba(13, 87, 191, 0.85));
+      box-shadow: 0 10px 26px rgba(22, 119, 255, 0.20);
+    }
+
+    .nav-icon {
+      width: 26px;
+      height: 26px;
       display: grid;
-      gap: 4px;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+      flex: 0 0 auto;
+    }
+
+    .nav-badge {
+      margin-left: auto;
+      min-width: 22px;
+      height: 22px;
+      padding: 0 7px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--red-600);
+      font: 700 0.68rem "Inter", sans-serif;
+    }
+
+    .nav-parent {
+      width: 100%;
+      border: 0;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: left;
+      background: transparent;
+    }
+
+    .nav-parent:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+    }
+
+    .nav-arrow {
+      margin-left: auto;
+      color: rgba(255, 255, 255, 0.58);
+      font-size: 0.72rem;
+      transition: transform 0.22s ease;
+    }
+
+    .nav-parent.open .nav-arrow {
+      transform: rotate(180deg);
+    }
+
+    .nav-submenu {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      margin: 0 0 0 18px;
+      padding-left: 12px;
+      border-left: 1px solid rgba(255, 255, 255, 0.10);
+      transition:
+        max-height 0.28s ease,
+        opacity 0.20s ease,
+        margin-top 0.20s ease,
+        margin-bottom 0.20s ease;
+    }
+
+    .nav-submenu.open {
+      max-height: 420px;
+      opacity: 1;
+      margin-top: 4px;
+      margin-bottom: 4px;
     }
 
     .nav-subitem {
       min-height: 38px;
       padding: 0 12px;
+      display: flex;
+      align-items: center;
       border-radius: 10px;
-      font-size: .74rem;
-      color: rgba(255,255,255,.58);
+      color: rgba(255, 255, 255, 0.58);
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 500;
+      transition: 0.18s ease;
+    }
+
+    .nav-subitem:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .nav-subitem.active {
-      color: #fff;
-      background: rgba(22,119,255,.18);
+      color: #ffffff;
+      background: rgba(22, 119, 255, 0.18);
+    }
+
+    .sidebar-footer {
+      margin: 24px 8px 0;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255, 255, 255, 0.09);
+    }
+
+    .sidebar-footer a {
+      color: rgba(255, 255, 255, 0.54);
+      font-size: 0.75rem;
+      text-decoration: none;
     }
 
     .main-shell {
@@ -197,15 +311,29 @@
     .topbar {
       position: sticky;
       top: 0;
-      z-index: 1000;
+      z-index: 1100;
       height: var(--topbar-height);
       padding: 0 28px;
       display: flex;
       align-items: center;
       gap: 18px;
-      background: rgba(255,255,255,.94);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--line);
+    }
+
+    .mobile-menu {
+      display: none;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .topbar-title {
+      min-width: 0;
     }
 
     .topbar-title strong {
@@ -218,7 +346,7 @@
       display: block;
       margin-top: 2px;
       color: var(--ink-500);
-      font-size: .74rem;
+      font-size: 0.74rem;
     }
 
     .topbar-actions {
@@ -233,12 +361,28 @@
       padding: 0 14px;
       display: inline-flex;
       align-items: center;
+      gap: 8px;
       border: 1px solid var(--line);
       border-radius: 12px;
-      background: #fff;
       color: var(--ink-700);
-      font-size: .78rem;
+      background: #ffffff;
+      text-decoration: none;
+      font-size: 0.79rem;
       font-weight: 600;
+      cursor: pointer;
+    }
+
+    .topbar-button:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .admin-profile {
+      padding-left: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .avatar {
@@ -247,37 +391,31 @@
       display: grid;
       place-items: center;
       border-radius: 50%;
-      color: #fff;
+      color: #ffffff;
       background: linear-gradient(135deg, var(--blue-600), var(--navy-800));
-      font: 800 .82rem "Inter", sans-serif;
-    }
-
-    .admin-profile {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      font: 800 0.82rem "Inter", sans-serif;
     }
 
     .admin-profile strong {
       display: block;
-      font-size: .78rem;
+      font-size: 0.78rem;
     }
 
     .admin-profile span {
       display: block;
       margin-top: 2px;
       color: var(--ink-500);
-      font-size: .67rem;
+      font-size: 0.67rem;
     }
 
     .content {
-      padding: 26px 28px 34px;
+      padding: 28px;
     }
 
     .page-head {
-      margin-bottom: 18px;
+      margin-bottom: 24px;
       display: flex;
-      align-items: flex-end;
+      align-items: flex-start;
       justify-content: space-between;
       gap: 18px;
     }
@@ -285,601 +423,567 @@
     .page-head h1 {
       margin: 0;
       color: var(--navy-900);
-      font-size: clamp(1.85rem, 3vw, 2.5rem);
-      letter-spacing: -.035em;
+      font-size: clamp(1.85rem, 3vw, 2.65rem);
+      letter-spacing: -0.035em;
     }
 
     .page-head p {
-      margin: 7px 0 0;
+      margin: 8px 0 0;
       color: var(--ink-500);
-      font-size: .82rem;
+      line-height: 1.7;
     }
 
-    .back-btn {
-      height: 40px;
-      padding: 0 13px;
+    .demo-badge {
+      padding: 8px 11px;
       display: inline-flex;
       align-items: center;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      background: #fff;
-      color: var(--ink-700);
-      font-size: .74rem;
+      gap: 7px;
+      border-radius: 999px;
+      color: #8a5600;
+      background: #fff4cf;
+      border: 1px solid #f7d772;
+      font-size: 0.73rem;
       font-weight: 700;
+      white-space: nowrap;
     }
 
-    .work-grid {
+    .overview-grid {
       display: grid;
-      grid-template-columns: minmax(520px, 1fr) minmax(520px, .92fr);
-      gap: 18px;
-      align-items: start;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
     }
 
-    .form-card,
-    .preview-shell {
+    .metric-card {
+      padding: 20px;
       border: 1px solid #e3ebf4;
-      border-radius: 20px;
+      border-radius: var(--radius-lg);
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .metric-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .metric-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      font-size: 1.05rem;
+    }
+
+    .metric-icon.blue {
+      color: var(--blue-600);
+      background: var(--blue-100);
+    }
+
+    .metric-icon.green {
+      color: var(--green-600);
+      background: var(--green-100);
+    }
+
+    .metric-icon.violet {
+      color: var(--violet-600);
+      background: var(--violet-100);
+    }
+
+    .metric-icon.orange {
+      color: var(--orange-600);
+      background: var(--orange-100);
+    }
+
+    .trend {
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: #087545;
+      background: #eafaf3;
+      font: 700 0.68rem "Inter", sans-serif;
+    }
+
+    .metric-value {
+      margin-top: 18px;
+      color: var(--navy-900);
+      font: 800 2rem "Inter", sans-serif;
+      line-height: 1;
+    }
+
+    .metric-title {
+      margin-top: 8px;
+      color: var(--ink-700);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .metric-note {
+      margin-top: 5px;
+      color: var(--ink-400);
+      font-size: 0.72rem;
+    }
+
+    .grid-2 {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.55fr);
+      gap: 18px;
+    }
+
+    .grid-equal {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid #e3ebf4;
+      border-radius: var(--radius-xl);
       background: var(--paper);
       box-shadow: var(--shadow-sm);
       overflow: hidden;
     }
 
-    .form-card {
-      min-width: 0;
-    }
-
-    .section {
-      padding: 22px;
+    .panel-head {
+      min-height: 70px;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
       border-bottom: 1px solid #edf2f7;
     }
 
-    .section:last-child {
-      border-bottom: 0;
-    }
-
-    .section-head {
-      margin-bottom: 15px;
-    }
-
-    .section-head h2 {
+    .panel-head h2 {
       margin: 0;
       color: var(--navy-900);
-      font-size: .98rem;
+      font-size: 1rem;
     }
 
-    .section-head p {
-      margin: 5px 0 0;
-      color: var(--ink-500);
-      font-size: .7rem;
-      line-height: 1.6;
-    }
-
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 14px 15px;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 14px 15px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--ink-700);
-      font-size: .72rem;
-      font-weight: 600;
-    }
-
-    .req { color: var(--red-600); }
-
-    .input,
-    .select,
-    .textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      color: var(--ink-900);
-      background: #fff;
-      outline: none;
-    }
-
-    .input,
-    .select {
-      height: 42px;
-      padding: 0 11px;
-    }
-
-    .textarea {
-      min-height: 88px;
-      padding: 10px 11px;
-      resize: vertical;
-    }
-
-    .input:focus,
-    .select:focus,
-    .textarea:focus {
-      border-color: var(--blue-600);
-      box-shadow: 0 0 0 3px rgba(22,119,255,.08);
-    }
-
-    .customer-summary {
-      margin-top: 12px;
-      padding: 13px 14px;
-      display: none;
-      border: 1px solid #dce8f8;
-      border-radius: 12px;
-      background: #f7fbff;
-    }
-
-    .customer-summary.show {
-      display: block;
-    }
-
-    .customer-summary strong {
-      color: var(--navy-900);
-      font-size: .78rem;
-    }
-
-    .customer-summary p {
-      margin: 5px 0 0;
-      color: var(--ink-500);
-      font-size: .68rem;
-      line-height: 1.55;
-    }
-
-    .quote-toolbar {
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .quote-toolbar small {
-      color: var(--ink-500);
-      font-size: .68rem;
-    }
-
-    .add-item-btn {
-      height: 36px;
-      padding: 0 12px;
-      border: 0;
-      border-radius: 9px;
-      color: #fff;
-      background: var(--blue-600);
-      font-size: .7rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .item-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .quote-item {
-      padding: 12px;
-      display: grid;
-      grid-template-columns: 56px minmax(220px,1fr) 88px 90px 112px 110px 34px;
-      gap: 8px;
-      align-items: end;
-      border: 1px solid #e4ebf3;
-      border-radius: 12px;
-      background: #fbfdff;
-    }
-
-    .quote-item label {
-      display: block;
-      margin-bottom: 4px;
-      color: var(--ink-500);
-      font-size: .62rem;
-      font-weight: 600;
-    }
-
-    .quote-item input,
-    .quote-item select,
-    .quote-item textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      outline: none;
-      font-size: .7rem;
-    }
-
-    .quote-item input,
-    .quote-item select {
-      height: 36px;
-      padding: 0 8px;
-    }
-
-    .quote-item textarea {
-      min-height: 58px;
-      padding: 8px;
-      resize: vertical;
-    }
-
-    .remove-item-btn {
-      width: 34px;
-      height: 36px;
-      display: grid;
-      place-items: center;
-      border: 1px solid #f1c5c9;
-      border-radius: 8px;
-      color: #991b1b;
-      background: var(--red-100);
-      cursor: pointer;
-    }
-
-    .summary-box {
-      margin-top: 14px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .summary-row {
-      display: grid;
-      grid-template-columns: 1fr 160px;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .summary-row label {
-      color: var(--ink-700);
-      font-size: .71rem;
-      font-weight: 600;
-      text-align: right;
-    }
-
-    .summary-row input,
-    .summary-row select {
-      width: 100%;
-      height: 38px;
-      padding: 0 9px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: #fff;
-      text-align: right;
-      outline: none;
-    }
-
-    .summary-row.total {
-      padding-top: 8px;
-      border-top: 1px solid #e4ebf3;
-    }
-
-    .summary-row.total label,
-    .summary-row.total strong {
-      color: var(--navy-900);
-      font-weight: 800;
-    }
-
-    .action-bar {
-      padding: 18px 22px;
-      display: flex;
-      justify-content: flex-end;
-      gap: 9px;
-      flex-wrap: wrap;
-      background: #fbfdff;
-      border-top: 1px solid #edf2f7;
-    }
-
-    .btn {
-      min-height: 42px;
-      padding: 0 15px;
-      border-radius: 10px;
-      font-size: .72rem;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn.secondary {
-      border: 1px solid var(--line);
-      color: var(--ink-700);
-      background: #fff;
-    }
-
-    .btn.primary {
-      border: 0;
-      color: #fff;
-      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
-      box-shadow: 0 8px 18px rgba(22,119,255,.18);
-    }
-
-    .btn.success {
-      border: 0;
-      color: #fff;
-      background: var(--green-600);
-    }
-
-    .preview-shell {
-      position: sticky;
-      top: calc(var(--topbar-height) + 18px);
-      max-height: calc(100vh - var(--topbar-height) - 36px);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .preview-head {
-      min-height: 58px;
-      padding: 12px 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid #edf2f7;
-    }
-
-    .preview-head strong {
-      font-size: .82rem;
-      color: var(--navy-900);
-    }
-
-    .preview-head span {
-      display: block;
-      margin-top: 2px;
-      color: var(--ink-500);
-      font-size: .65rem;
-    }
-
-    .preview-scroll {
-      padding: 18px;
-      overflow-y: auto;
-      background: #eaf0f6;
-    }
-
-    .paper {
-      width: 100%;
-      min-height: 1080px;
-      margin: 0 auto;
-      padding: 28px 30px;
-      background: #fff;
-      border: 1px solid #dfe7f0;
-      box-shadow: 0 8px 24px rgba(4,27,60,.08);
-      color: #172033;
-    }
-
-    .doc-head {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 270px;
-      gap: 20px;
-      padding-bottom: 14px;
-      border-bottom: 2px solid var(--navy-900);
-    }
-
-    .company-head {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-
-    .company-head img {
-      width: 72px;
-      height: 72px;
-      object-fit: contain;
-    }
-
-    .company-head strong {
-      display: block;
-      color: var(--navy-900);
-      font-size: .83rem;
-    }
-
-    .company-head p {
+    .panel-head p {
       margin: 4px 0 0;
       color: var(--ink-500);
-      font-size: .61rem;
-      line-height: 1.55;
+      font-size: 0.72rem;
     }
 
-    .quote-title {
-      text-align: right;
-    }
-
-    .quote-title h2 {
-      margin: 0;
-      color: var(--navy-900);
-      font-size: 1.35rem;
-    }
-
-    .quote-title p {
-      margin: 10px 0 0;
-      color: var(--ink-700);
-      font-size: .66rem;
-      line-height: 1.8;
-    }
-
-    .client-block {
-      margin-top: 13px;
-      padding: 10px 0 12px;
-      border-bottom: 1px solid #dce5ef;
-      font-size: .67rem;
-      line-height: 1.8;
-    }
-
-    .client-block strong {
-      color: var(--navy-900);
-    }
-
-    .issuer-block {
-      padding: 10px 0;
-      border-bottom: 1px solid #dce5ef;
-      font-size: .62rem;
-      line-height: 1.7;
-    }
-
-    .doc-message {
-      margin-top: 8px;
-      font-size: .61rem;
-      line-height: 1.6;
-    }
-
-    .quote-table {
-      width: 100%;
-      margin-top: 8px;
-      border-collapse: collapse;
-      table-layout: fixed;
-      font-size: .58rem;
-    }
-
-    .quote-table th,
-    .quote-table td {
-      border: 1px solid #1f2937;
-      padding: 6px 5px;
-      vertical-align: top;
-    }
-
-    .quote-table th {
-      background: #f8fbff;
-      text-align: center;
-      font-weight: 700;
-    }
-
-    .quote-table .c-no { width: 8%; }
-    .quote-table .c-desc { width: 45%; }
-    .quote-table .c-unit { width: 9%; }
-    .quote-table .c-qty { width: 10%; }
-    .quote-table .c-price { width: 14%; }
-    .quote-table .c-amount { width: 14%; }
-
-    .preview-description {
-      white-space: pre-wrap;
-      line-height: 1.55;
-    }
-
-    .money {
-      text-align: right;
+    .panel-link {
+      color: var(--blue-600);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-decoration: none;
       white-space: nowrap;
     }
 
-    .quote-summary {
-      margin-left: auto;
-      width: 47%;
-      margin-top: 0;
-      border-collapse: collapse;
-      font-size: .59rem;
+    .panel-body {
+      padding: 20px;
     }
 
-    .quote-summary td {
-      border: 1px solid #1f2937;
-      padding: 6px 7px;
+    .chart-wrap {
+      min-height: 280px;
+      position: relative;
     }
 
-    .quote-summary td:last-child {
-      text-align: right;
-      width: 38%;
-    }
-
-    .remark-box {
-      min-height: 100px;
-      padding: 8px;
-      border: 1px solid #1f2937;
-      border-top: 0;
-      font-size: .59rem;
-      white-space: pre-wrap;
-    }
-
-    .payment-block {
-      margin-top: 10px;
+    .chart-grid {
+      position: absolute;
+      inset: 14px 0 34px;
       display: grid;
-      grid-template-columns: 1.25fr .75fr .75fr;
-      border-top: 1px solid #1f2937;
-      font-size: .58rem;
+      grid-template-rows: repeat(4, 1fr);
     }
 
-    .payment-block > div {
-      min-height: 110px;
-      padding: 8px;
-      border-right: 1px solid #1f2937;
-      border-bottom: 1px solid #1f2937;
+    .chart-grid span {
+      border-top: 1px dashed #e5ebf2;
     }
 
-    .payment-block > div:first-child {
-      border-left: 1px solid #1f2937;
+    .bars {
+      position: absolute;
+      inset: 14px 4px 34px;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      align-items: end;
+      gap: 16px;
     }
 
-    .signature {
+    .bar-column {
+      height: 100%;
       display: flex;
-      min-height: 100%;
       flex-direction: column;
-      justify-content: space-between;
-      text-align: center;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
     }
 
-    .signature strong {
-      color: var(--navy-900);
+    .bar {
+      width: min(34px, 72%);
+      min-height: 8px;
+      border-radius: 10px 10px 4px 4px;
+      background: linear-gradient(180deg, var(--blue-500), var(--blue-600));
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
     }
 
-    .status-note {
-      display: none;
-      margin: 0 22px 18px;
-      padding: 11px 13px;
-      border-radius: 10px;
-      font-size: .7rem;
+    .bar-label {
+      position: absolute;
+      bottom: 4px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
     }
 
-    .status-note.show {
+    .chart-summary {
+      padding-top: 10px;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      border-top: 1px solid #edf2f7;
+    }
+
+    .chart-summary-item strong {
       display: block;
+      color: var(--navy-900);
+      font: 800 1.05rem "Inter", sans-serif;
     }
 
-    .status-note.error {
-      color: #991b1b;
-      background: var(--red-100);
-      border: 1px solid #f3c6ca;
+    .chart-summary-item span {
+      color: var(--ink-500);
+      font-size: 0.7rem;
     }
 
-    .status-note.info {
+    .device-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .device-row {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr) 52px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .device-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink-700);
+      font-size: 0.79rem;
+      font-weight: 600;
+    }
+
+    .progress {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #edf2f7;
+    }
+
+    .progress > span {
+      height: 100%;
+      display: block;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue-600), #54a4ff);
+    }
+
+    .device-value {
+      color: var(--navy-900);
+      font: 700 0.78rem "Inter", sans-serif;
+      text-align: right;
+    }
+
+    .bot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .bot-card {
+      padding: 15px;
+      border: 1px solid #e7edf5;
+      border-radius: 15px;
+      background: #fbfdff;
+    }
+
+    .bot-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .bot-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--ink-900);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .bot-mark {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--violet-600), #5b21b6);
+      font-size: 0.82rem;
+    }
+
+    .status-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green-600);
+      box-shadow: 0 0 0 4px rgba(23, 178, 106, 0.10);
+    }
+
+    .bot-number {
+      margin-top: 12px;
+      color: var(--navy-900);
+      font: 800 1.28rem "Inter", sans-serif;
+    }
+
+    .bot-meta {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+      line-height: 1.55;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 13px 16px;
+      text-align: left;
+      border-bottom: 1px solid #edf2f7;
+      font-size: 0.75rem;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--ink-500);
+      background: #f8fbff;
+      font-size: 0.67rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .badge {
+      padding: 6px 9px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge.green {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .badge.blue {
       color: #075fc4;
       background: var(--blue-100);
-      border: 1px solid #cfe2ff;
     }
 
-    @media (max-width: 1380px) {
-      .work-grid {
+    .badge.orange {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .badge.red {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .badge.gray {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .task-item {
+      padding: 13px 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #e8eef5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .task-icon {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      color: var(--orange-600);
+      background: var(--orange-100);
+    }
+
+    .task-item strong {
+      display: block;
+      color: var(--ink-900);
+      font-size: 0.77rem;
+    }
+
+    .task-item span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .task-action {
+      color: var(--blue-600);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .line-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .line-stat {
+      padding: 15px;
+      border: 1px solid #e8eef5;
+      border-radius: 14px;
+      background: #fbfdff;
+    }
+
+    .line-stat strong {
+      display: block;
+      color: var(--navy-900);
+      font: 800 1.25rem "Inter", sans-serif;
+    }
+
+    .line-stat span {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .system-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .system-row {
+      min-height: 48px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border: 1px solid #e8eef5;
+      border-radius: 13px;
+      background: #fbfdff;
+    }
+
+    .system-row strong {
+      font-size: 0.76rem;
+    }
+
+    .system-row span {
+      color: var(--ink-500);
+      font-size: 0.68rem;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      color: #8a5600;
+      background: #fff8df;
+      border: 1px solid #f5df8c;
+      font-size: 0.72rem;
+      line-height: 1.65;
+    }
+
+    .sidebar-overlay {
+      display: none;
+    }
+
+    @media (max-width: 1240px) {
+      .overview-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-2,
+      .grid-equal {
         grid-template-columns: 1fr;
       }
-
-      .preview-shell {
-        position: static;
-        max-height: none;
-      }
-
-      .preview-scroll {
-        overflow: visible;
-      }
     }
 
-    @media (max-width: 1050px) {
+    @media (max-width: 980px) {
       .app {
         grid-template-columns: 1fr;
       }
 
       .sidebar {
-        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: var(--sidebar-width);
+        transform: translateX(-100%);
+        transition: transform 0.22s ease;
       }
-    }
 
-    @media (max-width: 760px) {
-      .content {
-        padding: 20px 12px 28px;
+      body.sidebar-open .sidebar {
+        transform: translateX(0);
+      }
+
+      .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 1150;
+        background: rgba(3, 16, 37, 0.48);
+      }
+
+      body.sidebar-open .sidebar-overlay {
+        display: block;
+      }
+
+      .mobile-menu {
+        display: grid;
+        place-items: center;
       }
 
       .topbar {
-        padding: 0 14px;
+        padding: 0 18px;
       }
 
-      .admin-profile > div,
-      .topbar-button {
-        display: none;
+      .content {
+        padding: 22px 18px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .overview-grid {
+        grid-template-columns: 1fr;
       }
 
       .page-head {
@@ -887,46 +991,1203 @@
         flex-direction: column;
       }
 
-      .grid-2,
-      .grid-3 {
-        grid-template-columns: 1fr;
+      .topbar-button.hide-mobile,
+      .admin-profile > div {
+        display: none;
       }
 
-      .quote-item {
+      .bot-grid,
+      .line-summary {
         grid-template-columns: 1fr 1fr;
       }
 
-      .quote-item .desc-field {
-        grid-column: 1 / -1;
+      .device-row {
+        grid-template-columns: 94px minmax(0, 1fr) 44px;
       }
+    }
 
-      .remove-item-btn {
-        width: 100%;
-      }
-
-      .summary-row {
+    @media (max-width: 440px) {
+      .bot-grid,
+      .line-summary {
         grid-template-columns: 1fr;
       }
 
-      .summary-row label {
-        text-align: left;
+      .content {
+        padding: 18px 12px;
       }
 
-      .paper {
-        min-width: 780px;
-      }
-
-      .preview-scroll {
-        overflow-x: auto;
+      .topbar {
+        padding: 0 12px;
       }
     }
+
+    /* =====================================================
+       SALES & PAYMENTS DASHBOARD
+       Right-side content only
+    ===================================================== */
+
+    .sales-page-head {
+      margin-bottom: 22px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .sales-page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      letter-spacing: -0.035em;
+    }
+
+    .sales-page-head p {
+      margin: 7px 0 0;
+      color: var(--ink-500);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    .sales-filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sales-filter {
+      height: 40px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.76rem;
+    }
+
+    .sales-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(150px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .sales-kpi-card {
+      padding: 18px 12px 16px;
+      border: 1px solid #e3ebf4;
+      border-radius: 18px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      text-align: center;
+    }
+
+    .sales-kpi-title {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      color: var(--ink-700);
+      font-size: 0.73rem;
+      font-weight: 600;
+    }
+
+    .sales-ring {
+      --value: 70;
+      --ring-color: var(--blue-600);
+      --track-color: #e8f2ff;
+
+      width: 124px;
+      height: 124px;
+      margin: 0 auto 11px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          var(--ring-color) calc(var(--value) * 1%),
+          var(--track-color) 0
+        );
+    }
+
+    .sales-ring::after {
+      content: "";
+      position: absolute;
+      width: 98px;
+      height: 98px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .sales-ring-content {
+      position: relative;
+      z-index: 2;
+      line-height: 1.12;
+    }
+
+    .sales-ring-value {
+      color: var(--navy-900);
+      font: 800 1.18rem "Inter", sans-serif;
+      letter-spacing: -0.04em;
+    }
+
+    .sales-ring-unit {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.63rem;
+      font-weight: 600;
+    }
+
+    .sales-kpi-note {
+      color: var(--ink-400);
+      font-size: 0.67rem;
+    }
+
+    .sales-panel {
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .sales-panel-head {
+      min-height: 72px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+      flex-wrap: wrap;
+    }
+
+    .sales-panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .sales-panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.71rem;
+    }
+
+    .sales-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .sales-search,
+    .sales-select {
+      height: 39px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.72rem;
+    }
+
+    .sales-search {
+      width: 280px;
+    }
+
+    .sales-primary-btn {
+      height: 39px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .sales-type,
+    .sales-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .sales-type.design {
+      color: #6d28d9;
+      background: var(--violet-100);
+    }
+
+    .sales-type.software {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .sales-status.wait {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .sales-status.approved {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .sales-status.draft {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .sales-action {
+      display: inline-flex;
+      gap: 5px;
+    }
+
+    .sales-action button {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink-700);
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .sales-action button:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .sales-panel-foot {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid #edf2f7;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    @media (max-width: 1400px) {
+      .sales-kpi-grid {
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .sales-kpi-grid {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+      }
+
+      .sales-page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .sales-tools {
+        width: 100%;
+      }
+
+      .sales-search {
+        flex: 1;
+        width: auto;
+        min-width: 220px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .sales-kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sales-tools {
+        flex-direction: column;
+      }
+
+      .sales-search,
+      .sales-select,
+      .sales-primary-btn {
+        width: 100%;
+      }
+    }
+
+
+    /* =====================================================
+       CUSTOMERS / VENDOR LIST
+       Right-side content only
+    ===================================================== */
+
+    .customer-page-head {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .customer-page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      letter-spacing: -0.035em;
+    }
+
+    .customer-page-head p {
+      margin: 7px 0 0;
+      color: var(--ink-500);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    .customer-panel {
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .customer-panel-head {
+      min-height: 72px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+      flex-wrap: wrap;
+    }
+
+    .customer-panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .customer-panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.71rem;
+    }
+
+    .customer-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .customer-search,
+    .customer-select {
+      height: 39px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.72rem;
+    }
+
+    .customer-search {
+      width: 310px;
+    }
+
+    .customer-search:focus,
+    .customer-select:focus {
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.08);
+    }
+
+    .customer-name-btn {
+      padding: 0;
+      border: 0;
+      color: var(--blue-600);
+      background: transparent;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .customer-name-btn:hover {
+      text-decoration: underline;
+    }
+
+    .customer-type,
+    .vendor-status,
+    .project-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .customer-type.company {
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .customer-type.person {
+      color: #6d28d9;
+      background: var(--violet-100);
+    }
+
+    .vendor-status.registered {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .vendor-status.pending {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .vendor-status.prospect {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .project-status.active {
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .project-status.closed {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .project-status.wait {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .customer-expand-icon {
+      display: inline-block;
+      width: 18px;
+      color: var(--ink-400);
+      transition: transform 0.18s ease;
+    }
+
+    tr.customer-row.open .customer-expand-icon {
+      transform: rotate(90deg);
+    }
+
+    .customer-detail-row {
+      display: none;
+      background: #f8fbff;
+    }
+
+    .customer-detail-row.open {
+      display: table-row;
+    }
+
+    .customer-detail-cell {
+      padding: 0 !important;
+    }
+
+    .customer-detail-box {
+      padding: 16px 18px 18px 52px;
+      border-bottom: 1px solid #e8eef5;
+    }
+
+    .customer-detail-title {
+      margin-bottom: 10px;
+      color: var(--navy-900);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .customer-project-table {
+      width: 100%;
+      min-width: 760px;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid #e4ebf3;
+      border-radius: 12px;
+      background: #ffffff;
+    }
+
+    .customer-project-table th,
+    .customer-project-table td {
+      padding: 10px 12px;
+      font-size: 0.69rem;
+    }
+
+    .customer-project-table th {
+      color: var(--ink-500);
+      background: #f3f7fb;
+    }
+
+    .customer-project-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .customer-foot {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid #edf2f7;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    @media (max-width: 900px) {
+      .customer-page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .customer-tools {
+        width: 100%;
+      }
+
+      .customer-search {
+        flex: 1;
+        width: auto;
+        min-width: 220px;
+      }
+
+      .customer-detail-box {
+        padding-left: 18px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .customer-tools {
+        flex-direction: column;
+      }
+
+      .customer-search,
+      .customer-select {
+        width: 100%;
+      }
+    }
+
+
+    /* =====================================================
+       DESIGN PROJECTS
+       Right-side content only
+    ===================================================== */
+
+    .design-page-head {
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .design-page-head h1 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: clamp(1.8rem, 3vw, 2.45rem);
+      letter-spacing: -0.035em;
+    }
+
+    .design-page-head p {
+      margin: 7px 0 0;
+      color: var(--ink-500);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+
+    .design-panel {
+      border: 1px solid #e3ebf4;
+      border-radius: 20px;
+      background: var(--paper);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .design-panel-head {
+      min-height: 72px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #edf2f7;
+      flex-wrap: wrap;
+    }
+
+    .design-panel-head h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .design-panel-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.71rem;
+    }
+
+    .design-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .design-search,
+    .design-select {
+      height: 39px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      outline: none;
+      font-size: 0.72rem;
+    }
+
+    .design-search {
+      width: 290px;
+    }
+
+    .design-search:focus,
+    .design-select:focus {
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.08);
+    }
+
+    .design-primary-btn {
+      height: 39px;
+      padding: 0 14px;
+      border: 0;
+      border-radius: 10px;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+      box-shadow: 0 8px 18px rgba(22, 119, 255, 0.18);
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .design-primary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px rgba(22, 119, 255, 0.22);
+    }
+
+    .project-name-btn {
+      padding: 0;
+      border: 0;
+      color: var(--blue-600);
+      background: transparent;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .project-name-btn:hover {
+      text-decoration: underline;
+    }
+
+    .project-expand-icon {
+      display: inline-block;
+      width: 18px;
+      color: var(--ink-400);
+      transition: transform 0.18s ease;
+    }
+
+    tr.design-row.open .project-expand-icon {
+      transform: rotate(90deg);
+    }
+
+    .design-status,
+    .po-status,
+    .payment-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 0.64rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .design-status.wait {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .design-status.active {
+      color: #075fc4;
+      background: var(--blue-100);
+    }
+
+    .design-status.closed {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .design-status.lost {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .po-status.received {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .po-status.none {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .po-status.pending {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .payment-status.none {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .payment-status.partial {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .payment-status.paid {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .design-detail-row {
+      display: none;
+      background: #f8fbff;
+    }
+
+    .design-detail-row.open {
+      display: table-row;
+    }
+
+    .design-detail-cell {
+      padding: 0 !important;
+    }
+
+    .design-detail-box {
+      padding: 16px 18px 18px 52px;
+      border-bottom: 1px solid #e8eef5;
+    }
+
+    .design-detail-title {
+      margin-bottom: 10px;
+      color: var(--navy-900);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .workflow-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(120px, 1fr));
+      gap: 8px;
+    }
+
+    .workflow-card {
+      min-height: 72px;
+      padding: 10px 11px;
+      border: 1px solid #e4ebf3;
+      border-radius: 12px;
+      background: #ffffff;
+    }
+
+    .workflow-card strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 0.68rem;
+    }
+
+    .workflow-card span {
+      display: block;
+      margin-top: 5px;
+      color: var(--ink-500);
+      font-size: 0.64rem;
+      line-height: 1.5;
+    }
+
+    .workflow-card.done {
+      border-color: #cbeedc;
+      background: #f4fcf8;
+    }
+
+    .workflow-card.wait {
+      border-color: #f6ddb0;
+      background: #fffaf0;
+    }
+
+    .workflow-card.off {
+      background: #f7f9fb;
+    }
+
+    .design-foot {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid #edf2f7;
+      color: var(--ink-500);
+      font-size: 0.67rem;
+    }
+
+    @media (max-width: 1200px) {
+      .workflow-grid {
+        grid-template-columns: repeat(3, minmax(140px, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .design-page-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .design-tools {
+        width: 100%;
+      }
+
+      .design-search {
+        flex: 1;
+        width: auto;
+        min-width: 220px;
+      }
+
+      .design-detail-box {
+        padding-left: 18px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .design-tools {
+        flex-direction: column;
+      }
+
+      .design-search,
+      .design-select,
+      .design-primary-btn {
+        width: 100%;
+      }
+
+      .workflow-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    /* =====================================================
+       DESIGN PROJECTS — STATUS OVERVIEW / ACTIONS
+    ===================================================== */
+
+    .design-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(155px, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .design-summary-card {
+      width: 100%;
+      padding: 16px 12px 15px;
+      border: 1px solid #e3ebf4;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      text-align: center;
+      transition: 0.18s ease;
+    }
+
+    .design-summary-card:hover,
+    .design-summary-card.active {
+      transform: translateY(-2px);
+      border-color: #bfd7f8;
+      box-shadow: 0 12px 28px rgba(4, 27, 60, 0.11);
+    }
+
+    .design-summary-card.active {
+      outline: 3px solid rgba(22, 119, 255, 0.08);
+    }
+
+    .design-summary-title {
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ink-700);
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .design-summary-ring {
+      --value: 65;
+      --ring-color: var(--blue-600);
+      --track-color: #e8f2ff;
+
+      width: 106px;
+      height: 106px;
+      margin: 8px auto 9px;
+      display: grid;
+      place-items: center;
+      position: relative;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          var(--ring-color) calc(var(--value) * 1%),
+          var(--track-color) 0
+        );
+    }
+
+    .design-summary-ring::after {
+      content: "";
+      position: absolute;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    .design-summary-ring.orange {
+      --ring-color: var(--orange-600);
+      --track-color: #fff0d8;
+    }
+
+    .design-summary-ring.green {
+      --ring-color: var(--green-600);
+      --track-color: #def7eb;
+    }
+
+    .design-summary-ring.blue {
+      --ring-color: var(--blue-600);
+      --track-color: #e3efff;
+    }
+
+    .design-summary-ring.violet {
+      --ring-color: var(--violet-600);
+      --track-color: #eee6ff;
+    }
+
+    .design-summary-ring.red {
+      --ring-color: var(--red-600);
+      --track-color: #ffe6e8;
+    }
+
+    .design-summary-ring-content {
+      position: relative;
+      z-index: 2;
+      line-height: 1.1;
+    }
+
+    .design-summary-count {
+      color: var(--navy-900);
+      font: 800 1.38rem "Inter", sans-serif;
+    }
+
+    .design-summary-unit {
+      margin-top: 4px;
+      color: var(--ink-500);
+      font-size: 0.61rem;
+      font-weight: 600;
+    }
+
+    .design-summary-value {
+      min-height: 18px;
+      color: var(--ink-500);
+      font-size: 0.66rem;
+      font-weight: 600;
+    }
+
+    .quotation-status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 0.63rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .quotation-status.draft {
+      color: #596779;
+      background: #eef2f6;
+    }
+
+    .quotation-status.wait {
+      color: #9d5200;
+      background: var(--orange-100);
+    }
+
+    .quotation-status.accepted {
+      color: #087545;
+      background: var(--green-100);
+    }
+
+    .quotation-status.lost {
+      color: #991b1b;
+      background: var(--red-100);
+    }
+
+    .revision-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      padding: 5px 7px;
+      border-radius: 8px;
+      color: #5b21b6;
+      background: #f3edff;
+      font: 700 0.62rem "Inter", sans-serif;
+    }
+
+    .design-actions {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .design-icon-btn {
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--ink-700);
+      background: #ffffff;
+      cursor: pointer;
+      transition: 0.16s ease;
+    }
+
+    .design-icon-btn:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .design-action-menu {
+      position: fixed;
+      z-index: 5000;
+      width: 210px;
+      padding: 7px;
+      display: none;
+      border: 1px solid #dfe7f0;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 18px 44px rgba(4, 27, 60, 0.16);
+    }
+
+    .design-action-menu.open {
+      display: grid;
+      gap: 3px;
+    }
+
+    .design-action-menu button {
+      width: 100%;
+      min-height: 36px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--ink-700);
+      background: transparent;
+      font-size: 0.69rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .design-action-menu button:hover {
+      color: var(--blue-600);
+      background: #f3f8ff;
+    }
+
+    .design-action-menu button.danger {
+      color: #b42318;
+    }
+
+    .design-action-menu button.danger:hover {
+      background: #fff3f3;
+    }
+
+    .design-action-menu button:disabled {
+      color: #aab4c2;
+      background: transparent;
+      cursor: not-allowed;
+    }
+
+    .design-action-divider {
+      height: 1px;
+      margin: 4px 2px;
+      background: #edf2f7;
+    }
+
+    .design-table-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--ink-400);
+      font-size: 0.65rem;
+    }
+
+    .design-table-note strong {
+      color: var(--ink-700);
+    }
+
+    @media (max-width: 1500px) {
+      .design-summary-grid {
+        grid-template-columns: repeat(3, minmax(160px, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .design-summary-grid {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
+      }
+    }
+
+    @media (max-width: 560px) {
+      .design-summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 
 <body>
-  <div class="app">
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <aside class="sidebar">
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
       <a class="sidebar-brand" href="/admin/dashboard/">
         <img src="/assets/images/logo-icon.png" alt="ADTSpreadsheet">
         <span>
@@ -941,39 +2202,145 @@
       </div>
 
       <div class="nav-label">ภาพรวม</div>
+      <nav class="nav-menu" aria-label="เมนูผู้ดูแล">
+        <a class="nav-item active" href="/admin/dashboard/">
+          <span class="nav-icon">▦</span>
+          Dashboard
+        </a>
 
+        <a class="nav-item" href="/admin/tasks/">
+          <span class="nav-icon">✓</span>
+          งานที่ต้องดำเนินการ
+          <span class="nav-badge">9</span>
+        </a>
+      </nav>
+
+      <div class="nav-label">เว็บไซต์และการค้นหา</div>
       <nav class="nav-menu">
-        <a class="nav-item" href="/admin/dashboard/">▦ Dashboard</a>
-        <a class="nav-item" href="/admin/tasks/">✓ งานที่ต้องดำเนิน</a>
+        <a class="nav-item" href="/admin/analytics/">
+          <span class="nav-icon">◫</span>
+          Website Analytics
+        </a>
+
+        <a class="nav-item" href="/admin/search-ai/">
+          <span class="nav-icon">AI</span>
+          Search & AI Center
+        </a>
+
+        <a class="nav-item" href="/admin/system-logs/">
+          <span class="nav-icon">⌁</span>
+          System Logs
+        </a>
       </nav>
 
       <div class="nav-label">ธุรกิจ</div>
-
       <nav class="nav-menu">
-        <a class="nav-item" href="/admin/products/">▣ Products</a>
-        <div class="nav-item">฿ Sales & Payments</div>
+        <a class="nav-item" href="/admin/products/">
+          <span class="nav-icon">▣</span>
+          Products
+        </a>
 
-        <div class="nav-sub">
-          <a class="nav-subitem" href="/admin/sales/">Dashboard</a>
-          <a class="nav-subitem" href="/admin/sales/customers/">Customers / Vendor List</a>
-          <a class="nav-subitem active" href="/admin/sales/design-projects/">Design Projects</a>
-          <a class="nav-subitem" href="/admin/sales/software-sales/">Software Sales</a>
+        <button
+          class="nav-item nav-parent"
+          id="salesMenuToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="salesSubmenu"
+        >
+          <span class="nav-icon">฿</span>
+          <span>Sales & Payments</span>
+          <span class="nav-arrow" aria-hidden="true">▼</span>
+        </button>
+
+        <div
+          class="nav-submenu"
+          id="salesSubmenu"
+          aria-label="Sales & Payments submenu"
+        >
+          <a class="nav-subitem" href="/admin/sales/">
+            Dashboard
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/customers/">
+            Customers / Vendor List
+          </a>
+
+          <a class="nav-subitem active" href="/admin/sales/design-projects/">
+            Design Projects
+          </a>
+
+          <a class="nav-subitem" href="/admin/sales/software-sales/">
+            Software Sales
+          </a>
         </div>
-      </nav>
-    </aside>
 
+        <a class="nav-item" href="/admin/members/">
+          <span class="nav-icon">◎</span>
+          Members
+        </a>
+
+        <a class="nav-item" href="/admin/seminars/">
+          <span class="nav-icon">◉</span>
+          Seminars
+        </a>
+      </nav>
+
+      <div class="nav-label">สื่อและการสนับสนุน</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/line-oa/">
+          <span class="nav-icon">L</span>
+          LINE OA Center
+        </a>
+
+        <a class="nav-item" href="/admin/articles/">
+          <span class="nav-icon">✎</span>
+          Articles
+        </a>
+
+        <a class="nav-item" href="/admin/portfolio/">
+          <span class="nav-icon">▤</span>
+          Design Portfolio
+        </a>
+
+        <a class="nav-item" href="/admin/support/">
+          <span class="nav-icon">?</span>
+          Support Center
+        </a>
+      </nav>
+
+      <div class="nav-label">ระบบ</div>
+      <nav class="nav-menu">
+        <a class="nav-item" href="/admin/settings/">
+          <span class="nav-icon">⚙</span>
+          Settings
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="/">← กลับเว็บไซต์หลัก</a>
+      </div>
+    </aside>
 
     <div class="main-shell">
 
       <header class="topbar">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">
+          ☰
+        </button>
+
         <div class="topbar-title">
-          <strong>เพิ่ม Project</strong>
-          <span>Design Projects / New Project</span>
+          <strong>Design Projects</strong>
+          <span>ADTSpreadsheet Control Center</span>
         </div>
 
         <div class="topbar-actions">
-          <a class="topbar-button" href="/">ดูเว็บไซต์</a>
-          <button class="topbar-button" type="button" onclick="window.location.reload()">↻ รีเฟรช</button>
+          <a class="topbar-button hide-mobile" href="/" target="_blank" rel="noopener">
+            ดูเว็บไซต์
+          </a>
+
+          <button class="topbar-button" type="button" id="refreshButton">
+            ↻ รีเฟรช
+          </button>
 
           <div class="admin-profile">
             <div class="avatar">AK</div>
@@ -985,678 +2352,458 @@
         </div>
       </header>
 
-
       <main class="content">
 
-        <div class="page-head">
+        <section class="design-page-head">
           <div>
-            <h1>เพิ่ม Project</h1>
+            <h1>Design Projects</h1>
             <p>
-              สร้างข้อมูลโครงการ เลือกลูกค้าที่ขึ้นทะเบียนแล้ว
-              และจัดทำใบเสนอราคาพร้อม Live Preview
+              ศูนย์กลางติดตามงาน ตั้งแต่จัดทำใบเสนอราคา รอผล ได้รับ PO
+              ดำเนินโครงการ รับชำระเงิน จนถึงปิดงาน
             </p>
           </div>
-
-          <a class="back-btn" href="/admin/sales/design-projects/">
-            ← กลับหน้า Design Projects
-          </a>
-        </div>
+        </section>
 
 
-        <div class="work-grid">
+        <!-- =====================================================
+             PROJECT STATUS OVERVIEW
+        ====================================================== -->
+        <section class="design-summary-grid" aria-label="สรุปสถานะโครงการ">
 
-          <!-- =====================================================
-               LEFT : FORM
-          ====================================================== -->
-          <form class="form-card" id="projectForm">
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="QUOTED"
+            onclick="applyDesignQuickFilter('QUOTED', this)"
+          >
+            <div class="design-summary-title">
+              เสนอราคาแล้ว / รอผล
+            </div>
 
-            <section class="section">
-              <div class="section-head">
-                <h2>1. ข้อมูล Project</h2>
-                <p>
-                  Project เป็นข้อมูลหลักของงาน ส่วนใบเสนอราคาเป็นเอกสารภายใต้ Project
-                </p>
+            <div class="design-summary-ring orange" id="designRingQuoted">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountQuoted">0</div>
+                <div class="design-summary-unit">รายการ</div>
               </div>
+            </div>
 
-              <div class="grid-2">
+            <div class="design-summary-value" id="designValueQuoted">
+              0.00 บาท
+            </div>
+          </button>
 
-                <div class="field">
-                  <label for="customerId">
-                    ลูกค้า <span class="req">*</span>
-                  </label>
 
-                  <select class="select" id="customerId" required>
-                    <option value="">กำลังโหลดรายชื่อลูกค้า...</option>
-                  </select>
-                </div>
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="PO"
+            onclick="applyDesignQuickFilter('PO', this)"
+          >
+            <div class="design-summary-title">
+              ได้รับ PO / ได้งาน
+            </div>
 
-                <div class="field">
-                  <label for="projectType">
-                    ประเภทงาน <span class="req">*</span>
-                  </label>
-
-                  <select class="select" id="projectType" required>
-                    <option value="">เลือกประเภทงาน</option>
-                    <option value="DESIGN">งานออกแบบ</option>
-                    <option value="CHECK">งานตรวจสอบ</option>
-                    <option value="CONSULT">งานที่ปรึกษา</option>
-                    <option value="DRAWING">งานเขียนแบบ</option>
-                    <option value="BOQ">งานประมาณราคา / BOQ</option>
-                    <option value="OTHER">อื่น ๆ</option>
-                  </select>
-                </div>
-
-                <div class="field full">
-                  <label for="projectName">
-                    ชื่อโครงการ / Project Name <span class="req">*</span>
-                  </label>
-
-                  <input
-                    class="input"
-                    id="projectName"
-                    type="text"
-                    placeholder="เช่น งานออกแบบปรับปรุงอาคารผู้ป่วยนอก ขนาด 30 เตียง"
-                    required
-                  >
-                </div>
-
-                <div class="field full">
-                  <label for="projectLocation">
-                    ที่ตั้งโครงการ / Project Location <span class="req">*</span>
-                  </label>
-
-                  <input
-                    class="input"
-                    id="projectLocation"
-                    type="text"
-                    placeholder="เช่น โรงพยาบาลสมเด็จพระยุพราชสว่างแดนดิน จ.สกลนคร"
-                    required
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="contactDate">วันที่เริ่มติดต่อ</label>
-                  <input class="input" id="contactDate" type="date">
-                </div>
-
-                <div class="field">
-                  <label for="projectStatus">สถานะเริ่มต้น</label>
-                  <select class="select" id="projectStatus">
-                    <option value="QUOTATION_PREPARING">กำลังจัดทำใบเสนอราคา</option>
-                    <option value="WAITING_QUOTATION">รอส่งใบเสนอราคา</option>
-                  </select>
-                </div>
-
-                <div class="field full">
-                  <label for="projectDescription">รายละเอียดเบื้องต้น</label>
-                  <textarea
-                    class="textarea"
-                    id="projectDescription"
-                    placeholder="รายละเอียดโครงการ ขอบเขตเบื้องต้น หรือข้อมูลที่ต้องใช้ประกอบการเสนอราคา"
-                  ></textarea>
-                </div>
+            <div class="design-summary-ring green" id="designRingPo">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountPo">0</div>
+                <div class="design-summary-unit">Project</div>
               </div>
+            </div>
 
-              <div class="customer-summary" id="customerSummary">
-                <strong id="customerSummaryName">-</strong>
-                <p id="customerSummaryDetail">-</p>
+            <div class="design-summary-value" id="designValuePo">
+              0.00 บาท
+            </div>
+          </button>
+
+
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="ACTIVE"
+            onclick="applyDesignQuickFilter('ACTIVE', this)"
+          >
+            <div class="design-summary-title">
+              กำลังดำเนินการ
+            </div>
+
+            <div class="design-summary-ring blue" id="designRingActive">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountActive">0</div>
+                <div class="design-summary-unit">Project</div>
               </div>
-            </section>
+            </div>
+
+            <div class="design-summary-value" id="designValueActive">
+              0.00 บาท
+            </div>
+          </button>
 
 
-            <section class="section">
-              <div class="section-head">
-                <h2>2. ข้อมูลใบเสนอราคา</h2>
-                <p>
-                  เลขใบเสนอราคาจริงควรให้ Backend เป็นผู้สร้างเมื่อบันทึก
-                </p>
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="CLOSED"
+            onclick="applyDesignQuickFilter('CLOSED', this)"
+          >
+            <div class="design-summary-title">
+              งานสำเร็จ / ปิดงาน
+            </div>
+
+            <div class="design-summary-ring violet" id="designRingClosed">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountClosed">0</div>
+                <div class="design-summary-unit">Project</div>
               </div>
+            </div>
 
-              <div class="grid-3">
+            <div class="design-summary-value" id="designValueClosed">
+              0.00 บาท
+            </div>
+          </button>
 
-                <div class="field">
-                  <label for="quotationDisplayNo">
-                    เลขที่เอกสาร
-                  </label>
 
-                  <input
-                    class="input"
-                    id="quotationDisplayNo"
-                    type="text"
-                    placeholder="เช่น ADT-28/69"
-                  >
-                </div>
+          <button
+            class="design-summary-card"
+            type="button"
+            data-quick-filter="LOST"
+            onclick="applyDesignQuickFilter('LOST', this)"
+          >
+            <div class="design-summary-title">
+              เสนอราคาแล้วไม่ได้งาน
+            </div>
 
-                <div class="field">
-                  <label for="quotationDate">
-                    วันที่เสนอราคา <span class="req">*</span>
-                  </label>
-
-                  <input
-                    class="input"
-                    id="quotationDate"
-                    type="date"
-                    required
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="quotationValidity">
-                    อายุใบเสนอราคา
-                  </label>
-
-                  <select class="select" id="quotationValidity">
-                    <option value="7">7 วัน</option>
-                    <option value="15">15 วัน</option>
-                    <option value="30" selected>30 วัน</option>
-                    <option value="60">60 วัน</option>
-                  </select>
-                </div>
-
-                <div class="field full">
-                  <label for="quotationSubject">
-                    หัวข้องานบนใบเสนอราคา
-                  </label>
-
-                  <input
-                    class="input"
-                    id="quotationSubject"
-                    type="text"
-                    placeholder="ระบบจะใช้ชื่องาน Project ถ้าเว้นว่าง"
-                  >
-                </div>
+            <div class="design-summary-ring red" id="designRingLost">
+              <div class="design-summary-ring-content">
+                <div class="design-summary-count" id="designCountLost">0</div>
+                <div class="design-summary-unit">รายการ</div>
               </div>
-            </section>
+            </div>
+
+            <div class="design-summary-value" id="designValueLost">
+              0.00 บาท
+            </div>
+          </button>
+
+        </section>
 
 
-            <section class="section">
-              <div class="section-head">
-                <h2>3. รายการบริการ / Scope of Work</h2>
-                <p>
-                  รองรับหลายรายการ หลายหน่วย และคิดราคาแบบ ตร.ม. / L.S. / งาน / รายการ
-                </p>
-              </div>
+        <!-- =====================================================
+             PROJECT / QUOTATION LIST
+        ====================================================== -->
+        <section class="design-panel">
 
-              <div class="quote-toolbar">
-                <small>
-                  Amount = Quantity × Unit Price
-                </small>
+          <header class="design-panel-head">
+            <div>
+              <h2>รายการ Project / Quotation</h2>
+              <p>
+                แสดงประวัติตั้งแต่เสนอราคา จนถึงได้รับงานและปิด Project
+              </p>
+            </div>
 
-                <button
-                  class="add-item-btn"
-                  id="addQuoteItemButton"
-                  type="button"
-                >
-                  + เพิ่มรายการ
-                </button>
-              </div>
+            <div class="design-tools">
 
-              <div class="item-list" id="quoteItemList"></div>
+              <select
+                class="design-select"
+                id="designStatusFilter"
+                onchange="resetDesignQuickFilter(); filterDesignRows();"
+              >
+                <option value="ALL">ทุกสถานะ</option>
+                <option value="DRAFT">Draft / ยังไม่ออกเอกสาร</option>
+                <option value="WAIT">รอผลเสนอราคา</option>
+                <option value="ACTIVE">กำลังดำเนินการ</option>
+                <option value="CLOSED">ปิดงาน</option>
+                <option value="LOST">ไม่ได้งาน</option>
+                <option value="CANCELLED">ยกเลิก</option>
+              </select>
 
-              <div class="summary-box">
+              <input
+                class="design-search"
+                id="designSearch"
+                type="search"
+                placeholder="ค้นหาเลข Project / ใบเสนอราคา / ลูกค้า / ชื่องาน"
+                oninput="filterDesignRows()"
+              >
 
-                <div class="summary-row">
-                  <label>รวมก่อนส่วนลด</label>
-                  <input id="subtotalDisplay" type="text" value="0.00" readonly>
-                </div>
-
-                <div class="summary-row">
-                  <label for="discountAmount">ส่วนลด (บาท)</label>
-                  <input
-                    id="discountAmount"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value="0"
-                  >
-                </div>
-
-                <div class="summary-row">
-                  <label for="vatRate">VAT</label>
-                  <select id="vatRate">
-                    <option value="0">ไม่คิด VAT</option>
-                    <option value="7">VAT 7%</option>
-                  </select>
-                </div>
-
-                <div class="summary-row total">
-                  <label>Grand Total</label>
-                  <strong id="grandTotalDisplay">0.00</strong>
-                </div>
-
-              </div>
-            </section>
-
-
-            <section class="section">
-              <div class="section-head">
-                <h2>4. เงื่อนไขและหมายเหตุ</h2>
-                <p>ข้อมูลส่วนท้ายของใบเสนอราคา</p>
-              </div>
-
-              <div class="grid-2">
-
-                <div class="field full">
-                  <label for="paymentTerms">เงื่อนไขการชำระเงิน</label>
-
-                  <textarea
-                    class="textarea"
-                    id="paymentTerms"
-                    placeholder="เช่น ชำระมัดจำ 50% เมื่อยืนยันว่าจ้าง และชำระส่วนที่เหลือก่อนส่งมอบเอกสารฉบับสมบูรณ์"
-                  ></textarea>
-                </div>
-
-                <div class="field full">
-                  <label for="quotationRemark">หมายเหตุ / Remark</label>
-
-                  <textarea
-                    class="textarea"
-                    id="quotationRemark"
-                    placeholder="หมายเหตุ เงื่อนไข ข้อยกเว้น หรือรายละเอียดเพิ่มเติม"
-                  ></textarea>
-                </div>
-
-                <div class="field">
-                  <label for="preparedBy">ผู้จัดทำ / Prepared by</label>
-
-                  <input
-                    class="input"
-                    id="preparedBy"
-                    type="text"
-                    value="นายอานนท์ แซ้นสีดา"
-                  >
-                </div>
-
-                <div class="field">
-                  <label for="preparedByTitle">ตำแหน่ง / วิชาชีพ</label>
-
-                  <input
-                    class="input"
-                    id="preparedByTitle"
-                    type="text"
-                    value="วิศวกรโยธา"
-                  >
-                </div>
-
-              </div>
-            </section>
-
-
-            <div
-              class="status-note"
-              id="statusNote"
-              role="status"
-            ></div>
-
-
-            <div class="action-bar">
               <button
-                class="btn secondary"
-                id="saveDraftButton"
+                class="design-primary-btn"
                 type="button"
+                onclick="addQuotation()"
               >
-                บันทึก Draft
-              </button>
-
-              <button
-                class="btn secondary"
-                id="exportPdfButton"
-                type="button"
-              >
-                Export PDF
-              </button>
-
-              <button
-                class="btn primary"
-                id="saveProjectButton"
-                type="submit"
-              >
-                บันทึก Project + ใบเสนอราคา
+                ＋ เพิ่ม Project
               </button>
             </div>
-
-          </form>
-
-
-          <!-- =====================================================
-               RIGHT : LIVE PREVIEW
-          ====================================================== -->
-          <section class="preview-shell">
-
-            <div class="preview-head">
-              <div>
-                <strong>พรีวิวใบเสนอราคา</strong>
-                <span>Live Preview — ปรับตามข้อมูลที่กรอก</span>
-              </div>
-            </div>
-
-            <div class="preview-scroll">
-
-              <article class="paper" id="quotationPreview">
-
-                <div class="doc-head">
-
-                  <div class="company-head">
-                    <img
-                      src="/assets/images/adt-company-logo.png"
-                      alt="ADT"
-                    >
-
-                    <div>
-                      <strong>
-                        บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
-                      </strong>
-
-                      <p>
-                        428 หมู่ 1 ต.เทพนคร อ.เมือง จ.กำแพงเพชร 63000<br>
-                        เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>
-                        โทร. : 092-6191220 &nbsp; e-mail : 2531kaeng@gmail.com
-                      </p>
-                    </div>
-                  </div>
-
-                  <div class="quote-title">
-                    <h2>ใบเสนอราคา / QUOTATION</h2>
-
-                    <p>
-                      Quotation Number :
-                      <strong id="previewQuoteNo">รอระบบสร้างเลข</strong><br>
-
-                      Quotation Issue Date :
-                      <strong id="previewQuoteDate">-</strong>
-                    </p>
-                  </div>
-
-                </div>
+          </header>
 
 
-                <div class="client-block">
-                  <div>
-                    <strong>โครงการ / Project :</strong>
-                    <span id="previewProjectName">-</span>
-                  </div>
+          <div class="table-wrap">
+            <table style="min-width: 1450px;">
+              <thead>
+                <tr>
+                  <th>เลข Project</th>
+                  <th>เลขที่ใบเสนอราคา</th>
+                  <th>REV.</th>
+                  <th>ลูกค้า</th>
+                  <th>ชื่อ Project</th>
+                  <th>มูลค่า (บาท)</th>
+                  <th>สถานะใบเสนอราคา</th>
+                  <th>PO</th>
+                  <th>การชำระเงิน</th>
+                  <th>สถานะ Project</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
 
-                  <div>
-                    <strong>สถานที่ / Location :</strong>
-                    <span id="previewProjectLocation">-</span>
-                  </div>
+              <tbody id="designTableBody">
+                <tr id="designLoadingRow">
+                  <td colspan="11" style="text-align:center; padding:28px 16px; color:var(--ink-500);">
+                    กำลังโหลดข้อมูล Project / Quotation...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-                  <div style="margin-top:8px;">
-                    <strong>ลูกค้า / Customer :</strong>
-                    <span id="previewCustomerName">-</span>
-                  </div>
+          <footer class="design-foot">
+            <span id="designRowCount">กำลังโหลดข้อมูล...</span>
 
-                  <div>
-                    <strong>ที่อยู่ / Address :</strong>
-                    <span id="previewCustomerAddress">-</span>
-                  </div>
+            <span class="design-table-note" id="designDataSource">
+              LIVE DATA — ADTWebsite API
+            </span>
+          </footer>
 
-                  <div>
-                    <strong>Tax ID :</strong>
-                    <span id="previewTaxId">-</span>
-
-                    &nbsp;&nbsp;&nbsp;
-
-                    <strong>e-mail :</strong>
-                    <span id="previewEmail">-</span>
-                  </div>
-
-                  <div>
-                    <strong>ผู้ติดต่อ / Attention :</strong>
-                    <span id="previewContact">-</span>
-
-                    &nbsp;&nbsp;&nbsp;
-
-                    <strong>Tel :</strong>
-                    <span id="previewPhone">-</span>
-                  </div>
-                </div>
+        </section>
 
 
-                <div class="issuer-block">
-                  <strong>ผู้ออกใบเสร็จรับเงิน / Receipt Issuer :</strong>
-                  ADT CIVIL BUILDING AND TECHNOLOGY CO.,LTD.<br>
+        <div id="designActionMenus"></div>
 
-                  <strong>ผู้ดำเนินการ / Prepared by :</strong>
-                  <span id="previewPreparedBy">นายอานนท์ แซ้นสีดา</span>
-                  <span id="previewPreparedTitle">วิศวกรโยธา</span>
-                </div>
-
-
-                <div class="doc-message">
-                  บริษัทฯ มีความยินดีเสนอราคาสินค้า/บริการตามรายการที่ท่านร้องขอ
-                  โดยมีเนื้อหารายละเอียดงานตามตารางด้านล่างนี้ให้ท่านพิจารณา
-                </div>
-
-
-                <table class="quote-table">
-                  <thead>
-                    <tr>
-                      <th class="c-no">รหัส<br>ID No.</th>
-                      <th class="c-desc">รายละเอียดสินค้า/บริการ<br>Service Description</th>
-                      <th class="c-unit">หน่วย<br>Unit</th>
-                      <th class="c-qty">ปริมาณ<br>Quantity</th>
-                      <th class="c-price">ราคาต่อหน่วย<br>Unit Price</th>
-                      <th class="c-amount">มูลค่าก่อนภาษี<br>Pre-Tax Amount</th>
-                    </tr>
-                  </thead>
-
-                  <tbody id="previewItemBody">
-                    <tr>
-                      <td>1</td>
-                      <td class="preview-description">กรุณาเพิ่มรายการบริการที่คิดเงิน</td>
-                      <td style="text-align:center;">L.S.</td>
-                      <td class="money">1.00</td>
-                      <td class="money">0.00</td>
-                      <td class="money">0.00</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-
-                <div class="remark-box">
-                  <strong>หมายเหตุ / Remark</strong><br>
-                  <span id="previewRemark">-</span>
-                </div>
-
-
-                <table class="quote-summary">
-                  <tbody>
-                    <tr>
-                      <td>มูลค่างานก่อนส่วนลด / Subtotal</td>
-                      <td id="previewSubtotal">0.00</td>
-                    </tr>
-
-                    <tr>
-                      <td>ส่วนลด / Discount</td>
-                      <td id="previewDiscount">0.00</td>
-                    </tr>
-
-                    <tr>
-                      <td>มูลค่าก่อนภาษี / Pre-VAT Amount</td>
-                      <td id="previewPreVat">0.00</td>
-                    </tr>
-
-                    <tr>
-                      <td>ภาษีมูลค่าเพิ่ม / VAT</td>
-                      <td id="previewVat">0.00</td>
-                    </tr>
-
-                    <tr>
-                      <td><strong>มูลค่ารวม / Grand Total</strong></td>
-                      <td><strong id="previewGrandTotal">0.00</strong></td>
-                    </tr>
-                  </tbody>
-                </table>
-
-
-                <div class="payment-block">
-
-                  <div>
-                    <strong>รูปแบบการสั่งจ้าง / Payment Terms</strong>
-                    <div
-                      id="previewPaymentTerms"
-                      style="margin-top:8px;white-space:pre-wrap;line-height:1.6;"
-                    >
-                      -
-                    </div>
-                  </div>
-
-                  <div class="signature">
-                    <strong>ผู้ขอรับใบเสนอราคา / Customer</strong>
-                    <span>........................................</span>
-                    <span>วันที่ / Date...........................</span>
-                  </div>
-
-                  <div class="signature">
-                    <strong>ผู้เสนอราคา / Authorized</strong>
-                    <span id="previewSignatureName">
-                      นายอานนท์ แซ้นสีดา
-                    </span>
-                    <span>วันที่ / Date...........................</span>
-                  </div>
-
-                </div>
-
-              </article>
-
-            </div>
-
-          </section>
-
-        </div>
 
       </main>
     </div>
   </div>
 
-
   <script>
-    // =====================================================
-    // CONFIG
-    // =====================================================
+    // ============================================================
+    // ADT DESIGN PROJECTS — LIVE DATA
+    // ============================================================
 
-    const API_BASE_URL =
-      "https://adt-website-api.onrender.com";
-
-    const CUSTOMERS_API =
-      `${API_BASE_URL}/api/admin/customers`;
-
-    const DESIGN_PROJECTS_API =
-      `${API_BASE_URL}/api/admin/design-projects`;
+    const AUTH_REQUIRED = true;
 
     const LOGIN_URL =
       "/admin/";
 
+    const TOKEN_KEY =
+      "adt_admin_access_token";
 
-    // =====================================================
-    // DOM
-    // =====================================================
+    const API_BASE_URL =
+      "https://adt-website-api.onrender.com";
 
-    const form =
-      document.getElementById("projectForm");
+    const DESIGN_PROJECTS_API =
+      `${API_BASE_URL}/api/admin/design-projects`;
 
-    const customerId =
-      document.getElementById("customerId");
+    let activeDesignQuickFilter =
+      "ALL";
 
-    const customerSummary =
-      document.getElementById("customerSummary");
+    let designProjectsCache =
+      [];
 
-    const customerSummaryName =
-      document.getElementById("customerSummaryName");
-
-    const customerSummaryDetail =
-      document.getElementById("customerSummaryDetail");
-
-    const projectName =
-      document.getElementById("projectName");
-
-    const projectLocation =
-      document.getElementById("projectLocation");
-
-    const projectType =
-      document.getElementById("projectType");
-
-    const projectDescription =
-      document.getElementById("projectDescription");
-
-    const contactDate =
-      document.getElementById("contactDate");
-
-    const quotationDisplayNo =
-      document.getElementById("quotationDisplayNo");
-
-    const quotationDate =
-      document.getElementById("quotationDate");
-
-    const quotationSubject =
-      document.getElementById("quotationSubject");
-
-    const quoteItemList =
-      document.getElementById("quoteItemList");
-
-    const addQuoteItemButton =
-      document.getElementById("addQuoteItemButton");
-
-    const discountAmount =
-      document.getElementById("discountAmount");
-
-    const vatRate =
-      document.getElementById("vatRate");
-
-    const subtotalDisplay =
-      document.getElementById("subtotalDisplay");
-
-    const grandTotalDisplay =
-      document.getElementById("grandTotalDisplay");
-
-    const paymentTerms =
-      document.getElementById("paymentTerms");
-
-    const quotationRemark =
-      document.getElementById("quotationRemark");
-
-    const preparedBy =
-      document.getElementById("preparedBy");
-
-    const preparedByTitle =
-      document.getElementById("preparedByTitle");
-
-    const statusNote =
-      document.getElementById("statusNote");
-
-    let customers = [];
-    let itemCounter = 0;
+    let designSummaryCache =
+      null;
 
 
-    // =====================================================
-    // HELPERS
-    // =====================================================
+    // ============================================================
+    // AUTH
+    // ============================================================
 
     function getAdminToken() {
       return (
-        sessionStorage.getItem("adt_admin_access_token") ||
-        localStorage.getItem("adt_admin_access_token") ||
+        sessionStorage.getItem(
+          TOKEN_KEY
+        ) ||
+        localStorage.getItem(
+          TOKEN_KEY
+        ) ||
         ""
       );
     }
 
 
-    function escapeHtml(value) {
-      return String(value ?? "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
+    function ensureAdminToken() {
+      const token =
+        getAdminToken();
+
+      if (
+        AUTH_REQUIRED &&
+        !token
+      ) {
+        console.warn(
+          "Admin token not found. Auto redirect disabled to prevent redirect loop."
+        );
+
+        setDesignDataSource(
+          "ไม่พบ Admin Token — กรุณาเข้าสู่ระบบใหม่",
+          true
+        );
+
+        return null;
+      }
+
+      return token;
     }
 
 
-    function money(value) {
-      const number =
-        Number(value || 0);
+    // ============================================================
+    // COMMON UI
+    // ============================================================
 
-      return number.toLocaleString(
+    const body =
+      document.body;
+
+    const mobileMenu =
+      document.getElementById(
+        "mobileMenu"
+      );
+
+    const sidebarOverlay =
+      document.getElementById(
+        "sidebarOverlay"
+      );
+
+    const refreshButton =
+      document.getElementById(
+        "refreshButton"
+      );
+
+    const salesMenuToggle =
+      document.getElementById(
+        "salesMenuToggle"
+      );
+
+    const salesSubmenu =
+      document.getElementById(
+        "salesSubmenu"
+      );
+
+
+    mobileMenu?.addEventListener(
+      "click",
+      () => {
+        body.classList.toggle(
+          "sidebar-open"
+        );
+      }
+    );
+
+
+    salesMenuToggle?.addEventListener(
+      "click",
+      () => {
+        const isOpen =
+          salesSubmenu?.classList.toggle(
+            "open"
+          );
+
+        salesMenuToggle.classList.toggle(
+          "open",
+          Boolean(isOpen)
+        );
+
+        salesMenuToggle.setAttribute(
+          "aria-expanded",
+          String(Boolean(isOpen))
+        );
+      }
+    );
+
+
+    sidebarOverlay?.addEventListener(
+      "click",
+      () => {
+        body.classList.remove(
+          "sidebar-open"
+        );
+      }
+    );
+
+
+    refreshButton?.addEventListener(
+      "click",
+      async () => {
+
+        refreshButton.disabled =
+          true;
+
+        refreshButton.textContent =
+          "↻ กำลังรีเฟรช...";
+
+        try {
+          await loadDesignProjects();
+        }
+        finally {
+          refreshButton.disabled =
+            false;
+
+          refreshButton.textContent =
+            "↻ รีเฟรช";
+        }
+      }
+    );
+
+
+    // ============================================================
+    // HELPERS
+    // ============================================================
+
+    function escapeHtml(value) {
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+    }
+
+
+    function safeId(value) {
+      return String(
+        value || ""
+      )
+        .replace(
+          /[^a-zA-Z0-9_-]/g,
+          "-"
+        );
+    }
+
+
+    function normalizeStatus(value) {
+      return String(
+        value || ""
+      )
+        .trim()
+        .toUpperCase();
+    }
+
+
+    function formatDesignMoney(value) {
+      return Number(
+        value || 0
+      ).toLocaleString(
         "th-TH",
         {
           minimumFractionDigits: 2,
@@ -1666,1008 +2813,1749 @@
     }
 
 
-    function thaiDate(value) {
-
-      if (!value) {
-        return "-";
-      }
-
-      try {
-        return new Intl.DateTimeFormat(
-          "th-TH",
-          {
-            day: "2-digit",
-            month: "short",
-            year: "numeric"
-          }
-        ).format(new Date(value));
-      }
-      catch {
-        return value;
-      }
-    }
-
-
-    function showStatus(
-      message,
-      type = "info"
+    function setDesignDataSource(
+      text,
+      isError = false
     ) {
-      statusNote.className =
-        `status-note show ${type}`;
-
-      statusNote.textContent =
-        message;
-    }
-
-
-    function hideStatus() {
-      statusNote.className =
-        "status-note";
-    }
-
-
-    function selectedCustomer() {
-      return customers.find(
-        item =>
-          String(item.id) ===
-          String(customerId.value)
-      ) || null;
-    }
-
-
-    // =====================================================
-    // CUSTOMERS
-    // =====================================================
-
-    async function loadCustomers() {
-
-      const token =
-        getAdminToken();
-
-      if (!token) {
-        customerId.innerHTML =
-          '<option value="">ไม่พบ Admin Token</option>';
-
-        showStatus(
-          "ไม่พบ Admin Token — กรุณาเข้าสู่ระบบใหม่ก่อนโหลดรายชื่อลูกค้า",
-          "error"
+      const element =
+        document.getElementById(
+          "designDataSource"
         );
 
+      if (!element) {
         return;
       }
 
-      try {
-        const response =
-          await fetch(
-            CUSTOMERS_API,
-            {
-              headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${token}`
-              },
-              cache: "no-store"
-            }
-          );
-
-        const result =
-          await response.json()
-            .catch(() => ({}));
-
-        if (response.status === 401) {
-
-          sessionStorage.removeItem(
-            "adt_admin_access_token"
-          );
-
-          localStorage.removeItem(
-            "adt_admin_access_token"
-          );
-
-          customerId.innerHTML =
-            '<option value="">Admin Token หมดอายุ</option>';
-
-          showStatus(
-            "Admin Token หมดอายุหรือไม่ถูกต้อง — กรุณาเข้าสู่ระบบใหม่",
-            "error"
-          );
-
-          return;
-        }
-
-        if (!response.ok || result.success !== true) {
-          throw new Error(
-            result.message ||
-            "ไม่สามารถโหลดรายชื่อลูกค้าได้"
-          );
-        }
-
-        customers =
-          (result.customers || [])
-            .filter(
-              customer =>
-                String(
-                  customer.registration_status
-                ).toUpperCase() ===
-                "REGISTERED"
-            );
-
-        customerId.innerHTML =
-          '<option value="">เลือกลูกค้าที่ขึ้นทะเบียนแล้ว</option>' +
-          customers
-            .map(
-              customer => `
-                <option value="${escapeHtml(customer.id)}">
-                  ${escapeHtml(customer.customer_no)} ·
-                  ${escapeHtml(customer.customer_name)}
-                </option>
-              `
-            )
-            .join("");
-      }
-      catch (error) {
-        console.error(
-          "Load customers error:",
-          error
-        );
-
-        customerId.innerHTML =
-          '<option value="">โหลดรายชื่อลูกค้าไม่สำเร็จ</option>';
-
-        showStatus(
-          error.message ||
-          "ไม่สามารถเชื่อมต่อระบบลูกค้าได้",
-          "error"
-        );
-      }
-    }
-
-
-    function updateCustomerView() {
-
-      const customer =
-        selectedCustomer();
-
-      if (!customer) {
-        customerSummary.classList.remove(
-          "show"
-        );
-
-        document.getElementById(
-          "previewCustomerName"
-        ).textContent = "-";
-
-        document.getElementById(
-          "previewCustomerAddress"
-        ).textContent = "-";
-
-        document.getElementById(
-          "previewTaxId"
-        ).textContent = "-";
-
-        document.getElementById(
-          "previewEmail"
-        ).textContent = "-";
-
-        document.getElementById(
-          "previewContact"
-        ).textContent = "-";
-
-        document.getElementById(
-          "previewPhone"
-        ).textContent = "-";
-
-        return;
-      }
-
-      customerSummary.classList.add(
-        "show"
-      );
-
-      customerSummaryName.textContent =
-        `${customer.customer_no} · ${customer.customer_name}`;
-
-      customerSummaryDetail.textContent =
-        [
-          customer.tax_id
-            ? `Tax ID: ${customer.tax_id}`
-            : "",
-          customer.contact_name
-            ? `ผู้ติดต่อ: ${customer.contact_name}`
-            : "",
-          customer.phone
-            ? `โทร: ${customer.phone}`
-            : ""
-        ]
-          .filter(Boolean)
-          .join(" · ");
-
-      document.getElementById(
-        "previewCustomerName"
-      ).textContent =
-        customer.customer_name || "-";
-
-      document.getElementById(
-        "previewCustomerAddress"
-      ).textContent =
-        customer.address || "-";
-
-      document.getElementById(
-        "previewTaxId"
-      ).textContent =
-        customer.tax_id || "-";
-
-      document.getElementById(
-        "previewEmail"
-      ).textContent =
-        customer.email || "-";
-
-      document.getElementById(
-        "previewContact"
-      ).textContent =
-        customer.contact_name || "-";
-
-      document.getElementById(
-        "previewPhone"
-      ).textContent =
-        customer.phone || "-";
-    }
-
-
-    // =====================================================
-    // QUOTATION ITEMS
-    // =====================================================
-
-    function createItem(
-      data = {}
-    ) {
-
-      itemCounter += 1;
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "quote-item";
-
-      item.dataset.itemId =
-        itemCounter;
-
-      item.innerHTML = `
-        <div>
-          <label>ลำดับ</label>
-          <input
-            class="item-no"
-            type="text"
-            value="${escapeHtml(data.item_no || itemCounter)}"
-          >
-        </div>
-
-        <div class="desc-field">
-          <label>รายละเอียด</label>
-          <textarea
-            class="item-description"
-            placeholder="รายละเอียด Scope / Service Description"
-          >${escapeHtml(data.description || "")}</textarea>
-        </div>
-
-        <div>
-          <label>หน่วย</label>
-          <select class="item-unit">
-            <option value="L.S.">L.S.</option>
-            <option value="ตร.ม.">ตร.ม.</option>
-            <option value="งาน">งาน</option>
-            <option value="รายการ">รายการ</option>
-            <option value="ชุด">ชุด</option>
-          </select>
-        </div>
-
-        <div>
-          <label>จำนวน</label>
-          <input
-            class="item-qty"
-            type="number"
-            min="0"
-            step="0.01"
-            value="${Number(data.quantity ?? 1)}"
-          >
-        </div>
-
-        <div>
-          <label>ราคาต่อหน่วย</label>
-          <input
-            class="item-price"
-            type="number"
-            min="0"
-            step="0.01"
-            value="${Number(data.unit_price ?? 0)}"
-          >
-        </div>
-
-        <div>
-          <label>Amount</label>
-          <input
-            class="item-amount"
-            type="text"
-            value="0.00"
-            readonly
-          >
-        </div>
-
-        <button
-          class="remove-item-btn"
-          type="button"
-          title="ลบรายการ"
-        >
-          ✕
-        </button>
-      `;
-
-      quoteItemList.appendChild(
-        item
-      );
-
-      item.querySelector(
-        ".item-unit"
-      ).value =
-        data.unit || "L.S.";
-
-      item.querySelectorAll(
-        "input, select, textarea"
-      ).forEach(
-        element => {
-          element.addEventListener(
-            "input",
-            recalculate
-          );
-
-          element.addEventListener(
-            "change",
-            recalculate
-          );
-        }
-      );
-
-      item.querySelector(
-        ".remove-item-btn"
-      ).addEventListener(
-        "click",
-        () => {
-          item.remove();
-
-          if (
-            !quoteItemList.children.length
-          ) {
-            createItem();
-          }
-
-          recalculate();
-        }
-      );
-
-      recalculate();
-    }
-
-
-    function getItems() {
-
-      return Array.from(
-        quoteItemList.querySelectorAll(
-          ".quote-item"
-        )
-      )
-      .map(
-        item => {
-
-          const quantity =
-            Number(
-              item.querySelector(
-                ".item-qty"
-              ).value || 0
-            );
-
-          const unitPrice =
-            Number(
-              item.querySelector(
-                ".item-price"
-              ).value || 0
-            );
-
-          return {
-            item_no:
-              item.querySelector(
-                ".item-no"
-              ).value.trim(),
-
-            description:
-              item.querySelector(
-                ".item-description"
-              ).value.trim(),
-
-            unit:
-              item.querySelector(
-                ".item-unit"
-              ).value,
-
-            quantity,
-
-            unit_price:
-              unitPrice,
-
-            amount:
-              quantity * unitPrice
-          };
-        }
-      );
-    }
-
-
-    // =====================================================
-    // CALC + LIVE PREVIEW
-    // =====================================================
-
-    function recalculate() {
-
-      const items =
-        getItems();
-
-      const subtotal =
-        items.reduce(
-          (sum, item) =>
-            sum + item.amount,
-          0
-        );
-
-      const discount =
-        Math.max(
-          0,
-          Number(
-            discountAmount.value || 0
-          )
-        );
-
-      const preVat =
-        Math.max(
-          0,
-          subtotal - discount
-        );
-
-      const vatPercent =
-        Number(
-          vatRate.value || 0
-        );
-
-      const vat =
-        preVat *
-        vatPercent /
-        100;
-
-      const grandTotal =
-        preVat + vat;
-
-
-      subtotalDisplay.value =
-        money(subtotal);
-
-      grandTotalDisplay.textContent =
-        money(grandTotal);
-
-
-      document.getElementById(
-        "previewSubtotal"
-      ).textContent =
-        money(subtotal);
-
-      document.getElementById(
-        "previewDiscount"
-      ).textContent =
-        money(discount);
-
-      document.getElementById(
-        "previewPreVat"
-      ).textContent =
-        money(preVat);
-
-      document.getElementById(
-        "previewVat"
-      ).textContent =
-        money(vat);
-
-      document.getElementById(
-        "previewGrandTotal"
-      ).textContent =
-        money(grandTotal);
-
-
-      const previewItemBody =
-        document.getElementById(
-          "previewItemBody"
-        );
-
-      if (!items.length) {
-        previewItemBody.innerHTML =
-          "";
-      }
-      else {
-        previewItemBody.innerHTML =
-          items.map(
-            (item, index) => `
-              <tr>
-                <td>${escapeHtml(item.item_no || index + 1)}</td>
-
-                <td class="preview-description">
-                  ${escapeHtml(item.description || "-")}
-                </td>
-
-                <td style="text-align:center;">
-                  ${escapeHtml(item.unit)}
-                </td>
-
-                <td class="money">
-                  ${money(item.quantity)}
-                </td>
-
-                <td class="money">
-                  ${money(item.unit_price)}
-                </td>
-
-                <td class="money">
-                  ${money(item.amount)}
-                </td>
-              </tr>
-            `
-          ).join("");
-      }
-
-
-      document.getElementById(
-        "previewProjectName"
-      ).textContent =
-        projectName.value.trim() ||
-        "-";
-
-      document.getElementById(
-        "previewProjectLocation"
-      ).textContent =
-        projectLocation.value.trim() ||
-        "-";
-
-
-      document.getElementById(
-        "previewQuoteNo"
-      ).textContent =
-        quotationDisplayNo.value.trim() ||
-        "รอระบบสร้างเลข";
-
-      document.getElementById(
-        "previewQuoteDate"
-      ).textContent =
-        thaiDate(
-          quotationDate.value
-        );
-
-      document.getElementById(
-        "previewRemark"
-      ).textContent =
-        quotationRemark.value.trim() ||
-        "-";
-
-      document.getElementById(
-        "previewPaymentTerms"
-      ).textContent =
-        paymentTerms.value.trim() ||
-        "-";
-
-      document.getElementById(
-        "previewPreparedBy"
-      ).textContent =
-        preparedBy.value.trim() ||
-        "-";
-
-      document.getElementById(
-        "previewPreparedTitle"
-      ).textContent =
-        preparedByTitle.value.trim()
-          ? `(${preparedByTitle.value.trim()})`
+      element.textContent =
+        text;
+
+      element.style.color =
+        isError
+          ? "#b42318"
           : "";
+    }
 
-      document.getElementById(
-        "previewSignatureName"
-      ).textContent =
-        preparedBy.value.trim() ||
-        "-";
 
-      quoteItemList.querySelectorAll(
-        ".quote-item"
-      ).forEach(
-        (element, index) => {
-          const item =
-            items[index];
+    function setRingValue(
+      ringId,
+      count,
+      maxCount
+    ) {
+      const ring =
+        document.getElementById(
+          ringId
+        );
 
-          element.querySelector(
-            ".item-amount"
-          ).value =
-            money(item.amount);
-        }
+      if (!ring) {
+        return;
+      }
+
+      const percent =
+        Number(count) <= 0
+          ? 0
+          : Math.max(
+              14,
+              Math.round(
+                (
+                  Number(count) /
+                  Math.max(
+                    1,
+                    Number(maxCount)
+                  )
+                ) * 100
+              )
+            );
+
+      ring.style.setProperty(
+        "--value",
+        String(percent)
       );
     }
 
 
-    // =====================================================
-    // DRAFT
-    // =====================================================
+    // ============================================================
+    // STATUS DISPLAY
+    // ============================================================
 
-    function buildDraftPayload() {
+    function quotationStatusView(status) {
+      const value =
+        normalizeStatus(status);
 
-      const customer =
-        selectedCustomer();
+      if (
+        [
+          "ACCEPTED",
+          "APPROVED",
+          "WON"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "accepted",
+          label:
+            "ได้งาน"
+        };
+      }
+
+      if (
+        [
+          "LOST",
+          "NOT_WON"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "lost",
+          label:
+            "ไม่ได้งาน"
+        };
+      }
+
+      if (
+        value === "CANCELLED"
+      ) {
+        return {
+          className:
+            "lost",
+          label:
+            "ยกเลิก"
+        };
+      }
+
+      if (
+        [
+          "ISSUED",
+          "WAITING",
+          "WAITING_RESULT",
+          "QUOTATION_SENT",
+          "WAIT"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "wait",
+          label:
+            "รอผล"
+        };
+      }
 
       return {
-        project: {
-          customer_id:
-            customerId.value,
-
-          customer_no:
-            customer?.customer_no ||
-            null,
-
-          project_type:
-            projectType.value,
-
-          project_name:
-            projectName.value.trim(),
-
-          project_location:
-            projectLocation.value.trim(),
-
-          project_description:
-            projectDescription.value.trim(),
-
-          contact_date:
-            contactDate.value || null,
-
-          project_status:
-            document.getElementById(
-              "projectStatus"
-            ).value
-        },
-
-        quotation: {
-          document_no:
-            quotationDisplayNo.value.trim() ||
-            null,
-
-          quotation_date:
-            quotationDate.value,
-
-          validity_days:
-            Number(
-              document.getElementById(
-                "quotationValidity"
-              ).value
-            ),
-
-          subject:
-            quotationSubject.value.trim() ||
-            projectName.value.trim(),
-
-          items:
-            getItems(),
-
-          discount_amount:
-            Number(
-              discountAmount.value || 0
-            ),
-
-          vat_rate:
-            Number(
-              vatRate.value || 0
-            ),
-
-          payment_terms:
-            paymentTerms.value.trim(),
-
-          remark:
-            quotationRemark.value.trim(),
-
-          prepared_by:
-            preparedBy.value.trim(),
-
-          prepared_by_title:
-            preparedByTitle.value.trim()
-        }
+        className:
+          "draft",
+        label:
+          "Draft"
       };
     }
 
 
-    // =====================================================
-    // EVENTS
-    // =====================================================
+    function projectStatusView(status) {
+      const value =
+        normalizeStatus(status);
 
-    customerId.addEventListener(
-      "change",
-      updateCustomerView
-    );
-
-    addQuoteItemButton.addEventListener(
-      "click",
-      () => createItem()
-    );
-
-    [
-      projectName,
-      projectLocation,
-      quotationDisplayNo,
-      quotationDate,
-      quotationSubject,
-      discountAmount,
-      vatRate,
-      paymentTerms,
-      quotationRemark,
-      preparedBy,
-      preparedByTitle
-    ].forEach(
-      element => {
-        element.addEventListener(
-          "input",
-          recalculate
-        );
-
-        element.addEventListener(
-          "change",
-          recalculate
-        );
+      if (
+        [
+          "COMPLETED",
+          "CLOSED"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "closed",
+          label:
+            "ปิดงาน"
+        };
       }
-    );
 
-
-    document.getElementById(
-      "saveDraftButton"
-    ).addEventListener(
-      "click",
-      () => {
-
-        const payload =
-          buildDraftPayload();
-
-        localStorage.setItem(
-          "adt_project_draft",
-          JSON.stringify(payload)
-        );
-
-        showStatus(
-          "บันทึก Draft ไว้ใน Browser แล้ว — ยังไม่ได้บันทึกลง Supabase",
-          "info"
-        );
+      if (
+        value === "ACTIVE"
+      ) {
+        return {
+          className:
+            "active",
+          label:
+            "กำลังดำเนินการ"
+        };
       }
-    );
 
-
-    document.getElementById(
-      "exportPdfButton"
-    ).addEventListener(
-      "click",
-      () => {
-
-        showStatus(
-          "ปุ่ม Export PDF เตรียมไว้แล้ว ขั้นต่อไปจะเชื่อมระบบสร้าง PDF หลังจากล็อก Template และ API Project/Quotation",
-          "info"
-        );
+      if (
+        [
+          "LOST",
+          "CANCELLED"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "lost",
+          label:
+            value === "CANCELLED"
+              ? "ยกเลิก"
+              : "ไม่ได้งาน"
+        };
       }
-    );
+
+      if (
+        [
+          "QUOTATION_SENT",
+          "WAITING_RESULT",
+          "WAIT"
+        ].includes(value)
+      ) {
+        return {
+          className:
+            "wait",
+          label:
+            "รอผลเสนอราคา"
+        };
+      }
+
+      return {
+        className:
+          "wait",
+        label:
+          "Draft"
+      };
+    }
 
 
-    form.addEventListener(
-      "submit",
-      async event => {
+    function poStatusView(status) {
+      const value =
+        normalizeStatus(status);
 
-        event.preventDefault();
-        hideStatus();
+      if (
+        value === "RECEIVED"
+      ) {
+        return {
+          className:
+            "received",
+          label:
+            "ได้รับแล้ว"
+        };
+      }
 
-        const payload =
-          buildDraftPayload();
+      if (
+        value === "PENDING"
+      ) {
+        return {
+          className:
+            "pending",
+          label:
+            "รอ PO"
+        };
+      }
 
-        if (
-          !payload.project.customer_id ||
-          !payload.project.project_type ||
-          !payload.project.project_name ||
-          !payload.project.project_location ||
-          !payload.quotation.quotation_date
-        ) {
-          showStatus(
-            "กรุณากรอกข้อมูลที่มีเครื่องหมาย * ให้ครบถ้วน",
-            "error"
-          );
-          return;
+      if (
+        value === "NO_PO"
+      ) {
+        return {
+          className:
+            "none",
+          label:
+            "ไม่มี PO"
+        };
+      }
+
+      return {
+        className:
+          "none",
+        label:
+          "—"
+      };
+    }
+
+
+    function paymentStatusView(
+      status,
+      percent
+    ) {
+      const value =
+        normalizeStatus(status);
+
+      const paymentPercent =
+        Number(
+          percent || 0
+        );
+
+      if (
+        value === "PAID" ||
+        paymentPercent >= 100
+      ) {
+        return {
+          className:
+            "paid",
+          label:
+            "ชำระครบ"
+        };
+      }
+
+      if (
+        value === "PARTIAL" ||
+        paymentPercent > 0
+      ) {
+        return {
+          className:
+            "partial",
+          label:
+            `รับแล้ว ${paymentPercent}%`
+        };
+      }
+
+      return {
+        className:
+          "none",
+        label:
+          "—"
+      };
+    }
+
+
+    // ============================================================
+    // KPI
+    // ============================================================
+
+    function renderDesignSummary(summary) {
+      const data =
+        summary || {};
+
+      const items = [
+        {
+          source:
+            data.quoted_waiting,
+          countId:
+            "designCountQuoted",
+          valueId:
+            "designValueQuoted",
+          ringId:
+            "designRingQuoted"
+        },
+        {
+          source:
+            data.won,
+          countId:
+            "designCountPo",
+          valueId:
+            "designValuePo",
+          ringId:
+            "designRingPo"
+        },
+        {
+          source:
+            data.active,
+          countId:
+            "designCountActive",
+          valueId:
+            "designValueActive",
+          ringId:
+            "designRingActive"
+        },
+        {
+          source:
+            data.closed,
+          countId:
+            "designCountClosed",
+          valueId:
+            "designValueClosed",
+          ringId:
+            "designRingClosed"
+        },
+        {
+          source:
+            data.lost,
+          countId:
+            "designCountLost",
+          valueId:
+            "designValueLost",
+          ringId:
+            "designRingLost"
         }
+      ];
 
-        if (
-          !payload.quotation.document_no
-        ) {
-          showStatus(
-            "กรุณาระบุเลขที่ใบเสนอราคา",
-            "error"
-          );
-          return;
-        }
-
-        if (
-          !payload.quotation.items.some(
+      const maxCount =
+        Math.max(
+          1,
+          ...items.map(
             item =>
-              item.description &&
-              Number(item.quantity) >= 0 &&
-              Number(item.unit_price) >= 0
+              Number(
+                item.source?.count ||
+                0
+              )
           )
-        ) {
-          showStatus(
-            "กรุณากรอกรายการบริการอย่างน้อย 1 รายการ",
-            "error"
-          );
-          return;
-        }
-
-        const token =
-          getAdminToken();
-
-        if (!token) {
-          showStatus(
-            "ไม่พบ Admin Token — กรุณาเข้าสู่ระบบใหม่ก่อนบันทึก Project",
-            "error"
-          );
-          return;
-        }
-
-        const saveButton =
-          document.getElementById(
-            "saveProjectButton"
-          );
-
-        const originalText =
-          saveButton.textContent;
-
-        saveButton.disabled =
-          true;
-
-        saveButton.textContent =
-          "กำลังบันทึก...";
-
-        showStatus(
-          "กำลังบันทึก Project + ใบเสนอราคา ลงระบบ...",
-          "info"
         );
+
+      items.forEach(
+        item => {
+          const count =
+            Number(
+              item.source?.count ||
+              0
+            );
+
+          const amount =
+            Number(
+              item.source?.amount ||
+              0
+            );
+
+          const countElement =
+            document.getElementById(
+              item.countId
+            );
+
+          const valueElement =
+            document.getElementById(
+              item.valueId
+            );
+
+          if (countElement) {
+            countElement.textContent =
+              count.toLocaleString(
+                "th-TH"
+              );
+          }
+
+          if (valueElement) {
+            valueElement.textContent =
+              `${formatDesignMoney(amount)} บาท`;
+          }
+
+          setRingValue(
+            item.ringId,
+            count,
+            maxCount
+          );
+        }
+      );
+    }
+
+
+    // ============================================================
+    // TABLE
+    // ============================================================
+
+    function buildWorkflowHtml(project) {
+      const quotationStatus =
+        quotationStatusView(
+          project.quotation_status
+        );
+
+      const projectStatus =
+        projectStatusView(
+          project.project_status
+        );
+
+      const poStatus =
+        poStatusView(
+          project.po_status
+        );
+
+      const paymentStatus =
+        paymentStatusView(
+          project.payment_status,
+          project.payment_percent
+        );
+
+      return `
+        <div class="design-detail-box">
+          <div class="design-detail-title">
+            Workflow —
+            ${escapeHtml(
+              project.project_no ||
+              project.quotation_no ||
+              "-"
+            )}
+          </div>
+
+          <div class="workflow-grid">
+
+            <div class="workflow-card ${
+              project.quotation_id
+                ? "done"
+                : "off"
+            }">
+              <strong>Quotation</strong>
+              <span>
+                ${
+                  escapeHtml(
+                    project.quotation_no ||
+                    "ยังไม่มีใบเสนอราคา"
+                  )
+                }
+                <br>
+                ${
+                  escapeHtml(
+                    quotationStatus.label
+                  )
+                }
+              </span>
+            </div>
+
+            <div class="workflow-card ${
+              normalizeStatus(
+                project.po_status
+              ) === "RECEIVED"
+                ? "done"
+                : "off"
+            }">
+              <strong>PO</strong>
+              <span>
+                ${escapeHtml(
+                  poStatus.label
+                )}
+              </span>
+            </div>
+
+            <div class="workflow-card ${
+              [
+                "ACTIVE",
+                "COMPLETED",
+                "CLOSED"
+              ].includes(
+                normalizeStatus(
+                  project.project_status
+                )
+              )
+                ? "done"
+                : "off"
+            }">
+              <strong>Project</strong>
+              <span>
+                ${escapeHtml(
+                  projectStatus.label
+                )}
+              </span>
+            </div>
+
+            <div class="workflow-card off">
+              <strong>Billing / Invoice</strong>
+              <span>
+                รอเชื่อมระบบ
+              </span>
+            </div>
+
+            <div class="workflow-card ${
+              Number(
+                project.payment_percent ||
+                0
+              ) > 0
+                ? "wait"
+                : "off"
+            }">
+              <strong>Payment</strong>
+              <span>
+                ${escapeHtml(
+                  paymentStatus.label
+                )}
+              </span>
+            </div>
+
+            <div class="workflow-card off">
+              <strong>Receipt / Tax</strong>
+              <span>
+                รอเชื่อมระบบ
+              </span>
+            </div>
+
+          </div>
+        </div>
+      `;
+    }
+
+
+    function buildActionMenuHtml(
+      project,
+      rowKey
+    ) {
+      const quotationStatus =
+        normalizeStatus(
+          project.quotation_status
+        );
+
+      const projectStatus =
+        normalizeStatus(
+          project.project_status
+        );
+
+      const canDelete =
+        (
+          [
+            "",
+            "DRAFT"
+          ].includes(
+            quotationStatus
+          ) &&
+          [
+            "",
+            "DRAFT"
+          ].includes(
+            projectStatus
+          )
+        );
+
+      return `
+        <div
+          class="design-action-menu"
+          id="menu-${rowKey}"
+        >
+          <button
+            type="button"
+            onclick="previewDesignDocument('${rowKey}')"
+          >
+            👁 พรีวิวใบเสนอราคา
+          </button>
+
+          <button
+            type="button"
+            onclick="editDesignItem('${rowKey}')"
+          >
+            ✏ แก้ไข / ทำ Revision
+          </button>
+
+          <button
+            type="button"
+            onclick="openProjectWorkflow('${rowKey}')"
+          >
+            ▦ ดู Workflow Project
+          </button>
+
+          <div class="design-action-divider"></div>
+
+          <button
+            type="button"
+            onclick="markQuotationLost('${rowKey}')"
+            ${
+              project.quotation_id
+                ? ""
+                : "disabled"
+            }
+          >
+            ✕ บันทึกว่าไม่ได้งาน
+          </button>
+
+          <button
+            type="button"
+            onclick="cancelQuotation('${rowKey}')"
+            ${
+              project.quotation_id
+                ? ""
+                : "disabled"
+            }
+          >
+            ⊘ ยกเลิกใบเสนอราคา
+          </button>
+
+          <button
+            type="button"
+            class="danger"
+            onclick="deleteDesignItem('${rowKey}')"
+            ${
+              canDelete
+                ? ""
+                : "disabled"
+            }
+            title="${
+              canDelete
+                ? "ลบ Draft ออกจากระบบ"
+                : "รายการนี้ถูกใช้งานแล้ว จึงไม่เปิดให้ลบถาวร"
+            }"
+          >
+            🗑 ลบรายการ
+          </button>
+        </div>
+      `;
+    }
+
+
+    function renderDesignRows(projects) {
+      const body =
+        document.getElementById(
+          "designTableBody"
+        );
+
+      const menuContainer =
+        document.getElementById(
+          "designActionMenus"
+        );
+
+      if (
+        !body ||
+        !menuContainer
+      ) {
+        return;
+      }
+
+      designProjectsCache =
+        Array.isArray(projects)
+          ? projects
+          : [];
+
+      if (
+        designProjectsCache.length === 0
+      ) {
+        body.innerHTML = `
+          <tr>
+            <td
+              colspan="11"
+              style="
+                text-align:center;
+                padding:34px 16px;
+                color:var(--ink-500);
+              "
+            >
+              ยังไม่มีข้อมูล Project / Quotation ในระบบ
+            </td>
+          </tr>
+        `;
+
+        menuContainer.innerHTML =
+          "";
+
+        const counter =
+          document.getElementById(
+            "designRowCount"
+          );
+
+        if (counter) {
+          counter.textContent =
+            "แสดง 0 จาก 0 รายการ";
+        }
+
+        return;
+      }
+
+      const rowsHtml =
+        [];
+
+      const menusHtml =
+        [];
+
+      designProjectsCache.forEach(
+        (
+          project,
+          index
+        ) => {
+
+          const rawKey =
+            project.project_id ||
+            project.quotation_id ||
+            `row-${index + 1}`;
+
+          const rowKey =
+            safeId(rawKey);
+
+          const quotation =
+            quotationStatusView(
+              project.quotation_status
+            );
+
+          const projectStatus =
+            projectStatusView(
+              project.project_status
+            );
+
+          const po =
+            poStatusView(
+              project.po_status
+            );
+
+          const payment =
+            paymentStatusView(
+              project.payment_status,
+              project.payment_percent
+            );
+
+          const quotationStatus =
+            normalizeStatus(
+              project.quotation_status
+            );
+
+          const projectStatusCode =
+            normalizeStatus(
+              project.project_status
+            );
+
+          const poStatus =
+            normalizeStatus(
+              project.po_status
+            );
+
+          rowsHtml.push(`
+            <tr
+              class="design-row"
+              data-row-key="${rowKey}"
+              data-project-id="${rowKey}"
+              data-project-uuid="${escapeHtml(
+                project.project_id ||
+                ""
+              )}"
+              data-quotation-id="${escapeHtml(
+                project.quotation_id ||
+                ""
+              )}"
+              data-status="${escapeHtml(
+                projectStatusCode
+              )}"
+              data-quotation-status="${escapeHtml(
+                quotationStatus
+              )}"
+              data-po="${escapeHtml(
+                poStatus
+              )}"
+              data-amount="${Number(
+                project.grand_total ||
+                0
+              )}"
+            >
+              <td>
+                <strong>
+                  ${escapeHtml(
+                    project.project_no ||
+                    "—"
+                  )}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  project.quotation_no ||
+                  "—"
+                )}
+              </td>
+
+              <td>
+                <span class="revision-badge">
+                  R${Number(
+                    project.revision_no ||
+                    0
+                  )}
+                </span>
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  project.customer_name ||
+                  "-"
+                )}
+              </td>
+
+              <td>
+                <button
+                  class="project-name-btn"
+                  type="button"
+                  onclick="toggleDesignDetail('${rowKey}')"
+                >
+                  <span class="project-expand-icon">›</span>
+                  ${escapeHtml(
+                    project.project_name ||
+                    "-"
+                  )}
+                </button>
+              </td>
+
+              <td>
+                ${formatDesignMoney(
+                  project.grand_total
+                )}
+              </td>
+
+              <td>
+                <span
+                  class="quotation-status ${quotation.className}"
+                >
+                  ${escapeHtml(
+                    quotation.label
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  class="po-status ${po.className}"
+                >
+                  ${escapeHtml(
+                    po.label
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  class="payment-status ${payment.className}"
+                >
+                  ${escapeHtml(
+                    payment.label
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <span
+                  class="design-status ${projectStatus.className}"
+                >
+                  ${escapeHtml(
+                    projectStatus.label
+                  )}
+                </span>
+              </td>
+
+              <td>
+                <div class="design-actions">
+
+                  <button
+                    class="design-icon-btn"
+                    type="button"
+                    title="พรีวิวใบเสนอราคา"
+                    onclick="previewDesignDocument('${rowKey}')"
+                    ${
+                      project.quotation_id
+                        ? ""
+                        : "disabled"
+                    }
+                  >
+                    👁
+                  </button>
+
+                  <button
+                    class="design-icon-btn"
+                    type="button"
+                    title="จัดการ"
+                    onclick="toggleDesignActionMenu(event, 'menu-${rowKey}')"
+                  >
+                    ⋮
+                  </button>
+
+                </div>
+              </td>
+            </tr>
+
+            <tr
+              class="design-detail-row"
+              id="detail-${rowKey}"
+              data-parent="${rowKey}"
+            >
+              <td
+                class="design-detail-cell"
+                colspan="11"
+              >
+                ${buildWorkflowHtml(
+                  project
+                )}
+              </td>
+            </tr>
+          `);
+
+          menusHtml.push(
+            buildActionMenuHtml(
+              project,
+              rowKey
+            )
+          );
+        }
+      );
+
+      body.innerHTML =
+        rowsHtml.join("");
+
+      menuContainer.innerHTML =
+        menusHtml.join("");
+
+      filterDesignRows();
+    }
+
+
+    function getProjectByRowKey(
+      rowKey
+    ) {
+      const row =
+        document.querySelector(
+          `.design-row[data-row-key="${rowKey}"]`
+        );
+
+      if (!row) {
+        return null;
+      }
+
+      const projectUuid =
+        row.dataset.projectUuid ||
+        "";
+
+      const quotationId =
+        row.dataset.quotationId ||
+        "";
+
+      return (
+        designProjectsCache.find(
+          item =>
+            (
+              projectUuid &&
+              item.project_id ===
+                projectUuid
+            ) ||
+            (
+              quotationId &&
+              item.quotation_id ===
+                quotationId
+            )
+        ) ||
+        null
+      );
+    }
+
+
+    // ============================================================
+    // FETCH API
+    // ============================================================
+
+    async function loadDesignProjects() {
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      setDesignDataSource(
+        "กำลังโหลด LIVE DATA..."
+      );
+
+      try {
+        const response =
+          await fetch(
+            DESIGN_PROJECTS_API,
+            {
+              method:
+                "GET",
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json"
+              },
+
+              cache:
+                "no-store"
+            }
+          );
+
+        let result =
+          null;
 
         try {
-
-          const response =
-            await fetch(
-              DESIGN_PROJECTS_API,
-              {
-                method:
-                  "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json",
-
-                  Accept:
-                    "application/json",
-
-                  Authorization:
-                    `Bearer ${token}`
-                },
-
-                body:
-                  JSON.stringify(
-                    payload
-                  )
-              }
-            );
-
-          const result =
-            await response.json()
-              .catch(() => ({}));
-
-          if (
-            response.status === 401
-          ) {
-
-            sessionStorage.removeItem(
-              "adt_admin_access_token"
-            );
-
-            localStorage.removeItem(
-              "adt_admin_access_token"
-            );
-
-            throw new Error(
-              "Admin Token หมดอายุหรือไม่ถูกต้อง — กรุณาเข้าสู่ระบบใหม่"
-            );
-          }
-
-          if (
-            !response.ok ||
-            result.success !== true
-          ) {
-
-            throw new Error(
-              result.message ||
-              result.detail ||
-              `บันทึกไม่สำเร็จ (HTTP ${response.status})`
-            );
-          }
-
-          localStorage.removeItem(
-            "adt_project_draft"
-          );
-
-          showStatus(
-            result.message ||
-            "บันทึก Project และใบเสนอราคาสำเร็จ",
-            "info"
-          );
-
-          window.setTimeout(
-            () => {
-              window.location.href =
-                "/admin/sales/design-projects/";
-            },
-            700
-          );
+          result =
+            await response.json();
         }
         catch (error) {
-
-          console.error(
-            "Save Project Error:",
-            error
-          );
-
-          showStatus(
-            error.message ||
-            "ไม่สามารถบันทึก Project ได้",
-            "error"
-          );
-
-          saveButton.disabled =
-            false;
-
-          saveButton.textContent =
-            originalText;
+          result =
+            null;
         }
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          setDesignDataSource(
+            "Admin Token หมดอายุหรือไม่ถูกต้อง — กรุณาเข้าสู่ระบบใหม่",
+            true
+          );
+
+          throw new Error(
+            "Unauthorized (401)"
+          );
+        }
+
+        if (
+          !response.ok ||
+          !result?.success
+        ) {
+          throw new Error(
+            result?.message ||
+            `HTTP ${response.status}`
+          );
+        }
+
+        designSummaryCache =
+          result.summary ||
+          null;
+
+        renderDesignSummary(
+          result.summary
+        );
+
+        renderDesignRows(
+          result.projects
+        );
+
+        setDesignDataSource(
+          "LIVE DATA — ADTWebsite API"
+        );
+      }
+      catch (error) {
+        console.error(
+          "Load Design Projects Error:",
+          error
+        );
+
+        const body =
+          document.getElementById(
+            "designTableBody"
+          );
+
+        if (body) {
+          body.innerHTML = `
+            <tr>
+              <td
+                colspan="11"
+                style="
+                  text-align:center;
+                  padding:34px 16px;
+                  color:#b42318;
+                "
+              >
+                โหลดข้อมูล Project ไม่สำเร็จ
+                <br>
+                <small>
+                  ${escapeHtml(
+                    error?.message ||
+                    "Unknown error"
+                  )}
+                </small>
+              </td>
+            </tr>
+          `;
+        }
+
+        renderDesignSummary(
+          null
+        );
+
+        setDesignDataSource(
+          "เชื่อมต่อ ADTWebsite API ไม่สำเร็จ",
+          true
+        );
+
+        const counter =
+          document.getElementById(
+            "designRowCount"
+          );
+
+        if (counter) {
+          counter.textContent =
+            "โหลดข้อมูลไม่สำเร็จ";
+        }
+      }
+    }
+
+
+    // ============================================================
+    // DETAIL / FILTER
+    // ============================================================
+
+    function toggleDesignDetail(
+      rowKey
+    ) {
+      const row =
+        document.querySelector(
+          `.design-row[data-row-key="${rowKey}"]`
+        );
+
+      const detail =
+        document.getElementById(
+          `detail-${rowKey}`
+        );
+
+      if (
+        !row ||
+        !detail
+      ) {
+        return;
+      }
+
+      const willOpen =
+        !detail.classList.contains(
+          "open"
+        );
+
+      detail.classList.toggle(
+        "open",
+        willOpen
+      );
+
+      row.classList.toggle(
+        "open",
+        willOpen
+      );
+    }
+
+
+    function resetDesignQuickFilter() {
+      activeDesignQuickFilter =
+        "ALL";
+
+      document
+        .querySelectorAll(
+          ".design-summary-card"
+        )
+        .forEach(
+          card =>
+            card.classList.remove(
+              "active"
+            )
+        );
+    }
+
+
+    function applyDesignQuickFilter(
+      mode,
+      element
+    ) {
+      if (
+        activeDesignQuickFilter ===
+        mode
+      ) {
+        resetDesignQuickFilter();
+      }
+      else {
+        activeDesignQuickFilter =
+          mode;
+
+        document
+          .querySelectorAll(
+            ".design-summary-card"
+          )
+          .forEach(
+            card =>
+              card.classList.remove(
+                "active"
+              )
+          );
+
+        element?.classList.add(
+          "active"
+        );
+
+        const statusFilter =
+          document.getElementById(
+            "designStatusFilter"
+          );
+
+        if (statusFilter) {
+          statusFilter.value =
+            "ALL";
+        }
+      }
+
+      filterDesignRows();
+    }
+
+
+    function quickFilterMatches(
+      row
+    ) {
+      const quotationStatus =
+        normalizeStatus(
+          row.dataset.quotationStatus
+        );
+
+      const projectStatus =
+        normalizeStatus(
+          row.dataset.status
+        );
+
+      const poStatus =
+        normalizeStatus(
+          row.dataset.po
+        );
+
+      switch (
+        activeDesignQuickFilter
+      ) {
+        case "QUOTED":
+          return (
+            [
+              "ISSUED",
+              "WAITING",
+              "WAITING_RESULT",
+              "QUOTATION_SENT",
+              "WAIT"
+            ].includes(
+              quotationStatus
+            ) ||
+            [
+              "QUOTATION_SENT",
+              "WAITING_RESULT",
+              "WAIT"
+            ].includes(
+              projectStatus
+            )
+          );
+
+        case "PO":
+          return (
+            poStatus === "RECEIVED" ||
+            quotationStatus ===
+              "ACCEPTED" ||
+            [
+              "ACCEPTED",
+              "PO_RECEIVED",
+              "ACTIVE",
+              "COMPLETED",
+              "CLOSED"
+            ].includes(
+              projectStatus
+            )
+          );
+
+        case "ACTIVE":
+          return (
+            projectStatus ===
+            "ACTIVE"
+          );
+
+        case "CLOSED":
+          return (
+            [
+              "COMPLETED",
+              "CLOSED"
+            ].includes(
+              projectStatus
+            )
+          );
+
+        case "LOST":
+          return (
+            quotationStatus ===
+              "LOST" ||
+            projectStatus ===
+              "LOST"
+          );
+
+        default:
+          return true;
+      }
+    }
+
+
+    function filterDesignRows() {
+      const status =
+        document.getElementById(
+          "designStatusFilter"
+        )?.value || "ALL";
+
+      const keyword =
+        (
+          document.getElementById(
+            "designSearch"
+          )?.value || ""
+        )
+          .trim()
+          .toLowerCase();
+
+      const rows =
+        [
+          ...document.querySelectorAll(
+            ".design-row"
+          )
+        ];
+
+      let shown =
+        0;
+
+      rows.forEach(
+        row => {
+          const rowKey =
+            row.dataset.rowKey ||
+            "";
+
+          const rowStatus =
+            normalizeStatus(
+              row.dataset.status
+            );
+
+          const text =
+            row.innerText
+              .toLowerCase();
+
+          const statusMatch =
+            status === "ALL" ||
+            rowStatus === status;
+
+          const keywordMatch =
+            !keyword ||
+            text.includes(
+              keyword
+            );
+
+          const quickMatch =
+            quickFilterMatches(
+              row
+            );
+
+          const visible =
+            statusMatch &&
+            keywordMatch &&
+            quickMatch;
+
+          row.style.display =
+            visible
+              ? ""
+              : "none";
+
+          const detail =
+            document.getElementById(
+              `detail-${rowKey}`
+            );
+
+          if (
+            !visible &&
+            detail
+          ) {
+            detail.classList.remove(
+              "open"
+            );
+
+            row.classList.remove(
+              "open"
+            );
+
+            detail.style.display =
+              "none";
+          }
+          else if (detail) {
+            detail.style.display =
+              detail.classList.contains(
+                "open"
+              )
+                ? "table-row"
+                : "";
+          }
+
+          if (visible) {
+            shown++;
+          }
+        }
+      );
+
+      const counter =
+        document.getElementById(
+          "designRowCount"
+        );
+
+      if (counter) {
+        counter.textContent =
+          `แสดง ${shown} จาก ${rows.length} รายการ`;
+      }
+    }
+
+
+    // ============================================================
+    // ACTION MENU
+    // ============================================================
+
+    function closeAllDesignActionMenus() {
+      document
+        .querySelectorAll(
+          ".design-action-menu.open"
+        )
+        .forEach(
+          menu =>
+            menu.classList.remove(
+              "open"
+            )
+        );
+    }
+
+
+    function toggleDesignActionMenu(
+      event,
+      menuId
+    ) {
+      event.stopPropagation();
+
+      const menu =
+        document.getElementById(
+          menuId
+        );
+
+      if (!menu) {
+        return;
+      }
+
+      const wasOpen =
+        menu.classList.contains(
+          "open"
+        );
+
+      closeAllDesignActionMenus();
+
+      if (wasOpen) {
+        return;
+      }
+
+      const button =
+        event.currentTarget;
+
+      const rect =
+        button.getBoundingClientRect();
+
+      const menuWidth =
+        210;
+
+      const left =
+        Math.max(
+          10,
+          Math.min(
+            window.innerWidth -
+              menuWidth -
+              10,
+            rect.right -
+              menuWidth
+          )
+        );
+
+      const top =
+        Math.min(
+          window.innerHeight -
+            260,
+          rect.bottom + 6
+        );
+
+      menu.style.left =
+        `${left}px`;
+
+      menu.style.top =
+        `${Math.max(
+          10,
+          top
+        )}px`;
+
+      menu.classList.add(
+        "open"
+      );
+    }
+
+
+    // ============================================================
+    // CURRENT ACTIONS
+    // STEP นี้เชื่อม READ ก่อน
+    // WRITE / PREVIEW จะต่อ Endpoint ใน Step ถัดไป
+    // ============================================================
+
+    function previewDesignDocument(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      if (
+        !project?.quotation_id
+      ) {
+        window.alert(
+          "รายการนี้ยังไม่มีใบเสนอราคา"
+        );
+
+        return;
+      }
+
+      window.alert(
+        `Quotation: ${
+          project.quotation_no ||
+          "-"
+        }\n\nขั้นต่อไปจะเชื่อม Preview + Quotation Items`
+      );
+    }
+
+
+    function editDesignItem(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      window.alert(
+        `แก้ไข / Revision: ${
+          project?.quotation_no ||
+          project?.project_no ||
+          "-"
+        }\n\nระบบ Revision จะเชื่อมใน Step ถัดไป`
+      );
+    }
+
+
+    function openProjectWorkflow(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+      toggleDesignDetail(
+        rowKey
+      );
+    }
+
+
+    function markQuotationLost(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      window.alert(
+        `บันทึกว่าไม่ได้งาน: ${
+          project?.quotation_no ||
+          "-"
+        }\n\nยังไม่ได้เปิด PATCH Endpoint ใน Step นี้`
+      );
+    }
+
+
+    function cancelQuotation(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      window.alert(
+        `ยกเลิกใบเสนอราคา: ${
+          project?.quotation_no ||
+          "-"
+        }\n\nยังไม่ได้เปิด PATCH Endpoint ใน Step นี้`
+      );
+    }
+
+
+    function deleteDesignItem(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+      window.alert(
+        `ลบ Draft: ${
+          project?.quotation_no ||
+          project?.project_name ||
+          "-"
+        }\n\nยังไม่ได้เปิด DELETE Endpoint ใน Step นี้`
+      );
+    }
+
+
+    function addQuotation() {
+      window.location.href =
+        "/admin/sales/design-projects/new/";
+    }
+
+
+    // ============================================================
+    // GLOBAL EVENTS
+    // ============================================================
+
+    document.addEventListener(
+      "click",
+      () => {
+        closeAllDesignActionMenus();
       }
     );
 
 
-    // =====================================================
-    // INIT
-    // =====================================================
+    window.addEventListener(
+      "resize",
+      closeAllDesignActionMenus
+    );
+
 
     document.addEventListener(
       "DOMContentLoaded",
       async () => {
 
-        const today =
-          new Date()
-            .toISOString()
-            .slice(0, 10);
+        if (
+          salesSubmenu &&
+          salesMenuToggle
+        ) {
+          salesSubmenu.classList.add(
+            "open"
+          );
 
-        contactDate.value =
-          today;
+          salesMenuToggle.classList.add(
+            "open"
+          );
 
-        quotationDate.value =
-          today;
+          salesMenuToggle.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+        }
 
-        createItem({
-          item_no: "1",
-          quantity: 1,
-          unit: "L.S.",
-          unit_price: 0
-        });
+        const token =
+          ensureAdminToken();
 
-        await loadCustomers();
+        if (!token) {
+          const tableBody =
+            document.getElementById(
+              "designTableBody"
+            );
 
-        recalculate();
+          if (tableBody) {
+            tableBody.innerHTML = `
+              <tr>
+                <td
+                  colspan="11"
+                  style="
+                    text-align:center;
+                    padding:34px 16px;
+                    color:#b42318;
+                  "
+                >
+                  ไม่พบ Admin Token
+                  <br>
+                  <small>
+                    กรุณาเข้าสู่ระบบใหม่ก่อนเชื่อม Live Data
+                  </small>
+                </td>
+              </tr>
+            `;
+          }
+
+          const counter =
+            document.getElementById(
+              "designRowCount"
+            );
+
+          if (counter) {
+            counter.textContent =
+              "ยังไม่ได้เชื่อม Live Data";
+          }
+
+          return;
+        }
+
+        await loadDesignProjects();
       }
     );
-  </script>
 
+  </script>
 </body>
 </html>
