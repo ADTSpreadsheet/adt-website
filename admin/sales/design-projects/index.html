@@ -3289,6 +3289,445 @@
       line-height: 1.55;
     }
 
+  
+    /* =====================================================
+       BUBBLE 3 — DELIVERY / BILLING FRAME
+    ===================================================== */
+
+    .billing-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 7400;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(3, 16, 37, 0.64);
+      backdrop-filter: blur(8px);
+      overflow: auto;
+    }
+
+    .billing-modal.open {
+      display: flex;
+    }
+
+    .billing-frame {
+      width: min(1500px, 100%);
+      min-height: calc(100vh - 36px);
+      border-radius: 22px;
+      overflow: hidden;
+      background: #f5f8fc;
+      box-shadow: 0 28px 80px rgba(3, 16, 37, 0.28);
+    }
+
+    .billing-toolbar {
+      min-height: 72px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      color: #ffffff;
+      background:
+        linear-gradient(135deg, var(--navy-950), var(--navy-800));
+    }
+
+    .billing-toolbar strong {
+      display: block;
+      font-size: 1rem;
+    }
+
+    .billing-toolbar span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255,255,255,.62);
+      font-size: .69rem;
+    }
+
+    .billing-toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .billing-btn {
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid #d8e3ef;
+      border-radius: 10px;
+      color: var(--ink-700);
+      background: #ffffff;
+      font-size: .72rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .billing-btn.primary {
+      color: #ffffff;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--blue-600), #0d57bf);
+    }
+
+    .billing-btn.green {
+      color: #ffffff;
+      border-color: transparent;
+      background: linear-gradient(135deg, #17b26a, #087545);
+    }
+
+    .billing-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .billing-body {
+      padding: 18px;
+    }
+
+    .billing-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .billing-summary-card {
+      padding: 13px 14px;
+      border: 1px solid #e0e8f2;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 6px 18px rgba(4,27,60,.05);
+    }
+
+    .billing-summary-card span {
+      display: block;
+      color: var(--ink-500);
+      font-size: .62rem;
+      font-weight: 600;
+    }
+
+    .billing-summary-card strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--navy-900);
+      font: 800 .94rem "Inter", sans-serif;
+    }
+
+    .billing-section {
+      margin-top: 14px;
+      border: 1px solid #e0e8f2;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #ffffff;
+      box-shadow: 0 8px 24px rgba(4,27,60,.05);
+    }
+
+    .billing-section-head {
+      min-height: 58px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #e8eef5;
+      background: #fbfdff;
+    }
+
+    .billing-section-head strong {
+      color: var(--navy-900);
+      font-size: .82rem;
+    }
+
+    .billing-section-head span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-500);
+      font-size: .64rem;
+    }
+
+    .billing-action-pair {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .billing-history-wrap {
+      overflow-x: auto;
+    }
+
+    .billing-history-table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+    }
+
+    .billing-history-table th,
+    .billing-history-table td {
+      padding: 10px 11px;
+      border-bottom: 1px solid #edf2f7;
+      font-size: .66rem;
+      vertical-align: top;
+    }
+
+    .billing-history-table th {
+      color: var(--ink-500);
+      background: #f8fbff;
+      font-size: .61rem;
+      text-align: left;
+    }
+
+    .billing-history-table td.money {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .billing-history-empty {
+      padding: 32px 18px !important;
+      color: var(--ink-400);
+      text-align: center !important;
+    }
+
+    .billing-editor {
+      display: none;
+      border-top: 1px solid #dfe8f2;
+      background: #f8fbff;
+    }
+
+    .billing-editor.open {
+      display: block;
+    }
+
+    .billing-editor-grid {
+      display: grid;
+      grid-template-columns: minmax(420px, .85fr) minmax(560px, 1.15fr);
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .billing-form-panel,
+    .billing-preview-panel {
+      min-width: 0;
+      border: 1px solid #e0e8f2;
+      border-radius: 14px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .billing-panel-head {
+      padding: 11px 13px;
+      border-bottom: 1px solid #edf2f7;
+      background: #fbfdff;
+    }
+
+    .billing-panel-head strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: .75rem;
+    }
+
+    .billing-panel-head span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-500);
+      font-size: .61rem;
+    }
+
+    .billing-form {
+      padding: 13px;
+    }
+
+    .billing-fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 10px;
+    }
+
+    .billing-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .billing-field label {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--ink-700);
+      font-size: .62rem;
+      font-weight: 700;
+    }
+
+    .billing-field input,
+    .billing-field textarea {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid #d9e3ee;
+      border-radius: 9px;
+      color: var(--ink-900);
+      background: #ffffff;
+      outline: none;
+      font-size: .68rem;
+    }
+
+    .billing-field textarea {
+      min-height: 94px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .billing-field input:focus,
+    .billing-field textarea:focus {
+      border-color: var(--blue-600);
+      box-shadow: 0 0 0 3px rgba(22,119,255,.08);
+    }
+
+    .billing-readonly {
+      background: #f4f7fb !important;
+      color: var(--ink-500) !important;
+    }
+
+    .billing-form-note {
+      margin-top: 10px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      color: #7a5100;
+      background: #fff8df;
+      border: 1px solid #f2df95;
+      font-size: .61rem;
+      line-height: 1.55;
+    }
+
+    .billing-form-actions {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .billing-paper-wrap {
+      padding: 12px;
+      overflow: auto;
+      background: #eef3f8;
+    }
+
+    .billing-paper {
+      width: min(760px, 100%);
+      min-height: 720px;
+      margin: 0 auto;
+      padding: 24px 28px;
+      background: #ffffff;
+      border: 1px solid #dce5ef;
+      box-shadow: 0 8px 26px rgba(4,27,60,.08);
+      color: #172033;
+      font-size: .66rem;
+    }
+
+    .billing-paper-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--navy-900);
+    }
+
+    .billing-paper-head h3 {
+      margin: 0;
+      font-size: 1.08rem;
+    }
+
+    .billing-paper-head p {
+      margin: 5px 0 0;
+      line-height: 1.6;
+    }
+
+    .billing-paper-block {
+      padding: 10px 0;
+      border-bottom: 1px solid #dce5ef;
+      line-height: 1.75;
+    }
+
+    .billing-paper-title {
+      margin-top: 14px;
+      padding: 7px 9px;
+      color: #ffffff;
+      background: var(--navy-900);
+      font-weight: 700;
+    }
+
+    .billing-paper-detail {
+      min-height: 130px;
+      padding: 10px;
+      border: 1px solid #1f2937;
+      border-top: 0;
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+
+    .billing-paper-money {
+      width: 52%;
+      margin: 12px 0 0 auto;
+      border-collapse: collapse;
+      min-width: 0;
+    }
+
+    .billing-paper-money td {
+      padding: 7px 8px;
+      border: 1px solid #1f2937;
+      font-size: .65rem;
+    }
+
+    .billing-paper-money td:last-child {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .billing-paper-sign {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      text-align: center;
+      line-height: 2;
+    }
+
+    @media (max-width: 1050px) {
+      .billing-summary-grid {
+        grid-template-columns: repeat(2, minmax(150px,1fr));
+      }
+
+      .billing-editor-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .billing-modal {
+        padding: 0;
+      }
+
+      .billing-frame {
+        min-height: 100vh;
+        border-radius: 0;
+      }
+
+      .billing-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .billing-summary-grid,
+      .billing-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .billing-action-pair,
+      .billing-form-actions {
+        width: 100%;
+      }
+
+      .billing-action-pair .billing-btn,
+      .billing-form-actions .billing-btn {
+        flex: 1;
+      }
+    }
+
   </style>
 </head>
 
@@ -3827,6 +4266,48 @@
           กำลังโหลดใบเสนอราคา...
         </div>
       </div>
+    </section>
+  </div>
+
+
+
+  <!-- BUBBLE 3 — DELIVERY / BILLING FRAME -->
+  <div
+    class="billing-modal"
+    id="billingModal"
+    aria-hidden="true"
+  >
+    <section
+      class="billing-frame"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="billingModalTitle"
+    >
+      <div class="billing-toolbar">
+        <div>
+          <strong id="billingModalTitle">
+            ส่งมอบงาน / Billing Request
+          </strong>
+          <span id="billingModalSubTitle">
+            Delivery + Invoice Workspace
+          </span>
+        </div>
+
+        <div class="billing-toolbar-actions">
+          <button
+            class="billing-btn"
+            type="button"
+            onclick="closeBillingFrame()"
+          >
+            ✕ ปิด
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="billing-body"
+        id="billingBody"
+      ></div>
     </section>
   </div>
 
@@ -4699,9 +5180,10 @@
                 <button
                   class="workflow-mini-btn"
                   type="button"
-                  onclick="openWorkflowPlaceholder('Billing Request')"
+                  onclick="openBillingFrame('${safeId(project.quotation_id || '')}')"
+                  ${normalizeStatus(project.po_status) === 'RECEIVED' ? '' : 'disabled'}
                 >
-                  + สร้างงวดเบิก
+                  + จัดการส่งมอบ / ตั้งเบิก
                 </button>
               </div>
             </div>
@@ -4802,6 +5284,1129 @@
       window.alert(
         `${moduleName}\n\nขึ้นโครง UI แล้ว — ขั้นต่อไปเชื่อม Endpoint และตารางข้อมูลของโมดูลนี้`
       );
+    }
+
+
+
+
+    // ============================================================
+    // BUBBLE 3 — DELIVERY / BILLING FRAME (UI PROTOTYPE)
+    // ยังไม่ POST Backend — ใช้ล็อก UX ก่อนเชื่อม 16_project_transactions
+    // ============================================================
+
+    let billingState = null;
+
+
+    function billingToday() {
+      const d =
+        new Date();
+
+      const local =
+        new Date(
+          d.getTime() -
+          d.getTimezoneOffset() * 60000
+        );
+
+      return local
+        .toISOString()
+        .slice(0, 10);
+    }
+
+
+    function billingNumber(value) {
+      const n =
+        Number(value || 0);
+
+      return Number.isFinite(n)
+        ? n
+        : 0;
+    }
+
+
+    function billingContractAmount(project) {
+      return billingNumber(
+        project?.contract_amount ??
+        project?.po_amount ??
+        project?.awarded_amount ??
+        project?.grand_total ??
+        0
+      );
+    }
+
+
+    function billingTotals() {
+      const deliveryRows =
+        Array.isArray(
+          billingState?.deliveryRows
+        )
+          ? billingState.deliveryRows
+          : [];
+
+      const invoiceRows =
+        Array.isArray(
+          billingState?.invoiceRows
+        )
+          ? billingState.invoiceRows
+          : [];
+
+      const deliveryAccum =
+        deliveryRows.reduce(
+          (sum, row) =>
+            sum +
+            billingNumber(
+              row.amount
+            ),
+          0
+        );
+
+      const billedAccum =
+        invoiceRows.reduce(
+          (sum, row) =>
+            sum +
+            billingNumber(
+              row.amount
+            ),
+          0
+        );
+
+      const contractAmount =
+        billingContractAmount(
+          billingState?.project
+        );
+
+      return {
+        contractAmount,
+        deliveryAccum,
+        billedAccum,
+        deliveryRemaining:
+          Math.max(
+            0,
+            contractAmount -
+            deliveryAccum
+          ),
+        billingRemaining:
+          Math.max(
+            0,
+            contractAmount -
+            billedAccum
+          )
+      };
+    }
+
+
+    function billingSummaryHtml() {
+      const project =
+        billingState?.project || {};
+
+      const totals =
+        billingTotals();
+
+      return `
+        <div class="billing-summary-grid">
+          <div class="billing-summary-card">
+            <span>Project</span>
+            <strong>
+              ${escapeHtml(
+                project.project_no ||
+                project.quotation_no ||
+                "-"
+              )}
+            </strong>
+          </div>
+
+          <div class="billing-summary-card">
+            <span>มูลค่าสั่งจ้าง / PO</span>
+            <strong>
+              ${formatDesignMoney(
+                totals.contractAmount
+              )}
+            </strong>
+          </div>
+
+          <div class="billing-summary-card">
+            <span>ส่งมอบสะสม</span>
+            <strong>
+              ${formatDesignMoney(
+                totals.deliveryAccum
+              )}
+            </strong>
+          </div>
+
+          <div class="billing-summary-card">
+            <span>ตั้งเบิกสะสม</span>
+            <strong>
+              ${formatDesignMoney(
+                totals.billedAccum
+              )}
+            </strong>
+          </div>
+
+          <div class="billing-summary-card">
+            <span>ยอดที่ยังตั้งเบิกได้</span>
+            <strong>
+              ${formatDesignMoney(
+                totals.billingRemaining
+              )}
+            </strong>
+          </div>
+        </div>
+      `;
+    }
+
+
+    function billingHistoryHtml() {
+      const deliveryRows =
+        Array.isArray(
+          billingState?.deliveryRows
+        )
+          ? billingState.deliveryRows
+          : [];
+
+      const invoiceRows =
+        Array.isArray(
+          billingState?.invoiceRows
+        )
+          ? billingState.invoiceRows
+          : [];
+
+      const rows = [
+        ...deliveryRows.map(
+          row => ({
+            ...row,
+            type: "DELIVERY"
+          })
+        ),
+        ...invoiceRows.map(
+          row => ({
+            ...row,
+            type: "INVOICE"
+          })
+        )
+      ].sort(
+        (a, b) =>
+          String(a.date || "")
+            .localeCompare(
+              String(b.date || "")
+            )
+      );
+
+      const body =
+        rows.length
+          ? rows.map(
+              (row, index) => `
+                <tr>
+                  <td>
+                    ${index + 1}
+                  </td>
+
+                  <td>
+                    ${
+                      row.type === "DELIVERY"
+                        ? `<span class="badge blue">ส่งมอบงาน</span>`
+                        : `<span class="badge green">วางบิล</span>`
+                    }
+                  </td>
+
+                  <td>
+                    ${escapeHtml(
+                      row.date || "-"
+                    )}
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${escapeHtml(
+                        row.documentNo || "-"
+                      )}
+                    </strong>
+                  </td>
+
+                  <td style="white-space:pre-wrap;">
+                    ${escapeHtml(
+                      row.description || "-"
+                    )}
+                  </td>
+
+                  <td class="money">
+                    ${formatDesignMoney(
+                      row.amount
+                    )}
+                  </td>
+
+                  <td>
+                    ${
+                      row.type === "DELIVERY"
+                        ? `<button class="billing-btn" type="button" onclick="openBillingEditor('INVOICE', '${escapeHtml(row.localId || "")}')">+ เพิ่มการตั้งเบิก</button>`
+                        : `<span class="badge gray">UI Prototype</span>`
+                    }
+                  </td>
+                </tr>
+              `
+            ).join("")
+          : `
+              <tr>
+                <td
+                  class="billing-history-empty"
+                  colspan="7"
+                >
+                  ยังไม่มีประวัติการส่งมอบงานหรือการตั้งเบิก
+                  <br>
+                  เริ่มจาก “+ เพิ่มการส่งมอบงาน” หรือ “+ เพิ่มใบวางบิล”
+                </td>
+              </tr>
+            `;
+
+      return `
+        <div class="billing-history-wrap">
+          <table class="billing-history-table">
+            <thead>
+              <tr>
+                <th>ลำดับ</th>
+                <th>ประเภท</th>
+                <th>วันที่</th>
+                <th>เลขเอกสาร</th>
+                <th>รายละเอียด</th>
+                <th style="text-align:right;">จำนวนเงิน</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              ${body}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+
+    function billingFrameHtml() {
+      return `
+        ${billingSummaryHtml()}
+
+        <div class="billing-section">
+          <div class="billing-section-head">
+            <div>
+              <strong>
+                ประวัติการส่งมอบงาน / การตั้งเบิก
+              </strong>
+
+              <span>
+                รายละเอียดเป็นข้อความอิสระ ไม่อิง Item ในใบเสนอราคา
+              </span>
+            </div>
+
+            <div class="billing-action-pair">
+              <button
+                class="billing-btn primary"
+                type="button"
+                onclick="openBillingEditor('DELIVERY')"
+              >
+                + เพิ่มการส่งมอบงาน
+              </button>
+
+              <button
+                class="billing-btn green"
+                type="button"
+                onclick="openBillingEditor('INVOICE')"
+              >
+                + เพิ่มใบวางบิล / ใบแจ้งหนี้
+              </button>
+            </div>
+          </div>
+
+          <div id="billingHistoryHost">
+            ${billingHistoryHtml()}
+          </div>
+
+          <div
+            class="billing-editor"
+            id="billingEditor"
+          ></div>
+        </div>
+      `;
+    }
+
+
+    function billingEditorForm(
+      type,
+      deliveryLocalId = ""
+    ) {
+      const isDelivery =
+        type === "DELIVERY";
+
+      const project =
+        billingState?.project || {};
+
+      const totals =
+        billingTotals();
+
+      const sourceDelivery =
+        (billingState?.deliveryRows || [])
+          .find(
+            row =>
+              String(
+                row.localId || ""
+              ) ===
+              String(
+                deliveryLocalId || ""
+              )
+          ) ||
+        null;
+
+      const maxAmount =
+        isDelivery
+          ? totals.deliveryRemaining
+          : totals.billingRemaining;
+
+      const title =
+        isDelivery
+          ? "หนังสือส่งมอบงาน"
+          : "ใบวางบิล / ใบแจ้งหนี้";
+
+      const defaultDescription =
+        sourceDelivery?.description ||
+        "";
+
+      return `
+        <div class="billing-editor-grid">
+
+          <div class="billing-form-panel">
+            <div class="billing-panel-head">
+              <strong>
+                ${escapeHtml(title)}
+              </strong>
+
+              <span>
+                กรอกข้อมูลอิสระตามเอกสารจริงของงวดนี้
+              </span>
+            </div>
+
+            <div
+              class="billing-form"
+              id="billingEditorForm"
+            >
+              <input
+                type="hidden"
+                id="billingEditorType"
+                value="${type}"
+              >
+
+              <input
+                type="hidden"
+                id="billingSourceDeliveryId"
+                value="${escapeHtml(
+                  deliveryLocalId
+                )}"
+              >
+
+              <div class="billing-fields">
+                <div class="billing-field">
+                  <label>Project</label>
+                  <input
+                    class="billing-readonly"
+                    readonly
+                    value="${escapeHtml(
+                      project.project_no ||
+                      project.quotation_no ||
+                      "-"
+                    )}"
+                  >
+                </div>
+
+                <div class="billing-field">
+                  <label>มูลค่าสั่งจ้าง / PO</label>
+                  <input
+                    class="billing-readonly"
+                    readonly
+                    value="${formatDesignMoney(
+                      totals.contractAmount
+                    )}"
+                  >
+                </div>
+
+                <div class="billing-field">
+                  <label>
+                    ${
+                      isDelivery
+                        ? "เลขหนังสือส่งมอบ"
+                        : "เลขใบวางบิล / Invoice"
+                    }
+                  </label>
+
+                  <input
+                    id="billingDocumentNo"
+                    type="text"
+                    placeholder="ระบบจะ Run เลขจริงเมื่อเชื่อม Backend"
+                    oninput="renderBillingEditorPreview()"
+                  >
+                </div>
+
+                <div class="billing-field">
+                  <label>
+                    วันที่เอกสาร
+                  </label>
+
+                  <input
+                    id="billingDocumentDate"
+                    type="date"
+                    value="${billingToday()}"
+                    oninput="renderBillingEditorPreview()"
+                  >
+                </div>
+
+                <div class="billing-field full">
+                  <label>
+                    ${
+                      isDelivery
+                        ? "รายละเอียดงานที่ส่งมอบ"
+                        : "รายละเอียดการตั้งเบิก"
+                    }
+                  </label>
+
+                  <textarea
+                    id="billingDescription"
+                    placeholder="${
+                      isDelivery
+                        ? "พิมพ์รายละเอียดงานที่ส่งมอบครั้งนี้ได้อย่างอิสระ"
+                        : "พิมพ์รายละเอียดรายการที่ต้องการตั้งเบิกได้อย่างอิสระ"
+                    }"
+                    oninput="renderBillingEditorPreview()"
+                  >${escapeHtml(
+                    defaultDescription
+                  )}</textarea>
+                </div>
+
+                <div class="billing-field">
+                  <label>
+                    ${
+                      isDelivery
+                        ? "มูลค่างานที่ส่งมอบครั้งนี้ (บาท)"
+                        : "ยอดตั้งเบิกครั้งนี้ (บาท)"
+                    }
+                  </label>
+
+                  <input
+                    id="billingAmount"
+                    type="number"
+                    min="0"
+                    max="${maxAmount}"
+                    step="0.01"
+                    placeholder="0.00"
+                    oninput="renderBillingEditorPreview()"
+                  >
+                </div>
+
+                <div class="billing-field">
+                  <label>
+                    ${
+                      isDelivery
+                        ? "ยอดส่งมอบคงเหลือ"
+                        : "ยอดที่ยังตั้งเบิกได้"
+                    }
+                  </label>
+
+                  <input
+                    class="billing-readonly"
+                    readonly
+                    value="${formatDesignMoney(
+                      maxAmount
+                    )}"
+                  >
+                </div>
+
+                <div class="billing-field full">
+                  <label>หมายเหตุ</label>
+
+                  <textarea
+                    id="billingNote"
+                    placeholder="หมายเหตุเพิ่มเติม (ถ้ามี)"
+                    oninput="renderBillingEditorPreview()"
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="billing-form-note">
+                UI รอบนี้ยังไม่ POST ลง Supabase
+                — ใช้สำหรับล็อกหน้าตาและ Workflow ก่อนเชื่อม
+                <strong>16_project_transactions</strong>
+              </div>
+
+              <div class="billing-form-actions">
+                <button
+                  class="billing-btn"
+                  type="button"
+                  onclick="closeBillingEditor()"
+                >
+                  ยกเลิก
+                </button>
+
+                <button
+                  class="billing-btn ${
+                    isDelivery
+                      ? "primary"
+                      : "green"
+                  }"
+                  type="button"
+                  onclick="saveBillingPrototype()"
+                >
+                  ${
+                    isDelivery
+                      ? "บันทึกส่งมอบ (UI)"
+                      : "บันทึกตั้งเบิก (UI)"
+                  }
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="billing-preview-panel">
+            <div class="billing-panel-head">
+              <strong>
+                Live Preview — ${escapeHtml(title)}
+              </strong>
+
+              <span>
+                พรีวิวจากข้อมูลที่กรอกในฟอร์ม
+              </span>
+            </div>
+
+            <div class="billing-paper-wrap">
+              <div
+                class="billing-paper"
+                id="billingEditorPaper"
+              ></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+
+    function openBillingEditor(
+      type,
+      deliveryLocalId = ""
+    ) {
+      if (!billingState) {
+        return;
+      }
+
+      const normalized =
+        normalizeStatus(type);
+
+      if (
+        ![
+          "DELIVERY",
+          "INVOICE"
+        ].includes(
+          normalized
+        )
+      ) {
+        return;
+      }
+
+      billingState.editorType =
+        normalized;
+
+      const editor =
+        document.getElementById(
+          "billingEditor"
+        );
+
+      if (!editor) {
+        return;
+      }
+
+      editor.innerHTML =
+        billingEditorForm(
+          normalized,
+          deliveryLocalId
+        );
+
+      editor.classList.add(
+        "open"
+      );
+
+      renderBillingEditorPreview();
+
+      editor.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+
+    function closeBillingEditor() {
+      const editor =
+        document.getElementById(
+          "billingEditor"
+        );
+
+      if (!editor) {
+        return;
+      }
+
+      editor.classList.remove(
+        "open"
+      );
+
+      editor.innerHTML =
+        "";
+    }
+
+
+    function renderBillingEditorPreview() {
+      const paper =
+        document.getElementById(
+          "billingEditorPaper"
+        );
+
+      if (
+        !paper ||
+        !billingState
+      ) {
+        return;
+      }
+
+      const type =
+        normalizeStatus(
+          document
+            .getElementById(
+              "billingEditorType"
+            )
+            ?.value
+        );
+
+      const isDelivery =
+        type === "DELIVERY";
+
+      const project =
+        billingState.project || {};
+
+      const documentNo =
+        document
+          .getElementById(
+            "billingDocumentNo"
+          )
+          ?.value
+          ?.trim() ||
+        "(Auto)";
+
+      const documentDate =
+        document
+          .getElementById(
+            "billingDocumentDate"
+          )
+          ?.value ||
+        "-";
+
+      const description =
+        document
+          .getElementById(
+            "billingDescription"
+          )
+          ?.value
+          ?.trim() ||
+        "-";
+
+      const amount =
+        billingNumber(
+          document
+            .getElementById(
+              "billingAmount"
+            )
+            ?.value
+        );
+
+      const note =
+        document
+          .getElementById(
+            "billingNote"
+          )
+          ?.value
+          ?.trim() ||
+        "-";
+
+      const title =
+        isDelivery
+          ? "หนังสือส่งมอบงาน"
+          : "ใบวางบิล / ใบแจ้งหนี้";
+
+      paper.innerHTML = `
+        <div class="billing-paper-head">
+          <div>
+            <h3>
+              บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+            </h3>
+
+            <p>
+              428 หมู่ 1 ต.เทพนคร อ.เมือง จ.กำแพงเพชร 63000<br>
+              โทร. 092-6191220
+            </p>
+          </div>
+
+          <div style="text-align:right;">
+            <h3>
+              ${escapeHtml(title)}
+            </h3>
+
+            <p>
+              เลขที่ ${escapeHtml(documentNo)}<br>
+              วันที่ ${escapeHtml(documentDate)}
+            </p>
+          </div>
+        </div>
+
+        <div class="billing-paper-block">
+          <strong>Project :</strong>
+          ${escapeHtml(
+            project.project_name ||
+            "-"
+          )}
+          <br>
+
+          <strong>Project No. :</strong>
+          ${escapeHtml(
+            project.project_no ||
+            "-"
+          )}
+          <br>
+
+          <strong>ลูกค้า :</strong>
+          ${escapeHtml(
+            project.customer_name ||
+            project.client_name ||
+            "-"
+          )}
+        </div>
+
+        <div class="billing-paper-title">
+          ${
+            isDelivery
+              ? "รายละเอียดการส่งมอบงาน"
+              : "รายละเอียดการตั้งเบิก"
+          }
+        </div>
+
+        <div class="billing-paper-detail">
+          ${escapeHtml(description)}
+        </div>
+
+        <table class="billing-paper-money">
+          <tbody>
+            <tr>
+              <td>
+                ${
+                  isDelivery
+                    ? "มูลค่างานที่ส่งมอบครั้งนี้"
+                    : "ยอดตั้งเบิกครั้งนี้"
+                }
+              </td>
+
+              <td>
+                ${formatDesignMoney(
+                  amount
+                )} บาท
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                มูลค่าสั่งจ้าง / PO
+              </td>
+
+              <td>
+                ${formatDesignMoney(
+                  billingContractAmount(
+                    project
+                  )
+                )} บาท
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="billing-paper-block">
+          <strong>หมายเหตุ :</strong>
+          ${escapeHtml(note)}
+        </div>
+
+        <div class="billing-paper-sign">
+          <div>
+            ผู้ส่งมอบ / ผู้วางบิล
+            <br><br>
+            ................................................
+            <br>
+            วันที่ ........................................
+          </div>
+
+          <div>
+            ผู้รับเอกสาร / ลูกค้า
+            <br><br>
+            ................................................
+            <br>
+            วันที่ ........................................
+          </div>
+        </div>
+      `;
+    }
+
+
+    function saveBillingPrototype() {
+      if (!billingState) {
+        return;
+      }
+
+      const type =
+        normalizeStatus(
+          document
+            .getElementById(
+              "billingEditorType"
+            )
+            ?.value
+        );
+
+      const documentNo =
+        document
+          .getElementById(
+            "billingDocumentNo"
+          )
+          ?.value
+          ?.trim() ||
+        (
+          type === "DELIVERY"
+            ? `DEL-UI-${billingState.deliveryRows.length + 1}`
+            : `INV-UI-${billingState.invoiceRows.length + 1}`
+        );
+
+      const date =
+        document
+          .getElementById(
+            "billingDocumentDate"
+          )
+          ?.value ||
+        billingToday();
+
+      const description =
+        document
+          .getElementById(
+            "billingDescription"
+          )
+          ?.value
+          ?.trim() ||
+        "";
+
+      const amount =
+        billingNumber(
+          document
+            .getElementById(
+              "billingAmount"
+            )
+            ?.value
+        );
+
+      const note =
+        document
+          .getElementById(
+            "billingNote"
+          )
+          ?.value
+          ?.trim() ||
+        "";
+
+      const totals =
+        billingTotals();
+
+      const available =
+        type === "DELIVERY"
+          ? totals.deliveryRemaining
+          : totals.billingRemaining;
+
+      if (!description) {
+        window.alert(
+          "กรุณากรอกรายละเอียดเอกสาร"
+        );
+        return;
+      }
+
+      if (!(amount > 0)) {
+        window.alert(
+          "จำนวนเงินต้องมากกว่า 0"
+        );
+        return;
+      }
+
+      if (
+        amount >
+        available + 0.01
+      ) {
+        window.alert(
+          `ยอดครั้งนี้เกินกรอบที่เหลือ ${formatDesignMoney(
+            available
+          )} บาท`
+        );
+        return;
+      }
+
+      const row = {
+        localId:
+          `UI-${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2, 8)}`,
+        documentNo,
+        date,
+        description,
+        amount,
+        note,
+        sourceDeliveryId:
+          document
+            .getElementById(
+              "billingSourceDeliveryId"
+            )
+            ?.value ||
+          ""
+      };
+
+      if (
+        type === "DELIVERY"
+      ) {
+        billingState.deliveryRows.push(
+          row
+        );
+      }
+      else {
+        billingState.invoiceRows.push(
+          row
+        );
+      }
+
+      renderBillingFrame();
+
+      window.alert(
+        type === "DELIVERY"
+          ? "เพิ่มรายการส่งมอบใน UI แล้ว (ยังไม่บันทึก Supabase)"
+          : "เพิ่มรายการตั้งเบิกใน UI แล้ว (ยังไม่บันทึก Supabase)"
+      );
+    }
+
+
+    function renderBillingFrame() {
+      const body =
+        document.getElementById(
+          "billingBody"
+        );
+
+      if (
+        !body ||
+        !billingState
+      ) {
+        return;
+      }
+
+      body.innerHTML =
+        billingFrameHtml();
+    }
+
+
+    function openBillingFrame(
+      quotationId
+    ) {
+      closeAllDesignActionMenus();
+
+      const project =
+        getProjectByQuotationId(
+          quotationId
+        );
+
+      if (!project) {
+        window.alert(
+          "ไม่พบข้อมูล Project สำหรับ Billing"
+        );
+        return;
+      }
+
+      if (
+        normalizeStatus(
+          project.po_status
+        ) !== "RECEIVED"
+      ) {
+        window.alert(
+          "ต้องบันทึกการสั่งจ้าง / PO ให้เรียบร้อยก่อน จึงจะสร้างเอกสารส่งมอบและตั้งเบิกได้"
+        );
+        return;
+      }
+
+      const modal =
+        document.getElementById(
+          "billingModal"
+        );
+
+      const subTitle =
+        document.getElementById(
+          "billingModalSubTitle"
+        );
+
+      if (!modal) {
+        return;
+      }
+
+      billingState = {
+        quotationId,
+        project,
+        deliveryRows: [],
+        invoiceRows: [],
+        editorType: null
+      };
+
+      if (subTitle) {
+        subTitle.textContent =
+          `${
+            project.project_no ||
+            project.quotation_no ||
+            "-"
+          } · ${
+            project.customer_name ||
+            project.client_name ||
+            "-"
+          }`;
+      }
+
+      renderBillingFrame();
+
+      modal.classList.add(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+    }
+
+
+    function closeBillingFrame() {
+      const modal =
+        document.getElementById(
+          "billingModal"
+        );
+
+      modal?.classList.remove(
+        "open"
+      );
+
+      modal?.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      billingState =
+        null;
+
+      document.body.style.overflow =
+        "";
     }
 
 
