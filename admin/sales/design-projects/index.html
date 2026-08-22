@@ -5621,7 +5621,7 @@
                     ${
                       row.type === "DELIVERY"
                         ? `<button class="billing-btn" type="button" onclick="openBillingEditor('INVOICE', '${escapeHtml(row.localId || "")}')">+ เพิ่มการตั้งเบิก</button>`
-                        : `<span class="badge gray">UI Prototype</span>`
+                        : `<span class="badge green">บันทึกแล้ว</span>`
                     }
                   </td>
                 </tr>
@@ -5635,7 +5635,7 @@
                 >
                   ยังไม่มีประวัติการส่งมอบงานหรือการตั้งเบิก
                   <br>
-                  เริ่มจาก “+ เพิ่มการส่งมอบงาน” หรือ “+ เพิ่มใบวางบิล”
+                  เริ่มจาก “+ เพิ่มการส่งมอบงาน”
                 </td>
               </tr>
             `;
@@ -5689,13 +5689,6 @@
                 + เพิ่มการส่งมอบงาน
               </button>
 
-              <button
-                class="billing-btn green"
-                type="button"
-                onclick="openBillingEditor('INVOICE')"
-              >
-                + เพิ่มใบวางบิล / ใบแจ้งหนี้
-              </button>
             </div>
           </div>
 
@@ -5911,9 +5904,9 @@
               </div>
 
               <div class="billing-form-note">
-                UI รอบนี้ยังไม่ POST ลง Supabase
-                — ใช้สำหรับล็อกหน้าตาและ Workflow ก่อนเชื่อม
+                หนังสือส่งมอบงานจะบันทึกจริงผ่าน Backend ลง
                 <strong>16_project_transactions</strong>
+                และเมื่อบันทึกสำเร็จ ระบบจึงสร้างงวดงานในตารางด้านบน
               </div>
 
               <div class="billing-form-actions">
@@ -5932,12 +5925,12 @@
                       : "green"
                   }"
                   type="button"
-                  onclick="saveBillingPrototype()"
+                  onclick="saveBillingDocument()"
                 >
                   ${
                     isDelivery
-                      ? "บันทึกส่งมอบ (UI)"
-                      : "บันทึกตั้งเบิก (UI)"
+                      ? "บันทึกส่งมอบ"
+                      : "บันทึกตั้งเบิก"
                   }
                 </button>
               </div>
@@ -5986,6 +5979,16 @@
           normalized
         )
       ) {
+        return;
+      }
+
+      if (
+        normalized === "INVOICE" &&
+        !deliveryLocalId
+      ) {
+        window.alert(
+          "ต้องเลือกงวดส่งมอบที่บันทึกสำเร็จก่อน จึงจะสร้างใบวางบิลได้"
+        );
         return;
       }
 
@@ -6711,7 +6714,7 @@
       `;
     }
 
-    function saveBillingPrototype() {
+    async function saveBillingDocument() {
       if (!billingState) {
         return;
       }
@@ -6725,18 +6728,14 @@
             ?.value
         );
 
-      const documentNo =
-        document
-          .getElementById(
-            "billingDocumentNo"
-          )
-          ?.value
-          ?.trim() ||
-        (
-          type === "DELIVERY"
-            ? `DEL-UI-${billingState.deliveryRows.length + 1}`
-            : `INV-UI-${billingState.invoiceRows.length + 1}`
+      // รอบนี้ Backend ที่ต่อจริงคือ DELIVERY ก่อน
+      // INVOICE จะต้องผูกกับ DELIVERY ที่บันทึกสำเร็จแล้ว
+      if (type !== "DELIVERY") {
+        window.alert(
+          "ใบวางบิลจะเชื่อม Backend ในขั้นถัดไป หลังจากมีรายการส่งมอบจริงแล้ว"
         );
+        return;
+      }
 
       const date =
         document
@@ -6776,76 +6775,154 @@
       const totals =
         billingTotals();
 
-      const available =
-        type === "DELIVERY"
-          ? totals.deliveryRemaining
-          : totals.billingRemaining;
-
       if (!description) {
         window.alert(
-          "กรุณากรอกรายละเอียดเอกสาร"
+          "กรุณากรอกรายละเอียดงานที่ส่งมอบ"
         );
         return;
       }
 
       if (!(amount > 0)) {
         window.alert(
-          "จำนวนเงินต้องมากกว่า 0"
+          "มูลค่างานที่ส่งมอบต้องมากกว่า 0"
         );
         return;
       }
 
       if (
         amount >
-        available + 0.01
+        totals.deliveryRemaining + 0.01
       ) {
         window.alert(
-          `ยอดครั้งนี้เกินกรอบที่เหลือ ${formatDesignMoney(
-            available
+          `ยอดครั้งนี้เกินยอดส่งมอบคงเหลือ ${formatDesignMoney(
+            totals.deliveryRemaining
           )} บาท`
         );
         return;
       }
 
-      const row = {
-        localId:
-          `UI-${Date.now()}-${Math.random()
-            .toString(36)
-            .slice(2, 8)}`,
-        documentNo,
-        date,
-        description,
-        amount,
-        note,
-        sourceDeliveryId:
-          document
-            .getElementById(
-              "billingSourceDeliveryId"
-            )
-            ?.value ||
-          ""
-      };
+      const token =
+        ensureAdminToken();
 
-      if (
-        type === "DELIVERY"
-      ) {
-        billingState.deliveryRows.push(
-          row
-        );
-      }
-      else {
-        billingState.invoiceRows.push(
-          row
-        );
+      if (!token) {
+        return;
       }
 
-      renderBillingFrame();
+      const quotationId =
+        String(
+          billingState.quotationId || ""
+        ).trim();
 
-      window.alert(
-        type === "DELIVERY"
-          ? "เพิ่มรายการส่งมอบใน UI แล้ว (ยังไม่บันทึก Supabase)"
-          : "เพิ่มรายการตั้งเบิกใน UI แล้ว (ยังไม่บันทึก Supabase)"
-      );
+      if (!quotationId) {
+        window.alert(
+          "ไม่พบ quotationId สำหรับบันทึกส่งมอบ"
+        );
+        return;
+      }
+
+      const saveButton =
+        document.querySelector(
+          '#billingEditor .billing-form-actions .billing-btn.primary'
+        );
+
+      const oldButtonText =
+        saveButton?.textContent ||
+        "บันทึกส่งมอบ";
+
+      if (saveButton) {
+        saveButton.disabled = true;
+        saveButton.textContent =
+          "กำลังบันทึก...";
+      }
+
+      try {
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              quotationId
+            )}/deliveries`,
+            {
+              method: "POST",
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json",
+                "Content-Type":
+                  "application/json"
+              },
+              body: JSON.stringify({
+                document_date: date,
+                description,
+                amount,
+                note
+              })
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (response.status === 401) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+          );
+        }
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            result?.detail ||
+            `บันทึกส่งมอบไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        // สำเร็จแล้วอ่านข้อมูลจริงจาก Backend ใหม่ทั้งชุด
+        await loadBillingData(
+          quotationId,
+          {
+            keepModalOpen: true
+          }
+        );
+
+        window.alert(
+          `บันทึกหนังสือส่งมอบสำเร็จ${
+            result?.delivery?.document_no
+              ? `\nเลขเอกสาร ${result.delivery.document_no}`
+              : ""
+          }`
+        );
+      }
+      catch (error) {
+        console.error(
+          "Save Delivery Error:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "ไม่สามารถบันทึกหนังสือส่งมอบงานได้"
+        );
+
+        if (saveButton) {
+          saveButton.disabled = false;
+          saveButton.textContent =
+            oldButtonText;
+        }
+      }
     }
 
 
@@ -6867,7 +6944,164 @@
     }
 
 
-    function openBillingFrame(
+    function mapBillingTransaction(row = {}) {
+      return {
+        id:
+          row.id || "",
+        localId:
+          row.id || "",
+        documentNo:
+          row.document_no || "-",
+        date:
+          row.document_date || "",
+        description:
+          row.description || "",
+        amount:
+          billingNumber(
+            row.amount
+          ),
+        note:
+          row.note || "",
+        sourceDeliveryId:
+          row.parent_transaction_id ||
+          row.reference_transaction_id ||
+          "",
+        raw:
+          row
+      };
+    }
+
+
+    async function loadBillingData(
+      quotationId,
+      options = {}
+    ) {
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return false;
+      }
+
+      const response =
+        await fetch(
+          `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+            quotationId
+          )}/billing`,
+          {
+            method: "GET",
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+              Accept:
+                "application/json"
+            },
+            cache:
+              "no-store"
+          }
+        );
+
+      const result =
+        await response.json()
+          .catch(
+            () => null
+          );
+
+      if (response.status === 401) {
+        sessionStorage.removeItem(
+          TOKEN_KEY
+        );
+        localStorage.removeItem(
+          TOKEN_KEY
+        );
+
+        throw new Error(
+          "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+        );
+      }
+
+      if (
+        !response.ok ||
+        result?.success !== true
+      ) {
+        throw new Error(
+          result?.message ||
+          result?.detail ||
+          `โหลด Billing ไม่สำเร็จ (HTTP ${response.status})`
+        );
+      }
+
+      const cachedProject =
+        getProjectByQuotationId(
+          quotationId
+        ) || {};
+
+      const contractAmount =
+        billingNumber(
+          result?.summary?.contract_amount ??
+          result?.job_award?.amount ??
+          cachedProject.contract_amount ??
+          cachedProject.po_amount ??
+          0
+        );
+
+      const project = {
+        ...cachedProject,
+        ...(result.project || {}),
+        quotation_no:
+          result?.quotation?.quotation_no ||
+          cachedProject.quotation_no ||
+          "",
+        customer_name:
+          cachedProject.customer_name ||
+          cachedProject.client_name ||
+          result?.project?.customer_name ||
+          "",
+        po_no:
+          result?.job_award?.document_no ||
+          cachedProject.po_no ||
+          "",
+        award_document_no:
+          result?.job_award?.document_no ||
+          cachedProject.award_document_no ||
+          "",
+        contract_amount:
+          contractAmount,
+        po_amount:
+          contractAmount,
+        awarded_amount:
+          contractAmount
+      };
+
+      billingState = {
+        quotationId,
+        project,
+        jobAward:
+          result.job_award || null,
+        summary:
+          result.summary || null,
+        permissions:
+          result.permissions || {},
+        deliveryRows:
+          (result.deliveries || [])
+            .map(
+              mapBillingTransaction
+            ),
+        invoiceRows:
+          (result.invoices || [])
+            .map(
+              mapBillingTransaction
+            ),
+        editorType: null
+      };
+
+      renderBillingFrame();
+
+      return true;
+    }
+
+
+    async function openBillingFrame(
       quotationId
     ) {
       closeAllDesignActionMenus();
@@ -6900,22 +7134,19 @@
           "billingModal"
         );
 
+      const body =
+        document.getElementById(
+          "billingBody"
+        );
+
       const subTitle =
         document.getElementById(
           "billingModalSubTitle"
         );
 
-      if (!modal) {
+      if (!modal || !body) {
         return;
       }
-
-      billingState = {
-        quotationId,
-        project,
-        deliveryRows: [],
-        invoiceRows: [],
-        editorType: null
-      };
 
       if (subTitle) {
         subTitle.textContent =
@@ -6930,7 +7161,11 @@
           }`;
       }
 
-      renderBillingFrame();
+      body.innerHTML = `
+        <div class="billing-history-empty">
+          กำลังโหลดข้อมูล Billing จากระบบ...
+        </div>
+      `;
 
       modal.classList.add(
         "open"
@@ -6943,6 +7178,35 @@
 
       document.body.style.overflow =
         "hidden";
+
+      try {
+        await loadBillingData(
+          quotationId,
+          {
+            keepModalOpen: true
+          }
+        );
+      }
+      catch (error) {
+        console.error(
+          "Open Billing Error:",
+          error
+        );
+
+        body.innerHTML = `
+          <div class="billing-history-empty">
+            ${escapeHtml(
+              error?.message ||
+              "โหลดข้อมูล Billing ไม่สำเร็จ"
+            )}
+          </div>
+        `;
+
+        window.alert(
+          error?.message ||
+          "โหลดข้อมูล Billing ไม่สำเร็จ"
+        );
+      }
     }
 
 
