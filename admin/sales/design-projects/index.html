@@ -3102,6 +3102,71 @@
       background: #eef2f6;
     }
 
+
+    /* =====================================================
+       JOB AWARD / PO FRAME — UI ONLY
+    ===================================================== */
+    .award-modal { position: fixed; inset: 0; z-index: 3200; display: none; padding: 18px; background: rgba(3,16,37,.58); backdrop-filter: blur(5px); }
+    .award-modal.open { display: flex; }
+    .award-frame { width: min(1540px, 98vw); height: min(920px, 96vh); margin: auto; display: flex; flex-direction: column; overflow: hidden; border-radius: 22px; background: #fff; box-shadow: 0 30px 90px rgba(3,16,37,.28); }
+    .award-toolbar { min-height: 70px; padding: 14px 18px; display:flex; align-items:center; justify-content:space-between; gap:14px; border-bottom:1px solid #e7edf5; }
+    .award-toolbar strong { display:block; color:var(--navy-900); font-size:1rem; }
+    .award-toolbar span { display:block; margin-top:3px; color:var(--ink-500); font-size:.7rem; }
+    .award-toolbar-actions { display:flex; gap:8px; }
+    .award-btn { min-height:38px; padding:0 14px; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink-700); font-size:.72rem; font-weight:700; cursor:pointer; }
+    .award-btn.primary { border-color:var(--blue-600); color:#fff; background:linear-gradient(135deg,var(--blue-600),#0d57bf); }
+    .award-body { flex:1; min-height:0; overflow:auto; padding:18px; background:#f5f8fc; }
+    .award-grid { display:grid; grid-template-columns:minmax(500px,.9fr) minmax(520px,1.1fr); gap:18px; align-items:start; }
+    .award-panel { border:1px solid #e1e9f2; border-radius:18px; background:#fff; overflow:hidden; box-shadow:var(--shadow-sm); }
+    .award-panel-head { padding:14px 16px; border-bottom:1px solid #edf2f7; }
+    .award-panel-head strong { display:block; font-size:.82rem; color:var(--navy-900); }
+    .award-panel-head span { display:block; margin-top:3px; font-size:.66rem; color:var(--ink-500); }
+    .award-form { padding:16px; display:grid; gap:14px; }
+    .award-section-title { padding-bottom:7px; border-bottom:1px solid #edf2f7; color:var(--navy-900); font-size:.73rem; font-weight:700; }
+    .award-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:11px; }
+    .award-field.full { grid-column:1/-1; }
+    .award-field label { display:block; margin-bottom:5px; color:var(--ink-700); font-size:.65rem; font-weight:600; }
+    .award-field input,.award-field select,.award-field textarea { width:100%; border:1px solid var(--line); border-radius:10px; background:#fff; color:var(--ink-900); outline:none; font:inherit; font-size:.72rem; }
+    .award-field input,.award-field select { height:39px; padding:0 10px; }
+    .award-field textarea { min-height:76px; padding:9px 10px; resize:vertical; }
+    .award-field input:focus,.award-field select:focus,.award-field textarea:focus { border-color:var(--blue-600); box-shadow:0 0 0 3px rgba(22,119,255,.08); }
+    .award-readonly { background:#f7f9fc !important; color:var(--ink-500) !important; }
+    .award-required { color:var(--red-600); }
+    .award-plan-box { border:1px solid #e4ebf3; border-radius:13px; overflow:hidden; }
+    .award-plan-head,.award-plan-row { display:grid; grid-template-columns:56px minmax(150px,1fr) 90px 120px 42px; gap:7px; align-items:center; padding:8px; }
+    .award-plan-head { background:#f7faff; color:var(--ink-500); font-size:.61rem; font-weight:700; }
+    .award-plan-row { border-top:1px solid #edf2f7; }
+    .award-plan-row input { width:100%; height:34px; padding:0 7px; border:1px solid var(--line); border-radius:8px; font:inherit; font-size:.67rem; }
+    .award-plan-no { text-align:center; font:700 .68rem Inter,sans-serif; color:var(--navy-900); }
+    .award-plan-remove { width:32px; height:32px; border:1px solid #ffd2d6; border-radius:8px; background:#fff5f6; color:#b42318; cursor:pointer; }
+    .award-plan-tools { padding:9px; display:flex; align-items:center; justify-content:space-between; gap:8px; border-top:1px solid #edf2f7; background:#fbfdff; }
+    .award-plan-tools button { border:1px solid #cfe0f5; border-radius:8px; background:#f7fbff; color:#075fc4; padding:7px 10px; font-size:.64rem; font-weight:700; cursor:pointer; }
+    .award-plan-total { color:var(--ink-500); font-size:.64rem; text-align:right; }
+    .award-upload { padding:13px; border:1px dashed #b9cbe0; border-radius:12px; background:#f9fcff; }
+    .award-upload small { display:block; margin-top:5px; color:var(--ink-500); font-size:.62rem; line-height:1.5; }
+    .award-preview-side { position:sticky; top:0; }
+    .award-paper-wrap { padding:18px; max-height:760px; overflow:auto; background:#e9eef5; }
+    .award-paper { width:794px; min-height:1123px; margin:0 auto; padding:52px 56px; background:#fff; box-shadow:0 8px 26px rgba(3,16,37,.12); color:#172033; font-size:12px; }
+    .award-paper-title { margin:20px 0 24px; text-align:center; }
+    .award-paper-title h2 { margin:0; font-size:22px; color:#06152d; }
+    .award-paper-title div { margin-top:5px; color:#6c7a90; }
+    .award-paper-header { display:flex; justify-content:space-between; gap:24px; padding-bottom:18px; border-bottom:2px solid #0a2855; }
+    .award-paper-brand strong { display:block; font-size:18px; color:#06152d; }
+    .award-paper-brand span { color:#6c7a90; font-size:10px; }
+    .award-paper-ref { text-align:right; line-height:1.7; }
+    .award-paper-table { width:100%; min-width:0; margin-top:14px; border-collapse:collapse; }
+    .award-paper-table td { padding:8px 9px; border:1px solid #dce5ef; font-size:11px; vertical-align:top; }
+    .award-paper-table td:first-child { width:31%; background:#f7f9fc; color:#40506a; font-weight:600; }
+    .award-paper-section { margin-top:20px; font-weight:700; color:#06152d; }
+    .award-paper-plan { width:100%; min-width:0; margin-top:8px; border-collapse:collapse; }
+    .award-paper-plan th,.award-paper-plan td { padding:7px; border:1px solid #dce5ef; font-size:10px; }
+    .award-paper-plan th { background:#f3f7fb; color:#40506a; }
+    .award-paper-note { margin-top:18px; padding:12px; border:1px solid #dce5ef; min-height:70px; white-space:pre-wrap; }
+    .award-paper-attachment { margin-top:28px; padding:13px; border:1px dashed #aebed0; color:#596779; text-align:center; }
+    .award-ui-note { padding:10px 12px; border-radius:10px; background:#fff8df; border:1px solid #f5df8c; color:#8a5600; font-size:.64rem; line-height:1.55; }
+    @media(max-width:1150px){.award-grid{grid-template-columns:1fr}.award-preview-side{position:static}.award-paper{zoom:.82}}
+    @media(max-width:650px){.award-modal{padding:0}.award-frame{width:100vw;height:100vh;border-radius:0}.award-fields{grid-template-columns:1fr}.award-plan-head{display:none}.award-plan-row{grid-template-columns:42px 1fr 74px 100px 36px}.award-paper{zoom:.58}.award-toolbar{align-items:flex-start}.award-toolbar-actions{flex-direction:column}}
+
   </style>
 </head>
 
@@ -3640,6 +3705,24 @@
           กำลังโหลดใบเสนอราคา...
         </div>
       </div>
+    </section>
+  </div>
+
+
+  <!-- JOB AWARD / PO FRAME — UI prototype; backend connection comes next -->
+  <div class="award-modal" id="jobAwardModal" aria-hidden="true">
+    <section class="award-frame" role="dialog" aria-modal="true" aria-labelledby="jobAwardModalTitle">
+      <div class="award-toolbar">
+        <div>
+          <strong id="jobAwardModalTitle">บันทึกการสั่งจ้าง / PO</strong>
+          <span id="jobAwardModalSubTitle">Quotation → Job Award Record</span>
+        </div>
+        <div class="award-toolbar-actions">
+          <button class="award-btn" type="button" onclick="closeJobAwardFrame()">ยกเลิก</button>
+          <button class="award-btn primary" id="jobAwardSaveButton" type="button" onclick="previewJobAwardSave()">บันทึกการสั่งจ้าง</button>
+        </div>
+      </div>
+      <div class="award-body" id="jobAwardBody"></div>
     </section>
   </div>
 
@@ -4460,7 +4543,8 @@
                 <button
                   class="workflow-mini-btn"
                   type="button"
-                  onclick="openWorkflowPlaceholder('PO / Contract')"
+                  onclick="openJobAwardFrame('${safeId(project.quotation_id || '')}')"
+                  ${project.quotation_id && normalizeStatus(project.quotation_status) === 'SUCCESS' ? '' : 'disabled'}
                 >
                   + บันทึกการสั่งจ้าง / Upload PO
                 </button>
@@ -4598,6 +4682,161 @@
       );
     }
 
+
+
+    // ============================================================
+    // JOB AWARD / PO FRAME — UI PROTOTYPE (NO BACKEND SAVE YET)
+    // ============================================================
+    let jobAwardState = null;
+
+    function getProjectByQuotationId(quotationId) {
+      return designProjectsCache.find(item => String(item.quotation_id || "") === String(quotationId || "")) || null;
+    }
+
+    function awardDateToday() {
+      const d = new Date();
+      const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+      return local.toISOString().slice(0, 10);
+    }
+
+    function awardMoneyInput(value) {
+      const n = Number(value || 0);
+      return Number.isFinite(n) && n > 0 ? n.toFixed(2) : "";
+    }
+
+    function buildJobAwardForm(project) {
+      const quotedAmount = Number(project.total_amount || project.quotation_amount || project.amount || project.grand_total || 0);
+      return `
+        <div class="award-grid">
+          <div class="award-panel">
+            <div class="award-panel-head"><strong>ข้อมูลการสั่งจ้าง</strong><span>บันทึกสาระสำคัญตามหลักฐานที่ลูกค้าส่งกลับมา — ผูกกับใบเสนอราคาใบนี้</span></div>
+            <div class="award-form" id="jobAwardForm">
+              <div class="award-section-title">1. เอกสารอ้างอิง</div>
+              <div class="award-fields">
+                <div class="award-field"><label>เลขใบเสนอราคา</label><input class="award-readonly" id="awardQuotationNo" readonly value="${escapeHtml(project.quotation_no || '-')}" /></div>
+                <div class="award-field"><label>Revision</label><input class="award-readonly" id="awardRevision" readonly value="R${revisionNumber(project.revision_no)}" /></div>
+                <div class="award-field full"><label>ลูกค้า</label><input class="award-readonly" id="awardCustomer" readonly value="${escapeHtml(project.customer_name || project.client_name || '-')}" /></div>
+                <div class="award-field full"><label>ชื่อ Project / งาน</label><input class="award-readonly" id="awardProjectName" readonly value="${escapeHtml(project.project_name || project.job_name || project.title || '-')}" /></div>
+                <div class="award-field full"><label>ยอดใบเสนอราคาล่าสุด</label><input class="award-readonly" id="awardQuotedAmount" readonly value="${formatDesignMoney(quotedAmount)} บาท" /></div>
+              </div>
+
+              <div class="award-section-title">2. หลักฐานและข้อมูลการสั่งจ้าง</div>
+              <div class="award-fields">
+                <div class="award-field full"><label>ประเภทหลักฐานการสั่งจ้าง <span class="award-required">*</span></label><select id="awardType"><option value="PO">PO / หนังสือสั่งจ้าง</option><option value="SIGNED_QUOTATION">ใบเสนอราคาที่ลูกค้าลงนามอนุมัติ</option><option value="DEPOSIT_PAYMENT">หลักฐานชำระเงิน / เงินมัดจำ</option></select></div>
+                <div class="award-field"><label>เลขที่เอกสารสั่งจ้าง</label><input id="awardDocumentNo" placeholder="เช่น PO-2569-001 (ถ้ามี)" /></div>
+                <div class="award-field"><label>วันที่สั่งจ้าง / วันที่ยืนยัน <span class="award-required">*</span></label><input id="awardDate" type="date" value="${awardDateToday()}" /></div>
+                <div class="award-field"><label>มูลค่าการสั่งจ้างจริง (บาท) <span class="award-required">*</span></label><input id="awardContractAmount" type="number" min="0" step="0.01" value="${awardMoneyInput(quotedAmount)}" /></div>
+                <div class="award-field"><label>วันเริ่มต้นสัญญา / งาน</label><input id="awardStartDate" type="date" /></div>
+                <div class="award-field"><label>วันสิ้นสุดสัญญา / งาน</label><input id="awardEndDate" type="date" /></div>
+                <div class="award-field full"><label>ขอบเขต / รายละเอียดการสั่งจ้าง</label><textarea id="awardScope" placeholder="สรุปรายละเอียดสำคัญตามเอกสารสั่งจ้าง"></textarea></div>
+              </div>
+
+              <div class="award-section-title">3. แผนการเบิกจ่ายต้นฉบับ (Payment Plan)</div>
+              <div class="award-ui-note">แผนนี้เป็นข้อมูลต้นขั้วตามที่ตกลง ณ วันรับงาน ไม่ได้ล็อก Billing จริง ภายหลังสามารถซอยหรือรวมงวดได้ แต่ยอดตั้งเบิกสะสมต้องเดินภายใต้กรอบมูลค่าการสั่งจ้าง</div>
+              <div class="award-plan-box">
+                <div class="award-plan-head"><div>งวด</div><div>เงื่อนไข / รายละเอียด</div><div>%</div><div>จำนวนเงิน</div><div></div></div>
+                <div id="awardPlanRows"></div>
+                <div class="award-plan-tools"><button type="button" onclick="addAwardPlanRow()">＋ เพิ่มงวดตามแผน</button><div class="award-plan-total" id="awardPlanTotal">ยังไม่ได้กำหนดแผน</div></div>
+              </div>
+
+              <div class="award-section-title">4. เอกสารหลักฐานจากลูกค้า</div>
+              <div class="award-upload"><input id="awardEvidenceFile" type="file" accept="application/pdf,image/png,image/jpeg" /><small>รอบนี้เป็น UI ก่อน ยังไม่ Upload จริง เมื่อทำ Backend จะเก็บ Original แยก และสร้าง PDF ชุดใช้งาน = ใบปะหน้าระบบ + เอกสารลูกค้า</small></div>
+              <div class="award-field"><label>หมายเหตุ</label><textarea id="awardNote" placeholder="เงื่อนไขพิเศษ หรือข้อมูลที่ต้องการบันทึกเพิ่มเติม"></textarea></div>
+            </div>
+          </div>
+
+          <div class="award-panel award-preview-side">
+            <div class="award-panel-head"><strong>Live Preview — ใบปะหน้าการสั่งจ้าง</strong><span>หน้าที่ 1 ของชุดเอกสาร · เอกสารลูกค้าจะต่อเป็นหน้าถัดไป</span></div>
+            <div class="award-paper-wrap"><div class="award-paper" id="jobAwardPaper"></div></div>
+          </div>
+        </div>`;
+    }
+
+    function addAwardPlanRow(data = {}) {
+      const host = document.getElementById('awardPlanRows');
+      if (!host) return;
+      const row = document.createElement('div');
+      row.className = 'award-plan-row';
+      row.innerHTML = `<div class="award-plan-no"></div><input class="award-plan-desc" placeholder="เช่น มัดจำ / ส่ง Draft" value="${escapeHtml(data.description || '')}"><input class="award-plan-percent" type="number" min="0" max="100" step="0.01" placeholder="%" value="${data.percent ?? ''}"><input class="award-plan-amount" type="number" min="0" step="0.01" placeholder="บาท" value="${data.amount ?? ''}"><button class="award-plan-remove" type="button" title="ลบงวด">×</button>`;
+      row.querySelector('.award-plan-remove').onclick = () => { row.remove(); renumberAwardPlanRows(); updateAwardPlanSummary(); renderJobAwardPreview(); };
+      row.querySelectorAll('input').forEach(el => el.addEventListener('input', () => { syncAwardPlanRow(el); updateAwardPlanSummary(); renderJobAwardPreview(); }));
+      host.appendChild(row);
+      renumberAwardPlanRows(); updateAwardPlanSummary(); renderJobAwardPreview();
+    }
+
+    function renumberAwardPlanRows() {
+      document.querySelectorAll('#awardPlanRows .award-plan-row').forEach((row, i) => { const no = row.querySelector('.award-plan-no'); if (no) no.textContent = i + 1; });
+    }
+
+    function syncAwardPlanRow(changed) {
+      const row = changed.closest('.award-plan-row');
+      const contract = Number(document.getElementById('awardContractAmount')?.value || 0);
+      if (!row || contract <= 0) return;
+      const pct = row.querySelector('.award-plan-percent');
+      const amt = row.querySelector('.award-plan-amount');
+      if (changed === pct && pct.value !== '') amt.value = (contract * Number(pct.value || 0) / 100).toFixed(2);
+      if (changed === amt && amt.value !== '') pct.value = (Number(amt.value || 0) / contract * 100).toFixed(2);
+    }
+
+    function updateAwardPlanSummary() {
+      const rows = [...document.querySelectorAll('#awardPlanRows .award-plan-row')];
+      const amount = rows.reduce((s,r)=>s+Number(r.querySelector('.award-plan-amount')?.value||0),0);
+      const pct = rows.reduce((s,r)=>s+Number(r.querySelector('.award-plan-percent')?.value||0),0);
+      const el = document.getElementById('awardPlanTotal');
+      if (el) el.textContent = rows.length ? `แผน ${rows.length} งวด · ${pct.toFixed(2)}% · ${formatDesignMoney(amount)} บาท` : 'ยังไม่ได้กำหนดแผน';
+    }
+
+    function awardValue(id) { return document.getElementById(id)?.value || ''; }
+    function awardTypeLabel(value) { return ({PO:'PO / หนังสือสั่งจ้าง',SIGNED_QUOTATION:'ใบเสนอราคาที่ลูกค้าลงนามอนุมัติ',DEPOSIT_PAYMENT:'หลักฐานชำระเงิน / เงินมัดจำ'})[value] || '-'; }
+
+    function renderJobAwardPreview() {
+      const paper = document.getElementById('jobAwardPaper');
+      if (!paper || !jobAwardState) return;
+      const rows = [...document.querySelectorAll('#awardPlanRows .award-plan-row')];
+      const planHtml = rows.length ? rows.map((r,i)=>`<tr><td style="text-align:center">${i+1}</td><td>${escapeHtml(r.querySelector('.award-plan-desc')?.value || '-')}</td><td style="text-align:right">${Number(r.querySelector('.award-plan-percent')?.value||0).toFixed(2)}%</td><td style="text-align:right">${formatDesignMoney(Number(r.querySelector('.award-plan-amount')?.value||0))}</td></tr>`).join('') : `<tr><td colspan="4" style="text-align:center;color:#8f9caf">ไม่ได้กำหนดแผนงวดงาน — Billing จริงสามารถสร้างตามการเบิกจริงภายหลัง</td></tr>`;
+      const file = document.getElementById('awardEvidenceFile')?.files?.[0];
+      paper.innerHTML = `
+        <div class="award-paper-header"><div class="award-paper-brand"><strong>ADTSpreadsheet</strong><span>JOB AWARD / ORDER CONFIRMATION RECORD</span></div><div class="award-paper-ref">อ้างอิงใบเสนอราคา<br><strong>${escapeHtml(awardValue('awardQuotationNo'))}</strong> · ${escapeHtml(awardValue('awardRevision'))}</div></div>
+        <div class="award-paper-title"><h2>บันทึกการรับการสั่งจ้าง</h2><div>Job Award Record / ใบปะหน้าชุดเอกสารการสั่งจ้าง</div></div>
+        <table class="award-paper-table"><tr><td>ลูกค้า</td><td>${escapeHtml(awardValue('awardCustomer'))}</td></tr><tr><td>โครงการ / งาน</td><td>${escapeHtml(awardValue('awardProjectName'))}</td></tr><tr><td>ประเภทหลักฐาน</td><td>${escapeHtml(awardTypeLabel(awardValue('awardType')))}</td></tr><tr><td>เลขที่เอกสารสั่งจ้าง</td><td>${escapeHtml(awardValue('awardDocumentNo') || '-')}</td></tr><tr><td>วันที่สั่งจ้าง / ยืนยัน</td><td>${escapeHtml(awardValue('awardDate') || '-')}</td></tr><tr><td>มูลค่าการสั่งจ้างจริง</td><td><strong>${formatDesignMoney(Number(awardValue('awardContractAmount')||0))} บาท</strong></td></tr><tr><td>ระยะเวลางาน</td><td>${escapeHtml(awardValue('awardStartDate') || '-')} ถึง ${escapeHtml(awardValue('awardEndDate') || '-')}</td></tr><tr><td>ขอบเขต / รายละเอียด</td><td>${escapeHtml(awardValue('awardScope') || '-')}</td></tr></table>
+        <div class="award-paper-section">แผนการเบิกจ่ายต้นฉบับ</div><table class="award-paper-plan"><thead><tr><th>งวด</th><th>เงื่อนไข / รายละเอียด</th><th>%</th><th>จำนวนเงิน (บาท)</th></tr></thead><tbody>${planHtml}</tbody></table>
+        <div class="award-paper-section">หมายเหตุ</div><div class="award-paper-note">${escapeHtml(awardValue('awardNote') || '-')}</div>
+        <div class="award-paper-attachment">เอกสารแนบจากลูกค้า — ${escapeHtml(file?.name || 'ยังไม่ได้เลือกไฟล์')}<br><small>เมื่อเชื่อม Backend เอกสารต้นฉบับจะถูกรวมต่อจากใบปะหน้านี้เป็น PDF ชุดเดียว</small></div>`;
+    }
+
+    function openJobAwardFrame(quotationId) {
+      closeAllDesignActionMenus();
+      const project = getProjectByQuotationId(quotationId);
+      if (!project) { window.alert('ไม่พบข้อมูลใบเสนอราคาที่ต้องการบันทึกการสั่งจ้าง'); return; }
+      if (normalizeStatus(project.quotation_status) !== 'SUCCESS') { window.alert('ต้องออกใบเสนอราคาเป็น SUCCESS ก่อน จึงจะบันทึกการสั่งจ้างได้'); return; }
+      const modal = document.getElementById('jobAwardModal');
+      const body = document.getElementById('jobAwardBody');
+      const sub = document.getElementById('jobAwardModalSubTitle');
+      if (!modal || !body) return;
+      jobAwardState = { quotationId, project };
+      if (sub) sub.textContent = `${project.quotation_no || '-'} · ${project.customer_name || project.client_name || '-'}`;
+      body.innerHTML = buildJobAwardForm(project);
+      body.addEventListener('input', event => { if (event.target.id === 'awardContractAmount') document.querySelectorAll('#awardPlanRows .award-plan-percent').forEach(el => syncAwardPlanRow(el)); updateAwardPlanSummary(); renderJobAwardPreview(); });
+      body.addEventListener('change', () => { updateAwardPlanSummary(); renderJobAwardPreview(); });
+      modal.classList.add('open'); modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+      renderJobAwardPreview();
+    }
+
+    function closeJobAwardFrame() {
+      const modal = document.getElementById('jobAwardModal');
+      modal?.classList.remove('open'); modal?.setAttribute('aria-hidden','true');
+      jobAwardState = null; document.body.style.overflow='';
+    }
+
+    function previewJobAwardSave() {
+      const amount = Number(awardValue('awardContractAmount') || 0);
+      const date = awardValue('awardDate');
+      const file = document.getElementById('awardEvidenceFile')?.files?.[0];
+      if (!date) { window.alert('กรุณาระบุวันที่สั่งจ้าง / วันที่ยืนยัน'); return; }
+      if (!(amount > 0)) { window.alert('กรุณาระบุมูลค่าการสั่งจ้างจริง'); return; }
+      if (!file) { window.alert('กรุณาแนบหลักฐานการสั่งจ้างจากลูกค้า'); return; }
+      window.alert('Frame PO / การสั่งจ้าง พร้อมแล้วครับ\n\nรอบนี้ยังไม่บันทึกลงฐานข้อมูล ตามแผนที่เราล็อกไว้ ขั้นต่อไปคือออกแบบตาราง Document Transaction + Storage + Endpoint แล้วค่อยเชื่อมปุ่มนี้');
+    }
 
 
     function buildActionMenuHtml(
@@ -8073,12 +8312,22 @@
       );
 
 
+    document.getElementById('jobAwardModal')?.addEventListener('click', event => {
+      if (event.target.id === 'jobAwardModal') closeJobAwardFrame();
+    });
+
+
     document.addEventListener(
       "keydown",
       event => {
         if (
           event.key === "Escape"
         ) {
+          if (document.getElementById("jobAwardModal")?.classList.contains("open")) {
+            closeJobAwardFrame();
+            return;
+          }
+
           if (
             document.getElementById(
               "revisionConfirmModal"
