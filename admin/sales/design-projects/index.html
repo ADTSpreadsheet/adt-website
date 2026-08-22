@@ -1839,8 +1839,8 @@
     }
 
     .workflow-card.wait {
-      border-color: #f6ddb0;
-      background: #fffaf0;
+      border-color: #f2c879;
+      background: #fff4e5;
     }
 
     .workflow-card.off {
@@ -3382,9 +3382,11 @@
           <div class="workflow-grid">
 
             <div class="workflow-card ${
-              project.quotation_id
+              ["SUCCESS", "ISSUED", "WAITING", "WAITING_RESULT", "QUOTATION_SENT", "WAIT", "ACCEPTED", "APPROVED", "WON"].includes(
+                normalizeStatus(project.quotation_status)
+              )
                 ? "done"
-                : "off"
+                : "wait"
             }">
               <strong>1. Quotation</strong>
 
@@ -3426,7 +3428,7 @@
                 project.po_status
               ) === "RECEIVED"
                 ? "done"
-                : "off"
+                : "wait"
             }">
               <strong>2. PO / Contract</strong>
 
@@ -3461,8 +3463,8 @@
 
             <div class="workflow-card ${
               billedAmount > 0
-                ? "wait"
-                : "off"
+                ? "done"
+                : "wait"
             }">
               <strong>3. Billing Request</strong>
 
@@ -3496,7 +3498,7 @@
               paidAmount > 0 ||
               paymentPercent > 0
                 ? "done"
-                : "off"
+                : "wait"
             }">
               <strong>4. Payment Received</strong>
 
@@ -3530,9 +3532,10 @@
             </div>
 
             <div class="workflow-card ${
-              contractAmount > 0
-                ? "wait"
-                : "off"
+              contractAmount > 0 &&
+              paymentPercent >= 100
+                ? "done"
+                : "wait"
             }">
               <strong>5. Financial Progress</strong>
 
