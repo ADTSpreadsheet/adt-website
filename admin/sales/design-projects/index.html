@@ -2240,6 +2240,307 @@
       }
     }
 
+  
+    .quotation-preview-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 7000;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(3, 16, 37, 0.68);
+      backdrop-filter: blur(4px);
+      overflow-y: auto;
+    }
+
+    .quotation-preview-modal.open {
+      display: flex;
+    }
+
+    .quotation-preview-frame {
+      width: min(1120px, 100%);
+      margin: auto;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #eef3f8;
+      box-shadow: 0 28px 80px rgba(3, 16, 37, 0.28);
+    }
+
+    .quotation-preview-toolbar {
+      min-height: 60px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border-bottom: 1px solid #dce5ef;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .quotation-preview-toolbar strong {
+      color: var(--navy-900);
+      font-size: 0.84rem;
+    }
+
+    .quotation-preview-toolbar span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.66rem;
+    }
+
+    .quotation-preview-toolbar-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 8px;
+    }
+
+    .quotation-preview-toolbar button {
+      min-height: 36px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: var(--ink-700);
+      background: #ffffff;
+      font-size: 0.68rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .quotation-preview-toolbar button:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .quotation-preview-body {
+      padding: 22px;
+      overflow-x: auto;
+    }
+
+    .quotation-preview-loading,
+    .quotation-preview-error {
+      padding: 56px 20px;
+      text-align: center;
+      color: var(--ink-500);
+      font-size: 0.8rem;
+    }
+
+    .quotation-preview-error {
+      color: #991b1b;
+    }
+
+    .quotation-paper {
+      width: min(880px, 100%);
+      min-width: 760px;
+      min-height: 1050px;
+      margin: 0 auto;
+      padding: 30px 32px;
+      background: #ffffff;
+      border: 1px solid #dfe7f0;
+      box-shadow: 0 10px 30px rgba(4, 27, 60, 0.10);
+      color: #172033;
+    }
+
+    .quotation-doc-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 260px;
+      gap: 18px;
+      padding-bottom: 14px;
+      border-bottom: 2px solid var(--navy-900);
+    }
+
+    .quotation-company-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+    }
+
+    .quotation-company-head img {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+    }
+
+    .quotation-company-head strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 0.82rem;
+    }
+
+    .quotation-company-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: 0.60rem;
+      line-height: 1.55;
+    }
+
+    .quotation-doc-title {
+      text-align: right;
+    }
+
+    .quotation-doc-title h2 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1.28rem;
+    }
+
+    .quotation-doc-title p {
+      margin: 9px 0 0;
+      color: var(--ink-700);
+      font-size: 0.65rem;
+      line-height: 1.75;
+    }
+
+    .quotation-client-block,
+    .quotation-issuer-block {
+      padding: 10px 0;
+      border-bottom: 1px solid #dce5ef;
+      font-size: 0.65rem;
+      line-height: 1.75;
+    }
+
+    .quotation-client-block strong,
+    .quotation-issuer-block strong {
+      color: var(--navy-900);
+    }
+
+    .quotation-message {
+      margin-top: 9px;
+      font-size: 0.60rem;
+      line-height: 1.6;
+    }
+
+    .quotation-preview-table {
+      width: 100%;
+      min-width: 0;
+      margin-top: 8px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 0.57rem;
+    }
+
+    .quotation-preview-table th,
+    .quotation-preview-table td {
+      padding: 6px 5px;
+      border: 1px solid #1f2937;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .quotation-preview-table th {
+      background: #f8fbff;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .quotation-preview-table .q-no { width: 8%; }
+    .quotation-preview-table .q-desc { width: 45%; }
+    .quotation-preview-table .q-unit { width: 9%; }
+    .quotation-preview-table .q-qty { width: 10%; }
+    .quotation-preview-table .q-price { width: 14%; }
+    .quotation-preview-table .q-amount { width: 14%; }
+
+    .quotation-preview-money {
+      text-align: right !important;
+      white-space: nowrap;
+    }
+
+    .quotation-preview-summary {
+      width: 48%;
+      margin-left: auto;
+      border-collapse: collapse;
+      font-size: 0.58rem;
+    }
+
+    .quotation-preview-summary td {
+      padding: 6px 7px;
+      border: 1px solid #1f2937;
+    }
+
+    .quotation-preview-summary td:last-child {
+      width: 38%;
+      text-align: right;
+    }
+
+    .quotation-preview-remark {
+      min-height: 90px;
+      padding: 8px;
+      border: 1px solid #1f2937;
+      border-top: 0;
+      font-size: 0.58rem;
+      white-space: pre-wrap;
+    }
+
+    .quotation-preview-payment {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1.25fr .75fr .75fr;
+      border-top: 1px solid #1f2937;
+      font-size: 0.57rem;
+    }
+
+    .quotation-preview-payment > div {
+      min-height: 105px;
+      padding: 8px;
+      border-right: 1px solid #1f2937;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .quotation-preview-payment > div:first-child {
+      border-left: 1px solid #1f2937;
+    }
+
+    .quotation-preview-signature {
+      display: flex;
+      min-height: 100%;
+      flex-direction: column;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden !important;
+      }
+
+      #quotationPreviewPaper,
+      #quotationPreviewPaper * {
+        visibility: visible !important;
+      }
+
+      #quotationPreviewPaper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-width: 0;
+        box-shadow: none;
+        border: 0;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .quotation-preview-modal {
+        padding: 8px;
+      }
+
+      .quotation-preview-body {
+        padding: 10px;
+      }
+
+      .quotation-preview-toolbar {
+        align-items: flex-start;
+      }
+
+      .quotation-preview-toolbar-actions {
+        flex-direction: column;
+      }
+    }
+
   </style>
 </head>
 
@@ -2640,6 +2941,57 @@
       </main>
     </div>
   </div>
+
+  
+  <div
+    class="quotation-preview-modal"
+    id="quotationPreviewModal"
+    aria-hidden="true"
+  >
+    <section
+      class="quotation-preview-frame"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="quotationPreviewModalTitle"
+    >
+      <div class="quotation-preview-toolbar">
+        <div>
+          <strong id="quotationPreviewModalTitle">
+            พรีวิวใบเสนอราคา
+          </strong>
+          <span id="quotationPreviewModalSubTitle">
+            Read-only Preview
+          </span>
+        </div>
+
+        <div class="quotation-preview-toolbar-actions">
+          <button
+            type="button"
+            onclick="printQuotationPreview()"
+          >
+            Print
+          </button>
+
+          <button
+            type="button"
+            onclick="closeQuotationPreview()"
+          >
+            ✕ ปิด
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="quotation-preview-body"
+        id="quotationPreviewBody"
+      >
+        <div class="quotation-preview-loading">
+          กำลังโหลดใบเสนอราคา...
+        </div>
+      </div>
+    </section>
+  </div>
+
 
   <script>
     // ============================================================
@@ -4580,7 +4932,411 @@
     // WRITE / PREVIEW จะต่อ Endpoint ใน Step ถัดไป
     // ============================================================
 
-    function previewDesignDocument(
+    function formatQuotationPreviewDate(value) {
+      if (!value) {
+        return "-";
+      }
+
+      try {
+        return new Intl.DateTimeFormat(
+          "th-TH",
+          {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+          }
+        ).format(new Date(value));
+      }
+      catch (error) {
+        return String(value);
+      }
+    }
+
+
+    function closeQuotationPreview() {
+      const modal =
+        document.getElementById(
+          "quotationPreviewModal"
+        );
+
+      if (!modal) {
+        return;
+      }
+
+      modal.classList.remove(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      document.body.style.overflow =
+        "";
+    }
+
+
+    function printQuotationPreview() {
+      window.print();
+    }
+
+
+    function buildQuotationPreviewHtml(result) {
+      const quotation =
+        result?.quotation || {};
+
+      const project =
+        result?.project || {};
+
+      const customer =
+        result?.customer || {};
+
+      const items =
+        Array.isArray(result?.items)
+          ? result.items
+          : [];
+
+      const itemRows =
+        items.length
+          ? items.map(
+              (item, index) => `
+                <tr>
+                  <td>
+                    ${escapeHtml(
+                      item.item_no ||
+                      index + 1
+                    )}
+                  </td>
+
+                  <td style="white-space:pre-wrap;line-height:1.55;">
+                    ${escapeHtml(
+                      item.description ||
+                      "-"
+                    )}
+                  </td>
+
+                  <td style="text-align:center;">
+                    ${escapeHtml(
+                      item.unit ||
+                      "-"
+                    )}
+                  </td>
+
+                  <td class="quotation-preview-money">
+                    ${formatDesignMoney(
+                      item.quantity
+                    )}
+                  </td>
+
+                  <td class="quotation-preview-money">
+                    ${formatDesignMoney(
+                      item.unit_price
+                    )}
+                  </td>
+
+                  <td class="quotation-preview-money">
+                    ${formatDesignMoney(
+                      item.amount
+                    )}
+                  </td>
+                </tr>
+              `
+            ).join("")
+          : `
+              <tr>
+                <td colspan="6" style="text-align:center;">
+                  ไม่พบรายการบริการ
+                </td>
+              </tr>
+            `;
+
+      return `
+        <article
+          class="quotation-paper"
+          id="quotationPreviewPaper"
+        >
+          <div class="quotation-doc-head">
+            <div class="quotation-company-head">
+              <img
+                src="/assets/images/adt-company-logo.png"
+                alt="ADT"
+              >
+
+              <div>
+                <strong>
+                  บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+                </strong>
+
+                <p>
+                  428 หมู่ 1 ต.เทพนคร อ.เมือง จ.กำแพงเพชร 63000<br>
+                  เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>
+                  โทร. : 092-6191220 &nbsp; e-mail : 2531kaeng@gmail.com
+                </p>
+              </div>
+            </div>
+
+            <div class="quotation-doc-title">
+              <h2>ใบเสนอราคา / QUOTATION</h2>
+
+              <p>
+                Quotation Number :
+                <strong>
+                  ${escapeHtml(
+                    quotation.quotation_no ||
+                    "-"
+                  )}
+                </strong>
+                <br>
+
+                Revision :
+                <strong>
+                  R${Number(
+                    quotation.revision_no ||
+                    0
+                  )}
+                </strong>
+                <br>
+
+                Quotation Issue Date :
+                <strong>
+                  ${escapeHtml(
+                    formatQuotationPreviewDate(
+                      quotation.quotation_date
+                    )
+                  )}
+                </strong>
+              </p>
+            </div>
+          </div>
+
+          <div class="quotation-client-block">
+            <div>
+              <strong>โครงการ / Project :</strong>
+              ${escapeHtml(
+                project.project_name ||
+                quotation.subject ||
+                "-"
+              )}
+            </div>
+
+            <div>
+              <strong>สถานที่ / Location :</strong>
+              ${escapeHtml(
+                project.project_location ||
+                "-"
+              )}
+            </div>
+
+            <div style="margin-top:7px;">
+              <strong>ลูกค้า / Customer :</strong>
+              ${escapeHtml(
+                customer.customer_name ||
+                "-"
+              )}
+            </div>
+
+            <div>
+              <strong>ที่อยู่ / Address :</strong>
+              ${escapeHtml(
+                customer.address ||
+                "-"
+              )}
+            </div>
+
+            <div>
+              <strong>Tax ID :</strong>
+              ${escapeHtml(
+                customer.tax_id ||
+                "-"
+              )}
+              &nbsp;&nbsp;&nbsp;
+              <strong>e-mail :</strong>
+              ${escapeHtml(
+                customer.email ||
+                "-"
+              )}
+            </div>
+
+            <div>
+              <strong>ผู้ติดต่อ / Attention :</strong>
+              ${escapeHtml(
+                customer.contact_name ||
+                "-"
+              )}
+              &nbsp;&nbsp;&nbsp;
+              <strong>Tel :</strong>
+              ${escapeHtml(
+                customer.phone ||
+                "-"
+              )}
+            </div>
+          </div>
+
+          <div class="quotation-issuer-block">
+            <strong>ผู้ออกใบเสร็จรับเงิน / Receipt Issuer :</strong>
+            ADT CIVIL BUILDING AND TECHNOLOGY CO.,LTD.
+            <br>
+
+            <strong>ผู้ดำเนินการ / Prepared by :</strong>
+            ${escapeHtml(
+              quotation.prepared_by ||
+              "-"
+            )}
+            ${
+              quotation.prepared_by_position
+                ? `(${escapeHtml(
+                    quotation.prepared_by_position
+                  )})`
+                : ""
+            }
+          </div>
+
+          <div class="quotation-message">
+            บริษัทฯ มีความยินดีเสนอราคาสินค้า/บริการตามรายการที่ท่านร้องขอ
+            โดยมีเนื้อหารายละเอียดงานตามตารางด้านล่างนี้ให้ท่านพิจารณา
+          </div>
+
+          <table class="quotation-preview-table">
+            <thead>
+              <tr>
+                <th class="q-no">รหัส<br>ID No.</th>
+                <th class="q-desc">รายละเอียดสินค้า/บริการ<br>Service Description</th>
+                <th class="q-unit">หน่วย<br>Unit</th>
+                <th class="q-qty">ปริมาณ<br>Quantity</th>
+                <th class="q-price">ราคาต่อหน่วย<br>Unit Price</th>
+                <th class="q-amount">มูลค่าก่อนภาษี<br>Pre-Tax Amount</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              ${itemRows}
+            </tbody>
+          </table>
+
+          <div class="quotation-preview-remark">
+            <strong>หมายเหตุ / Remark</strong>
+            <br>
+            ${escapeHtml(
+              quotation.remark ||
+              "-"
+            )}
+          </div>
+
+          <table class="quotation-preview-summary">
+            <tbody>
+              <tr>
+                <td>มูลค่างานก่อนส่วนลด / Subtotal</td>
+                <td>
+                  ${formatDesignMoney(
+                    quotation.subtotal
+                  )}
+                </td>
+              </tr>
+
+              <tr>
+                <td>ส่วนลด / Discount</td>
+                <td>
+                  ${formatDesignMoney(
+                    quotation.discount_amount
+                  )}
+                </td>
+              </tr>
+
+              <tr>
+                <td>มูลค่าก่อนภาษี / Pre-VAT Amount</td>
+                <td>
+                  ${formatDesignMoney(
+                    quotation.pre_vat_amount
+                  )}
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  ภาษีมูลค่าเพิ่ม / VAT
+                  ${
+                    Number(
+                      quotation.vat_rate ||
+                      0
+                    ) > 0
+                      ? `(${Number(
+                          quotation.vat_rate
+                        )}%)`
+                      : ""
+                  }
+                </td>
+                <td>
+                  ${formatDesignMoney(
+                    quotation.vat_amount
+                  )}
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <strong>
+                    มูลค่ารวม / Grand Total
+                  </strong>
+                </td>
+                <td>
+                  <strong>
+                    ${formatDesignMoney(
+                      quotation.grand_total
+                    )}
+                  </strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="quotation-preview-payment">
+            <div>
+              <strong>
+                รูปแบบการสั่งจ้าง / Payment Terms
+              </strong>
+
+              <div
+                style="
+                  margin-top:8px;
+                  white-space:pre-wrap;
+                  line-height:1.6;
+                "
+              >
+                ${escapeHtml(
+                  quotation.payment_terms ||
+                  "-"
+                )}
+              </div>
+            </div>
+
+            <div class="quotation-preview-signature">
+              <strong>
+                ผู้ขอรับใบเสนอราคา / Customer
+              </strong>
+              <span>........................................</span>
+              <span>วันที่ / Date...........................</span>
+            </div>
+
+            <div class="quotation-preview-signature">
+              <strong>
+                ผู้เสนอราคา / Authorized
+              </strong>
+              <span>
+                ${escapeHtml(
+                  quotation.prepared_by ||
+                  "-"
+                )}
+              </span>
+              <span>วันที่ / Date...........................</span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+
+    async function previewDesignDocument(
       rowKey
     ) {
       closeAllDesignActionMenus();
@@ -4600,12 +5356,138 @@
         return;
       }
 
-      window.alert(
-        `Quotation: ${
-          project.quotation_no ||
-          "-"
-        }\n\nขั้นต่อไปจะเชื่อม Preview + Quotation Items`
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      const modal =
+        document.getElementById(
+          "quotationPreviewModal"
+        );
+
+      const body =
+        document.getElementById(
+          "quotationPreviewBody"
+        );
+
+      const subTitle =
+        document.getElementById(
+          "quotationPreviewModalSubTitle"
+        );
+
+      if (
+        !modal ||
+        !body
+      ) {
+        window.alert(
+          "ไม่พบ Frame สำหรับพรีวิวใบเสนอราคา"
+        );
+
+        return;
+      }
+
+      body.innerHTML =
+        `
+          <div class="quotation-preview-loading">
+            กำลังโหลดใบเสนอราคา...
+          </div>
+        `;
+
+      if (subTitle) {
+        subTitle.textContent =
+          `${project.quotation_no || "-"} · Read-only Preview`;
+      }
+
+      modal.classList.add(
+        "open"
       );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+
+      try {
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              project.quotation_id
+            )}/preview`,
+            {
+              method:
+                "GET",
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json"
+              },
+
+              cache:
+                "no-store"
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+          );
+        }
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            `โหลดใบเสนอราคาไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        body.innerHTML =
+          buildQuotationPreviewHtml(
+            result
+          );
+      }
+      catch (error) {
+        console.error(
+          "Quotation preview error:",
+          error
+        );
+
+        body.innerHTML =
+          `
+            <div class="quotation-preview-error">
+              ${escapeHtml(
+                error.message ||
+                "ไม่สามารถโหลดใบเสนอราคาได้"
+              )}
+            </div>
+          `;
+      }
     }
 
 
@@ -4790,6 +5672,35 @@
         await loadDesignProjects();
       }
     );
+
+
+    document
+      .getElementById(
+        "quotationPreviewModal"
+      )
+      ?.addEventListener(
+        "click",
+        event => {
+          if (
+            event.target.id ===
+            "quotationPreviewModal"
+          ) {
+            closeQuotationPreview();
+          }
+        }
+      );
+
+    document.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key === "Escape"
+        ) {
+          closeQuotationPreview();
+        }
+      }
+    );
+
 
   </script>
 </body>
