@@ -2560,7 +2560,7 @@
     }
 
     .revision-frame {
-      width: min(1240px, 100%);
+      width: min(1660px, 98vw);
       margin: auto;
       border-radius: 18px;
       overflow: hidden;
@@ -2926,6 +2926,133 @@
 
       .revision-toolbar-actions {
         flex-direction: column;
+      }
+    }
+
+  
+    .revision-grid {
+      grid-template-columns: minmax(560px, 1fr) minmax(560px, 1fr);
+      align-items: start;
+    }
+
+    .revision-live-side {
+      min-width: 0;
+      position: sticky;
+      top: 78px;
+    }
+
+    .revision-live-card {
+      overflow: hidden;
+      border: 1px solid #e1e9f2;
+      border-radius: 15px;
+      background: #eef3f8;
+    }
+
+    .revision-live-head {
+      min-height: 54px;
+      padding: 10px 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid #dce5ef;
+      background: #ffffff;
+    }
+
+    .revision-live-head strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: 0.78rem;
+    }
+
+    .revision-live-head span {
+      display: block;
+      margin-top: 2px;
+      color: var(--ink-500);
+      font-size: 0.62rem;
+    }
+
+    .revision-live-badge {
+      padding: 5px 9px;
+      border-radius: 999px;
+      color: #087545;
+      background: var(--green-100);
+      font-size: 0.61rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .revision-live-preview {
+      max-height: calc(100vh - 170px);
+      padding: 14px;
+      overflow: auto;
+    }
+
+    .revision-live-preview .quotation-paper {
+      width: 880px;
+      min-width: 880px;
+      min-height: 1050px;
+      margin: 0 auto;
+      box-shadow: 0 8px 24px rgba(4, 27, 60, 0.08);
+      transform-origin: top center;
+    }
+
+    .revision-inline-summary {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(100px, 1fr));
+      gap: 8px;
+    }
+
+    .revision-inline-summary .revision-summary-row {
+      display: block;
+      min-height: 58px;
+    }
+
+    .revision-inline-summary .revision-summary-row span,
+    .revision-inline-summary .revision-summary-row strong {
+      display: block;
+    }
+
+    .revision-inline-summary .revision-summary-row strong {
+      margin-top: 4px;
+    }
+
+    @media (max-width: 1450px) {
+      .revision-grid {
+        grid-template-columns: minmax(520px, 1fr) minmax(480px, .9fr);
+      }
+
+      .revision-live-preview .quotation-paper {
+        zoom: .78;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .revision-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .revision-live-side {
+        position: static;
+      }
+
+      .revision-live-preview {
+        max-height: none;
+      }
+
+      .revision-live-preview .quotation-paper {
+        zoom: .9;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .revision-inline-summary {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .revision-live-preview .quotation-paper {
+        zoom: .68;
       }
     }
 
@@ -3354,15 +3481,7 @@
         </div>
 
         <div class="revision-toolbar-actions">
-          <button
-            class="revision-btn"
-            type="button"
-            onclick="previewRevisionDraft()"
-          >
-            พรีวิวก่อนบันทึก
-          </button>
-
-          <button
+<button
             class="revision-btn"
             type="button"
             onclick="closeRevisionModal()"
@@ -6413,6 +6532,8 @@
           }
         }
       );
+
+      renderRevisionLivePreview();
     }
 
 
@@ -6445,14 +6566,10 @@
             ? items
             : [
                 {
-                  item_no:
-                    1,
-                  unit:
-                    "L.S.",
-                  quantity:
-                    1,
-                  unit_price:
-                    0
+                  item_no: 1,
+                  unit: "L.S.",
+                  quantity: 1,
+                  unit_price: 0
                 }
               ]
         )
@@ -6468,10 +6585,10 @@
       return `
         <div class="revision-alert">
           ใบเสนอราคานี้อยู่ในสถานะ SUCCESS แล้ว
-          การบันทึกครั้งนี้จะไม่แก้ทับฉบับเดิม
-          แต่จะสร้าง Revision ใหม่เป็น
-          <strong>R${nextRevision}</strong>
-          และเก็บ R${currentRevision} ไว้ในประวัติ
+          การแก้ไขใน Frame นี้เป็นการเตรียม
+          <strong>Revision R${nextRevision}</strong>
+          โดย R${currentRevision} จะยังคงอยู่ในประวัติเดิม
+          และฝั่งขวาจะแสดงผลเอกสารแบบ Real-time
         </div>
 
         <div class="revision-grid">
@@ -6491,7 +6608,7 @@
                 </div>
 
                 <div class="revision-field">
-                  <label>เลขที่ใบเสนอราคา</label>
+                  <label>เลขที่ใบเสนอราคา / Revision</label>
                   <div class="revision-readonly">
                     ${escapeHtml(
                       quotation.quotation_no ||
@@ -6563,93 +6680,9 @@
             </div>
 
             <div class="revision-card">
-              <h3>2. รายการสินค้า / บริการ</h3>
+              <h3>2. ข้อมูลเอกสาร</h3>
 
-              <div class="revision-items-wrap">
-                <table class="revision-items-table">
-                  <thead>
-                    <tr>
-                      <th style="width:70px;">ลำดับ</th>
-                      <th>รายละเอียด</th>
-                      <th style="width:90px;">หน่วย</th>
-                      <th style="width:90px;">จำนวน</th>
-                      <th style="width:120px;">ราคาต่อหน่วย</th>
-                      <th style="width:120px;">Amount</th>
-                      <th style="width:48px;"></th>
-                    </tr>
-                  </thead>
-
-                  <tbody id="revisionItemsBody">
-                    ${itemRows}
-                  </tbody>
-                </table>
-              </div>
-
-              <button
-                class="revision-add-item"
-                type="button"
-                onclick="addRevisionItemRow()"
-              >
-                + เพิ่มรายการ
-              </button>
-            </div>
-
-            <div class="revision-card">
-              <h3>3. เงื่อนไขและหมายเหตุ</h3>
-
-              <div class="revision-form-grid">
-                <div class="revision-field full">
-                  <label>เงื่อนไขการชำระเงิน</label>
-                  <textarea
-                    id="revisionPaymentTerms"
-                  >${escapeHtml(
-                    quotation.payment_terms ||
-                    ""
-                  )}</textarea>
-                </div>
-
-                <div class="revision-field full">
-                  <label>หมายเหตุ / Remark</label>
-                  <textarea
-                    id="revisionRemark"
-                  >${escapeHtml(
-                    quotation.remark ||
-                    ""
-                  )}</textarea>
-                </div>
-
-                <div class="revision-field">
-                  <label>ผู้จัดทำ / Prepared by</label>
-                  <input
-                    id="revisionPreparedBy"
-                    type="text"
-                    value="${escapeHtml(
-                      quotation.prepared_by ||
-                      ""
-                    )}"
-                  >
-                </div>
-
-                <div class="revision-field">
-                  <label>ตำแหน่ง / วิชาชีพ</label>
-                  <input
-                    id="revisionPreparedPosition"
-                    type="text"
-                    value="${escapeHtml(
-                      quotation.prepared_by_position ||
-                      ""
-                    )}"
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="revision-card">
-              <h3>4. ข้อมูลเอกสาร</h3>
-
-              <div class="revision-form-grid">
+              <div class="revision-form-grid three">
                 <div class="revision-field">
                   <label>วันที่ใบเสนอราคา</label>
                   <input
@@ -6682,26 +6715,8 @@
                 </div>
 
                 <div class="revision-field">
-                  <label>ส่วนลด (บาท)</label>
-                  <input
-                    id="revisionDiscountAmount"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    value="${Number(
-                      quotation.discount_amount ||
-                      0
-                    )}"
-                    oninput="recalculateRevisionTotals()"
-                  >
-                </div>
-
-                <div class="revision-field">
                   <label>VAT (%)</label>
-                  <select
-                    id="revisionVatRate"
-                    onchange="recalculateRevisionTotals()"
-                  >
+                  <select id="revisionVatRate">
                     <option
                       value="0"
                       ${
@@ -6731,50 +6746,158 @@
                     </option>
                   </select>
                 </div>
+
+                <div class="revision-field">
+                  <label>ส่วนลด (บาท)</label>
+                  <input
+                    id="revisionDiscountAmount"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="${Number(
+                      quotation.discount_amount ||
+                      0
+                    )}"
+                  >
+                </div>
+
+                <div class="revision-field">
+                  <label>ผู้จัดทำ / Prepared by</label>
+                  <input
+                    id="revisionPreparedBy"
+                    type="text"
+                    value="${escapeHtml(
+                      quotation.prepared_by ||
+                      ""
+                    )}"
+                  >
+                </div>
+
+                <div class="revision-field">
+                  <label>ตำแหน่ง / วิชาชีพ</label>
+                  <input
+                    id="revisionPreparedPosition"
+                    type="text"
+                    value="${escapeHtml(
+                      quotation.prepared_by_position ||
+                      ""
+                    )}"
+                  >
+                </div>
               </div>
             </div>
 
             <div class="revision-card">
-              <h3>สรุปยอด</h3>
+              <h3>3. รายการสินค้า / บริการ</h3>
 
-              <div class="revision-summary-box">
+              <div class="revision-items-wrap">
+                <table class="revision-items-table">
+                  <thead>
+                    <tr>
+                      <th style="width:70px;">ลำดับ</th>
+                      <th>รายละเอียด</th>
+                      <th style="width:90px;">หน่วย</th>
+                      <th style="width:90px;">จำนวน</th>
+                      <th style="width:120px;">ราคาต่อหน่วย</th>
+                      <th style="width:120px;">Amount</th>
+                      <th style="width:48px;"></th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="revisionItemsBody">
+                    ${itemRows}
+                  </tbody>
+                </table>
+              </div>
+
+              <button
+                class="revision-add-item"
+                type="button"
+                onclick="addRevisionItemRow()"
+              >
+                + เพิ่มรายการ
+              </button>
+
+              <div class="revision-inline-summary">
                 <div class="revision-summary-row">
                   <span>รวมก่อนส่วนลด</span>
-                  <strong id="revisionSubtotal">
-                    0.00 บาท
-                  </strong>
+                  <strong id="revisionSubtotal">0.00 บาท</strong>
                 </div>
 
                 <div class="revision-summary-row">
                   <span>ส่วนลด</span>
-                  <strong id="revisionDiscountDisplay">
-                    0.00 บาท
-                  </strong>
+                  <strong id="revisionDiscountDisplay">0.00 บาท</strong>
                 </div>
 
                 <div class="revision-summary-row">
-                  <span>มูลค่าก่อน VAT</span>
-                  <strong id="revisionPreVat">
-                    0.00 บาท
-                  </strong>
+                  <span>ก่อน VAT</span>
+                  <strong id="revisionPreVat">0.00 บาท</strong>
                 </div>
 
                 <div class="revision-summary-row">
                   <span>VAT</span>
-                  <strong id="revisionVatAmount">
-                    0.00 บาท
-                  </strong>
+                  <strong id="revisionVatAmount">0.00 บาท</strong>
                 </div>
 
                 <div class="revision-summary-row grand">
                   <span>Grand Total</span>
-                  <strong id="revisionGrandTotal">
-                    0.00 บาท
-                  </strong>
+                  <strong id="revisionGrandTotal">0.00 บาท</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="revision-card">
+              <h3>4. เงื่อนไขและหมายเหตุ</h3>
+
+              <div class="revision-form-grid">
+                <div class="revision-field full">
+                  <label>เงื่อนไขการชำระเงิน</label>
+                  <textarea
+                    id="revisionPaymentTerms"
+                  >${escapeHtml(
+                    quotation.payment_terms ||
+                    ""
+                  )}</textarea>
+                </div>
+
+                <div class="revision-field full">
+                  <label>หมายเหตุ / Remark</label>
+                  <textarea
+                    id="revisionRemark"
+                  >${escapeHtml(
+                    quotation.remark ||
+                    ""
+                  )}</textarea>
                 </div>
               </div>
             </div>
           </div>
+
+          <aside class="revision-live-side">
+            <div class="revision-live-card">
+              <div class="revision-live-head">
+                <div>
+                  <strong>พรีวิวใบเสนอราคา</strong>
+                  <span>
+                    Live Preview — ปรับตามข้อมูลที่แก้แบบ Real-time
+                  </span>
+                </div>
+
+                <div class="revision-live-badge">
+                  R${nextRevision} Preview
+                </div>
+              </div>
+
+              <div
+                class="revision-live-preview"
+                id="revisionLivePreview"
+              >
+                <div class="revision-loading">
+                  กำลังสร้างพรีวิว...
+                </div>
+              </div>
+            </div>
+          </aside>
         </div>
       `;
     }
@@ -6921,23 +7044,15 @@
     }
 
 
-    function previewRevisionDraft() {
+    function buildRevisionPreviewResult() {
       if (
         !revisionEditState?.source
       ) {
-        return;
+        return null;
       }
 
       const payload =
         collectRevisionPayload();
-
-      if (
-        !validateRevisionPayload(
-          payload
-        )
-      ) {
-        return;
-      }
 
       const totals =
         getRevisionTotals();
@@ -6950,7 +7065,7 @@
           current?.quotation?.revision_no
         );
 
-      const previewResult = {
+      return {
         customer:
           current.customer || {},
 
@@ -6993,6 +7108,58 @@
             })
           )
       };
+    }
+
+
+    function renderRevisionLivePreview() {
+      const target =
+        document.getElementById(
+          "revisionLivePreview"
+        );
+
+      if (
+        !target ||
+        !revisionEditState?.source
+      ) {
+        return;
+      }
+
+      try {
+        const result =
+          buildRevisionPreviewResult();
+
+        if (!result) {
+          return;
+        }
+
+        target.innerHTML =
+          buildQuotationPreviewHtml(
+            result
+          );
+      }
+      catch (error) {
+        console.error(
+          "Revision live preview error:",
+          error
+        );
+
+        target.innerHTML =
+          `
+            <div class="revision-error">
+              ไม่สามารถสร้าง Live Preview ได้
+            </div>
+          `;
+      }
+    }
+
+
+    function previewRevisionDraft() {
+      const result =
+        buildRevisionPreviewResult();
+
+      if (!result) {
+        return;
+      }
 
       const modal =
         document.getElementById(
@@ -7016,17 +7183,22 @@
         return;
       }
 
+      const nextRevision =
+        revisionNumber(
+          result?.quotation?.revision_no
+        );
+
       body.innerHTML =
         buildQuotationPreviewHtml(
-          previewResult
+          result
         );
 
       if (subTitle) {
         subTitle.textContent =
           `${
-            current?.quotation?.quotation_no ||
+            result?.quotation?.quotation_no ||
             "-"
-          } · Preview R${currentRevision + 1} ก่อนบันทึก`;
+          } · Preview R${nextRevision} ก่อนบันทึก`;
       }
 
       modal.classList.add(
@@ -7420,7 +7592,16 @@
             result
           );
 
+        body.oninput =
+          () =>
+            recalculateRevisionTotals();
+
+        body.onchange =
+          () =>
+            recalculateRevisionTotals();
+
         recalculateRevisionTotals();
+        renderRevisionLivePreview();
       }
       catch (error) {
         console.error(
