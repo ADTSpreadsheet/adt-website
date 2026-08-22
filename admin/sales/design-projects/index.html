@@ -2503,105 +2503,23 @@
     }
 
     @media print {
-      @page {
-        size: A4 portrait;
-        margin: 10mm;
-      }
-
-      html,
-      body {
-        width: 210mm;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: #ffffff !important;
-      }
-
-      /*
-       * พิมพ์เฉพาะใบเสนอราคาที่อยู่ใน Read-only Preview Modal
-       * เท่านั้น เพราะหน้า Design Projects มี quotationPreviewPaper
-       * อีกชุดอยู่ใน Revision Live Preview ด้วย
-       */
       body * {
         visibility: hidden !important;
       }
 
-      #quotationPreviewModal {
-        display: block !important;
-        position: static !important;
-        inset: auto !important;
-        width: auto !important;
-        height: auto !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        overflow: visible !important;
-        background: #ffffff !important;
-      }
-
-      #quotationPreviewModal .quotation-preview-frame {
-        position: static !important;
-        width: auto !important;
-        max-width: none !important;
-        height: auto !important;
-        max-height: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: visible !important;
-        border: 0 !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        background: #ffffff !important;
-      }
-
-      #quotationPreviewModal .quotation-preview-toolbar {
-        display: none !important;
-      }
-
-      #quotationPreviewModal .quotation-preview-body {
-        width: auto !important;
-        height: auto !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow: visible !important;
-        background: #ffffff !important;
-      }
-
-      #quotationPreviewModal #quotationPreviewPaper,
-      #quotationPreviewModal #quotationPreviewPaper * {
+      #quotationPreviewPaper,
+      #quotationPreviewPaper * {
         visibility: visible !important;
       }
 
-      #quotationPreviewModal #quotationPreviewPaper {
-        position: static !important;
-        width: 190mm !important;
-        max-width: 190mm !important;
-        min-width: 0 !important;
-        min-height: 0 !important;
-        height: auto !important;
-        margin: 0 auto !important;
-        padding: 7mm 8mm !important;
-        box-sizing: border-box !important;
-        border: 0 !important;
-        box-shadow: none !important;
-        background: #ffffff !important;
-        page-break-before: avoid !important;
-        page-break-after: avoid !important;
-      }
-
-      #quotationPreviewModal .quotation-doc-head,
-      #quotationPreviewModal .quotation-client-block,
-      #quotationPreviewModal .quotation-issuer-block,
-      #quotationPreviewModal .quotation-preview-table,
-      #quotationPreviewModal .quotation-preview-summary,
-      #quotationPreviewModal .quotation-preview-payment {
-        break-inside: avoid !important;
-        page-break-inside: avoid !important;
-      }
-
-      /* กัน Preview ชุดอื่นหลุดเข้าหน้าพิมพ์ */
-      .revision-modal,
-      .revision-live-preview,
-      .award-modal {
-        display: none !important;
+      #quotationPreviewPaper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-width: 0;
+        box-shadow: none;
+        border: 0;
       }
     }
 
@@ -7125,7 +7043,220 @@
 
 
     function printQuotationPreview() {
-      window.print();
+      const paper =
+        document.querySelector(
+          "#quotationPreviewModal #quotationPreviewPaper"
+        );
+
+      if (!paper) {
+        window.alert(
+          "ไม่พบใบเสนอราคาที่ต้องการพิมพ์"
+        );
+        return;
+      }
+
+      const printWindow =
+        window.open(
+          "",
+          "_blank",
+          "width=1100,height=900"
+        );
+
+      if (!printWindow) {
+        window.alert(
+          "Browser บล็อกหน้าต่าง Print กรุณาอนุญาต Pop-up สำหรับเว็บไซต์นี้"
+        );
+        return;
+      }
+
+      const styleText =
+        Array.from(
+          document.querySelectorAll("style")
+        )
+          .map(
+            style =>
+              style.textContent || ""
+          )
+          .join("\n");
+
+      const stylesheetLinks =
+        Array.from(
+          document.querySelectorAll(
+            'link[rel="stylesheet"]'
+          )
+        )
+          .map(
+            link =>
+              `<link rel="stylesheet" href="${link.href}">`
+          )
+          .join("\n");
+
+      printWindow.document.open();
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="th">
+        <head>
+          <meta charset="UTF-8">
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+          >
+
+          <base href="${window.location.origin}/">
+
+          ${stylesheetLinks}
+
+          <style>
+            ${styleText}
+
+            @page {
+              size: A4 portrait;
+              margin: 10mm;
+            }
+
+            html,
+            body {
+              margin: 0 !important;
+              padding: 0 !important;
+              background: #ffffff !important;
+            }
+
+            body {
+              width: 100% !important;
+              min-width: 0 !important;
+              display: block !important;
+            }
+
+            .quotation-paper {
+              width: 190mm !important;
+              max-width: 190mm !important;
+              min-width: 0 !important;
+              min-height: 0 !important;
+              height: auto !important;
+
+              margin: 0 auto !important;
+
+              padding: 8mm 9mm !important;
+
+              box-sizing: border-box !important;
+
+              border: 0 !important;
+              box-shadow: none !important;
+
+              background: #ffffff !important;
+
+              zoom: 1 !important;
+              transform: none !important;
+            }
+
+            .quotation-preview-table,
+            .quotation-preview-summary,
+            .quotation-preview-payment {
+              width: 100%;
+              box-sizing: border-box;
+            }
+
+            .quotation-preview-table {
+              table-layout: fixed !important;
+            }
+
+            .quotation-preview-summary {
+              width: 48% !important;
+              margin-left: auto !important;
+            }
+
+            .quotation-doc-head,
+            .quotation-client-block,
+            .quotation-issuer-block,
+            .quotation-preview-table,
+            .quotation-preview-summary,
+            .quotation-preview-payment {
+              break-inside: avoid !important;
+              page-break-inside: avoid !important;
+            }
+
+            img {
+              print-color-adjust: exact;
+              -webkit-print-color-adjust: exact;
+            }
+
+            @media print {
+              body * {
+                visibility: visible !important;
+              }
+
+              #quotationPreviewPaper {
+                position: static !important;
+                left: auto !important;
+                top: auto !important;
+
+                width: 190mm !important;
+                max-width: 190mm !important;
+                min-width: 0 !important;
+                min-height: 0 !important;
+                height: auto !important;
+
+                margin: 0 auto !important;
+                padding: 8mm 9mm !important;
+
+                border: 0 !important;
+                box-shadow: none !important;
+
+                page-break-before: avoid !important;
+                page-break-after: avoid !important;
+              }
+            }
+          </style>
+
+          <title>
+            ${
+              (
+                document
+                  .getElementById(
+                    "quotationPreviewModalSubTitle"
+                  )
+                  ?.textContent ||
+                "Quotation"
+              )
+                .trim()
+                .replace(
+                  /[<>:"/\\|?*]/g,
+                  "-"
+                )
+            }
+          </title>
+        </head>
+
+        <body>
+          ${paper.outerHTML}
+
+          <script>
+            window.addEventListener(
+              "load",
+              () => {
+                setTimeout(
+                  () => {
+                    window.focus();
+                    window.print();
+                  },
+                  300
+                );
+              }
+            );
+
+            window.addEventListener(
+              "afterprint",
+              () => {
+                window.close();
+              }
+            );
+          <\/script>
+        </body>
+        </html>
+      `);
+
+      printWindow.document.close();
     }
 
 
