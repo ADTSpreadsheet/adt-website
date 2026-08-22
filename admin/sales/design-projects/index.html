@@ -3831,7 +3831,7 @@
   </div>
 
 
-  <!-- JOB AWARD / PO FRAME — UI prototype; backend connection comes next -->
+  <!-- JOB AWARD / PO FRAME -->
   <div class="award-modal" id="jobAwardModal" aria-hidden="true">
     <section class="award-frame" role="dialog" aria-modal="true" aria-labelledby="jobAwardModalTitle">
       <div class="award-toolbar">
@@ -3841,7 +3841,7 @@
         </div>
         <div class="award-toolbar-actions">
           <button class="award-btn" type="button" onclick="closeJobAwardFrame()">ยกเลิก</button>
-          <button class="award-btn primary" id="jobAwardSaveButton" type="button" onclick="previewJobAwardSave()">บันทึกการสั่งจ้าง</button>
+          <button class="award-btn primary" id="jobAwardSaveButton" type="button" onclick="submitJobAward()">บันทึกการสั่งจ้าง</button>
         </div>
       </div>
       <div class="award-body" id="jobAwardBody"></div>
@@ -5622,14 +5622,339 @@
       jobAwardState = null; document.body.style.overflow='';
     }
 
-    function previewJobAwardSave() {
-      const amount = Number(awardValue('awardContractAmount') || 0);
-      const date = awardValue('awardDate');
-      const file = document.getElementById('awardEvidenceFile')?.files?.[0];
-      if (!date) { window.alert('กรุณาระบุวันที่สั่งจ้าง / วันที่ยืนยัน'); return; }
-      if (!(amount > 0)) { window.alert('กรุณาระบุมูลค่าการสั่งจ้างจริง'); return; }
-      if (!file) { window.alert('กรุณาแนบหลักฐานการสั่งจ้างจากลูกค้า'); return; }
-      window.alert('Frame PO / การสั่งจ้าง พร้อมแล้วครับ\n\nรอบนี้ยังไม่บันทึกลงฐานข้อมูล ตามแผนที่เราล็อกไว้ ขั้นต่อไปคือออกแบบตาราง Document Transaction + Storage + Endpoint แล้วค่อยเชื่อมปุ่มนี้');
+    async function submitJobAward() {
+      if (
+        !jobAwardState?.quotationId
+      ) {
+        window.alert(
+          "ไม่พบใบเสนอราคาที่ต้องการบันทึกการสั่งจ้าง"
+        );
+        return;
+      }
+
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      const awardType =
+        awardValue(
+          "awardType"
+        );
+
+      const documentDate =
+        awardValue(
+          "awardDate"
+        );
+
+      const contractAmount =
+        Number(
+          awardValue(
+            "awardContractAmount"
+          ) || 0
+        );
+
+      const documentNo =
+        awardValue(
+          "awardDocumentNo"
+        );
+
+      const startDate =
+        awardValue(
+          "awardStartDate"
+        );
+
+      const endDate =
+        awardValue(
+          "awardEndDate"
+        );
+
+      const scope =
+        awardValue(
+          "awardScope"
+        );
+
+      const note =
+        awardValue(
+          "awardNote"
+        );
+
+      if (!awardType) {
+        window.alert(
+          "กรุณาเลือกประเภทหลักฐานการสั่งจ้าง"
+        );
+        return;
+      }
+
+      if (!documentDate) {
+        window.alert(
+          "กรุณาระบุวันที่สั่งจ้าง / วันที่ยืนยัน"
+        );
+        return;
+      }
+
+      if (!(contractAmount > 0)) {
+        window.alert(
+          "กรุณาระบุมูลค่าการสั่งจ้างจริง"
+        );
+        return;
+      }
+
+      if (
+        startDate &&
+        endDate &&
+        endDate < startDate
+      ) {
+        window.alert(
+          "วันสิ้นสุดงานต้องไม่ก่อนวันเริ่มงาน"
+        );
+        return;
+      }
+
+      const paymentPlan =
+        [
+          ...document.querySelectorAll(
+            "#awardPlanRows .award-plan-row"
+          )
+        ]
+          .map(
+            (row, index) => ({
+              installment_no:
+                index + 1,
+
+              description:
+                row.querySelector(
+                  ".award-plan-desc"
+                )?.value?.trim() ||
+                "",
+
+              percentage:
+                row.querySelector(
+                  ".award-plan-percent"
+                )?.value === ""
+                  ? null
+                  : Number(
+                      row.querySelector(
+                        ".award-plan-percent"
+                      )?.value || 0
+                    ),
+
+              amount:
+                row.querySelector(
+                  ".award-plan-amount"
+                )?.value === ""
+                  ? null
+                  : Number(
+                      row.querySelector(
+                        ".award-plan-amount"
+                      )?.value || 0
+                    ),
+
+              due_condition:
+                row.querySelector(
+                  ".award-plan-condition"
+                )?.value?.trim() ||
+                ""
+            })
+          )
+          .filter(
+            item =>
+              item.description ||
+              item.percentage !== null ||
+              item.amount !== null ||
+              item.due_condition
+          );
+
+      const planTotal =
+        paymentPlan.reduce(
+          (sum, item) =>
+            sum +
+            Number(
+              item.amount || 0
+            ),
+          0
+        );
+
+      if (
+        planTotal >
+        contractAmount + 0.01
+      ) {
+        window.alert(
+          "ยอดรวมแผนการเบิกจ่ายมากกว่ามูลค่าการสั่งจ้างจริง"
+        );
+        return;
+      }
+
+      const evidenceFile =
+        document.getElementById(
+          "awardEvidenceFile"
+        )?.files?.[0] ||
+        null;
+
+      if (!evidenceFile) {
+        window.alert(
+          "กรุณาแนบหลักฐานการสั่งจ้างจากลูกค้า"
+        );
+        return;
+      }
+
+      const confirmed =
+        window.confirm(
+          `ยืนยันบันทึกการสั่งจ้าง?\n\nใบเสนอราคา: ${
+            jobAwardState.project?.quotation_no ||
+            "-"
+          }\nมูลค่าการสั่งจ้าง: ${formatDesignMoney(
+            contractAmount
+          )} บาท\n\nเมื่อบันทึกแล้ว Quotation จะเปลี่ยนเป็น ACCEPTED และ Bubble PO จะเป็นสีเขียว`
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      const saveButton =
+        document.getElementById(
+          "jobAwardSaveButton"
+        );
+
+      if (saveButton) {
+        saveButton.disabled =
+          true;
+
+        saveButton.textContent =
+          "กำลังบันทึก...";
+      }
+
+      try {
+        const payload = {
+          award_type:
+            awardType,
+
+          document_date:
+            documentDate,
+
+          contract_amount:
+            contractAmount,
+
+          document_no:
+            documentNo ||
+            null,
+
+          start_date:
+            startDate ||
+            null,
+
+          end_date:
+            endDate ||
+            null,
+
+          scope:
+            scope ||
+            null,
+
+          note:
+            note ||
+            null,
+
+          payment_plan:
+            paymentPlan
+        };
+
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              jobAwardState.quotationId
+            )}/job-award`,
+            {
+              method:
+                "POST",
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json",
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify(
+                  payload
+                )
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+          );
+        }
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            `บันทึกการสั่งจ้างไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        closeJobAwardFrame();
+
+        window.alert(
+          result.message ||
+          "บันทึกการสั่งจ้างสำเร็จ"
+        );
+
+        if (evidenceFile) {
+          console.info(
+            "เลือกไฟล์หลักฐานไว้แล้ว แต่ Storage upload ยังไม่ได้เชื่อม:",
+            evidenceFile.name
+          );
+        }
+
+        await loadDesignProjects();
+      }
+      catch (error) {
+        console.error(
+          "Submit Job Award error:",
+          error
+        );
+
+        window.alert(
+          error.message ||
+          "ไม่สามารถบันทึกการสั่งจ้างได้"
+        );
+      }
+      finally {
+        if (saveButton) {
+          saveButton.disabled =
+            false;
+
+          saveButton.textContent =
+            "บันทึกการสั่งจ้าง";
+        }
+      }
     }
 
 
