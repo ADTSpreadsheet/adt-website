@@ -1542,6 +1542,9 @@
     const CUSTOMERS_API =
       `${API_BASE_URL}/api/admin/customers`;
 
+    const DESIGN_PROJECTS_API =
+      `${API_BASE_URL}/api/admin/design-projects`;
+
     const LOGIN_URL =
       "/admin/";
 
@@ -1722,9 +1725,14 @@
         getAdminToken();
 
       if (!token) {
-        window.location.replace(
-          LOGIN_URL
+        customerId.innerHTML =
+          '<option value="">ไม่พบ Admin Token</option>';
+
+        showStatus(
+          "ไม่พบ Admin Token — กรุณาเข้าสู่ระบบใหม่ก่อนโหลดรายชื่อลูกค้า",
+          "error"
         );
+
         return;
       }
 
@@ -1736,17 +1744,33 @@
               headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token}`
-              }
+              },
+              cache: "no-store"
             }
           );
 
         const result =
-          await response.json();
+          await response.json()
+            .catch(() => ({}));
 
         if (response.status === 401) {
-          window.location.replace(
-            LOGIN_URL
+
+          sessionStorage.removeItem(
+            "adt_admin_access_token"
           );
+
+          localStorage.removeItem(
+            "adt_admin_access_token"
+          );
+
+          customerId.innerHTML =
+            '<option value="">Admin Token หมดอายุ</option>';
+
+          showStatus(
+            "Admin Token หมดอายุหรือไม่ถูกต้อง — กรุณาเข้าสู่ระบบใหม่",
+            "error"
+          );
+
           return;
         }
 
@@ -1790,7 +1814,8 @@
           '<option value="">โหลดรายชื่อลูกค้าไม่สำเร็จ</option>';
 
         showStatus(
-          error.message,
+          error.message ||
+          "ไม่สามารถเชื่อมต่อระบบลูกค้าได้",
           "error"
         );
       }
@@ -2433,7 +2458,7 @@
 
     form.addEventListener(
       "submit",
-      event => {
+      async event => {
 
         event.preventDefault();
         hideStatus();
@@ -2456,10 +2481,21 @@
         }
 
         if (
+          !payload.quotation.document_no
+        ) {
+          showStatus(
+            "กรุณาระบุเลขที่ใบเสนอราคา",
+            "error"
+          );
+          return;
+        }
+
+        if (
           !payload.quotation.items.some(
             item =>
               item.description &&
-              item.amount >= 0
+              Number(item.quantity) >= 0 &&
+              Number(item.unit_price) >= 0
           )
         ) {
           showStatus(
@@ -2469,15 +2505,133 @@
           return;
         }
 
-        console.log(
-          "PROJECT + QUOTATION PAYLOAD",
-          payload
-        );
+        const token =
+          getAdminToken();
+
+        if (!token) {
+          showStatus(
+            "ไม่พบ Admin Token — กรุณาเข้าสู่ระบบใหม่ก่อนบันทึก Project",
+            "error"
+          );
+          return;
+        }
+
+        const saveButton =
+          document.getElementById(
+            "saveProjectButton"
+          );
+
+        const originalText =
+          saveButton.textContent;
+
+        saveButton.disabled =
+          true;
+
+        saveButton.textContent =
+          "กำลังบันทึก...";
 
         showStatus(
-          "หน้า Form และ Preview พร้อมแล้ว แต่ยังไม่ได้เชื่อม POST API สำหรับบันทึก Project/Quotation ลง Supabase",
+          "กำลังบันทึก Project + ใบเสนอราคา ลงระบบ...",
           "info"
         );
+
+        try {
+
+          const response =
+            await fetch(
+              DESIGN_PROJECTS_API,
+              {
+                method:
+                  "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json",
+
+                  Accept:
+                    "application/json",
+
+                  Authorization:
+                    `Bearer ${token}`
+                },
+
+                body:
+                  JSON.stringify(
+                    payload
+                  )
+              }
+            );
+
+          const result =
+            await response.json()
+              .catch(() => ({}));
+
+          if (
+            response.status === 401
+          ) {
+
+            sessionStorage.removeItem(
+              "adt_admin_access_token"
+            );
+
+            localStorage.removeItem(
+              "adt_admin_access_token"
+            );
+
+            throw new Error(
+              "Admin Token หมดอายุหรือไม่ถูกต้อง — กรุณาเข้าสู่ระบบใหม่"
+            );
+          }
+
+          if (
+            !response.ok ||
+            result.success !== true
+          ) {
+
+            throw new Error(
+              result.message ||
+              result.detail ||
+              `บันทึกไม่สำเร็จ (HTTP ${response.status})`
+            );
+          }
+
+          localStorage.removeItem(
+            "adt_project_draft"
+          );
+
+          showStatus(
+            result.message ||
+            "บันทึก Project และใบเสนอราคาสำเร็จ",
+            "info"
+          );
+
+          window.setTimeout(
+            () => {
+              window.location.href =
+                "/admin/sales/design-projects/";
+            },
+            700
+          );
+        }
+        catch (error) {
+
+          console.error(
+            "Save Project Error:",
+            error
+          );
+
+          showStatus(
+            error.message ||
+            "ไม่สามารถบันทึก Project ได้",
+            "error"
+          );
+
+          saveButton.disabled =
+            false;
+
+          saveButton.textContent =
+            originalText;
+        }
       }
     );
 
