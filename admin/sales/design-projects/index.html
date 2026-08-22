@@ -2503,23 +2503,105 @@
     }
 
     @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+
+      html,
+      body {
+        width: 210mm;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #ffffff !important;
+      }
+
+      /*
+       * พิมพ์เฉพาะใบเสนอราคาที่อยู่ใน Read-only Preview Modal
+       * เท่านั้น เพราะหน้า Design Projects มี quotationPreviewPaper
+       * อีกชุดอยู่ใน Revision Live Preview ด้วย
+       */
       body * {
         visibility: hidden !important;
       }
 
-      #quotationPreviewPaper,
-      #quotationPreviewPaper * {
+      #quotationPreviewModal {
+        display: block !important;
+        position: static !important;
+        inset: auto !important;
+        width: auto !important;
+        height: auto !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+      }
+
+      #quotationPreviewModal .quotation-preview-frame {
+        position: static !important;
+        width: auto !important;
+        max-width: none !important;
+        height: auto !important;
+        max-height: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+      }
+
+      #quotationPreviewModal .quotation-preview-toolbar {
+        display: none !important;
+      }
+
+      #quotationPreviewModal .quotation-preview-body {
+        width: auto !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        background: #ffffff !important;
+      }
+
+      #quotationPreviewModal #quotationPreviewPaper,
+      #quotationPreviewModal #quotationPreviewPaper * {
         visibility: visible !important;
       }
 
-      #quotationPreviewPaper {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        min-width: 0;
-        box-shadow: none;
-        border: 0;
+      #quotationPreviewModal #quotationPreviewPaper {
+        position: static !important;
+        width: 190mm !important;
+        max-width: 190mm !important;
+        min-width: 0 !important;
+        min-height: 0 !important;
+        height: auto !important;
+        margin: 0 auto !important;
+        padding: 7mm 8mm !important;
+        box-sizing: border-box !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        page-break-before: avoid !important;
+        page-break-after: avoid !important;
+      }
+
+      #quotationPreviewModal .quotation-doc-head,
+      #quotationPreviewModal .quotation-client-block,
+      #quotationPreviewModal .quotation-issuer-block,
+      #quotationPreviewModal .quotation-preview-table,
+      #quotationPreviewModal .quotation-preview-summary,
+      #quotationPreviewModal .quotation-preview-payment {
+        break-inside: avoid !important;
+        page-break-inside: avoid !important;
+      }
+
+      /* กัน Preview ชุดอื่นหลุดเข้าหน้าพิมพ์ */
+      .revision-modal,
+      .revision-live-preview,
+      .award-modal {
+        display: none !important;
       }
     }
 
