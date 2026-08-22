@@ -5814,7 +5814,14 @@
                   <input
                     id="billingDocumentNo"
                     type="text"
-                    placeholder="ระบบจะ Run เลขจริงเมื่อเชื่อม Backend"
+                    class="${isDelivery ? "billing-readonly" : ""}"
+                    ${isDelivery ? "readonly" : ""}
+                    value="${isDelivery ? "ระบบออกเลขอัตโนมัติเมื่อบันทึก" : ""}"
+                    placeholder="${
+                      isDelivery
+                        ? "ระบบออกเลขอัตโนมัติเมื่อบันทึก"
+                        : "กรอกเลขใบวางบิล / Invoice"
+                    }"
                     oninput="renderBillingEditorPreview()"
                   >
                 </div>
@@ -6124,14 +6131,22 @@
           project
         );
 
-      const documentNo =
+      const documentNoInput =
         document
           .getElementById(
             "billingDocumentNo"
           )
           ?.value
           ?.trim() ||
-        "(Auto)";
+        "";
+
+      const documentNo =
+        isDelivery
+          ? "(Auto)"
+          : (
+              documentNoInput ||
+              "(Auto)"
+            );
 
       const documentDate =
         document
