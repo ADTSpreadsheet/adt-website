@@ -5795,7 +5795,7 @@
       // ใช้ Data URL ไม่เหมาะกับฐานข้อมูล/Storage
       // จึงหยุดไว้ชัดเจนเพื่อไม่บันทึกข้อมูลหลอก
       throw new Error(
-        "Frontend ยังไม่มีฟังก์ชันอัปโหลดไฟล์เข้า Supabase Storage สำหรับ Payment Evidence"
+        "เชื่อม Payment API แล้ว แต่ขั้นอัปโหลดไฟล์หลักฐานเข้า Supabase Storage ยังต้องต่อเพิ่ม"
       );
     }
 
@@ -7097,7 +7097,8 @@
                 <button
                   class="workflow-mini-btn"
                   type="button"
-                  onclick="openWorkflowPlaceholder('Payment Received')"
+                  onclick="openPaymentReceivedModal('${safeId(project.quotation_id || '')}')"
+                  ${billedAmount > 0 ? '' : 'disabled'}
                 >
                   + บันทึกรับชำระ / Upload Slip
                 </button>
