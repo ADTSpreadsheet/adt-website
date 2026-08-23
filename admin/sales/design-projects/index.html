@@ -5405,6 +5405,8 @@
 
       const items = [
         {
+          key:
+            "quoted",
           source:
             data.quoted_waiting,
           countId:
@@ -5415,6 +5417,8 @@
             "designRingQuoted"
         },
         {
+          key:
+            "won",
           source:
             data.won,
           countId:
@@ -5425,6 +5429,8 @@
             "designRingPo"
         },
         {
+          key:
+            "active",
           source:
             data.active,
           countId:
@@ -5435,6 +5441,8 @@
             "designRingActive"
         },
         {
+          key:
+            "closed",
           source:
             data.closed,
           countId:
@@ -5445,6 +5453,8 @@
             "designRingClosed"
         },
         {
+          key:
+            "lost",
           source:
             data.lost,
           countId:
@@ -5504,6 +5514,76 @@
               `${formatDesignMoney(amount)} บาท`;
           }
 
+          // วงเขียว PO / ได้งาน:
+          // เมื่อมีมูลค่าสัญญาแล้ว ถือว่าเป็นฐาน 100%
+          if (
+            item.key === "won"
+          ) {
+            const ring =
+              document.getElementById(
+                item.ringId
+              );
+
+            if (ring) {
+              ring.style.setProperty(
+                "--value",
+                amount > 0
+                  ? "100"
+                  : "0"
+              );
+            }
+
+            return;
+          }
+
+          // วงน้ำเงิน กำลังดำเนินการ:
+          // Progress = ยอดใบวางบิลสะสม / ยอด PO
+          if (
+            item.key === "active"
+          ) {
+            const targetAmount =
+              Number(
+                item.source?.target_amount ||
+                0
+              );
+
+            const percent =
+              targetAmount > 0
+                ? Math.max(
+                    0,
+                    Math.min(
+                      100,
+                      (
+                        amount /
+                        targetAmount
+                      ) * 100
+                    )
+                  )
+                : 0;
+
+            const ring =
+              document.getElementById(
+                item.ringId
+              );
+
+            if (ring) {
+              ring.style.setProperty(
+                "--value",
+                String(
+                  Math.round(
+                    percent * 100
+                  ) / 100
+                )
+              );
+
+              ring.title =
+                `${formatDesignMoney(amount)} / ${formatDesignMoney(targetAmount)} บาท (${percent.toFixed(2)}%)`;
+            }
+
+            return;
+          }
+
+          // การ์ดอื่นยังใช้จำนวน Project แบบเดิม
           setRingValue(
             item.ringId,
             count,
@@ -5512,7 +5592,6 @@
         }
       );
     }
-
 
     // ============================================================
     // TABLE
@@ -5859,6 +5938,82 @@
     }
 
 
+    function billingInvoiceAccumForDelivery(
+      deliveryId
+    ) {
+      return (
+        billingState?.invoiceRows || []
+      ).reduce(
+        (sum, row) => {
+          if (
+            String(
+              row.sourceDeliveryId || ""
+            ) !==
+            String(
+              deliveryId || ""
+            )
+          ) {
+            return sum;
+          }
+
+          return (
+            sum +
+            billingNumber(
+              row.amount
+            )
+          );
+        },
+        0
+      );
+    }
+
+
+    function billingRemainingForDelivery(
+      deliveryId
+    ) {
+      const delivery =
+        (
+          billingState?.deliveryRows ||
+          []
+        ).find(
+          row =>
+            String(
+              row.localId || ""
+            ) ===
+            String(
+              deliveryId || ""
+            )
+        );
+
+      if (!delivery) {
+        return 0;
+      }
+
+      return Math.max(
+        0,
+        billingNumber(
+          delivery.amount
+        ) -
+        billingInvoiceAccumForDelivery(
+          deliveryId
+        )
+      );
+    }
+
+
+    function billingNextInvoiceDelivery() {
+      return (
+        billingState?.deliveryRows ||
+        []
+      ).find(
+        delivery =>
+          billingRemainingForDelivery(
+            delivery.localId
+          ) > 0.01
+      ) || null;
+    }
+
+
     function billingTotals() {
       const deliveryRows =
         Array.isArray(
@@ -5903,13 +6058,26 @@
         contractAmount,
         deliveryAccum,
         billedAccum,
+
+        // ปริมาณงานที่ยังส่งมอบเพิ่มได้
         deliveryRemaining:
           Math.max(
             0,
             contractAmount -
             deliveryAccum
           ),
+
+        // เงินที่ "มีสิทธิ์ตั้งเบิกเพิ่มตอนนี้"
+        // = งานที่ส่งมอบแล้ว - ยอดที่วางบิลไปแล้ว
         billingRemaining:
+          Math.max(
+            0,
+            deliveryAccum -
+            billedAccum
+          ),
+
+        // ยอดคงเหลือเทียบ PO ทั้งหมด
+        contractBillingRemaining:
           Math.max(
             0,
             contractAmount -
@@ -5917,7 +6085,6 @@
           )
       };
     }
-
 
     function billingSummaryHtml() {
       const project =
@@ -5967,7 +6134,7 @@
           </div>
 
           <div class="billing-summary-card">
-            <span>ยอดที่ยังตั้งเบิกได้</span>
+            <span>ยอดที่ตั้งเบิกได้ตอนนี้</span>
             <strong>
               ${formatDesignMoney(
                 totals.billingRemaining
@@ -5999,8 +6166,8 @@
           ? deliveryRows.map(
               (delivery, index) => {
 
-                const invoice =
-                  invoiceRows.find(
+                const invoices =
+                  invoiceRows.filter(
                     row =>
                       String(
                         row.sourceDeliveryId || ""
@@ -6008,12 +6175,59 @@
                       String(
                         delivery.localId || ""
                       )
-                  ) || null;
+                  );
+
+                const invoice =
+                  invoices.length
+                    ? invoices[
+                        invoices.length - 1
+                      ]
+                    : null;
+
+                const deliveryBilledAmount =
+                  invoices.reduce(
+                    (sum, row) =>
+                      sum +
+                      billingNumber(
+                        row.amount
+                      ),
+                    0
+                  );
+
+                const deliveryBillingRemaining =
+                  Math.max(
+                    0,
+                    billingNumber(
+                      delivery.amount
+                    ) -
+                    deliveryBilledAmount
+                  );
 
                 const actionHtml =
                   invoice
                     ? `
-                        <div class="billing-row-action">
+                        <div
+                          style="
+                            display:flex;
+                            align-items:center;
+                            gap:6px;
+                          "
+                        >
+                          ${
+                            deliveryBillingRemaining > 0.01
+                              ? `
+                                  <button
+                                    class="billing-btn green"
+                                    type="button"
+                                    onclick="openBillingEditor('INVOICE', '${escapeHtml(delivery.localId || "")}')"
+                                  >
+                                    + ใบวางบิล
+                                  </button>
+                                `
+                              : ""
+                          }
+
+                          <div class="billing-row-action">
                           <button
                             class="billing-more-btn"
                             type="button"
@@ -6059,6 +6273,7 @@
                             </button>
                           </div>
                         </div>
+                        </div>
                       `
                     : `
                         <button
@@ -6096,19 +6311,28 @@
                       ${
                         invoice
                           ? `
-                              <div
-                                style="
-                                  margin-top:4px;
-                                  color:#087545;
-                                  font-size:.62rem;
-                                  font-weight:700;
-                                "
-                              >
-                                Invoice:
-                                ${escapeHtml(
-                                  invoice.documentNo || "-"
-                                )}
-                              </div>
+                              ${invoices.map(
+                                item => `
+                                  <div
+                                    style="
+                                      margin-top:4px;
+                                      color:#087545;
+                                      font-size:.62rem;
+                                      font-weight:700;
+                                    "
+                                  >
+                                    Invoice:
+                                    ${escapeHtml(
+                                      item.documentNo || "-"
+                                    )}
+                                    ·
+                                    ${formatDesignMoney(
+                                      item.amount
+                                    )}
+                                    บาท
+                                  </div>
+                                `
+                              ).join("")}
 
                               <div
                                 style="
@@ -6137,9 +6361,9 @@
 
                     <td class="money">
                       ${
-                        invoice
+                        invoices.length
                           ? formatDesignMoney(
-                              invoice.amount
+                              deliveryBilledAmount
                             )
                           : "-"
                       }
@@ -6160,7 +6384,7 @@
                 >
                   ยังไม่มีประวัติการส่งมอบงานหรือการตั้งเบิก
                   <br>
-                  เริ่มจาก “+ เพิ่มการส่งมอบงาน”
+                  เริ่มจาก “+ เพิ่มการส่งมอบงาน” และวางบิลตามยอดงานที่ส่งมอบจริง
                 </td>
               </tr>
             `;
@@ -6189,6 +6413,34 @@
     }
 
     function billingFrameHtml() {
+      const totals =
+        billingTotals();
+
+      const nextInvoiceDelivery =
+        billingNextInvoiceDelivery();
+
+      const canCreateDelivery =
+        (
+          billingState?.permissions?.can_create_delivery ??
+          (
+            totals.deliveryRemaining >
+            0.01
+          )
+        ) === true;
+
+      const canCreateInvoice =
+        (
+          billingState?.permissions?.can_create_invoice ??
+          (
+            totals.billingRemaining >
+            0.01
+          )
+        ) === true
+        &&
+        Boolean(
+          nextInvoiceDelivery
+        );
+
       return `
         ${billingSummaryHtml()}
 
@@ -6200,13 +6452,14 @@
               </strong>
 
               <span>
-                รายละเอียดเป็นข้อความอิสระ ไม่อิง Item ในใบเสนอราคา
+                ระบบแยกสถานะปริมาณงานที่ส่งมอบ และยอดเงินที่วางบิลออกจากกัน
               </span>
             </div>
 
             <div class="billing-action-pair">
+
               ${
-                billingTotals().deliveryRemaining > 0.01
+                canCreateDelivery
                   ? `
                       <button
                         class="billing-btn primary"
@@ -6216,12 +6469,48 @@
                         + เพิ่มการส่งมอบงาน
                       </button>
                     `
-                  : `
+                  : ""
+              }
+
+              ${
+                canCreateInvoice
+                  ? `
+                      <button
+                        class="billing-btn green"
+                        type="button"
+                        onclick="openBillingEditor('INVOICE', '${escapeHtml(
+                          nextInvoiceDelivery.localId ||
+                          ""
+                        )}')"
+                      >
+                        + เพิ่มใบวางบิล
+                      </button>
+                    `
+                  : ""
+              }
+
+              ${
+                !canCreateDelivery &&
+                !canCreateInvoice
+                  ? `
+                      <span class="badge green">
+                        ส่งมอบและวางบิลครบตามสิทธิ์แล้ว
+                      </span>
+                    `
+                  : ""
+              }
+
+              ${
+                !canCreateDelivery &&
+                canCreateInvoice
+                  ? `
                       <span class="badge green">
                         ส่งมอบครบตาม PO แล้ว
                       </span>
                     `
+                  : ""
               }
+
             </div>
           </div>
 
@@ -6236,7 +6525,6 @@
         </div>
       `;
     }
-
 
     function billingEditorForm(
       type,
@@ -6267,7 +6555,12 @@
       const maxAmount =
         isDelivery
           ? totals.deliveryRemaining
-          : totals.billingRemaining;
+          : Math.min(
+              totals.billingRemaining,
+              billingRemainingForDelivery(
+                deliveryLocalId
+              )
+            );
 
       const title =
         isDelivery
@@ -7385,15 +7678,30 @@
           return;
         }
 
+        const deliveryBillingRemaining =
+          billingRemainingForDelivery(
+            sourceDeliveryId
+          );
+
         if (
           amount >
-          billingNumber(
-            delivery.amount
-          ) + 0.01
+          deliveryBillingRemaining + 0.01
         ) {
           window.alert(
-            `ยอดใบวางบิลต้องไม่เกินยอดส่งมอบ ${formatDesignMoney(
-              delivery.amount
+            `ยอดใบวางบิลครั้งนี้ต้องไม่เกินยอดที่ยังวางบิลได้จากงวดส่งมอบนี้ ${formatDesignMoney(
+              deliveryBillingRemaining
+            )} บาท`
+          );
+          return;
+        }
+
+        if (
+          amount >
+          totals.billingRemaining + 0.01
+        ) {
+          window.alert(
+            `ยอดใบวางบิลครั้งนี้เกินยอดงานที่ส่งมอบแล้วแต่ยังไม่ได้วางบิล ${formatDesignMoney(
+              totals.billingRemaining
             )} บาท`
           );
           return;
