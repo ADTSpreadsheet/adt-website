@@ -3812,6 +3812,73 @@
       }
     }
 
+  
+    .billing-row-action {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .billing-more-btn {
+      width: 34px;
+      height: 34px;
+      display: inline-grid;
+      place-items: center;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      color: var(--ink-700);
+      background: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .billing-more-btn:hover {
+      color: var(--blue-600);
+      border-color: #bfd7f8;
+      background: #f7fbff;
+    }
+
+    .billing-row-menu {
+      position: fixed;
+      z-index: 6500;
+      width: 220px;
+      padding: 7px;
+      display: none;
+      border: 1px solid #dfe7f0;
+      border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 18px 44px rgba(4, 27, 60, 0.18);
+    }
+
+    .billing-row-menu.open {
+      display: grid;
+      gap: 3px;
+    }
+
+    .billing-row-menu button {
+      width: 100%;
+      min-height: 36px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      border-radius: 8px;
+      color: var(--ink-700);
+      background: transparent;
+      font-size: .69rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .billing-row-menu button:hover {
+      color: var(--blue-600);
+      background: #f3f8ff;
+    }
+
   </style>
 </head>
 
@@ -5553,79 +5620,134 @@
           ? billingState.invoiceRows
           : [];
 
-      const rows = [
-        ...deliveryRows.map(
-          row => ({
-            ...row,
-            type: "DELIVERY"
-          })
-        ),
-        ...invoiceRows.map(
-          row => ({
-            ...row,
-            type: "INVOICE"
-          })
-        )
-      ].sort(
-        (a, b) =>
-          String(a.date || "")
-            .localeCompare(
-              String(b.date || "")
-            )
-      );
-
       const body =
-        rows.length
-          ? rows.map(
-              (row, index) => `
-                <tr>
-                  <td>
-                    ${index + 1}
-                  </td>
+        deliveryRows.length
+          ? deliveryRows.map(
+              (delivery, index) => {
 
-                  <td>
-                    ${
-                      row.type === "DELIVERY"
-                        ? `<span class="badge blue">ส่งมอบงาน</span>`
-                        : `<span class="badge green">วางบิล</span>`
-                    }
-                  </td>
+                const invoice =
+                  invoiceRows.find(
+                    row =>
+                      String(
+                        row.sourceDeliveryId || ""
+                      ) ===
+                      String(
+                        delivery.localId || ""
+                      )
+                  ) || null;
 
-                  <td>
-                    ${escapeHtml(
-                      row.date || "-"
-                    )}
-                  </td>
+                const actionHtml =
+                  invoice
+                    ? `
+                        <div class="billing-row-action">
+                          <button
+                            class="billing-more-btn"
+                            type="button"
+                            title="จัดการเอกสาร"
+                            onclick="toggleBillingRowMenu(event, 'billing-menu-${escapeHtml(delivery.localId || "")}')"
+                          >
+                            ⋮
+                          </button>
 
-                  <td>
-                    <strong>
+                          <div
+                            class="billing-row-menu"
+                            id="billing-menu-${escapeHtml(delivery.localId || "")}"
+                          >
+                            <button
+                              type="button"
+                              onclick="previewBillingDocumentSet('${escapeHtml(delivery.localId || "")}')"
+                            >
+                              👁 พรีวิวชุดเอกสาร
+                            </button>
+
+                            <button
+                              type="button"
+                              onclick="editBillingInvoice('${escapeHtml(delivery.localId || "")}')"
+                            >
+                              ✏️ แก้ไขใบวางบิล
+                            </button>
+
+                            <button
+                              type="button"
+                              onclick="printBillingDocumentSet('${escapeHtml(delivery.localId || "")}')"
+                            >
+                              🖨 พิมพ์ / Export PDF
+                            </button>
+                          </div>
+                        </div>
+                      `
+                    : `
+                        <button
+                          class="billing-btn green"
+                          type="button"
+                          onclick="openBillingEditor('INVOICE', '${escapeHtml(delivery.localId || "")}')"
+                        >
+                          + สร้างใบวางบิล
+                        </button>
+                      `;
+
+                return `
+                  <tr>
+                    <td>${index + 1}</td>
+
+                    <td>
+                      <span class="badge blue">
+                        ส่งมอบงาน
+                      </span>
+                    </td>
+
+                    <td>
                       ${escapeHtml(
-                        row.documentNo || "-"
+                        delivery.date || "-"
                       )}
-                    </strong>
-                  </td>
+                    </td>
 
-                  <td style="white-space:pre-wrap;">
-                    ${escapeHtml(
-                      row.description || "-"
-                    )}
-                  </td>
+                    <td>
+                      <strong>
+                        ${escapeHtml(
+                          delivery.documentNo || "-"
+                        )}
+                      </strong>
 
-                  <td class="money">
-                    ${formatDesignMoney(
-                      row.amount
-                    )}
-                  </td>
+                      ${
+                        invoice
+                          ? `
+                              <div
+                                style="
+                                  margin-top:4px;
+                                  color:#087545;
+                                  font-size:.62rem;
+                                  font-weight:700;
+                                "
+                              >
+                                Invoice:
+                                ${escapeHtml(
+                                  invoice.documentNo || "-"
+                                )}
+                              </div>
+                            `
+                          : ""
+                      }
+                    </td>
 
-                  <td>
-                    ${
-                      row.type === "DELIVERY"
-                        ? `<button class="billing-btn green" type="button" onclick="openBillingEditor('INVOICE', '${escapeHtml(row.localId || "")}')">+ สร้างใบวางบิล</button>`
-                        : `<span class="badge green">บันทึกแล้ว</span>`
-                    }
-                  </td>
-                </tr>
-              `
+                    <td style="white-space:pre-wrap;">
+                      ${escapeHtml(
+                        delivery.description || "-"
+                      )}
+                    </td>
+
+                    <td class="money">
+                      ${formatDesignMoney(
+                        delivery.amount
+                      )}
+                    </td>
+
+                    <td>
+                      ${actionHtml}
+                    </td>
+                  </tr>
+                `;
+              }
             ).join("")
           : `
               <tr>
@@ -5663,7 +5785,6 @@
       `;
     }
 
-
     function billingFrameHtml() {
       return `
         ${billingSummaryHtml()}
@@ -5681,14 +5802,23 @@
             </div>
 
             <div class="billing-action-pair">
-              <button
-                class="billing-btn primary"
-                type="button"
-                onclick="openBillingEditor('DELIVERY')"
-              >
-                + เพิ่มการส่งมอบงาน
-              </button>
-
+              ${
+                billingTotals().deliveryRemaining > 0.01
+                  ? `
+                      <button
+                        class="billing-btn primary"
+                        type="button"
+                        onclick="openBillingEditor('DELIVERY')"
+                      >
+                        + เพิ่มการส่งมอบงาน
+                      </button>
+                    `
+                  : `
+                      <span class="badge green">
+                        ส่งมอบครบตาม PO แล้ว
+                      </span>
+                    `
+              }
             </div>
           </div>
 
@@ -5814,15 +5944,10 @@
                   <input
                     id="billingDocumentNo"
                     type="text"
-                    class="${isDelivery ? "billing-readonly" : ""}"
-                    ${isDelivery ? "readonly" : ""}
-                    value="${isDelivery ? "ระบบออกเลขอัตโนมัติเมื่อบันทึก" : ""}"
-                    placeholder="${
-                      isDelivery
-                        ? "ระบบออกเลขอัตโนมัติเมื่อบันทึก"
-                        : "กรอกเลขใบวางบิล / Invoice"
-                    }"
-                    oninput="renderBillingEditorPreview()"
+                    class="billing-readonly"
+                    readonly
+                    value="ระบบออกเลขอัตโนมัติเมื่อบันทึก"
+                    placeholder="ระบบออกเลขอัตโนมัติเมื่อบันทึก"
                   >
                 </div>
 
@@ -6141,12 +6266,7 @@
         "";
 
       const documentNo =
-        isDelivery
-          ? "(Auto)"
-          : (
-              documentNoInput ||
-              "(Auto)"
-            );
+        "(Auto)";
 
       const documentDate =
         document
@@ -6743,14 +6863,19 @@
             ?.value
         );
 
-      // รอบนี้ Backend ที่ต่อจริงคือ DELIVERY ก่อน
-      // INVOICE จะต้องผูกกับ DELIVERY ที่บันทึกสำเร็จแล้ว
-      if (type !== "DELIVERY") {
-        window.alert(
-          "ใบวางบิลจะเชื่อม Backend ในขั้นถัดไป หลังจากมีรายการส่งมอบจริงแล้ว"
-        );
+      if (
+        ![
+          "DELIVERY",
+          "INVOICE"
+        ].includes(
+          type
+        )
+      ) {
         return;
       }
+
+      const isDelivery =
+        type === "DELIVERY";
 
       const date =
         document
@@ -6787,24 +6912,38 @@
           ?.trim() ||
         "";
 
+      const sourceDeliveryId =
+        document
+          .getElementById(
+            "billingSourceDeliveryId"
+          )
+          ?.value
+          ?.trim() ||
+        "";
+
       const totals =
         billingTotals();
 
       if (!description) {
         window.alert(
-          "กรุณากรอกรายละเอียดงานที่ส่งมอบ"
+          isDelivery
+            ? "กรุณากรอกรายละเอียดงานที่ส่งมอบ"
+            : "กรุณากรอกรายละเอียดการตั้งเบิก"
         );
         return;
       }
 
       if (!(amount > 0)) {
         window.alert(
-          "มูลค่างานที่ส่งมอบต้องมากกว่า 0"
+          isDelivery
+            ? "มูลค่างานที่ส่งมอบต้องมากกว่า 0"
+            : "ยอดขอเบิกต้องมากกว่า 0"
         );
         return;
       }
 
       if (
+        isDelivery &&
         amount >
         totals.deliveryRemaining + 0.01
       ) {
@@ -6814,6 +6953,48 @@
           )} บาท`
         );
         return;
+      }
+
+      if (!isDelivery) {
+        if (!sourceDeliveryId) {
+          window.alert(
+            "ไม่พบงวดส่งมอบต้นทางของใบวางบิล"
+          );
+          return;
+        }
+
+        const delivery =
+          (billingState.deliveryRows || [])
+            .find(
+              row =>
+                String(
+                  row.localId || ""
+                ) ===
+                String(
+                  sourceDeliveryId
+                )
+            );
+
+        if (!delivery) {
+          window.alert(
+            "ไม่พบข้อมูลหนังสือส่งมอบงานต้นทาง"
+          );
+          return;
+        }
+
+        if (
+          amount >
+          billingNumber(
+            delivery.amount
+          ) + 0.01
+        ) {
+          window.alert(
+            `ยอดใบวางบิลต้องไม่เกินยอดส่งมอบ ${formatDesignMoney(
+              delivery.amount
+            )} บาท`
+          );
+          return;
+        }
       }
 
       const token =
@@ -6830,19 +7011,23 @@
 
       if (!quotationId) {
         window.alert(
-          "ไม่พบ quotationId สำหรับบันทึกส่งมอบ"
+          "ไม่พบ quotationId สำหรับบันทึกเอกสาร"
         );
         return;
       }
 
       const saveButton =
         document.querySelector(
-          '#billingEditor .billing-form-actions .billing-btn.primary'
+          '#billingEditor .billing-form-actions .billing-btn.primary, #billingEditor .billing-form-actions .billing-btn.green'
         );
 
       const oldButtonText =
         saveButton?.textContent ||
-        "บันทึกส่งมอบ";
+        (
+          isDelivery
+            ? "บันทึกส่งมอบ"
+            : "บันทึกใบวางบิล"
+        );
 
       if (saveButton) {
         saveButton.disabled = true;
@@ -6851,11 +7036,34 @@
       }
 
       try {
+
+        const endpoint =
+          isDelivery
+            ? "deliveries"
+            : "invoices";
+
+        const payload =
+          isDelivery
+            ? {
+                document_date: date,
+                description,
+                amount,
+                note
+              }
+            : {
+                delivery_transaction_id:
+                  sourceDeliveryId,
+                document_date: date,
+                description,
+                amount,
+                note
+              };
+
         const response =
           await fetch(
             `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
               quotationId
-            )}/deliveries`,
+            )}/${endpoint}`,
             {
               method: "POST",
               headers: {
@@ -6866,12 +7074,10 @@
                 "Content-Type":
                   "application/json"
               },
-              body: JSON.stringify({
-                document_date: date,
-                description,
-                amount,
-                note
-              })
+              body:
+                JSON.stringify(
+                  payload
+                )
             }
           );
 
@@ -6901,11 +7107,11 @@
           throw new Error(
             result?.message ||
             result?.detail ||
-            `บันทึกส่งมอบไม่สำเร็จ (HTTP ${response.status})`
+            `บันทึกเอกสารไม่สำเร็จ (HTTP ${response.status})`
           );
         }
 
-        // สำเร็จแล้วอ่านข้อมูลจริงจาก Backend ใหม่ทั้งชุด
+        // โหลด Billing จริงใหม่ เพื่อให้ Action เปลี่ยนตามข้อมูล Backend
         await loadBillingData(
           quotationId,
           {
@@ -6913,23 +7119,42 @@
           }
         );
 
+        // โหลดหน้าหลักใหม่ เพื่อให้ Bubble 3 เปลี่ยนเป็นสีเขียว
+        await loadDesignProjects();
+
+        const documentNo =
+          isDelivery
+            ? result?.delivery?.document_no
+            : result?.invoice?.document_no;
+
         window.alert(
-          `บันทึกหนังสือส่งมอบสำเร็จ${
-            result?.delivery?.document_no
-              ? `\nเลขเอกสาร ${result.delivery.document_no}`
+          `${
+            isDelivery
+              ? "บันทึกหนังสือส่งมอบสำเร็จ"
+              : "บันทึกใบวางบิลสำเร็จ"
+          }${
+            documentNo
+              ? `\nเลขเอกสาร ${documentNo}`
               : ""
           }`
         );
       }
       catch (error) {
+
         console.error(
-          "Save Delivery Error:",
+          isDelivery
+            ? "Save Delivery Error:"
+            : "Save Invoice Error:",
           error
         );
 
         window.alert(
           error?.message ||
-          "ไม่สามารถบันทึกหนังสือส่งมอบงานได้"
+          (
+            isDelivery
+              ? "ไม่สามารถบันทึกหนังสือส่งมอบงานได้"
+              : "ไม่สามารถบันทึกใบวางบิลได้"
+          )
         );
 
         if (saveButton) {
@@ -6938,6 +7163,258 @@
             oldButtonText;
         }
       }
+    }
+
+    function closeAllBillingRowMenus() {
+      document
+        .querySelectorAll(
+          ".billing-row-menu.open"
+        )
+        .forEach(
+          menu =>
+            menu.classList.remove(
+              "open"
+            )
+        );
+    }
+
+
+    function toggleBillingRowMenu(
+      event,
+      menuId
+    ) {
+      event.stopPropagation();
+
+      const menu =
+        document.getElementById(
+          menuId
+        );
+
+      if (!menu) {
+        return;
+      }
+
+      const wasOpen =
+        menu.classList.contains(
+          "open"
+        );
+
+      closeAllBillingRowMenus();
+
+      if (wasOpen) {
+        return;
+      }
+
+      const button =
+        event.currentTarget;
+
+      const rect =
+        button.getBoundingClientRect();
+
+      const menuWidth =
+        220;
+
+      const left =
+        Math.max(
+          10,
+          Math.min(
+            window.innerWidth -
+            menuWidth -
+            10,
+            rect.right -
+            menuWidth
+          )
+        );
+
+      const top =
+        Math.min(
+          window.innerHeight -
+          150,
+          rect.bottom + 6
+        );
+
+      menu.style.left =
+        `${left}px`;
+
+      menu.style.top =
+        `${Math.max(10, top)}px`;
+
+      menu.classList.add(
+        "open"
+      );
+    }
+
+
+    function getBillingDocumentPair(
+      deliveryId
+    ) {
+      const delivery =
+        (billingState?.deliveryRows || [])
+          .find(
+            row =>
+              String(
+                row.localId || ""
+              ) ===
+              String(
+                deliveryId || ""
+              )
+          ) || null;
+
+      const invoice =
+        (billingState?.invoiceRows || [])
+          .find(
+            row =>
+              String(
+                row.sourceDeliveryId || ""
+              ) ===
+              String(
+                deliveryId || ""
+              )
+          ) || null;
+
+      return {
+        delivery,
+        invoice
+      };
+    }
+
+
+    function editBillingInvoice(
+      deliveryId
+    ) {
+      closeAllBillingRowMenus();
+
+      const {
+        invoice
+      } =
+        getBillingDocumentPair(
+          deliveryId
+        );
+
+      if (!invoice) {
+        window.alert(
+          "ยังไม่พบใบวางบิลของงวดนี้"
+        );
+        return;
+      }
+
+      // ตอนนี้เปิดฟอร์มเดิมพร้อมข้อมูลอ้างอิง Delivery
+      // การ UPDATE Backend จะต่อในขั้นแก้ไข Invoice
+      openBillingEditor(
+        "INVOICE",
+        deliveryId
+      );
+
+      setTimeout(
+        () => {
+          const dateInput =
+            document.getElementById(
+              "billingDocumentDate"
+            );
+          const descInput =
+            document.getElementById(
+              "billingDescription"
+            );
+          const amountInput =
+            document.getElementById(
+              "billingAmount"
+            );
+          const noteInput =
+            document.getElementById(
+              "billingNote"
+            );
+
+          if (dateInput) {
+            dateInput.value =
+              invoice.date ||
+              billingToday();
+          }
+
+          if (descInput) {
+            descInput.value =
+              invoice.description ||
+              "";
+          }
+
+          if (amountInput) {
+            amountInput.value =
+              billingNumber(
+                invoice.amount
+              );
+          }
+
+          if (noteInput) {
+            noteInput.value =
+              invoice.note ||
+              "";
+          }
+
+          renderBillingEditorPreview();
+
+          window.alert(
+            "เปิดข้อมูลใบวางบิลเดิมแล้ว — การบันทึกแก้ไขจะเชื่อม UPDATE Backend ในขั้นถัดไป"
+          );
+        },
+        0
+      );
+    }
+
+
+    function previewBillingDocumentSet(
+      deliveryId
+    ) {
+      closeAllBillingRowMenus();
+
+      const {
+        delivery,
+        invoice
+      } =
+        getBillingDocumentPair(
+          deliveryId
+        );
+
+      if (
+        !delivery ||
+        !invoice
+      ) {
+        window.alert(
+          "เอกสารของงวดนี้ยังไม่ครบ"
+        );
+        return;
+      }
+
+      window.alert(
+        `ชุดเอกสารพร้อมพรีวิว\n\n1. ${delivery.documentNo}\n2. ${invoice.documentNo}\n\nขั้นถัดไปจะรวมสองเอกสารเป็น Preview ต่อกัน`
+      );
+    }
+
+
+    function printBillingDocumentSet(
+      deliveryId
+    ) {
+      closeAllBillingRowMenus();
+
+      const {
+        delivery,
+        invoice
+      } =
+        getBillingDocumentPair(
+          deliveryId
+        );
+
+      if (
+        !delivery ||
+        !invoice
+      ) {
+        window.alert(
+          "เอกสารของงวดนี้ยังไม่ครบสำหรับพิมพ์"
+        );
+        return;
+      }
+
+      window.alert(
+        `ชุดเอกสารพร้อมพิมพ์\n\n1. ${delivery.documentNo}\n2. ${invoice.documentNo}\n\nขั้นถัดไปจะรวมเป็น PDF ชุดเดียว`
+      );
     }
 
 
@@ -11976,13 +12453,17 @@
       "click",
       () => {
         closeAllDesignActionMenus();
+        closeAllBillingRowMenus();
       }
     );
 
 
     window.addEventListener(
       "resize",
-      closeAllDesignActionMenus
+      () => {
+        closeAllDesignActionMenus();
+        closeAllBillingRowMenus();
+      }
     );
 
 
