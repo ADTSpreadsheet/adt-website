@@ -8182,9 +8182,83 @@
     // KPI
     // ============================================================
 
-    function renderDesignSummary(summary) {
+    function renderDesignSummary(
+      summary,
+      projects
+    ) {
       const data =
         summary || {};
+
+
+      const projectRows =
+        Array.isArray(
+          projects
+        )
+          ? projects
+          : [];
+
+
+      // ==========================================================
+      // FINANCIAL FLOW
+      //
+      // วงเขียว = มูลค่างานที่ได้รับ / PO
+      // วงน้ำเงิน = มูลค่างานที่ยังไม่ถูกออกใบเสร็จ
+      // วงชมพู = ยอดที่รับชำระและออกใบเสร็จแล้ว
+      // ==========================================================
+
+      const receiptAmount =
+        projectRows.reduce(
+          (sum, project) =>
+            sum +
+            Number(
+              project.receipt_amount ??
+              project.received_amount ??
+              0
+            ),
+          0
+        );
+
+
+      const receiptProjectCount =
+        projectRows.filter(
+          project =>
+            Number(
+              project.receipt_amount ??
+              project.received_amount ??
+              0
+            ) > 0
+        ).length;
+
+
+      const wonAmount =
+        Number(
+          data.won?.amount ||
+          0
+        );
+
+
+      const activeRemainingAmount =
+        Math.max(
+          0,
+          wonAmount -
+          receiptAmount
+        );
+
+
+      const activeTargetAmount =
+        Math.max(
+          0,
+          wonAmount
+        );
+
+
+      const receiptTargetAmount =
+        Math.max(
+          0,
+          activeRemainingAmount +
+          receiptAmount
+        );
+
 
       const items = [
         {
@@ -8214,8 +8288,13 @@
         {
           key:
             "active",
-          source:
-            data.active,
+          source: {
+            ...(data.active || {}),
+            amount:
+              activeRemainingAmount,
+            target_amount:
+              activeTargetAmount
+          },
           countId:
             "designCountActive",
           valueId:
@@ -8226,8 +8305,15 @@
         {
           key:
             "closed",
-          source:
-            data.closed,
+          source: {
+            ...(data.closed || {}),
+            count:
+              receiptProjectCount,
+            amount:
+              receiptAmount,
+            target_amount:
+              receiptTargetAmount
+          },
           countId:
             "designCountClosed",
           valueId:
@@ -8249,6 +8335,7 @@
         }
       ];
 
+
       const maxCount =
         Math.max(
           1,
@@ -8261,13 +8348,16 @@
           )
         );
 
+
       items.forEach(
         item => {
+
           const count =
             Number(
               item.source?.count ||
               0
             );
+
 
           const amount =
             Number(
@@ -8275,15 +8365,18 @@
               0
             );
 
+
           const countElement =
             document.getElementById(
               item.countId
             );
 
+
           const valueElement =
             document.getElementById(
               item.valueId
             );
+
 
           if (countElement) {
             countElement.textContent =
@@ -8292,20 +8385,25 @@
               );
           }
 
+
           if (valueElement) {
             valueElement.textContent =
-              `${formatDesignMoney(amount)} บาท`;
+              `${formatDesignMoney(
+                amount
+              )} บาท`;
           }
 
-          // วงเขียว PO / ได้งาน:
-          // เมื่อมีมูลค่าสัญญาแล้ว ถือว่าเป็นฐาน 100%
+
+          // วงเขียว = มูลค่างานที่ได้
           if (
             item.key === "won"
           ) {
+
             const ring =
               document.getElementById(
                 item.ringId
               );
+
 
             if (ring) {
               ring.style.setProperty(
@@ -8319,16 +8417,18 @@
             return;
           }
 
-          // วงน้ำเงิน กำลังดำเนินการ:
-          // Progress = ยอดใบวางบิลสะสม / ยอด PO
+
+          // วงน้ำเงิน = ยอดคงเหลือที่ยังไม่ออกใบเสร็จ
           if (
             item.key === "active"
           ) {
+
             const targetAmount =
               Number(
                 item.source?.target_amount ||
                 0
               );
+
 
             const percent =
               targetAmount > 0
@@ -8344,10 +8444,12 @@
                   )
                 : 0;
 
+
             const ring =
               document.getElementById(
                 item.ringId
               );
+
 
             if (ring) {
               ring.style.setProperty(
@@ -8360,13 +8462,77 @@
               );
 
               ring.title =
-                `${formatDesignMoney(amount)} / ${formatDesignMoney(targetAmount)} บาท (${percent.toFixed(2)}%)`;
+                `${formatDesignMoney(
+                  amount
+                )} / ${formatDesignMoney(
+                  targetAmount
+                )} บาท (${percent.toFixed(
+                  2
+                )}%)`;
             }
 
             return;
           }
 
-          // การ์ดอื่นยังใช้จำนวน Project แบบเดิม
+
+          // วงชมพู = ยอดรับชำระที่ออกใบเสร็จแล้ว
+          if (
+            item.key === "closed"
+          ) {
+
+            const targetAmount =
+              Number(
+                item.source?.target_amount ||
+                0
+              );
+
+
+            const percent =
+              targetAmount > 0
+                ? Math.max(
+                    0,
+                    Math.min(
+                      100,
+                      (
+                        amount /
+                        targetAmount
+                      ) * 100
+                    )
+                  )
+                : 0;
+
+
+            const ring =
+              document.getElementById(
+                item.ringId
+              );
+
+
+            if (ring) {
+              ring.style.setProperty(
+                "--value",
+                String(
+                  Math.round(
+                    percent * 100
+                  ) / 100
+                )
+              );
+
+              ring.title =
+                `${formatDesignMoney(
+                  amount
+                )} / ${formatDesignMoney(
+                  targetAmount
+                )} บาท (${percent.toFixed(
+                  2
+                )}%)`;
+            }
+
+            return;
+          }
+
+
+          // การ์ดอื่นยังใช้จำนวนรายการแบบเดิม
           setRingValue(
             item.ringId,
             count,
@@ -13669,7 +13835,8 @@
           null;
 
         renderDesignSummary(
-          result.summary
+          result.summary,
+          result.projects
         );
 
         renderDesignRows(
@@ -13716,7 +13883,8 @@
         }
 
         renderDesignSummary(
-          null
+          null,
+          []
         );
 
         setDesignDataSource(
