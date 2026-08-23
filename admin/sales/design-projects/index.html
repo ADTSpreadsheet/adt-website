@@ -10743,9 +10743,10 @@
               )
           ) || null;
 
-      const invoice =
+
+      const invoices =
         (billingState?.invoiceRows || [])
-          .find(
+          .filter(
             row =>
               String(
                 row.sourceDeliveryId || ""
@@ -10753,11 +10754,51 @@
               String(
                 deliveryId || ""
               )
-          ) || null;
+          )
+          .sort(
+            (a, b) => {
+              const aDate =
+                String(
+                  a.date || ""
+                );
+
+              const bDate =
+                String(
+                  b.date || ""
+                );
+
+              if (
+                aDate !== bDate
+              ) {
+                return aDate.localeCompare(
+                  bDate
+                );
+              }
+
+              return String(
+                a.documentNo || ""
+              ).localeCompare(
+                String(
+                  b.documentNo || ""
+                )
+              );
+            }
+          );
+
+
+      // เก็บ invoice ตัวล่าสุดไว้เพื่อไม่กระทบฟังก์ชัน Edit/Delete เดิม
+      const invoice =
+        invoices.length
+          ? invoices[
+              invoices.length - 1
+            ]
+          : null;
+
 
       return {
         delivery,
-        invoice
+        invoice,
+        invoices
       };
     }
 
@@ -11481,7 +11522,7 @@
 
       const {
         delivery,
-        invoice
+        invoices
       } =
         getBillingDocumentPair(
           deliveryId
@@ -11489,7 +11530,10 @@
 
       if (
         !delivery ||
-        !invoice
+        !Array.isArray(
+          invoices
+        ) ||
+        invoices.length === 0
       ) {
         window.alert(
           "เอกสารของงวดนี้ยังไม่ครบ"
@@ -11540,11 +11584,32 @@
           } · ${
             delivery.documentNo ||
             "-"
-          } + ${
-            invoice.documentNo ||
-            "-"
-          }`;
+          } · ใบวางบิล ${
+            invoices.length
+          } ใบ`;
       }
+
+      const invoicePages =
+        invoices.map(
+          (invoice, index) => `
+            <div class="billing-document-page invoice-page">
+              <div class="billing-document-page-label">
+                ใบที่ ${index + 2} — ใบวางบิล / ใบแจ้งหนี้
+                ${
+                  invoices.length > 1
+                    ? `(${index + 1}/${invoices.length})`
+                    : ""
+                }
+              </div>
+
+              ${buildSavedBillingDocumentHtml(
+                "INVOICE",
+                invoice
+              )}
+            </div>
+          `
+        ).join("");
+
 
       body.innerHTML = `
         <div
@@ -11562,16 +11627,7 @@
             )}
           </div>
 
-          <div class="billing-document-page invoice-page">
-            <div class="billing-document-page-label">
-              ใบที่ 2 — ใบวางบิล / ใบแจ้งหนี้
-            </div>
-
-            ${buildSavedBillingDocumentHtml(
-              "INVOICE",
-              invoice
-            )}
-          </div>
+          ${invoicePages}
         </div>
       `;
 
@@ -11597,7 +11653,7 @@
 
       const {
         delivery,
-        invoice
+        invoices
       } =
         getBillingDocumentPair(
           deliveryId
@@ -11605,7 +11661,10 @@
 
       if (
         !delivery ||
-        !invoice
+        !Array.isArray(
+          invoices
+        ) ||
+        invoices.length === 0
       ) {
         window.alert(
           "เอกสารของงวดนี้ยังไม่ครบสำหรับพิมพ์"
