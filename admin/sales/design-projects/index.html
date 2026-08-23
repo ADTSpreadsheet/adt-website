@@ -5033,6 +5033,8 @@
     const DESIGN_PROJECTS_API =
       `${API_BASE_URL}/api/admin/design-projects`;
 
+    const PAYMENT_EVIDENCE_BUCKET = "payment-evidence";
+
     let activeDesignQuickFilter =
       "ALL";
 
@@ -5776,27 +5778,153 @@
       quotationId,
       invoiceId
     ) {
-      /*
-        ระบบหน้าเว็บเวอร์ชันนี้ยังไม่มี generic Storage uploader
-        สำหรับ Payment Evidence โดยตรง
-        ดังนั้นเก็บเป็น object URL ชั่วคราวไม่ได้ เพราะ Backend ต้องการ path จริง
-
-        จุดเชื่อมต่อ Storage ควรถูกแทนที่ด้วย uploader กลางของระบบ
-        หากมีอยู่ภายหลัง ให้ return:
-        { path, name, mime, size }
-      */
-
       if (!file) {
         throw new Error(
           "กรุณาเลือกหลักฐานการชำระเงิน"
         );
       }
 
-      // ใช้ Data URL ไม่เหมาะกับฐานข้อมูล/Storage
-      // จึงหยุดไว้ชัดเจนเพื่อไม่บันทึกข้อมูลหลอก
-      throw new Error(
-        "เชื่อม Payment API แล้ว แต่ขั้นอัปโหลดไฟล์หลักฐานเข้า Supabase Storage ยังต้องต่อเพิ่ม"
-      );
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "application/pdf"
+      ];
+
+      if (
+        !allowedTypes.includes(
+          String(
+            file.type || ""
+          ).toLowerCase()
+        )
+      ) {
+        throw new Error(
+          "รองรับเฉพาะ JPG, PNG และ PDF"
+        );
+      }
+
+      const maxBytes =
+        10 * 1024 * 1024;
+
+      if (
+        Number(
+          file.size || 0
+        ) >
+        maxBytes
+      ) {
+        throw new Error(
+          "ไฟล์ต้องมีขนาดไม่เกิน 10 MB"
+        );
+      }
+
+      const supabaseUrl =
+        window.SUPABASE_URL ||
+        window.__SUPABASE_URL__ ||
+        "";
+
+      const supabaseAnonKey =
+        window.SUPABASE_ANON_KEY ||
+        window.__SUPABASE_ANON_KEY__ ||
+        "";
+
+      if (
+        !supabaseUrl ||
+        !supabaseAnonKey
+      ) {
+        throw new Error(
+          "ไม่พบ SUPABASE_URL / SUPABASE_ANON_KEY ในหน้าเว็บ"
+        );
+      }
+
+      const safeName =
+        String(
+          file.name || "payment-evidence"
+        )
+          .replace(
+            /[^a-zA-Z0-9._-]+/g,
+            "-"
+          )
+          .replace(
+            /-+/g,
+            "-"
+          );
+
+      const projectId =
+        String(
+          paymentReceivedState?.project?.id ||
+          "unknown-project"
+        ).trim();
+
+      const timestamp =
+        Date.now();
+
+      const objectPath =
+        `${projectId}/${invoiceId}/${timestamp}-${safeName}`;
+
+      const uploadUrl =
+        `${supabaseUrl.replace(/\/+$/, "")}/storage/v1/object/${PAYMENT_EVIDENCE_BUCKET}/${encodeURIComponent(
+          projectId
+        )}/${encodeURIComponent(
+          invoiceId
+        )}/${encodeURIComponent(
+          `${timestamp}-${safeName}`
+        )}`;
+
+      const uploadResponse =
+        await fetch(
+          uploadUrl,
+          {
+            method: "POST",
+            headers: {
+              apikey:
+                supabaseAnonKey,
+
+              Authorization:
+                `Bearer ${supabaseAnonKey}`,
+
+              "Content-Type":
+                file.type ||
+                "application/octet-stream",
+
+              "x-upsert":
+                "false"
+            },
+            body:
+              file
+          }
+        );
+
+      const uploadResult =
+        await uploadResponse
+          .json()
+          .catch(
+            () => null
+          );
+
+      if (!uploadResponse.ok) {
+        throw new Error(
+          uploadResult?.message ||
+          uploadResult?.error ||
+          `อัปโหลดหลักฐานเข้า Supabase Storage ไม่สำเร็จ (HTTP ${uploadResponse.status})`
+        );
+      }
+
+      return {
+        path:
+          objectPath,
+
+        name:
+          file.name ||
+          safeName,
+
+        mime:
+          file.type ||
+          null,
+
+        size:
+          Number(
+            file.size || 0
+          )
+      };
     }
 
 
