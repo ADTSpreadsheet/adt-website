@@ -3893,21 +3893,183 @@
       width: min(900px, 100%);
       margin: 0 auto;
       display: grid;
-      gap: 22px;
+      gap: 24px;
+      justify-items: center;
     }
 
-    .billing-document-set .billing-document-paper {
-      width: 100%;
-      min-width: 0;
-      margin: 0 auto;
+    .billing-document-page {
+      width: 210mm;
+      height: 297mm;
+      padding: 10mm;
+      box-sizing: border-box;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid #dfe7f0;
+      box-shadow: 0 10px 28px rgba(4, 27, 60, 0.10);
     }
 
     .billing-document-page-label {
-      margin: 0 0 7px;
-      color: var(--ink-500);
-      font-size: .68rem;
-      font-weight: 700;
-      text-align: center;
+      height: 0;
+      margin: 0;
+      overflow: hidden;
+      color: transparent;
+      font-size: 0;
+    }
+
+    .billing-document-page .billing-document-paper {
+      width: 100%;
+      min-width: 0;
+      height: 277mm;
+      min-height: 277mm;
+      max-height: 277mm;
+      margin: 0;
+      padding: 6mm 7mm;
+      box-sizing: border-box;
+      overflow: hidden;
+      border: 0;
+      background: #ffffff;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Compact A4 document typography */
+    .billing-document-page .quotation-doc-head {
+      flex: 0 0 auto;
+      grid-template-columns: minmax(0, 1fr) 235px;
+    }
+
+    .billing-document-page .quotation-company-head img {
+      width: 58px;
+      height: 58px;
+    }
+
+    .billing-document-page .quotation-company-head strong {
+      font-size: .67rem;
+    }
+
+    .billing-document-page .quotation-company-head p,
+    .billing-document-page .quotation-doc-title p {
+      font-size: .50rem;
+      line-height: 1.45;
+    }
+
+    .billing-document-page .quotation-doc-title h2 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .billing-document-page .quotation-client-block,
+    .billing-document-page .quotation-issuer-block {
+      font-size: .54rem;
+      line-height: 1.55;
+    }
+
+    .billing-document-page .quotation-client-block {
+      padding-top: 7px;
+      padding-bottom: 7px;
+    }
+
+    .billing-document-page .quotation-issuer-block {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+
+    .billing-document-page .billing-doc-message {
+      margin-top: 6px;
+      font-size: .53rem;
+      line-height: 1.45;
+    }
+
+    /*
+      ตารางเป็นพื้นที่ยืดหยุ่นหลักของเอกสาร:
+      รายการน้อย -> ตารางกินพื้นที่มากขึ้นให้เต็มหน้า
+      แต่ยังล็อก footer ไว้ใน A4 หน้าเดียว
+    */
+    .billing-document-page .billing-doc-table {
+      flex: 1 1 auto;
+      min-height: 60mm;
+      margin-top: 6px;
+      font-size: .52rem;
+    }
+
+    .billing-document-page.delivery-page .billing-doc-table {
+      min-height: 74mm;
+    }
+
+    .billing-document-page.invoice-page .billing-doc-table {
+      min-height: 70mm;
+    }
+
+    .billing-document-page .billing-doc-table tbody,
+    .billing-document-page .billing-doc-table tbody tr {
+      height: 100%;
+    }
+
+    .billing-document-page .billing-doc-table th,
+    .billing-document-page .billing-doc-table td {
+      padding: 4px 4px;
+    }
+
+    .billing-document-page .billing-doc-remark {
+      flex: 0 0 24mm;
+      min-height: 24mm;
+      max-height: 24mm;
+      padding: 6px 7px;
+      overflow: hidden;
+      font-size: .52rem;
+      line-height: 1.45;
+    }
+
+    .billing-document-page .billing-doc-summary {
+      flex: 0 0 auto;
+      width: 52%;
+      font-size: .52rem;
+    }
+
+    .billing-document-page .billing-doc-summary td {
+      padding: 4px 6px;
+    }
+
+    .billing-document-page .billing-doc-amount-words {
+      flex: 0 0 auto;
+      padding: 5px 7px;
+      font-size: .52rem;
+    }
+
+    .billing-document-page .billing-doc-footer {
+      flex: 0 0 30mm;
+      min-height: 30mm;
+      max-height: 30mm;
+      margin-top: 6px;
+      font-size: .51rem;
+      overflow: hidden;
+    }
+
+    .billing-document-page .billing-doc-footer > div {
+      min-height: 30mm;
+      height: 30mm;
+      padding: 6px;
+      overflow: hidden;
+    }
+
+    .billing-document-page .billing-doc-signature {
+      min-height: 100%;
+    }
+
+    @media (max-width: 980px) {
+      .billing-document-page {
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        padding: 12px;
+      }
+
+      .billing-document-page .billing-document-paper {
+        height: auto;
+        min-height: 900px;
+        max-height: none;
+      }
     }
 
     @media print {
@@ -3918,18 +4080,39 @@
         padding: 0 !important;
       }
 
-      .billing-document-set .quotation-paper {
-        width: 190mm !important;
-        max-width: 190mm !important;
-        min-width: 0 !important;
-        margin: 0 auto !important;
+      .billing-document-page {
+        width: 210mm !important;
+        height: 297mm !important;
+        min-height: 297mm !important;
+        max-height: 297mm !important;
+        margin: 0 !important;
+        padding: 10mm !important;
+        overflow: hidden !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        box-sizing: border-box !important;
         page-break-after: always !important;
         break-after: page !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
       }
 
-      .billing-document-set .quotation-paper:last-child {
+      .billing-document-page:last-child {
         page-break-after: auto !important;
         break-after: auto !important;
+      }
+
+      .billing-document-page .billing-document-paper {
+        width: 100% !important;
+        height: 277mm !important;
+        min-height: 277mm !important;
+        max-height: 277mm !important;
+        margin: 0 !important;
+        padding: 6mm 7mm !important;
+        overflow: hidden !important;
+        border: 0 !important;
+        box-shadow: none !important;
       }
 
       .billing-document-page-label {
@@ -8136,7 +8319,7 @@
           class="billing-document-set"
           id="billingDocumentSetPaper"
         >
-          <div>
+          <div class="billing-document-page delivery-page">
             <div class="billing-document-page-label">
               ใบที่ 1 — หนังสือส่งมอบงาน
             </div>
@@ -8147,7 +8330,7 @@
             )}
           </div>
 
-          <div>
+          <div class="billing-document-page invoice-page">
             <div class="billing-document-page-label">
               ใบที่ 2 — ใบวางบิล / ใบแจ้งหนี้
             </div>
@@ -10786,6 +10969,11 @@
         return;
       }
 
+      const isBillingDocumentSet =
+        paper.id ===
+        "billingDocumentSetPaper";
+
+
       const styleText =
         Array.from(
           document.querySelectorAll("style")
@@ -10829,7 +11017,11 @@
 
             @page {
               size: A4 portrait;
-              margin: 10mm;
+              margin: ${
+                isBillingDocumentSet
+                  ? "0"
+                  : "10mm"
+              };
             }
 
             html,
@@ -10920,21 +11112,42 @@
               background: #ffffff !important;
             }
 
-            #billingDocumentSetPaper > .quotation-paper {
-              width: 190mm !important;
-              max-width: 190mm !important;
-              min-width: 0 !important;
-              margin: 0 auto !important;
-              padding: 8mm 9mm !important;
+            #billingDocumentSetPaper .billing-document-page {
+              width: 210mm !important;
+              height: 297mm !important;
+              min-height: 297mm !important;
+              max-height: 297mm !important;
+              margin: 0 !important;
+              padding: 10mm !important;
+              overflow: hidden !important;
               border: 0 !important;
               box-shadow: none !important;
+              background: #ffffff !important;
+              box-sizing: border-box !important;
               page-break-after: always !important;
               break-after: page !important;
+              page-break-inside: avoid !important;
+              break-inside: avoid !important;
             }
 
-            #billingDocumentSetPaper > .quotation-paper:last-child {
+            #billingDocumentSetPaper .billing-document-page:last-child {
               page-break-after: auto !important;
               break-after: auto !important;
+            }
+
+            #billingDocumentSetPaper .billing-document-paper {
+              width: 100% !important;
+              max-width: 100% !important;
+              min-width: 0 !important;
+              height: 277mm !important;
+              min-height: 277mm !important;
+              max-height: 277mm !important;
+              margin: 0 !important;
+              padding: 6mm 7mm !important;
+              overflow: hidden !important;
+              border: 0 !important;
+              box-shadow: none !important;
+              box-sizing: border-box !important;
             }
 
             #billingDocumentSetPaper .billing-document-page-label {
