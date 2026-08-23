@@ -4121,6 +4121,23 @@
     }
 
   
+
+    .billing-document-page.receipt-package-page {
+      display: block;
+    }
+
+    .billing-document-page.receipt-package-page .receipt-paper {
+      width: 100%;
+      min-height: 0;
+      height: 277mm;
+      margin: 0;
+      padding: 6mm 7mm;
+      box-sizing: border-box;
+      overflow: hidden;
+      box-shadow: none;
+    }
+
+
     /* =====================================================
        DOCUMENT PREVIEW — TOPMOST LAYER
        Preview เอกสารต้องอยู่เหนือทุก Frame เสมอ
@@ -13397,7 +13414,7 @@
             }
             title="${
               canDelete
-                ? "ลบ Project, ใบเสนอราคา, Revision และเอกสารธุรกรรมที่เกี่ยวข้องออกจากฐานข้อมูลถาวร"
+                ? "ลบใบเสนอราคาและข้อมูล Workflow Bubble 1-4 ที่ผูกกับใบนี้ออกจากฐานข้อมูลถาวร"
                 : "ไม่พบใบเสนอราคาที่สามารถลบได้"
             }"
           >
@@ -13653,8 +13670,8 @@
                   <button
                     class="design-icon-btn"
                     type="button"
-                    title="พรีวิวใบเสนอราคา"
-                    onclick="previewDesignDocument('${rowKey}')"
+                    title="พรีวิวเอกสารทั้ง Project"
+                    onclick="previewProjectDocumentPackage('${rowKey}')"
                     ${
                       project.quotation_id
                         ? ""
@@ -14560,6 +14577,19 @@
               display: none !important;
             }
 
+            #billingDocumentSetPaper .receipt-package-page .receipt-paper {
+              width: 100% !important;
+              max-width: 100% !important;
+              height: 277mm !important;
+              min-height: 277mm !important;
+              max-height: 277mm !important;
+              margin: 0 !important;
+              padding: 6mm 7mm !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+              box-shadow: none !important;
+            }
+
             @media print {
               body * {
                 visibility: visible !important;
@@ -14995,6 +15025,781 @@
           </div>
         </article>
       `;
+    }
+
+
+
+    function projectPackageTransactionRow(
+      raw
+    ) {
+      return {
+        localId:
+          raw?.id || "",
+        documentNo:
+          raw?.document_no || "-",
+        date:
+          raw?.document_date || "-",
+        description:
+          raw?.description ||
+          raw?.title ||
+          "-",
+        amount:
+          Number(
+            raw?.amount || 0
+          ),
+        note:
+          raw?.note || "-",
+        sourceDeliveryId:
+          raw?.parent_transaction_id ||
+          raw?.reference_transaction_id ||
+          "",
+        raw:
+          raw || {}
+      };
+    }
+
+
+    function buildProjectPoPreviewHtml(
+      data
+    ) {
+      const project =
+        data?.project || {};
+
+      const customer =
+        data?.customer || {};
+
+      const award =
+        data?.job_award || {};
+
+      const plan =
+        Array.isArray(
+          data?.payment_plan
+        )
+          ? data.payment_plan
+          : [];
+
+
+      const planRows =
+        plan.length
+          ? plan.map(
+              row => `
+                <tr>
+                  <td>
+                    ${escapeHtml(
+                      row.installment_no ?? "-"
+                    )}
+                  </td>
+                  <td>
+                    ${escapeHtml(
+                      row.description || "-"
+                    )}
+                  </td>
+                  <td style="text-align:right;">
+                    ${formatDesignMoney(
+                      Number(
+                        row.amount || 0
+                      )
+                    )}
+                  </td>
+                  <td>
+                    ${escapeHtml(
+                      row.due_condition || "-"
+                    )}
+                  </td>
+                </tr>
+              `
+            ).join("")
+          : `
+              <tr>
+                <td colspan="4" style="text-align:center;">
+                  ไม่มีแผนการเบิกจ่ายที่บันทึกไว้
+                </td>
+              </tr>
+            `;
+
+
+      return `
+        <article class="quotation-paper billing-document-paper">
+
+          <div class="quotation-doc-head">
+
+            <div class="quotation-company-head">
+              <img
+                src="/assets/images/adt-company-logo.png"
+                alt="ADT"
+              >
+
+              <div>
+                <strong>
+                  บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+                </strong>
+
+                <p>
+                  428 หมู่ 1 ต.พบพระ อ.พบพระ จ.ตาก 63160<br>
+                  เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>
+                  โทร. : 092-6191220 &nbsp;
+                  e-mail : 2531kaeng@gmail.com
+                </p>
+              </div>
+            </div>
+
+            <div class="quotation-doc-title">
+              <h2>ข้อมูลการสั่งจ้าง / PO</h2>
+
+              <p>
+                JOB AWARD / CONTRACT<br>
+                Document No. :
+                <strong>
+                  ${escapeHtml(
+                    award.document_no || "-"
+                  )}
+                </strong>
+                <br>
+                Date :
+                <strong>
+                  ${escapeHtml(
+                    award.document_date || "-"
+                  )}
+                </strong>
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="quotation-client-block">
+            <div>
+              <strong>Project :</strong>
+              ${escapeHtml(
+                project.project_name || "-"
+              )}
+            </div>
+
+            <div>
+              <strong>Project No. :</strong>
+              ${escapeHtml(
+                project.project_no || "-"
+              )}
+            </div>
+
+            <div>
+              <strong>Customer :</strong>
+              ${escapeHtml(
+                customer.customer_name || "-"
+              )}
+            </div>
+
+            <div>
+              <strong>ประเภทหลักฐาน :</strong>
+              ${escapeHtml(
+                award.metadata?.award_type || "-"
+              )}
+            </div>
+          </div>
+
+
+          <table class="billing-doc-table">
+            <thead>
+              <tr>
+                <th style="width:28%;">รายการ</th>
+                <th>ข้อมูล</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>มูลค่าการสั่งจ้าง / Contract Amount</td>
+                <td>
+                  ${formatDesignMoney(
+                    Number(
+                      award.amount || 0
+                    )
+                  )} บาท
+                </td>
+              </tr>
+
+              <tr>
+                <td>วันเริ่มงาน</td>
+                <td>
+                  ${escapeHtml(
+                    award.metadata?.start_date || "-"
+                  )}
+                </td>
+              </tr>
+
+              <tr>
+                <td>วันสิ้นสุดงาน</td>
+                <td>
+                  ${escapeHtml(
+                    award.metadata?.end_date || "-"
+                  )}
+                </td>
+              </tr>
+
+              <tr>
+                <td>ขอบเขตงาน</td>
+                <td style="white-space:pre-wrap;">
+                  ${escapeHtml(
+                    award.description || "-"
+                  )}
+                </td>
+              </tr>
+
+              <tr>
+                <td>หมายเหตุ</td>
+                <td style="white-space:pre-wrap;">
+                  ${escapeHtml(
+                    award.note || "-"
+                  )}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+
+          <div class="billing-doc-message">
+            <strong>
+              แผนการเบิกจ่าย / PAYMENT PLAN
+            </strong>
+          </div>
+
+
+          <table class="billing-doc-table">
+            <thead>
+              <tr>
+                <th style="width:10%;">งวด</th>
+                <th>รายละเอียด</th>
+                <th style="width:18%;">จำนวนเงิน</th>
+                <th style="width:28%;">เงื่อนไข</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              ${planRows}
+            </tbody>
+          </table>
+
+        </article>
+      `;
+    }
+
+
+    async function previewProjectDocumentPackage(
+      rowKey
+    ) {
+      closeAllDesignActionMenus();
+
+
+      const project =
+        getProjectByRowKey(
+          rowKey
+        );
+
+
+      if (
+        !project?.quotation_id
+      ) {
+        window.alert(
+          "รายการนี้ยังไม่มีใบเสนอราคา"
+        );
+        return;
+      }
+
+
+      const token =
+        ensureAdminToken();
+
+
+      if (!token) {
+        return;
+      }
+
+
+      const modal =
+        document.getElementById(
+          "quotationPreviewModal"
+        );
+
+      const body =
+        document.getElementById(
+          "quotationPreviewBody"
+        );
+
+      const title =
+        document.getElementById(
+          "quotationPreviewModalTitle"
+        );
+
+      const subTitle =
+        document.getElementById(
+          "quotationPreviewModalSubTitle"
+        );
+
+
+      if (
+        !modal ||
+        !body
+      ) {
+        window.alert(
+          "ไม่พบ Frame สำหรับพรีวิวชุดเอกสาร Project"
+        );
+        return;
+      }
+
+
+      if (title) {
+        title.textContent =
+          "Project Document Package";
+      }
+
+
+      if (subTitle) {
+        subTitle.textContent =
+          `${
+            project.project_no ||
+            project.quotation_no ||
+            "-"
+          } · Bubble 1-4`;
+      }
+
+
+      body.innerHTML = `
+        <div class="quotation-preview-loading">
+          กำลังรวบรวมเอกสารทั้ง Project...
+        </div>
+      `;
+
+
+      bringDocumentPreviewToFront();
+
+      modal.classList.add(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+
+
+      try {
+
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              project.quotation_id
+            )}/document-package`,
+            {
+              method:
+                "GET",
+
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json"
+              },
+
+              cache:
+                "no-store"
+            }
+          );
+
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+
+        if (
+          response.status === 401
+        ) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+          );
+        }
+
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            `โหลดชุดเอกสาร Project ไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+
+        const rawTransactions =
+          Array.isArray(
+            result.transactions
+          )
+            ? result.transactions
+            : [];
+
+
+        const deliveries =
+          rawTransactions
+            .filter(
+              row =>
+                normalizeStatus(
+                  row.transaction_type
+                ) === "DELIVERY"
+            )
+            .map(
+              projectPackageTransactionRow
+            );
+
+
+        const invoices =
+          rawTransactions
+            .filter(
+              row =>
+                normalizeStatus(
+                  row.transaction_type
+                ) === "INVOICE"
+            )
+            .map(
+              projectPackageTransactionRow
+            );
+
+
+        const payments =
+          rawTransactions
+            .filter(
+              row =>
+                normalizeStatus(
+                  row.transaction_type
+                ) === "PAYMENT"
+            )
+            .map(
+              row => ({
+                ...row,
+
+                evidence_signed_url:
+                  row.evidence_signed_url ||
+                  null,
+
+                signed_url:
+                  row.evidence_signed_url ||
+                  null
+              })
+            );
+
+
+        const receipts =
+          rawTransactions
+            .filter(
+              row =>
+                normalizeStatus(
+                  row.transaction_type
+                ) === "RECEIPT"
+            );
+
+
+        billingState = {
+          project: {
+            ...(result.project || {}),
+
+            customer_name:
+              result.customer?.customer_name ||
+              "-",
+
+            customer_address:
+              result.customer?.address ||
+              "-",
+
+            customer_tax_id:
+              result.customer?.tax_id ||
+              "-",
+
+            customer_email:
+              result.customer?.email ||
+              "-",
+
+            customer_phone:
+              result.customer?.phone ||
+              "-",
+
+            customer_contact_name:
+              result.customer?.contact_name ||
+              "-",
+
+            po_no:
+              result.job_award?.document_no ||
+              null,
+
+            award_document_no:
+              result.job_award?.document_no ||
+              null,
+
+            contract_amount:
+              Number(
+                result.job_award?.amount || 0
+              ),
+
+            po_amount:
+              Number(
+                result.job_award?.amount || 0
+              )
+          },
+
+          quotation:
+            result.quotation || null,
+
+          jobAward:
+            result.job_award || null,
+
+          deliveryRows:
+            deliveries,
+
+          invoiceRows:
+            invoices
+        };
+
+
+        const invoiceRows =
+          invoices.map(
+            invoiceRow => {
+
+              const raw =
+                invoiceRow.raw || {};
+
+              return {
+                invoice:
+                  raw,
+
+                invoice_amount:
+                  Number(
+                    raw.amount || 0
+                  )
+              };
+            }
+          );
+
+
+        paymentReceivedState = {
+          project:
+            result.project || {},
+
+          quotation:
+            result.quotation || {},
+
+          customer:
+            result.customer || {},
+
+          invoices:
+            invoiceRows,
+
+          payments,
+
+          receipts
+        };
+
+
+        const pages =
+          [];
+
+
+        // Bubble 1
+        pages.push(`
+          <div class="billing-document-page">
+            <div class="billing-document-page-label">
+              Bubble 1 — Quotation
+            </div>
+
+            ${buildQuotationPreviewHtml({
+              quotation:
+                result.quotation || {},
+
+              project:
+                result.project || {},
+
+              customer:
+                result.customer || {},
+
+              items:
+                result.items || []
+            })}
+          </div>
+        `);
+
+
+        // Bubble 2
+        if (result.job_award) {
+          pages.push(`
+            <div class="billing-document-page">
+              <div class="billing-document-page-label">
+                Bubble 2 — PO / Contract
+              </div>
+
+              ${buildProjectPoPreviewHtml(
+                result
+              )}
+            </div>
+          `);
+        }
+
+
+        // Bubble 3
+        rawTransactions
+          .filter(
+            row =>
+              [
+                "DELIVERY",
+                "INVOICE"
+              ].includes(
+                normalizeStatus(
+                  row.transaction_type
+                )
+              )
+          )
+          .forEach(
+            row => {
+
+              const type =
+                normalizeStatus(
+                  row.transaction_type
+                );
+
+              const mapped =
+                projectPackageTransactionRow(
+                  row
+                );
+
+              pages.push(`
+                <div class="billing-document-page ${
+                  type === "DELIVERY"
+                    ? "delivery-page"
+                    : "invoice-page"
+                }">
+                  <div class="billing-document-page-label">
+                    Bubble 3 — ${type}
+                  </div>
+
+                  ${buildSavedBillingDocumentHtml(
+                    type,
+                    mapped
+                  )}
+                </div>
+              `);
+            }
+          );
+
+
+        // Bubble 4
+        payments.forEach(
+          payment => {
+
+            const receipt =
+              receipts.find(
+                row =>
+                  String(
+                    row.parent_transaction_id ||
+                    ""
+                  ) ===
+                  String(
+                    payment.id || ""
+                  )
+              );
+
+
+            if (!receipt) {
+              return;
+            }
+
+
+            const invoiceId =
+              String(
+                payment.parent_transaction_id ||
+                payment.reference_transaction_id ||
+                ""
+              );
+
+
+            const invoiceRow =
+              invoiceRows.find(
+                row =>
+                  String(
+                    row.invoice?.id ||
+                    ""
+                  ) ===
+                  invoiceId
+              );
+
+
+            pages.push(`
+              <div class="billing-document-page receipt-package-page">
+                <div class="billing-document-page-label">
+                  Bubble 4 — Payment / Receipt
+                </div>
+
+                ${receiptPreviewHtml(
+                  payment,
+                  invoiceRow,
+                  receipt.document_no ||
+                  "-",
+                  receipt.document_date ||
+                  "-",
+                  receipt.note ||
+                  ""
+                )}
+              </div>
+            `);
+          }
+        );
+
+
+        body.innerHTML = `
+          <div
+            class="billing-document-set"
+            id="billingDocumentSetPaper"
+          >
+            ${pages.join("")}
+          </div>
+        `;
+
+
+        if (subTitle) {
+          subTitle.textContent =
+            `${
+              result.project?.project_no ||
+              project.project_no ||
+              "-"
+            } · เอกสาร ${pages.length} หน้า`;
+        }
+      }
+      catch (error) {
+
+        console.error(
+          "Project Document Package Preview Error:",
+          error
+        );
+
+
+        body.innerHTML = `
+          <div class="quotation-preview-error">
+            ${escapeHtml(
+              error?.message ||
+              "ไม่สามารถโหลดชุดเอกสาร Project ได้"
+            )}
+          </div>
+        `;
+      }
     }
 
 
@@ -16895,7 +17700,7 @@
           }\nใบเสนอราคา: ${
             project?.quotation_no ||
             "-"
-          }\n\nระบบจะลบข้อมูลที่เกี่ยวข้องทั้งหมด ได้แก่ Project, ใบเสนอราคาและทุก Revision, รายการบริการ, Job Award / PO, Payment Plan และเอกสารธุรกรรมที่ผูกกับรายการนี้\n\nการดำเนินการนี้ย้อนกลับไม่ได้`,
+          }\n\nระบบจะลบข้อมูลที่ผูกกับใบเสนอราคานี้ทั้งหมด:\n• Bubble 1 — ใบเสนอราคา / Revision / รายการบริการ\n• Bubble 2 — Job Award / PO / Payment Plan\n• Bubble 3 — Delivery / Invoice ทุกใบ\n• Bubble 4 — Payment / Receipt / หลักฐานการชำระเงิน\n\nถ้า Project ไม่มีใบเสนอราคาอื่นเหลือ ระบบจึงจะลบ Project shell ตามไปด้วย\n\nการดำเนินการนี้ย้อนกลับไม่ได้`,
         successFallback:
           "ลบรายการเรียบร้อยแล้ว"
       });
