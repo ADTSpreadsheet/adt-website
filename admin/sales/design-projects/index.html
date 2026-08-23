@@ -4158,6 +4158,227 @@
       z-index: 2147483647 !important;
     }
 
+  
+    /* =====================================================
+       BUBBLE 4 — PAYMENT RECEIVED
+    ===================================================== */
+
+    .payment-received-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 9800;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(3, 16, 37, 0.58);
+      backdrop-filter: blur(5px);
+    }
+
+    .payment-received-modal.open {
+      display: flex;
+    }
+
+    .payment-received-frame {
+      width: min(1180px, 96vw);
+      max-height: 92vh;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid #dce5ef;
+      background: #ffffff;
+      box-shadow: 0 28px 80px rgba(3, 16, 37, 0.28);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .payment-received-head {
+      min-height: 68px;
+      padding: 15px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid #e9eef5;
+      background: #fbfdff;
+    }
+
+    .payment-received-head h3 {
+      margin: 0;
+      color: var(--navy-900);
+      font-size: 1rem;
+    }
+
+    .payment-received-head p {
+      margin: 4px 0 0;
+      color: var(--ink-500);
+      font-size: .7rem;
+    }
+
+    .payment-received-close {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .payment-received-body {
+      padding: 18px;
+      overflow: auto;
+      background: #f7f9fc;
+    }
+
+    .payment-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .payment-summary-card {
+      padding: 13px 14px;
+      border-radius: 13px;
+      border: 1px solid #e2e9f2;
+      background: #fff;
+    }
+
+    .payment-summary-card span {
+      display: block;
+      color: var(--ink-500);
+      font-size: .64rem;
+    }
+
+    .payment-summary-card strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--navy-900);
+      font: 800 1rem "Inter", sans-serif;
+    }
+
+    .payment-table-wrap {
+      overflow-x: auto;
+      border: 1px solid #e3eaf3;
+      border-radius: 14px;
+      background: #fff;
+    }
+
+    .payment-table {
+      width: 100%;
+      min-width: 930px;
+      border-collapse: collapse;
+    }
+
+    .payment-table th,
+    .payment-table td {
+      padding: 11px 12px;
+      border-bottom: 1px solid #edf2f7;
+      font-size: .68rem;
+      vertical-align: middle;
+    }
+
+    .payment-table th {
+      color: var(--ink-500);
+      background: #f8fbff;
+    }
+
+    .payment-action-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .payment-btn {
+      min-height: 31px;
+      padding: 5px 9px;
+      border-radius: 8px;
+      border: 1px solid #cfe0f5;
+      background: #f7fbff;
+      color: #075fc4;
+      font-size: .62rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .payment-btn.green {
+      border-color: #bfe7d0;
+      background: #f1fbf6;
+      color: #087545;
+    }
+
+    .payment-btn.gray {
+      border-color: #d9e1ea;
+      background: #f7f9fb;
+      color: #596779;
+    }
+
+    .payment-form {
+      margin-top: 14px;
+      padding: 15px;
+      border-radius: 14px;
+      border: 1px solid #dfe7f0;
+      background: #fff;
+    }
+
+    .payment-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .payment-form-field {
+      display: grid;
+      gap: 5px;
+    }
+
+    .payment-form-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .payment-form-field label {
+      color: var(--ink-700);
+      font-size: .65rem;
+      font-weight: 700;
+    }
+
+    .payment-form-field input,
+    .payment-form-field textarea {
+      width: 100%;
+      min-height: 38px;
+      padding: 8px 10px;
+      border: 1px solid #d9e2ec;
+      border-radius: 9px;
+      background: #fff;
+      color: var(--ink-900);
+      font-size: .7rem;
+      outline: none;
+    }
+
+    .payment-form-field textarea {
+      min-height: 78px;
+      resize: vertical;
+    }
+
+    .payment-form-actions {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    @media (max-width: 760px) {
+      .payment-summary-grid,
+      .payment-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-received-modal {
+        padding: 10px;
+      }
+    }
+
   </style>
 </head>
 
@@ -4650,7 +4871,40 @@
   </div>
 
 
+  
   <div
+    class="payment-received-modal"
+    id="paymentReceivedModal"
+    aria-hidden="true"
+  >
+    <div class="payment-received-frame">
+      <div class="payment-received-head">
+        <div>
+          <h3>Payment Received — รับเงิน / ออกใบเสร็จ</h3>
+          <p id="paymentReceivedSubTitle">-</p>
+        </div>
+
+        <button
+          class="payment-received-close"
+          type="button"
+          onclick="closePaymentReceivedModal()"
+        >
+          ✕
+        </button>
+      </div>
+
+      <div
+        class="payment-received-body"
+        id="paymentReceivedBody"
+      >
+        <div style="padding:28px;text-align:center;color:#6c7a90;">
+          กำลังโหลดข้อมูล...
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div
     class="quotation-preview-modal"
     id="quotationPreviewModal"
     aria-hidden="true"
@@ -4884,6 +5138,1027 @@
         "hidden";
 
       return modal;
+    }
+
+
+    // ============================================================
+    // BUBBLE 4 — PAYMENT RECEIVED
+    // ============================================================
+
+    let paymentReceivedState =
+      null;
+
+
+    function paymentToday() {
+      return new Date()
+        .toISOString()
+        .slice(
+          0,
+          10
+        );
+    }
+
+
+    function paymentNumber(value) {
+      const parsed =
+        Number(value);
+
+      return Number.isFinite(parsed)
+        ? parsed
+        : 0;
+    }
+
+
+    function openPaymentReceivedModal(
+      quotationId
+    ) {
+      const modal =
+        document.getElementById(
+          "paymentReceivedModal"
+        );
+
+      if (!modal) {
+        return;
+      }
+
+      modal.classList.add(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+
+      loadPaymentReceivedData(
+        quotationId
+      );
+    }
+
+
+    function closePaymentReceivedModal() {
+      const modal =
+        document.getElementById(
+          "paymentReceivedModal"
+        );
+
+      modal?.classList.remove(
+        "open"
+      );
+
+      modal?.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      document.body.style.overflow =
+        "";
+    }
+
+
+    async function loadPaymentReceivedData(
+      quotationId
+    ) {
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      const body =
+        document.getElementById(
+          "paymentReceivedBody"
+        );
+
+      if (body) {
+        body.innerHTML = `
+          <div style="padding:28px;text-align:center;color:#6c7a90;">
+            กำลังโหลดข้อมูล Payment Received...
+          </div>
+        `;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              quotationId
+            )}/payments`,
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json"
+              }
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            `โหลด Payment Received ไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        paymentReceivedState = {
+          quotationId,
+          ...result
+        };
+
+        const subtitle =
+          document.getElementById(
+            "paymentReceivedSubTitle"
+          );
+
+        if (subtitle) {
+          subtitle.textContent =
+            `${
+              result?.project?.project_no ||
+              "-"
+            } · ${
+              result?.project?.project_name ||
+              "-"
+            }`;
+        }
+
+        renderPaymentReceivedFrame();
+      }
+      catch (error) {
+
+        console.error(
+          "Load Payment Received Error:",
+          error
+        );
+
+        if (body) {
+          body.innerHTML = `
+            <div style="padding:28px;text-align:center;color:#b42318;">
+              ${escapeHtml(
+                error?.message ||
+                "ไม่สามารถโหลดข้อมูลได้"
+              )}
+            </div>
+          `;
+        }
+      }
+    }
+
+
+    function paymentReceivedTotals() {
+      const summary =
+        paymentReceivedState?.summary ||
+        {};
+
+      return {
+        invoiceAmount:
+          paymentNumber(
+            summary.invoice_amount
+          ),
+
+        paymentAmount:
+          paymentNumber(
+            summary.payment_amount
+          ),
+
+        receiptAmount:
+          paymentNumber(
+            summary.receipt_amount
+          ),
+
+        paymentRemaining:
+          Math.max(
+            0,
+            paymentNumber(
+              summary.invoice_amount
+            ) -
+            paymentNumber(
+              summary.payment_amount
+            )
+          ),
+
+        receiptRemaining:
+          Math.max(
+            0,
+            paymentNumber(
+              summary.payment_amount
+            ) -
+            paymentNumber(
+              summary.receipt_amount
+            )
+          )
+      };
+    }
+
+
+    function paymentSummaryHtml() {
+      const totals =
+        paymentReceivedTotals();
+
+      return `
+        <div class="payment-summary-grid">
+
+          <div class="payment-summary-card">
+            <span>ยอดใบวางบิลสะสม</span>
+            <strong>
+              ${formatDesignMoney(
+                totals.invoiceAmount
+              )}
+            </strong>
+          </div>
+
+          <div class="payment-summary-card">
+            <span>รับเงินแล้ว</span>
+            <strong>
+              ${formatDesignMoney(
+                totals.paymentAmount
+              )}
+            </strong>
+          </div>
+
+          <div class="payment-summary-card">
+            <span>ออกใบเสร็จแล้ว</span>
+            <strong>
+              ${formatDesignMoney(
+                totals.receiptAmount
+              )}
+            </strong>
+          </div>
+
+          <div class="payment-summary-card">
+            <span>รอออกใบเสร็จ</span>
+            <strong>
+              ${formatDesignMoney(
+                totals.receiptRemaining
+              )}
+            </strong>
+          </div>
+
+        </div>
+      `;
+    }
+
+
+    function paymentHistoryHtml() {
+      const rows =
+        Array.isArray(
+          paymentReceivedState?.invoices
+        )
+          ? paymentReceivedState.invoices
+          : [];
+
+      if (!rows.length) {
+        return `
+          <div
+            style="
+              padding:28px;
+              text-align:center;
+              color:#6c7a90;
+              background:#fff;
+              border:1px solid #e3eaf3;
+              border-radius:14px;
+            "
+          >
+            ยังไม่มีใบวางบิลสำหรับรับชำระ
+          </div>
+        `;
+      }
+
+      return `
+        <div class="payment-table-wrap">
+          <table class="payment-table">
+            <thead>
+              <tr>
+                <th>Invoice</th>
+                <th>วันที่</th>
+                <th style="text-align:right;">ยอด Invoice</th>
+                <th style="text-align:right;">รับเงินแล้ว</th>
+                <th style="text-align:right;">ออกใบเสร็จแล้ว</th>
+                <th>สถานะ</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              ${rows.map(
+                row => {
+
+                  const invoice =
+                    row.invoice ||
+                    {};
+
+                  const paymentRemaining =
+                    paymentNumber(
+                      row.payment_remaining
+                    );
+
+                  const receiptRemaining =
+                    paymentNumber(
+                      row.receipt_remaining
+                    );
+
+                  const hasPayment =
+                    Array.isArray(
+                      row.payments
+                    ) &&
+                    row.payments.length > 0;
+
+                  const hasReceipt =
+                    Array.isArray(
+                      row.receipts
+                    ) &&
+                    row.receipts.length > 0;
+
+                  let statusHtml =
+                    `<span class="badge gray">รอรับเงิน</span>`;
+
+                  if (
+                    hasPayment &&
+                    !hasReceipt
+                  ) {
+                    statusHtml =
+                      `<span class="badge orange">รับเงินแล้ว / รอใบเสร็จ</span>`;
+                  }
+                  else if (
+                    hasReceipt &&
+                    receiptRemaining <= 0.01
+                  ) {
+                    statusHtml =
+                      `<span class="badge green">ออกใบเสร็จแล้ว</span>`;
+                  }
+                  else if (
+                    hasReceipt
+                  ) {
+                    statusHtml =
+                      `<span class="badge blue">ออกใบเสร็จบางส่วน</span>`;
+                  }
+
+                  const receiptButton =
+                    hasPayment
+                      ? (
+                          row.payments || []
+                        )
+                          .filter(
+                            payment =>
+                              !(row.receipts || [])
+                                .some(
+                                  receipt =>
+                                    String(
+                                      receipt.parent_transaction_id || ""
+                                    ) ===
+                                    String(
+                                      payment.id || ""
+                                    )
+                                )
+                          )
+                          .map(
+                            payment => `
+                              <button
+                                class="payment-btn green"
+                                type="button"
+                                onclick="openReceiptForm('${escapeHtml(
+                                  payment.id || ""
+                                )}')"
+                              >
+                                + ออกใบเสร็จ
+                              </button>
+                            `
+                          )
+                          .join("")
+                      : "";
+
+                  return `
+                    <tr>
+                      <td>
+                        <strong>
+                          ${escapeHtml(
+                            invoice.document_no ||
+                            "-"
+                          )}
+                        </strong>
+                      </td>
+
+                      <td>
+                        ${escapeHtml(
+                          invoice.document_date ||
+                          "-"
+                        )}
+                      </td>
+
+                      <td style="text-align:right;">
+                        ${formatDesignMoney(
+                          row.invoice_amount
+                        )}
+                      </td>
+
+                      <td style="text-align:right;">
+                        ${formatDesignMoney(
+                          row.paid_amount
+                        )}
+                      </td>
+
+                      <td style="text-align:right;">
+                        ${formatDesignMoney(
+                          row.receipt_amount
+                        )}
+                      </td>
+
+                      <td>
+                        ${statusHtml}
+                      </td>
+
+                      <td>
+                        <div class="payment-action-group">
+
+                          ${
+                            paymentRemaining > 0.01
+                              ? `
+                                  <button
+                                    class="payment-btn"
+                                    type="button"
+                                    onclick="openPaymentUploadForm('${escapeHtml(
+                                      invoice.id ||
+                                      ""
+                                    )}')"
+                                  >
+                                    ⬆ อัปโหลดหลักฐานรับเงิน
+                                  </button>
+                                `
+                              : ""
+                          }
+
+                          ${receiptButton}
+
+                        </div>
+                      </td>
+                    </tr>
+                  `;
+                }
+              ).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+
+    function renderPaymentReceivedFrame() {
+      const body =
+        document.getElementById(
+          "paymentReceivedBody"
+        );
+
+      if (!body) {
+        return;
+      }
+
+      body.innerHTML = `
+        ${paymentSummaryHtml()}
+        ${paymentHistoryHtml()}
+        <div id="paymentReceivedEditor"></div>
+      `;
+    }
+
+
+    function openPaymentUploadForm(
+      invoiceId
+    ) {
+      const editor =
+        document.getElementById(
+          "paymentReceivedEditor"
+        );
+
+      if (!editor) {
+        return;
+      }
+
+      const row =
+        (
+          paymentReceivedState?.invoices ||
+          []
+        ).find(
+          item =>
+            String(
+              item?.invoice?.id || ""
+            ) ===
+            String(
+              invoiceId || ""
+            )
+        );
+
+      if (!row) {
+        window.alert(
+          "ไม่พบใบวางบิล"
+        );
+        return;
+      }
+
+      editor.innerHTML = `
+        <div class="payment-form">
+          <strong>
+            บันทึกรับเงิน —
+            ${escapeHtml(
+              row.invoice?.document_no ||
+              "-"
+            )}
+          </strong>
+
+          <input
+            type="hidden"
+            id="paymentInvoiceId"
+            value="${escapeHtml(invoiceId)}"
+          >
+
+          <div class="payment-form-grid" style="margin-top:12px;">
+
+            <div class="payment-form-field">
+              <label>วันที่รับเงิน</label>
+              <input
+                type="date"
+                id="paymentDate"
+                value="${paymentToday()}"
+              >
+            </div>
+
+            <div class="payment-form-field">
+              <label>ยอดรับเงินจริง</label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                max="${paymentNumber(
+                  row.payment_remaining
+                )}"
+                id="paymentAmount"
+                value="${paymentNumber(
+                  row.payment_remaining
+                )}"
+              >
+            </div>
+
+            <div class="payment-form-field full">
+              <label>หลักฐานการชำระเงิน</label>
+              <input
+                type="file"
+                id="paymentEvidenceFile"
+                accept=".pdf,.jpg,.jpeg,.png,.webp"
+              >
+            </div>
+
+            <div class="payment-form-field full">
+              <label>รายละเอียด</label>
+              <textarea
+                id="paymentDescription"
+                placeholder="รายละเอียดการรับเงิน"
+              ></textarea>
+            </div>
+
+            <div class="payment-form-field full">
+              <label>หมายเหตุ</label>
+              <textarea
+                id="paymentNote"
+                placeholder="หมายเหตุเพิ่มเติม"
+              ></textarea>
+            </div>
+
+          </div>
+
+          <div class="payment-form-actions">
+            <button
+              class="payment-btn gray"
+              type="button"
+              onclick="clearPaymentReceivedEditor()"
+            >
+              ยกเลิก
+            </button>
+
+            <button
+              class="payment-btn green"
+              type="button"
+              onclick="savePaymentReceived()"
+            >
+              บันทึกรับเงิน
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+
+    function clearPaymentReceivedEditor() {
+      const editor =
+        document.getElementById(
+          "paymentReceivedEditor"
+        );
+
+      if (editor) {
+        editor.innerHTML = "";
+      }
+    }
+
+
+    async function uploadPaymentEvidenceFile(
+      file,
+      quotationId,
+      invoiceId
+    ) {
+      /*
+        ระบบหน้าเว็บเวอร์ชันนี้ยังไม่มี generic Storage uploader
+        สำหรับ Payment Evidence โดยตรง
+        ดังนั้นเก็บเป็น object URL ชั่วคราวไม่ได้ เพราะ Backend ต้องการ path จริง
+
+        จุดเชื่อมต่อ Storage ควรถูกแทนที่ด้วย uploader กลางของระบบ
+        หากมีอยู่ภายหลัง ให้ return:
+        { path, name, mime, size }
+      */
+
+      if (!file) {
+        throw new Error(
+          "กรุณาเลือกหลักฐานการชำระเงิน"
+        );
+      }
+
+      // ใช้ Data URL ไม่เหมาะกับฐานข้อมูล/Storage
+      // จึงหยุดไว้ชัดเจนเพื่อไม่บันทึกข้อมูลหลอก
+      throw new Error(
+        "Frontend ยังไม่มีฟังก์ชันอัปโหลดไฟล์เข้า Supabase Storage สำหรับ Payment Evidence"
+      );
+    }
+
+
+    async function savePaymentReceived() {
+      if (!paymentReceivedState) {
+        return;
+      }
+
+      const invoiceId =
+        document
+          .getElementById(
+            "paymentInvoiceId"
+          )
+          ?.value ||
+        "";
+
+      const paymentDate =
+        document
+          .getElementById(
+            "paymentDate"
+          )
+          ?.value ||
+        "";
+
+      const amount =
+        paymentNumber(
+          document
+            .getElementById(
+              "paymentAmount"
+            )
+            ?.value
+        );
+
+      const description =
+        document
+          .getElementById(
+            "paymentDescription"
+          )
+          ?.value
+          ?.trim() ||
+        "";
+
+      const note =
+        document
+          .getElementById(
+            "paymentNote"
+          )
+          ?.value
+          ?.trim() ||
+        "";
+
+      const file =
+        document
+          .getElementById(
+            "paymentEvidenceFile"
+          )
+          ?.files?.[0] ||
+        null;
+
+      if (!paymentDate) {
+        window.alert(
+          "กรุณาระบุวันที่รับเงิน"
+        );
+        return;
+      }
+
+      if (!(amount > 0)) {
+        window.alert(
+          "ยอดรับเงินต้องมากกว่า 0"
+        );
+        return;
+      }
+
+      if (!file) {
+        window.alert(
+          "กรุณาเลือกหลักฐานการชำระเงิน"
+        );
+        return;
+      }
+
+      try {
+
+        const uploadResult =
+          await uploadPaymentEvidenceFile(
+            file,
+            paymentReceivedState.quotationId,
+            invoiceId
+          );
+
+        const token =
+          ensureAdminToken();
+
+        if (!token) {
+          return;
+        }
+
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              paymentReceivedState.quotationId
+            )}/payments`,
+            {
+              method: "POST",
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json",
+                "Content-Type":
+                  "application/json"
+              },
+              body:
+                JSON.stringify({
+                  invoice_transaction_id:
+                    invoiceId,
+
+                  payment_date:
+                    paymentDate,
+
+                  amount,
+
+                  description,
+
+                  note,
+
+                  evidence_path:
+                    uploadResult.path,
+
+                  evidence_name:
+                    uploadResult.name,
+
+                  evidence_mime_type:
+                    uploadResult.mime,
+
+                  evidence_file_size:
+                    uploadResult.size
+                })
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            "บันทึกรับเงินไม่สำเร็จ"
+          );
+        }
+
+        await loadPaymentReceivedData(
+          paymentReceivedState.quotationId
+        );
+
+        await loadDesignProjects();
+
+        window.alert(
+          "บันทึกรับเงินสำเร็จ"
+        );
+      }
+      catch (error) {
+
+        console.error(
+          "Save Payment Received Error:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "ไม่สามารถบันทึกรับเงินได้"
+        );
+      }
+    }
+
+
+    function openReceiptForm(
+      paymentId
+    ) {
+      const editor =
+        document.getElementById(
+          "paymentReceivedEditor"
+        );
+
+      if (!editor) {
+        return;
+      }
+
+      editor.innerHTML = `
+        <div class="payment-form">
+          <strong>
+            ออกใบเสร็จรับเงิน
+          </strong>
+
+          <input
+            type="hidden"
+            id="receiptPaymentId"
+            value="${escapeHtml(paymentId)}"
+          >
+
+          <div class="payment-form-grid" style="margin-top:12px;">
+
+            <div class="payment-form-field">
+              <label>วันที่ออกใบเสร็จ</label>
+              <input
+                type="date"
+                id="receiptDate"
+                value="${paymentToday()}"
+              >
+            </div>
+
+            <div class="payment-form-field full">
+              <label>หมายเหตุ</label>
+              <textarea
+                id="receiptNote"
+                placeholder="หมายเหตุในใบเสร็จรับเงิน"
+              ></textarea>
+            </div>
+
+          </div>
+
+          <div class="payment-form-actions">
+            <button
+              class="payment-btn gray"
+              type="button"
+              onclick="clearPaymentReceivedEditor()"
+            >
+              ยกเลิก
+            </button>
+
+            <button
+              class="payment-btn green"
+              type="button"
+              onclick="saveReceiptDocument()"
+            >
+              ออกใบเสร็จ
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+
+    async function saveReceiptDocument() {
+      if (!paymentReceivedState) {
+        return;
+      }
+
+      const paymentId =
+        document
+          .getElementById(
+            "receiptPaymentId"
+          )
+          ?.value ||
+        "";
+
+      const receiptDate =
+        document
+          .getElementById(
+            "receiptDate"
+          )
+          ?.value ||
+        "";
+
+      const note =
+        document
+          .getElementById(
+            "receiptNote"
+          )
+          ?.value
+          ?.trim() ||
+        "";
+
+      if (!receiptDate) {
+        window.alert(
+          "กรุณาระบุวันที่ออกใบเสร็จ"
+        );
+        return;
+      }
+
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              paymentReceivedState.quotationId
+            )}/payments/${encodeURIComponent(
+              paymentId
+            )}/receipt`,
+            {
+              method: "POST",
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json",
+                "Content-Type":
+                  "application/json"
+              },
+              body:
+                JSON.stringify({
+                  receipt_date:
+                    receiptDate,
+                  note
+                })
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            "ออกใบเสร็จไม่สำเร็จ"
+          );
+        }
+
+        await loadPaymentReceivedData(
+          paymentReceivedState.quotationId
+        );
+
+        await loadDesignProjects();
+
+        window.alert(
+          `ออกใบเสร็จสำเร็จ${
+            result?.receipt?.document_no
+              ? `\n${result.receipt.document_no}`
+              : ""
+          }`
+        );
+      }
+      catch (error) {
+
+        console.error(
+          "Save Receipt Error:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "ไม่สามารถออกใบเสร็จได้"
+        );
+      }
     }
 
 
@@ -6213,19 +7488,7 @@
                             gap:6px;
                           "
                         >
-                          ${
-                            deliveryBillingRemaining > 0.01
-                              ? `
-                                  <button
-                                    class="billing-btn green"
-                                    type="button"
-                                    onclick="openBillingEditor('INVOICE', '${escapeHtml(delivery.localId || "")}')"
-                                  >
-                                    + ใบวางบิล
-                                  </button>
-                                `
-                              : ""
-                          }
+                          
 
                           <div class="billing-row-action">
                           <button
