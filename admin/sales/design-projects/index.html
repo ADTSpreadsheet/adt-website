@@ -4539,7 +4539,7 @@
 
     .receipt-evidence-box,
     .receipt-summary-box {
-      min-height: 255px;
+      min-height: 365px;
       border: 1px solid #b8c3d1;
       background: #fff;
     }
@@ -4553,7 +4553,8 @@
     }
 
     .receipt-evidence-body {
-      height: 218px;
+      height: 328px;
+      padding: 8px;
       display: grid;
       place-items: center;
       overflow: hidden;
@@ -4564,6 +4565,7 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
+      object-position: center;
     }
 
     .receipt-evidence-body iframe {
@@ -4627,6 +4629,54 @@
         box-shadow: none !important;
         margin: 0 !important;
       }
+    }
+
+  
+    .receipt-action-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .receipt-action-menu > summary {
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      min-width: 34px;
+      text-align: center;
+    }
+
+    .receipt-action-menu > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .receipt-action-dropdown {
+      position: absolute;
+      z-index: 10020;
+      top: calc(100% + 6px);
+      right: 0;
+      min-width: 190px;
+      padding: 6px;
+      border: 1px solid #dbe4ee;
+      border-radius: 10px;
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(3,16,37,.16);
+    }
+
+    .receipt-action-dropdown button {
+      width: 100%;
+      padding: 9px 10px;
+      border: 0;
+      border-radius: 7px;
+      color: #24364f;
+      background: transparent;
+      font: inherit;
+      font-size: .67rem;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .receipt-action-dropdown button:hover {
+      background: #f1f6fb;
     }
 
   </style>
@@ -5867,15 +5917,34 @@
                           ${
                             latestReceipt
                               ? `
-                                  <button
-                                    class="payment-btn gray"
-                                    type="button"
-                                    onclick="previewReceiptDocument('${escapeHtml(
-                                      latestReceipt.id || ""
-                                    )}')"
-                                  >
-                                    👁 ดูใบเสร็จ
-                                  </button>
+                                  <details class="receipt-action-menu">
+                                    <summary
+                                      class="payment-btn gray"
+                                      title="ดำเนินการใบเสร็จ"
+                                    >
+                                      ⋮
+                                    </summary>
+
+                                    <div class="receipt-action-dropdown">
+                                      <button
+                                        type="button"
+                                        onclick="previewReceiptDocument('${escapeHtml(
+                                          latestReceipt.id || ""
+                                        )}')"
+                                      >
+                                        👁 Preview ใบเสร็จ
+                                      </button>
+
+                                      <button
+                                        type="button"
+                                        onclick="printReceiptDocument('${escapeHtml(
+                                          latestReceipt.id || ""
+                                        )}')"
+                                      >
+                                        🖨 Print / Export PDF
+                                      </button>
+                                    </div>
+                                  </details>
                                 `
                               : ""
                           }
@@ -7006,6 +7075,340 @@
         block:
           "start"
       });
+    }
+
+
+    function printReceiptDocument(
+      receiptId
+    ) {
+      const receipt =
+        findReceiptById(
+          receiptId
+        );
+
+      if (!receipt) {
+        window.alert(
+          "ไม่พบข้อมูลใบเสร็จ"
+        );
+        return;
+      }
+
+      const paymentId =
+        String(
+          receipt.parent_transaction_id ||
+          ""
+        );
+
+      const payment =
+        findPaymentReceivedById(
+          paymentId
+        );
+
+      const invoiceRow =
+        findInvoiceRowForPayment(
+          paymentId
+        );
+
+      const receiptHtml =
+        receiptPreviewHtml(
+          payment,
+          invoiceRow,
+          receipt.document_no ||
+          "-",
+          receipt.document_date ||
+          "-",
+          receipt.note ||
+          ""
+        );
+
+      const printWindow =
+        window.open(
+          "",
+          "_blank",
+          "width=1000,height=900"
+        );
+
+      if (!printWindow) {
+        window.alert(
+          "Browser บล็อกหน้าต่าง Print กรุณาอนุญาต Pop-up แล้วลองใหม่"
+        );
+        return;
+      }
+
+      const receiptStyles = `
+        @page {
+          size: A4 portrait;
+          margin: 0;
+        }
+
+        * {
+          box-sizing: border-box;
+        }
+
+        html,
+        body {
+          margin: 0;
+          padding: 0;
+          background: #fff;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+
+        body {
+          font-family: "Prompt", "Noto Sans Thai", Arial, sans-serif;
+        }
+
+        .receipt-paper {
+          width: 210mm;
+          min-height: 297mm;
+          margin: 0 auto;
+          padding: 11mm 11mm 10mm;
+          color: #111827;
+          background: #fff;
+          font-size: 10px;
+          line-height: 1.45;
+        }
+
+        .receipt-head {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 18px;
+          align-items: start;
+          padding-bottom: 8px;
+          border-bottom: 2px solid #0b1e3a;
+        }
+
+        .receipt-company {
+          display: grid;
+          grid-template-columns: 62px 1fr;
+          gap: 10px;
+          align-items: start;
+        }
+
+        .receipt-company img {
+          width: 58px;
+          height: 58px;
+          object-fit: contain;
+        }
+
+        .receipt-company strong {
+          display: block;
+          font-size: 14px;
+        }
+
+        .receipt-company p,
+        .receipt-doc-title p {
+          margin: 3px 0 0;
+          color: #475569;
+          font-size: 9px;
+          line-height: 1.5;
+        }
+
+        .receipt-doc-title {
+          min-width: 220px;
+          text-align: right;
+        }
+
+        .receipt-doc-title h2 {
+          margin: 0;
+          color: #071a35;
+          font-size: 19px;
+          line-height: 1.2;
+        }
+
+        .receipt-info {
+          margin-top: 9px;
+          padding: 8px 0;
+          border-bottom: 1px solid #d9e2ec;
+        }
+
+        .receipt-info-row {
+          display: grid;
+          grid-template-columns: 115px 1fr;
+          gap: 7px;
+          margin: 2px 0;
+        }
+
+        .receipt-table {
+          width: 100%;
+          margin-top: 10px;
+          border-collapse: collapse;
+        }
+
+        .receipt-table th,
+        .receipt-table td {
+          padding: 7px 8px;
+          border: 1px solid #0b1e3a;
+          font-size: 9px;
+          vertical-align: top;
+        }
+
+        .receipt-table th {
+          color: #fff;
+          background: #071a35;
+        }
+
+        .receipt-table .money {
+          text-align: right;
+          white-space: nowrap;
+        }
+
+        .receipt-bottom-grid {
+          margin-top: 10px;
+          display: grid;
+          grid-template-columns: 1fr .92fr;
+          gap: 12px;
+          align-items: stretch;
+        }
+
+        .receipt-evidence-box,
+        .receipt-summary-box {
+          min-height: 365px;
+          border: 1px solid #b8c3d1;
+          background: #fff;
+        }
+
+        .receipt-box-title {
+          padding: 6px 8px;
+          border-bottom: 1px solid #b8c3d1;
+          color: #334155;
+          background: #f7f9fc;
+          font-weight: 700;
+        }
+
+        .receipt-evidence-body {
+          height: 328px;
+          padding: 8px;
+          display: grid;
+          place-items: center;
+          overflow: hidden;
+          background: #fafafa;
+        }
+
+        .receipt-evidence-body img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center;
+        }
+
+        .receipt-evidence-body iframe {
+          width: 100%;
+          height: 100%;
+          border: 0;
+        }
+
+        .receipt-no-evidence {
+          padding: 20px;
+          color: #94a3b8;
+          text-align: center;
+        }
+
+        .receipt-summary-inner {
+          padding: 10px;
+        }
+
+        .receipt-total-row {
+          display: grid;
+          grid-template-columns: 1fr auto;
+          gap: 10px;
+          padding: 7px 0;
+          border-bottom: 1px solid #e2e8f0;
+        }
+
+        .receipt-total-row.grand {
+          font-size: 12px;
+          font-weight: 800;
+        }
+
+        .receipt-note {
+          margin-top: 10px;
+          min-height: 48px;
+          padding: 8px;
+          border: 1px solid #d9e2ec;
+        }
+
+        .receipt-sign-grid {
+          margin-top: 24px;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 35px;
+          text-align: center;
+        }
+
+        .receipt-sign-line {
+          margin: 38px auto 5px;
+          width: 135px;
+          border-top: 1px dotted #64748b;
+        }
+
+        @media print {
+          .receipt-paper {
+            box-shadow: none;
+          }
+        }
+      `;
+
+      printWindow.document.open();
+
+      printWindow.document.write(`
+        <!doctype html>
+        <html lang="th">
+          <head>
+            <meta charset="utf-8">
+            <title>${escapeHtml(
+              receipt.document_no ||
+              "Receipt"
+            )}</title>
+
+            <style>
+              ${receiptStyles}
+            </style>
+          </head>
+
+          <body>
+            ${receiptHtml}
+
+            <script>
+              window.addEventListener(
+                "load",
+                function () {
+                  const images =
+                    Array.from(
+                      document.images
+                    );
+
+                  Promise.all(
+                    images.map(
+                      img =>
+                        img.complete
+                          ? Promise.resolve()
+                          : new Promise(
+                              resolve => {
+                                img.onload = resolve;
+                                img.onerror = resolve;
+                              }
+                            )
+                    )
+                  ).then(
+                    function () {
+                      setTimeout(
+                        function () {
+                          window.focus();
+                          window.print();
+                        },
+                        250
+                      );
+                    }
+                  );
+                }
+              );
+            <\/script>
+          </body>
+        </html>
+      `);
+
+      printWindow.document.close();
     }
 
 
