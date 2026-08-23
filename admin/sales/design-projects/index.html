@@ -5033,8 +5033,6 @@
     const DESIGN_PROJECTS_API =
       `${API_BASE_URL}/api/admin/design-projects`;
 
-    const PAYMENT_EVIDENCE_BUCKET = "payment-evidence";
-
     let activeDesignQuickFilter =
       "ALL";
 
@@ -5790,11 +5788,14 @@
         "application/pdf"
       ];
 
+      const mimeType =
+        String(
+          file.type || ""
+        ).toLowerCase();
+
       if (
         !allowedTypes.includes(
-          String(
-            file.type || ""
-          ).toLowerCase()
+          mimeType
         )
       ) {
         throw new Error(
@@ -5816,113 +5817,95 @@
         );
       }
 
-      const supabaseUrl =
-        window.SUPABASE_URL ||
-        window.__SUPABASE_URL__ ||
-        "";
+      const token =
+        ensureAdminToken();
 
-      const supabaseAnonKey =
-        window.SUPABASE_ANON_KEY ||
-        window.__SUPABASE_ANON_KEY__ ||
-        "";
-
-      if (
-        !supabaseUrl ||
-        !supabaseAnonKey
-      ) {
+      if (!token) {
         throw new Error(
-          "ไม่พบ SUPABASE_URL / SUPABASE_ANON_KEY ในหน้าเว็บ"
+          "ไม่พบ Admin Session"
         );
       }
 
-      const safeName =
-        String(
-          file.name || "payment-evidence"
-        )
-          .replace(
-            /[^a-zA-Z0-9._-]+/g,
-            "-"
-          )
-          .replace(
-            /-+/g,
-            "-"
-          );
-
-      const projectId =
-        String(
-          paymentReceivedState?.project?.id ||
-          "unknown-project"
-        ).trim();
-
-      const timestamp =
-        Date.now();
-
-      const objectPath =
-        `${projectId}/${invoiceId}/${timestamp}-${safeName}`;
-
-      const uploadUrl =
-        `${supabaseUrl.replace(/\/+$/, "")}/storage/v1/object/${PAYMENT_EVIDENCE_BUCKET}/${encodeURIComponent(
-          projectId
-        )}/${encodeURIComponent(
-          invoiceId
-        )}/${encodeURIComponent(
-          `${timestamp}-${safeName}`
-        )}`;
-
-      const uploadResponse =
+      const response =
         await fetch(
-          uploadUrl,
+          `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+            quotationId
+          )}/payments/evidence`,
           {
-            method: "POST",
-            headers: {
-              apikey:
-                supabaseAnonKey,
+            method:
+              "POST",
 
+            headers: {
               Authorization:
-                `Bearer ${supabaseAnonKey}`,
+                `Bearer ${token}`,
+
+              Accept:
+                "application/json",
 
               "Content-Type":
-                file.type ||
-                "application/octet-stream",
+                mimeType,
 
-              "x-upsert":
-                "false"
+              "x-invoice-id":
+                invoiceId,
+
+              "x-file-name":
+                encodeURIComponent(
+                  file.name ||
+                  "payment-evidence"
+                )
             },
+
             body:
               file
           }
         );
 
-      const uploadResult =
-        await uploadResponse
-          .json()
+      const result =
+        await response.json()
           .catch(
             () => null
           );
 
-      if (!uploadResponse.ok) {
+      if (
+        !response.ok ||
+        result?.success !== true
+      ) {
         throw new Error(
-          uploadResult?.message ||
-          uploadResult?.error ||
-          `อัปโหลดหลักฐานเข้า Supabase Storage ไม่สำเร็จ (HTTP ${uploadResponse.status})`
+          result?.message ||
+          result?.detail ||
+          `อัปโหลดหลักฐานไม่สำเร็จ (HTTP ${response.status})`
+        );
+      }
+
+      const evidence =
+        result?.evidence ||
+        {};
+
+      if (!evidence.path) {
+        throw new Error(
+          "Backend ไม่ได้ส่ง path ของไฟล์กลับมา"
         );
       }
 
       return {
         path:
-          objectPath,
+          evidence.path,
 
         name:
+          evidence.name ||
           file.name ||
-          safeName,
+          null,
 
         mime:
-          file.type ||
+          evidence.mime ||
+          mimeType ||
           null,
 
         size:
           Number(
-            file.size || 0
+            evidence.size ??
+            file.size ??
+            0
           )
       };
     }
