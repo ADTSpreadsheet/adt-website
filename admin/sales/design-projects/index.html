@@ -4433,7 +4433,7 @@
       width: 210mm;
       min-height: 297mm;
       margin: 0 auto;
-      padding: 11mm 11mm 10mm;
+      padding: 9mm 10mm 8mm;
       color: #111827;
       background: #fff;
       box-shadow: 0 8px 24px rgba(3,16,37,.14);
@@ -4532,14 +4532,14 @@
     .receipt-bottom-grid {
       margin-top: 10px;
       display: grid;
-      grid-template-columns: 1fr .92fr;
+      grid-template-columns: 1.08fr .92fr;
       gap: 12px;
       align-items: stretch;
     }
 
     .receipt-evidence-box,
     .receipt-summary-box {
-      min-height: 365px;
+      min-height: 455px;
       border: 1px solid #b8c3d1;
       background: #fff;
     }
@@ -4553,25 +4553,30 @@
     }
 
     .receipt-evidence-body {
-      height: 328px;
+      height: 418px;
       padding: 8px;
-      display: grid;
-      place-items: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
       background: #fafafa;
     }
 
     .receipt-evidence-body img {
-      width: 100%;
+      width: auto;
+      max-width: 100%;
       height: 100%;
+      max-height: 100%;
       object-fit: contain;
       object-position: center;
+      display: block;
     }
 
     .receipt-evidence-body iframe {
       width: 100%;
       height: 100%;
       border: 0;
+      background: #fff;
     }
 
     .receipt-no-evidence {
@@ -6799,6 +6804,15 @@
                   </strong>
                 </div>
 
+                <div class="receipt-total-row">
+                  <span>จำนวนเงินตามหลักฐาน</span>
+                  <strong>
+                    ${formatDesignMoney(
+                      amount
+                    )} บาท
+                  </strong>
+                </div>
+
                 <div class="receipt-note">
                   <strong>หมายเหตุ / Remark</strong>
                   <br>
@@ -7162,7 +7176,7 @@
           width: 210mm;
           min-height: 297mm;
           margin: 0 auto;
-          padding: 11mm 11mm 10mm;
+          padding: 9mm 10mm 8mm;
           color: #111827;
           background: #fff;
           font-size: 10px;
@@ -7256,14 +7270,14 @@
         .receipt-bottom-grid {
           margin-top: 10px;
           display: grid;
-          grid-template-columns: 1fr .92fr;
+          grid-template-columns: 1.08fr .92fr;
           gap: 12px;
           align-items: stretch;
         }
 
         .receipt-evidence-box,
         .receipt-summary-box {
-          min-height: 365px;
+          min-height: 455px;
           border: 1px solid #b8c3d1;
           background: #fff;
         }
@@ -7277,19 +7291,23 @@
         }
 
         .receipt-evidence-body {
-          height: 328px;
+          height: 418px;
           padding: 8px;
-          display: grid;
-          place-items: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           overflow: hidden;
           background: #fafafa;
         }
 
         .receipt-evidence-body img {
-          width: 100%;
+          width: auto;
+          max-width: 100%;
           height: 100%;
+          max-height: 100%;
           object-fit: contain;
           object-position: center;
+          display: block;
         }
 
         .receipt-evidence-body iframe {
