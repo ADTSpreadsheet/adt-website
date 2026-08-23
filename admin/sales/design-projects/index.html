@@ -8236,14 +8236,85 @@
         );
 
 
+      // จำนวน Project ต้องแยกจาก "ยอดเงิน"
+      //
+      // Active Project:
+      // - ต้องมีมูลค่างานที่ได้รับจริง
+      // - และยังรับเงิน / ออกใบเสร็จไม่ครบ
+      //
+      // Closed Project:
+      // - ต้องมีมูลค่างานที่ได้รับจริง
+      // - และรับเงิน / ออกใบเสร็จครบตามมูลค่างานแล้ว
+      //
+      // หมายเหตุ:
+      // วงชมพูด้าน "ยอดเงิน" ยังคงสะท้อนยอด Receipt ที่เกิดขึ้นจริง
+      // แม้ Project ยังรับเงินไม่ครบ 100%
+
+      const activeProjectCount =
+        projectRows.filter(
+          project => {
+
+            const contractAmount =
+              Number(
+                project.contract_amount ??
+                project.po_amount ??
+                project.awarded_amount ??
+                0
+              );
+
+
+            const receivedAmount =
+              Number(
+                project.receipt_amount ??
+                project.received_amount ??
+                0
+              );
+
+
+            if (!(contractAmount > 0)) {
+              return false;
+            }
+
+
+            return (
+              contractAmount -
+              receivedAmount
+            ) > 0.01;
+          }
+        ).length;
+
+
       const receiptProjectCount =
         projectRows.filter(
-          project =>
-            Number(
-              project.receipt_amount ??
-              project.received_amount ??
-              0
-            ) > 0
+          project => {
+
+            const contractAmount =
+              Number(
+                project.contract_amount ??
+                project.po_amount ??
+                project.awarded_amount ??
+                0
+              );
+
+
+            const receivedAmount =
+              Number(
+                project.receipt_amount ??
+                project.received_amount ??
+                0
+              );
+
+
+            if (!(contractAmount > 0)) {
+              return false;
+            }
+
+
+            return (
+              receivedAmount >=
+              contractAmount - 0.01
+            );
+          }
         ).length;
 
 
@@ -8307,6 +8378,8 @@
             "active",
           source: {
             ...(data.active || {}),
+            count:
+              activeProjectCount,
             amount:
               activeRemainingAmount,
             target_amount:
