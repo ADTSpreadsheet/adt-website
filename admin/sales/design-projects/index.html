@@ -3888,6 +3888,55 @@
       background: #fff3f3;
     }
 
+  
+    .billing-document-set {
+      width: min(900px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 22px;
+    }
+
+    .billing-document-set .billing-document-paper {
+      width: 100%;
+      min-width: 0;
+      margin: 0 auto;
+    }
+
+    .billing-document-page-label {
+      margin: 0 0 7px;
+      color: var(--ink-500);
+      font-size: .68rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    @media print {
+      .billing-document-set {
+        width: 100% !important;
+        display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      .billing-document-set .quotation-paper {
+        width: 190mm !important;
+        max-width: 190mm !important;
+        min-width: 0 !important;
+        margin: 0 auto !important;
+        page-break-after: always !important;
+        break-after: page !important;
+      }
+
+      .billing-document-set .quotation-paper:last-child {
+        page-break-after: auto !important;
+        break-after: auto !important;
+      }
+
+      .billing-document-page-label {
+        display: none !important;
+      }
+    }
+
   </style>
 </head>
 
@@ -7515,6 +7564,501 @@
     }
 
 
+    function billingTransactionPreviousAmount(
+      row
+    ) {
+      const accumulated =
+        billingNumber(
+          row?.raw?.accumulated_amount
+        );
+
+      const current =
+        billingNumber(
+          row?.amount
+        );
+
+      if (accumulated > 0) {
+        return Math.max(
+          0,
+          accumulated - current
+        );
+      }
+
+      return 0;
+    }
+
+
+    function buildSavedBillingDocumentHtml(
+      type,
+      row
+    ) {
+      if (
+        !billingState ||
+        !row
+      ) {
+        return "";
+      }
+
+      const normalized =
+        normalizeStatus(
+          type
+        );
+
+      const isDelivery =
+        normalized === "DELIVERY";
+
+      const project =
+        billingState.project || {};
+
+      const customer =
+        billingDocumentCustomer(
+          project
+        );
+
+      const documentNo =
+        row.documentNo ||
+        row.raw?.document_no ||
+        "-";
+
+      const documentDate =
+        row.date ||
+        row.raw?.document_date ||
+        "-";
+
+      const description =
+        row.description ||
+        row.raw?.description ||
+        "-";
+
+      const amount =
+        billingNumber(
+          row.amount
+        );
+
+      const note =
+        row.note ||
+        row.raw?.note ||
+        "-";
+
+      const contractAmount =
+        billingContractAmount(
+          project
+        );
+
+      const previousAmount =
+        billingTransactionPreviousAmount(
+          row
+        );
+
+      const preparedBy =
+        project.prepared_by ||
+        "นายอานนท์ แซ้นสีดา";
+
+      const preparedPosition =
+        project.prepared_by_position ||
+        "วิศวกรโยธา";
+
+      if (isDelivery) {
+        return `
+          <article class="quotation-paper billing-document-paper">
+            <div class="quotation-doc-head">
+              <div class="quotation-company-head">
+                <img
+                  src="/assets/images/adt-company-logo.png"
+                  alt="ADT"
+                >
+
+                <div>
+                  <strong>
+                    บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+                  </strong>
+
+                  <p>
+                    428 หมู่ 1 ต.พบพระ อ.พบพระ จ.ตาก 63160<br>
+                    เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>
+                    โทร. : 092-6191220 &nbsp; e-mail : 2531kaeng@gmail.com
+                  </p>
+                </div>
+              </div>
+
+              <div class="quotation-doc-title">
+                <h2>หนังสือส่งมอบงาน</h2>
+
+                <p>
+                  WORK DELIVERY LETTER<br>
+                  Delivery Number :
+                  <strong>${escapeHtml(documentNo)}</strong>
+                  <br>
+                  Delivery Date :
+                  <strong>${escapeHtml(documentDate)}</strong>
+                </p>
+              </div>
+            </div>
+
+            <div class="quotation-client-block">
+              <div>
+                <strong>โครงการ / Project :</strong>
+                ${escapeHtml(project.project_name || "-")}
+              </div>
+
+              <div>
+                <strong>สถานที่ / Location :</strong>
+                ${escapeHtml(project.project_location || "-")}
+              </div>
+
+              <div style="margin-top:7px;">
+                <strong>ลูกค้า / Customer :</strong>
+                ${escapeHtml(customer.name)}
+              </div>
+
+              <div>
+                <strong>ที่อยู่ / Address :</strong>
+                ${escapeHtml(customer.address)}
+              </div>
+
+              <div>
+                <strong>Tax ID :</strong>
+                ${escapeHtml(customer.taxId)}
+                &nbsp;&nbsp;&nbsp;
+                <strong>e-mail :</strong>
+                ${escapeHtml(customer.email)}
+              </div>
+
+              <div>
+                <strong>ผู้ติดต่อ / Attention :</strong>
+                ${escapeHtml(customer.attention)}
+                &nbsp;&nbsp;&nbsp;
+                <strong>Tel :</strong>
+                ${escapeHtml(customer.phone)}
+              </div>
+            </div>
+
+            <div class="quotation-issuer-block">
+              <strong>ผู้ออกเอกสาร / Document Issuer :</strong>
+              ADT CIVIL BUILDING AND TECHNOLOGY CO.,LTD.
+              <br>
+
+              <strong>ผู้ดำเนินการ / Prepared by :</strong>
+              ${escapeHtml(preparedBy)}
+              (${escapeHtml(preparedPosition)})
+            </div>
+
+            <div class="billing-doc-message">
+              บริษัทฯ ขอนำส่งมอบงานตามรายละเอียดที่ระบุด้านล่าง
+              เพื่อโปรดตรวจรับและใช้เป็นเอกสารอ้างอิงในการดำเนินงานต่อไป
+            </div>
+
+            <table class="billing-doc-table billing-delivery-table">
+              <thead>
+                <tr>
+                  <th class="b-no">ลำดับ<br>No.</th>
+                  <th class="b-desc">
+                    รายละเอียดงานที่ส่งมอบ<br>
+                    Work Delivery Description
+                  </th>
+                  <th class="b-date">
+                    วันที่ส่งมอบ<br>
+                    Delivery Date
+                  </th>
+                  <th class="b-amount">
+                    มูลค่างาน<br>
+                    Amount (THB)
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td style="white-space:pre-wrap;line-height:1.6;">
+                    ${escapeHtml(description)}
+                  </td>
+                  <td style="text-align:center;">
+                    ${escapeHtml(documentDate)}
+                  </td>
+                  <td class="billing-doc-money">
+                    ${formatDesignMoney(amount)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="billing-doc-remark">
+              <strong>หมายเหตุ / Remark</strong>
+              <br>
+              ${escapeHtml(note)}
+            </div>
+
+            <table class="billing-doc-summary">
+              <tbody>
+                <tr>
+                  <td>มูลค่างานที่ส่งมอบครั้งนี้</td>
+                  <td>${formatDesignMoney(amount)}</td>
+                </tr>
+                <tr>
+                  <td>มูลค่าส่งมอบสะสมก่อนครั้งนี้</td>
+                  <td>${formatDesignMoney(previousAmount)}</td>
+                </tr>
+                <tr>
+                  <td><strong>มูลค่าส่งมอบสะสม</strong></td>
+                  <td>
+                    <strong>
+                      ${formatDesignMoney(previousAmount + amount)}
+                    </strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td>มูลค่าสั่งจ้าง / PO</td>
+                  <td>${formatDesignMoney(contractAmount)}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="billing-doc-footer">
+              <div>
+                <strong>เอกสารอ้างอิง / Reference</strong>
+
+                <div style="margin-top:8px;line-height:1.7;">
+                  Project No. :
+                  ${escapeHtml(project.project_no || "-")}
+                  <br>
+                  PO / Contract :
+                  ${escapeHtml(
+                    project.po_no ||
+                    project.award_document_no ||
+                    "-"
+                  )}
+                </div>
+              </div>
+
+              <div class="billing-doc-signature">
+                <strong>ผู้ส่งมอบงาน / Submitted by</strong>
+                <div>
+                  ........................................<br>
+                  วันที่ / Date..........................
+                </div>
+              </div>
+
+              <div class="billing-doc-signature">
+                <strong>ผู้รับมอบงาน / Customer</strong>
+                <div>
+                  ........................................<br>
+                  วันที่ / Date..........................
+                </div>
+              </div>
+            </div>
+          </article>
+        `;
+      }
+
+      return `
+        <article class="quotation-paper billing-document-paper">
+          <div class="quotation-doc-head">
+            <div class="quotation-company-head">
+              <img
+                src="/assets/images/adt-company-logo.png"
+                alt="ADT"
+              >
+
+              <div>
+                <strong>
+                  บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+                </strong>
+
+                <p>
+                  428 หมู่ 1 ต.พบพระ อ.พบพระ จ.ตาก 63160<br>
+                  เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>
+                  โทร. : 092-6191220 &nbsp; e-mail : 2531kaeng@gmail.com
+                </p>
+              </div>
+            </div>
+
+            <div class="quotation-doc-title">
+              <h2>ใบวางบิล/ใบแจ้งหนี้ (INVOICE)</h2>
+
+              <p>
+                Invoice Number :
+                <strong>${escapeHtml(documentNo)}</strong>
+                <br>
+                Invoice Issue Date :
+                <strong>${escapeHtml(documentDate)}</strong>
+              </p>
+            </div>
+          </div>
+
+          <div class="quotation-client-block">
+            <div>
+              <strong>ลูกค้า / Customer :</strong>
+              ${escapeHtml(customer.name)}
+            </div>
+            <div>
+              <strong>ที่อยู่ / Address :</strong>
+              ${escapeHtml(customer.address)}
+            </div>
+            <div>
+              <strong>เลขประจำตัวผู้เสียภาษี / Tax ID :</strong>
+              ${escapeHtml(customer.taxId)}
+              &nbsp;&nbsp;&nbsp;
+              <strong>e-mail :</strong>
+              ${escapeHtml(customer.email)}
+            </div>
+            <div>
+              <strong>ผู้ติดต่อ / Attention :</strong>
+              ${escapeHtml(customer.attention)}
+              &nbsp;&nbsp;&nbsp;
+              <strong>Tel :</strong>
+              ${escapeHtml(customer.phone)}
+            </div>
+          </div>
+
+          <div class="quotation-issuer-block">
+            <strong>ผู้ออกใบวางบิล / Invoice Issuer :</strong>
+            ADT CIVIL BUILDING AND TECHNOLOGY CO.,LTD.
+            <br>
+
+            <strong>ผู้ดำเนินการ / Prepared by :</strong>
+            ${escapeHtml(preparedBy)}
+            (${escapeHtml(preparedPosition)})
+          </div>
+
+          <div class="billing-doc-message">
+            บริษัทฯ ขอวางบิลค่าบริการตามงานที่ได้ส่งมอบแล้ว
+            โดยมีรายละเอียดการตั้งเบิกตามรายการด้านล่าง
+          </div>
+
+          <table class="billing-doc-table">
+            <thead>
+              <tr>
+                <th class="b-no">รหัส<br>ID No.</th>
+                <th class="b-desc">
+                  รายละเอียดสินค้า/บริการ<br>
+                  Description Service
+                </th>
+                <th class="b-unit">หน่วย<br>Unit</th>
+                <th class="b-qty">ปริมาณ<br>Quantity</th>
+                <th class="b-contract">
+                  มูลค่างานตามสัญญา<br>
+                  Price (THB)
+                </th>
+                <th class="b-payment">
+                  มูลค่างานที่ขอเบิก<br>
+                  This Payment
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>${escapeHtml(documentNo)}</td>
+
+                <td style="white-space:pre-wrap;line-height:1.6;">
+                  ${escapeHtml(description)}
+
+                  <div style="margin-top:10px;">
+                    อ้างอิง Project :
+                    ${escapeHtml(project.project_no || "-")}
+                  </div>
+
+                  <div>
+                    อ้างอิง PO / หนังสือสั่งจ้าง :
+                    ${escapeHtml(
+                      project.po_no ||
+                      project.award_document_no ||
+                      "-"
+                    )}
+                  </div>
+                </td>
+
+                <td style="text-align:center;">งาน</td>
+                <td class="billing-doc-money">1.00</td>
+                <td class="billing-doc-money">
+                  ${formatDesignMoney(contractAmount)}
+                </td>
+                <td class="billing-doc-money">
+                  ${formatDesignMoney(amount)}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="billing-doc-remark">
+            <strong>หมายเหตุ / Remark</strong>
+            <br>
+            ${escapeHtml(note)}
+          </div>
+
+          <table class="billing-doc-summary">
+            <tbody>
+              <tr>
+                <td>รวมมูลค่าที่ขอเบิก / Total Payment</td>
+                <td>${formatDesignMoney(amount)}</td>
+              </tr>
+              <tr>
+                <td>
+                  มูลค่างานที่เบิกสะสมไปแล้ว / Amount Pre Payment
+                </td>
+                <td>${formatDesignMoney(previousAmount)}</td>
+              </tr>
+              <tr>
+                <td>ภาษีมูลค่าเพิ่ม / VAT</td>
+                <td>0.00</td>
+              </tr>
+              <tr>
+                <td>หัก ณ ที่จ่าย / Withholding Tax</td>
+                <td>0.00</td>
+              </tr>
+              <tr>
+                <td><strong>มูลค่าสุทธิ / Net Receipt</strong></td>
+                <td>
+                  <strong>${formatDesignMoney(amount)}</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="billing-doc-amount-words">
+            <strong>จำนวนเงินทั้งสิ้น :</strong>
+            ${formatDesignMoney(amount)} บาท
+          </div>
+
+          <div class="billing-doc-footer">
+            <div>
+              <strong>รูปแบบการสั่งจ้าง / Payment Terms</strong>
+
+              <div style="margin-top:8px;line-height:1.7;">
+                อ้างอิง Project :
+                ${escapeHtml(project.project_no || "-")}
+                <br>
+                อ้างอิง PO / หนังสือสั่งจ้าง :
+                ${escapeHtml(
+                  project.po_no ||
+                  project.award_document_no ||
+                  "-"
+                )}
+              </div>
+            </div>
+
+            <div class="billing-doc-signature">
+              <strong>ผู้รับใบวางบิล / Customer</strong>
+              <div>
+                ........................................<br>
+                วันที่ / Date..........................
+              </div>
+            </div>
+
+            <div class="billing-doc-signature">
+              <strong>ผู้วางบิล / Authorized</strong>
+              <div>
+                ${escapeHtml(preparedBy)}<br>
+                วันที่ / Date..........................
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+
     function previewBillingDocumentSet(
       deliveryId
     ) {
@@ -7538,11 +8082,96 @@
         return;
       }
 
-      window.alert(
-        `ชุดเอกสารพร้อมพรีวิว\n\n1. ${delivery.documentNo}\n2. ${invoice.documentNo}\n\nขั้นถัดไปจะรวมสองเอกสารเป็น Preview ต่อกัน`
-      );
-    }
+      const modal =
+        document.getElementById(
+          "quotationPreviewModal"
+        );
 
+      const body =
+        document.getElementById(
+          "quotationPreviewBody"
+        );
+
+      const title =
+        document.getElementById(
+          "quotationPreviewModalTitle"
+        );
+
+      const subTitle =
+        document.getElementById(
+          "quotationPreviewModalSubTitle"
+        );
+
+      if (
+        !modal ||
+        !body
+      ) {
+        window.alert(
+          "ไม่พบ Frame สำหรับพรีวิวชุดเอกสาร"
+        );
+        return;
+      }
+
+      if (title) {
+        title.textContent =
+          "พรีวิวชุดเอกสารส่งมอบ / วางบิล";
+      }
+
+      if (subTitle) {
+        subTitle.textContent =
+          `${
+            billingState?.project?.project_no ||
+            "-"
+          } · ${
+            delivery.documentNo ||
+            "-"
+          } + ${
+            invoice.documentNo ||
+            "-"
+          }`;
+      }
+
+      body.innerHTML = `
+        <div
+          class="billing-document-set"
+          id="billingDocumentSetPaper"
+        >
+          <div>
+            <div class="billing-document-page-label">
+              ใบที่ 1 — หนังสือส่งมอบงาน
+            </div>
+
+            ${buildSavedBillingDocumentHtml(
+              "DELIVERY",
+              delivery
+            )}
+          </div>
+
+          <div>
+            <div class="billing-document-page-label">
+              ใบที่ 2 — ใบวางบิล / ใบแจ้งหนี้
+            </div>
+
+            ${buildSavedBillingDocumentHtml(
+              "INVOICE",
+              invoice
+            )}
+          </div>
+        </div>
+      `;
+
+      modal.classList.add(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+    }
 
     function printBillingDocumentSet(
       deliveryId
@@ -7567,11 +8196,20 @@
         return;
       }
 
-      window.alert(
-        `ชุดเอกสารพร้อมพิมพ์\n\n1. ${delivery.documentNo}\n2. ${invoice.documentNo}\n\nขั้นถัดไปจะรวมเป็น PDF ชุดเดียว`
+      // สร้างชุดเอกสารจริงใน Preview Modal ก่อน
+      previewBillingDocumentSet(
+        deliveryId
+      );
+
+      // ใช้ Print engine เดียวกับ Quotation
+      // แต่ printQuotationPreview() รองรับ billingDocumentSetPaper แล้ว
+      setTimeout(
+        () => {
+          printQuotationPreview();
+        },
+        150
       );
     }
-
 
     function renderBillingFrame() {
       const body =
@@ -10120,12 +10758,16 @@
     function printQuotationPreview() {
       const paper =
         document.querySelector(
+          "#quotationPreviewModal #billingDocumentSetPaper"
+        )
+        ||
+        document.querySelector(
           "#quotationPreviewModal #quotationPreviewPaper"
         );
 
       if (!paper) {
         window.alert(
-          "ไม่พบใบเสนอราคาที่ต้องการพิมพ์"
+          "ไม่พบเอกสารที่ต้องการพิมพ์"
         );
         return;
       }
@@ -10266,6 +10908,37 @@
             img {
               print-color-adjust: exact;
               -webkit-print-color-adjust: exact;
+            }
+
+
+            #billingDocumentSetPaper {
+              width: 100% !important;
+              max-width: none !important;
+              min-width: 0 !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              background: #ffffff !important;
+            }
+
+            #billingDocumentSetPaper > .quotation-paper {
+              width: 190mm !important;
+              max-width: 190mm !important;
+              min-width: 0 !important;
+              margin: 0 auto !important;
+              padding: 8mm 9mm !important;
+              border: 0 !important;
+              box-shadow: none !important;
+              page-break-after: always !important;
+              break-after: page !important;
+            }
+
+            #billingDocumentSetPaper > .quotation-paper:last-child {
+              page-break-after: auto !important;
+              break-after: auto !important;
+            }
+
+            #billingDocumentSetPaper .billing-document-page-label {
+              display: none !important;
             }
 
             @media print {
@@ -10743,6 +11416,11 @@
           "quotationPreviewBody"
         );
 
+      const title =
+        document.getElementById(
+          "quotationPreviewModalTitle"
+        );
+
       const subTitle =
         document.getElementById(
           "quotationPreviewModalSubTitle"
@@ -10757,6 +11435,11 @@
         );
 
         return;
+      }
+
+      if (title) {
+        title.textContent =
+          "พรีวิวใบเสนอราคา";
       }
 
       body.innerHTML =
