@@ -4122,30 +4122,40 @@
 
   
     /* =====================================================
-       DOCUMENT PREVIEW LAYER
-       Preview เอกสารทุกจุดต้องอยู่เหนือ Workflow / Billing / PO frames
+       DOCUMENT PREVIEW — TOPMOST LAYER
+       Preview เอกสารต้องอยู่เหนือทุก Frame เสมอ
     ===================================================== */
     #quotationPreviewModal {
-      z-index: 12000 !important;
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 2147483646 !important;
+      isolation: isolate !important;
+      transform: none !important;
     }
 
-    #quotationPreviewModal .quotation-preview-modal,
-    #quotationPreviewModal .quotation-preview-dialog,
-    #quotationPreviewModal .quotation-preview-shell {
-      position: relative;
-      z-index: 12001 !important;
+    #quotationPreviewModal.open {
+      display: flex !important;
     }
 
-    /* เผื่อ Preview modal ตัวอื่นในอนาคต */
+    #quotationPreviewModal > .quotation-preview-frame {
+      position: relative !important;
+      z-index: 2147483647 !important;
+      isolation: isolate !important;
+    }
+
+    /* เผื่อมี Preview Overlay อื่นเพิ่มในหน้านี้ภายหลัง */
     .document-preview-modal,
     .document-preview-overlay {
-      z-index: 12000 !important;
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 2147483646 !important;
+      isolation: isolate !important;
     }
 
     .document-preview-modal > *,
     .document-preview-overlay > * {
-      position: relative;
-      z-index: 12001 !important;
+      position: relative !important;
+      z-index: 2147483647 !important;
     }
 
   </style>
@@ -4780,6 +4790,101 @@
 
     let revisionEditState =
       null;
+
+
+    // ============================================================
+    // DOCUMENT PREVIEW TOP LAYER
+    // ============================================================
+
+    function bringDocumentPreviewToFront() {
+      const modal =
+        document.getElementById(
+          "quotationPreviewModal"
+        );
+
+      if (!modal) {
+        return null;
+      }
+
+      /*
+        สำคัญ:
+        ย้าย Preview ไปเป็นลูกโดยตรงของ BODY และอยู่ท้ายสุด
+        เพื่อไม่ให้ติด stacking context ของ Billing / PO / Revision Frame
+      */
+      if (
+        modal.parentElement !==
+        document.body
+      ) {
+        document.body.appendChild(
+          modal
+        );
+      }
+      else if (
+        modal !==
+        document.body.lastElementChild
+      ) {
+        document.body.appendChild(
+          modal
+        );
+      }
+
+      modal.style.position =
+        "fixed";
+
+      modal.style.inset =
+        "0";
+
+      modal.style.zIndex =
+        "2147483646";
+
+      modal.style.transform =
+        "none";
+
+      modal.style.isolation =
+        "isolate";
+
+      const frame =
+        modal.querySelector(
+          ".quotation-preview-frame"
+        );
+
+      if (frame) {
+        frame.style.position =
+          "relative";
+
+        frame.style.zIndex =
+          "2147483647";
+
+        frame.style.isolation =
+          "isolate";
+      }
+
+      return modal;
+    }
+
+
+    function openDocumentPreviewTopLayer() {
+      const modal =
+        bringDocumentPreviewToFront();
+
+      if (!modal) {
+        return null;
+      }
+
+      modal.classList.add(
+        "open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      document.body.style.overflow =
+        "hidden";
+
+      return modal;
+    }
 
 
     // ============================================================
@@ -8390,8 +8495,7 @@
         </div>
       `;
 
-      modal.style.zIndex =
-        "12000";
+      bringDocumentPreviewToFront();
 
       modal.classList.add(
         "open"
@@ -8685,8 +8789,7 @@
         </div>
       `;
 
-      modal.style.zIndex =
-        "12000";
+      bringDocumentPreviewToFront();
 
       modal.classList.add(
         "open"
@@ -8741,9 +8844,7 @@
         "open"
       );
 
-      if (modal) {
-        modal.style.zIndex = "";
-      }
+
 
       modal?.setAttribute(
         "aria-hidden",
@@ -11724,8 +11825,7 @@
           `${project.quotation_no || "-"} · Read-only Preview`;
       }
 
-      modal.style.zIndex =
-        "12000";
+      bringDocumentPreviewToFront();
 
       modal.classList.add(
         "open"
@@ -12919,8 +13019,7 @@
           } · Preview R${nextRevision} ก่อนบันทึก`;
       }
 
-      modal.style.zIndex =
-        "12000";
+      bringDocumentPreviewToFront();
 
       modal.classList.add(
         "open"
@@ -13221,8 +13320,7 @@
           </div>
         `;
 
-      modal.style.zIndex =
-        "12000";
+      bringDocumentPreviewToFront();
 
       modal.classList.add(
         "open"
