@@ -6004,6 +6004,21 @@
                                   invoice.documentNo || "-"
                                 )}
                               </div>
+
+                              <div
+                                style="
+                                  margin-top:2px;
+                                  color:var(--ink-400);
+                                  font-size:.60rem;
+                                  font-weight:600;
+                                "
+                              >
+                                ยอดส่งมอบ:
+                                ${formatDesignMoney(
+                                  delivery.amount
+                                )}
+                                บาท
+                              </div>
                             `
                           : ""
                       }
@@ -6016,9 +6031,13 @@
                     </td>
 
                     <td class="money">
-                      ${formatDesignMoney(
-                        delivery.amount
-                      )}
+                      ${
+                        invoice
+                          ? formatDesignMoney(
+                              invoice.amount
+                            )
+                          : "-"
+                      }
                     </td>
 
                     <td>
@@ -6051,7 +6070,7 @@
                 <th>วันที่</th>
                 <th>เลขเอกสาร</th>
                 <th>รายละเอียด</th>
-                <th style="text-align:right;">จำนวนเงิน</th>
+                <th style="text-align:right;">ยอดตั้งเบิก</th>
                 <th>Action</th>
               </tr>
             </thead>
