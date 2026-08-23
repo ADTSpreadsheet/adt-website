@@ -4120,6 +4120,34 @@
       }
     }
 
+  
+    /* =====================================================
+       DOCUMENT PREVIEW LAYER
+       Preview เอกสารทุกจุดต้องอยู่เหนือ Workflow / Billing / PO frames
+    ===================================================== */
+    #quotationPreviewModal {
+      z-index: 12000 !important;
+    }
+
+    #quotationPreviewModal .quotation-preview-modal,
+    #quotationPreviewModal .quotation-preview-dialog,
+    #quotationPreviewModal .quotation-preview-shell {
+      position: relative;
+      z-index: 12001 !important;
+    }
+
+    /* เผื่อ Preview modal ตัวอื่นในอนาคต */
+    .document-preview-modal,
+    .document-preview-overlay {
+      z-index: 12000 !important;
+    }
+
+    .document-preview-modal > *,
+    .document-preview-overlay > * {
+      position: relative;
+      z-index: 12001 !important;
+    }
+
   </style>
 </head>
 
@@ -8343,6 +8371,9 @@
         </div>
       `;
 
+      modal.style.zIndex =
+        "12000";
+
       modal.classList.add(
         "open"
       );
@@ -8635,6 +8666,9 @@
         </div>
       `;
 
+      modal.style.zIndex =
+        "12000";
+
       modal.classList.add(
         "open"
       );
@@ -8687,6 +8721,10 @@
       modal?.classList.remove(
         "open"
       );
+
+      if (modal) {
+        modal.style.zIndex = "";
+      }
 
       modal?.setAttribute(
         "aria-hidden",
@@ -11667,6 +11705,9 @@
           `${project.quotation_no || "-"} · Read-only Preview`;
       }
 
+      modal.style.zIndex =
+        "12000";
+
       modal.classList.add(
         "open"
       );
@@ -12859,6 +12900,9 @@
           } · Preview R${nextRevision} ก่อนบันทึก`;
       }
 
+      modal.style.zIndex =
+        "12000";
+
       modal.classList.add(
         "open"
       );
@@ -13157,6 +13201,9 @@
             กำลังโหลดข้อมูลใบเสนอราคา...
           </div>
         `;
+
+      modal.style.zIndex =
+        "12000";
 
       modal.classList.add(
         "open"
