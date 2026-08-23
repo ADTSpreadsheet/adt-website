@@ -3879,6 +3879,15 @@
       background: #f3f8ff;
     }
 
+    .billing-row-menu button.danger {
+      color: #b42318;
+    }
+
+    .billing-row-menu button.danger:hover {
+      color: #b42318;
+      background: #fff3f3;
+    }
+
   </style>
 </head>
 
@@ -5673,6 +5682,16 @@
                             >
                               🖨 พิมพ์ / Export PDF
                             </button>
+
+                            <div class="design-action-divider"></div>
+
+                            <button
+                              class="danger"
+                              type="button"
+                              onclick="deleteBillingInvoice('${escapeHtml(delivery.localId || "")}')"
+                            >
+                              🗑️ ลบใบวางบิล
+                            </button>
                           </div>
                         </div>
                       `
@@ -7357,6 +7376,142 @@
         },
         0
       );
+    }
+
+
+    async function deleteBillingInvoice(
+      deliveryId
+    ) {
+      closeAllBillingRowMenus();
+
+      if (!billingState) {
+        return;
+      }
+
+      const {
+        invoice
+      } =
+        getBillingDocumentPair(
+          deliveryId
+        );
+
+      if (!invoice) {
+        window.alert(
+          "ยังไม่พบใบวางบิลของงวดนี้"
+        );
+        return;
+      }
+
+      const confirmed =
+        window.confirm(
+          `ยืนยันลบใบวางบิล ${invoice.documentNo || ""} ?\n\nเมื่อลบแล้ว งวดนี้จะกลับไปเป็นสถานะรอสร้างใบวางบิลอีกครั้ง`
+        );
+
+      if (!confirmed) {
+        return;
+      }
+
+      const token =
+        ensureAdminToken();
+
+      if (!token) {
+        return;
+      }
+
+      const quotationId =
+        String(
+          billingState.quotationId || ""
+        ).trim();
+
+      if (!quotationId) {
+        window.alert(
+          "ไม่พบ quotationId สำหรับลบใบวางบิล"
+        );
+        return;
+      }
+
+      try {
+
+        const response =
+          await fetch(
+            `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
+              quotationId
+            )}/invoices/${encodeURIComponent(
+              invoice.id || invoice.localId || ""
+            )}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+                Accept:
+                  "application/json"
+              }
+            }
+          );
+
+        const result =
+          await response.json()
+            .catch(
+              () => null
+            );
+
+        if (response.status === 401) {
+          sessionStorage.removeItem(
+            TOKEN_KEY
+          );
+          localStorage.removeItem(
+            TOKEN_KEY
+          );
+
+          throw new Error(
+            "Admin Token หมดอายุ กรุณาเข้าสู่ระบบใหม่"
+          );
+        }
+
+        if (
+          !response.ok ||
+          result?.success !== true
+        ) {
+          throw new Error(
+            result?.message ||
+            result?.detail ||
+            `ลบใบวางบิลไม่สำเร็จ (HTTP ${response.status})`
+          );
+        }
+
+        // Reload Billing state จาก Backend จริง
+        await loadBillingData(
+          quotationId,
+          {
+            keepModalOpen: true
+          }
+        );
+
+        // Reload Main Design Projects
+        // เพื่อให้ยอดตั้งเบิกและสี Bubble 3 กลับตามข้อมูลจริง
+        await loadDesignProjects();
+
+        window.alert(
+          `ลบใบวางบิลสำเร็จ${
+            result?.deleted_invoice?.document_no
+              ? `\n${result.deleted_invoice.document_no}`
+              : ""
+          }`
+        );
+      }
+      catch (error) {
+
+        console.error(
+          "Delete Invoice Error:",
+          error
+        );
+
+        window.alert(
+          error?.message ||
+          "ไม่สามารถลบใบวางบิลได้"
+        );
+      }
     }
 
 
