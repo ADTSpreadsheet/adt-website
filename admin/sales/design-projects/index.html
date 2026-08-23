@@ -4379,6 +4379,256 @@
       }
     }
 
+  
+    /* =====================================================
+       RECEIPT — FORM + LIVE PREVIEW
+    ===================================================== */
+
+    .receipt-editor-shell {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: minmax(300px, .72fr) minmax(560px, 1.28fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .receipt-form-panel,
+    .receipt-preview-panel {
+      border: 1px solid #dfe7f0;
+      border-radius: 14px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .receipt-panel-head {
+      padding: 11px 13px;
+      border-bottom: 1px solid #e8eef5;
+      background: #fbfdff;
+    }
+
+    .receipt-panel-head strong {
+      display: block;
+      color: var(--navy-900);
+      font-size: .75rem;
+    }
+
+    .receipt-panel-head span {
+      display: block;
+      margin-top: 3px;
+      color: var(--ink-500);
+      font-size: .61rem;
+    }
+
+    .receipt-form-body {
+      padding: 13px;
+    }
+
+    .receipt-preview-stage {
+      padding: 14px;
+      overflow: auto;
+      background: #e9edf2;
+    }
+
+    .receipt-paper {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 11mm 11mm 10mm;
+      color: #111827;
+      background: #fff;
+      box-shadow: 0 8px 24px rgba(3,16,37,.14);
+      font-family: "Prompt", sans-serif;
+      font-size: 10px;
+      line-height: 1.45;
+    }
+
+    .receipt-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 18px;
+      align-items: start;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #0b1e3a;
+    }
+
+    .receipt-company {
+      display: grid;
+      grid-template-columns: 62px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .receipt-company img {
+      width: 58px;
+      height: 58px;
+      object-fit: contain;
+    }
+
+    .receipt-company strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .receipt-company p,
+    .receipt-doc-title p {
+      margin: 3px 0 0;
+      color: #475569;
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .receipt-doc-title {
+      min-width: 220px;
+      text-align: right;
+    }
+
+    .receipt-doc-title h2 {
+      margin: 0;
+      color: #071a35;
+      font-size: 19px;
+      line-height: 1.2;
+    }
+
+    .receipt-info {
+      margin-top: 9px;
+      padding: 8px 0;
+      border-bottom: 1px solid #d9e2ec;
+    }
+
+    .receipt-info-row {
+      display: grid;
+      grid-template-columns: 115px 1fr;
+      gap: 7px;
+      margin: 2px 0;
+    }
+
+    .receipt-table {
+      width: 100%;
+      min-width: 0;
+      margin-top: 10px;
+      border-collapse: collapse;
+    }
+
+    .receipt-table th,
+    .receipt-table td {
+      padding: 7px 8px;
+      border: 1px solid #0b1e3a;
+      font-size: 9px;
+      vertical-align: top;
+    }
+
+    .receipt-table th {
+      color: #fff;
+      background: #071a35;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .receipt-table .money {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .receipt-bottom-grid {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr .92fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .receipt-evidence-box,
+    .receipt-summary-box {
+      min-height: 255px;
+      border: 1px solid #b8c3d1;
+      background: #fff;
+    }
+
+    .receipt-box-title {
+      padding: 6px 8px;
+      border-bottom: 1px solid #b8c3d1;
+      color: #334155;
+      background: #f7f9fc;
+      font-weight: 700;
+    }
+
+    .receipt-evidence-body {
+      height: 218px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: #fafafa;
+    }
+
+    .receipt-evidence-body img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .receipt-evidence-body iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .receipt-no-evidence {
+      padding: 20px;
+      color: #94a3b8;
+      text-align: center;
+    }
+
+    .receipt-summary-inner {
+      padding: 10px;
+    }
+
+    .receipt-total-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .receipt-total-row.grand {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .receipt-note {
+      margin-top: 10px;
+      min-height: 48px;
+      padding: 8px;
+      border: 1px solid #d9e2ec;
+    }
+
+    .receipt-sign-grid {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 35px;
+      text-align: center;
+    }
+
+    .receipt-sign-line {
+      margin: 38px auto 5px;
+      width: 135px;
+      border-top: 1px dotted #64748b;
+    }
+
+    @media (max-width: 1180px) {
+      .receipt-editor-shell {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      .receipt-paper {
+        box-shadow: none !important;
+        margin: 0 !important;
+      }
+    }
+
   </style>
 </head>
 
@@ -5507,6 +5757,17 @@
                       `<span class="badge blue">ออกใบเสร็จบางส่วน</span>`;
                   }
 
+                  const latestReceipt =
+                    Array.isArray(
+                      row.receipts
+                    ) &&
+                    row.receipts.length
+                      ? row.receipts[
+                          row.receipts.length - 1
+                        ]
+                      : null;
+
+
                   const receiptButton =
                     hasPayment
                       ? (
@@ -5602,6 +5863,22 @@
                           }
 
                           ${receiptButton}
+
+                          ${
+                            latestReceipt
+                              ? `
+                                  <button
+                                    class="payment-btn gray"
+                                    type="button"
+                                    onclick="previewReceiptDocument('${escapeHtml(
+                                      latestReceipt.id || ""
+                                    )}')"
+                                  >
+                                    👁 ดูใบเสร็จ
+                                  </button>
+                                `
+                              : ""
+                          }
 
                         </div>
                       </td>
@@ -6091,6 +6368,457 @@
     }
 
 
+    function findPaymentReceivedById(
+      paymentId
+    ) {
+      return (
+        paymentReceivedState?.payments ||
+        []
+      ).find(
+        row =>
+          String(
+            row.id || ""
+          ) ===
+          String(
+            paymentId || ""
+          )
+      ) || null;
+    }
+
+
+    function findInvoiceRowForPayment(
+      paymentId
+    ) {
+      return (
+        paymentReceivedState?.invoices ||
+        []
+      ).find(
+        row =>
+          (
+            row.payments ||
+            []
+          ).some(
+            payment =>
+              String(
+                payment.id || ""
+              ) ===
+              String(
+                paymentId || ""
+              )
+          )
+      ) || null;
+    }
+
+
+    function findReceiptById(
+      receiptId
+    ) {
+      return (
+        paymentReceivedState?.receipts ||
+        []
+      ).find(
+        row =>
+          String(
+            row.id || ""
+          ) ===
+          String(
+            receiptId || ""
+          )
+      ) || null;
+    }
+
+
+    function receiptEvidenceHtml(
+      payment
+    ) {
+      const url =
+        String(
+          payment?.evidence_signed_url || ""
+        ).trim();
+
+      const mime =
+        String(
+          payment?.original_mime_type || ""
+        )
+          .trim()
+          .toLowerCase();
+
+      if (!url) {
+        return `
+          <div class="receipt-no-evidence">
+            ไม่พบภาพหลักฐานการชำระเงิน
+          </div>
+        `;
+      }
+
+      if (
+        mime === "application/pdf"
+      ) {
+        return `
+          <iframe
+            src="${escapeHtml(url)}"
+            title="Payment Evidence"
+          ></iframe>
+        `;
+      }
+
+      return `
+        <img
+          src="${escapeHtml(url)}"
+          alt="Payment Evidence"
+        >
+      `;
+    }
+
+
+    function receiptCustomerName() {
+      const customer =
+        paymentReceivedState?.customer ||
+        {};
+
+      return String(
+        customer.company_name ??
+        customer.customer_name ??
+        customer.name ??
+        paymentReceivedState?.quotation?.customer_name ??
+        "-"
+      );
+    }
+
+
+    function receiptCustomerAddress() {
+      const customer =
+        paymentReceivedState?.customer ||
+        {};
+
+      return String(
+        customer.address ??
+        customer.registered_address ??
+        customer.billing_address ??
+        "-"
+      );
+    }
+
+
+    function receiptCustomerTaxId() {
+      const customer =
+        paymentReceivedState?.customer ||
+        {};
+
+      return String(
+        customer.tax_id ??
+        customer.tax_number ??
+        "-"
+      );
+    }
+
+
+    function receiptPreviewHtml(
+      payment,
+      invoiceRow,
+      receiptNo,
+      receiptDate,
+      note
+    ) {
+      const invoice =
+        invoiceRow?.invoice ||
+        {};
+
+      const project =
+        paymentReceivedState?.project ||
+        {};
+
+      const amount =
+        paymentNumber(
+          payment?.amount
+        );
+
+      const description =
+        String(
+          payment?.description ||
+          invoice?.description ||
+          project?.project_name ||
+          "ค่าบริการตามใบวางบิล"
+        );
+
+      return `
+        <div class="receipt-paper">
+
+          <div class="receipt-head">
+
+            <div class="receipt-company">
+              <img
+                src="/assets/images/adt-company-logo.png"
+                alt="ADT"
+              >
+
+              <div>
+                <strong>
+                  บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+                </strong>
+
+                <p>
+                  428 หมู่ 1 ต.พบพระ อ.พบพระ จ.ตาก 63160<br>
+                  เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>
+                  โทร. : 092-6191220 &nbsp;
+                  e-mail : 2531kaeng@gmail.com
+                </p>
+              </div>
+            </div>
+
+            <div class="receipt-doc-title">
+              <h2>
+                ใบเสร็จรับเงิน<br>
+                RECEIPT
+              </h2>
+
+              <p>
+                Receipt No. :
+                <strong>
+                  ${escapeHtml(
+                    receiptNo || "(Auto)"
+                  )}
+                </strong>
+                <br>
+
+                Receipt Date :
+                <strong>
+                  ${escapeHtml(
+                    receiptDate || "-"
+                  )}
+                </strong>
+              </p>
+            </div>
+
+          </div>
+
+          <div class="receipt-info">
+
+            <div class="receipt-info-row">
+              <strong>ลูกค้า / Customer</strong>
+              <span>
+                ${escapeHtml(
+                  receiptCustomerName()
+                )}
+              </span>
+            </div>
+
+            <div class="receipt-info-row">
+              <strong>ที่อยู่ / Address</strong>
+              <span>
+                ${escapeHtml(
+                  receiptCustomerAddress()
+                )}
+              </span>
+            </div>
+
+            <div class="receipt-info-row">
+              <strong>Tax ID</strong>
+              <span>
+                ${escapeHtml(
+                  receiptCustomerTaxId()
+                )}
+              </span>
+            </div>
+
+            <div class="receipt-info-row">
+              <strong>Project</strong>
+              <span>
+                ${escapeHtml(
+                  project.project_name || "-"
+                )}
+              </span>
+            </div>
+
+            <div class="receipt-info-row">
+              <strong>Project No.</strong>
+              <span>
+                ${escapeHtml(
+                  project.project_no || "-"
+                )}
+              </span>
+            </div>
+
+            <div class="receipt-info-row">
+              <strong>อ้างอิง Invoice</strong>
+              <span>
+                ${escapeHtml(
+                  invoice.document_no || "-"
+                )}
+              </span>
+            </div>
+
+            <div class="receipt-info-row">
+              <strong>วันที่รับเงิน</strong>
+              <span>
+                ${escapeHtml(
+                  payment?.document_date || "-"
+                )}
+              </span>
+            </div>
+
+          </div>
+
+          <table class="receipt-table">
+            <thead>
+              <tr>
+                <th style="width:8%;">ลำดับ<br>NO.</th>
+                <th>รายละเอียดสินค้า / บริการ<br>DESCRIPTION</th>
+                <th style="width:16%;">ยอดรับเงิน<br>AMOUNT (THB)</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td style="text-align:center;">1</td>
+                <td>
+                  ${escapeHtml(
+                    description
+                  )}
+                  <br><br>
+                  อ้างอิง Invoice :
+                  ${escapeHtml(
+                    invoice.document_no || "-"
+                  )}
+                </td>
+                <td class="money">
+                  ${formatDesignMoney(
+                    amount
+                  )}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="receipt-bottom-grid">
+
+            <div class="receipt-evidence-box">
+              <div class="receipt-box-title">
+                หลักฐานการชำระเงิน / PAYMENT EVIDENCE
+              </div>
+
+              <div class="receipt-evidence-body">
+                ${receiptEvidenceHtml(
+                  payment
+                )}
+              </div>
+            </div>
+
+            <div class="receipt-summary-box">
+              <div class="receipt-box-title">
+                สรุปการรับเงิน / RECEIPT SUMMARY
+              </div>
+
+              <div class="receipt-summary-inner">
+
+                <div class="receipt-total-row">
+                  <span>ยอดตามใบวางบิล</span>
+                  <strong>
+                    ${formatDesignMoney(
+                      invoiceRow?.invoice_amount ||
+                      amount
+                    )} บาท
+                  </strong>
+                </div>
+
+                <div class="receipt-total-row grand">
+                  <span>ยอดรับเงินจริง</span>
+                  <strong>
+                    ${formatDesignMoney(
+                      amount
+                    )} บาท
+                  </strong>
+                </div>
+
+                <div class="receipt-note">
+                  <strong>หมายเหตุ / Remark</strong>
+                  <br>
+                  ${escapeHtml(
+                    note || "-"
+                  )}
+                </div>
+
+                <div class="receipt-sign-grid">
+
+                  <div>
+                    ผู้รับเงิน / Receiver
+                    <div class="receipt-sign-line"></div>
+                    วันที่ ................................
+                  </div>
+
+                  <div>
+                    ผู้ชำระเงิน / Customer
+                    <div class="receipt-sign-line"></div>
+                    วันที่ ................................
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      `;
+    }
+
+
+    function renderReceiptLivePreview() {
+      const preview =
+        document.getElementById(
+          "receiptLivePreview"
+        );
+
+      if (!preview) {
+        return;
+      }
+
+      const paymentId =
+        document.getElementById(
+          "receiptPaymentId"
+        )?.value ||
+        "";
+
+      const payment =
+        findPaymentReceivedById(
+          paymentId
+        );
+
+      const invoiceRow =
+        findInvoiceRowForPayment(
+          paymentId
+        );
+
+      const receiptDate =
+        document.getElementById(
+          "receiptDate"
+        )?.value ||
+        "";
+
+      const note =
+        document.getElementById(
+          "receiptNote"
+        )?.value?.trim() ||
+        "";
+
+      const receiptNo =
+        document.getElementById(
+          "receiptDocumentNo"
+        )?.value ||
+        "(Auto)";
+
+      preview.innerHTML =
+        receiptPreviewHtml(
+          payment,
+          invoiceRow,
+          receiptNo,
+          receiptDate,
+          note
+        );
+    }
+
+
     function openReceiptForm(
       paymentId
     ) {
@@ -6103,58 +6831,262 @@
         return;
       }
 
+      const payment =
+        findPaymentReceivedById(
+          paymentId
+        );
+
+      const invoiceRow =
+        findInvoiceRowForPayment(
+          paymentId
+        );
+
+      if (
+        !payment ||
+        !invoiceRow
+      ) {
+        window.alert(
+          "ไม่พบข้อมูล Payment / Invoice สำหรับออกใบเสร็จ"
+        );
+        return;
+      }
+
       editor.innerHTML = `
-        <div class="payment-form">
-          <strong>
-            ออกใบเสร็จรับเงิน
-          </strong>
+        <div class="receipt-editor-shell">
 
-          <input
-            type="hidden"
-            id="receiptPaymentId"
-            value="${escapeHtml(paymentId)}"
-          >
+          <div class="receipt-form-panel">
 
-          <div class="payment-form-grid" style="margin-top:12px;">
+            <div class="receipt-panel-head">
+              <strong>
+                ออกใบเสร็จรับเงิน
+              </strong>
 
-            <div class="payment-form-field">
-              <label>วันที่ออกใบเสร็จ</label>
+              <span>
+                ข้อมูลหลักดึงจาก Payment และ Invoice อัตโนมัติ
+              </span>
+            </div>
+
+            <div class="receipt-form-body">
+
               <input
-                type="date"
-                id="receiptDate"
-                value="${paymentToday()}"
+                type="hidden"
+                id="receiptPaymentId"
+                value="${escapeHtml(
+                  paymentId
+                )}"
               >
+
+              <input
+                type="hidden"
+                id="receiptDocumentNo"
+                value=""
+              >
+
+              <div class="payment-form-grid">
+
+                <div class="payment-form-field">
+                  <label>
+                    Invoice อ้างอิง
+                  </label>
+
+                  <input
+                    type="text"
+                    value="${escapeHtml(
+                      invoiceRow.invoice?.document_no ||
+                      "-"
+                    )}"
+                    readonly
+                  >
+                </div>
+
+                <div class="payment-form-field">
+                  <label>
+                    ยอดรับเงินจริง
+                  </label>
+
+                  <input
+                    type="text"
+                    value="${formatDesignMoney(
+                      payment.amount
+                    )}"
+                    readonly
+                  >
+                </div>
+
+                <div class="payment-form-field">
+                  <label>
+                    วันที่รับเงินจริง
+                  </label>
+
+                  <input
+                    type="text"
+                    value="${escapeHtml(
+                      payment.document_date ||
+                      "-"
+                    )}"
+                    readonly
+                  >
+                </div>
+
+                <div class="payment-form-field">
+                  <label>
+                    วันที่ออกใบเสร็จ
+                  </label>
+
+                  <input
+                    type="date"
+                    id="receiptDate"
+                    value="${paymentToday()}"
+                    oninput="renderReceiptLivePreview()"
+                  >
+                </div>
+
+                <div class="payment-form-field full">
+                  <label>
+                    หมายเหตุ
+                  </label>
+
+                  <textarea
+                    id="receiptNote"
+                    placeholder="หมายเหตุในใบเสร็จรับเงิน"
+                    oninput="renderReceiptLivePreview()"
+                  ></textarea>
+                </div>
+
+              </div>
+
+              <div class="payment-form-actions">
+                <button
+                  class="payment-btn gray"
+                  type="button"
+                  onclick="clearPaymentReceivedEditor()"
+                >
+                  ยกเลิก
+                </button>
+
+                <button
+                  class="payment-btn green"
+                  type="button"
+                  onclick="saveReceiptDocument()"
+                >
+                  บันทึกใบเสร็จ
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="receipt-preview-panel">
+
+            <div class="receipt-panel-head">
+              <strong>
+                Live Preview — ใบเสร็จรับเงิน
+              </strong>
+
+              <span>
+                หลักฐานการชำระจะแสดงบริเวณมุมซ้ายล่าง
+              </span>
             </div>
 
-            <div class="payment-form-field full">
-              <label>หมายเหตุ</label>
-              <textarea
-                id="receiptNote"
-                placeholder="หมายเหตุในใบเสร็จรับเงิน"
-              ></textarea>
-            </div>
+            <div
+              class="receipt-preview-stage"
+              id="receiptLivePreview"
+            ></div>
 
           </div>
 
-          <div class="payment-form-actions">
-            <button
-              class="payment-btn gray"
-              type="button"
-              onclick="clearPaymentReceivedEditor()"
-            >
-              ยกเลิก
-            </button>
-
-            <button
-              class="payment-btn green"
-              type="button"
-              onclick="saveReceiptDocument()"
-            >
-              ออกใบเสร็จ
-            </button>
-          </div>
         </div>
       `;
+
+      renderReceiptLivePreview();
+
+      editor.scrollIntoView({
+        behavior:
+          "smooth",
+        block:
+          "start"
+      });
+    }
+
+
+    function previewReceiptDocument(
+      receiptId
+    ) {
+      const editor =
+        document.getElementById(
+          "paymentReceivedEditor"
+        );
+
+      if (!editor) {
+        return;
+      }
+
+      const receipt =
+        findReceiptById(
+          receiptId
+        );
+
+      if (!receipt) {
+        window.alert(
+          "ไม่พบข้อมูลใบเสร็จ"
+        );
+        return;
+      }
+
+      const paymentId =
+        String(
+          receipt.parent_transaction_id ||
+          ""
+        );
+
+      const payment =
+        findPaymentReceivedById(
+          paymentId
+        );
+
+      const invoiceRow =
+        findInvoiceRowForPayment(
+          paymentId
+        );
+
+      editor.innerHTML = `
+        <div class="receipt-preview-panel" style="margin-top:14px;">
+
+          <div class="receipt-panel-head">
+            <strong>
+              Preview — ${escapeHtml(
+                receipt.document_no ||
+                "ใบเสร็จรับเงิน"
+              )}
+            </strong>
+
+            <span>
+              เอกสารใบเสร็จรับเงินที่บันทึกแล้ว
+            </span>
+          </div>
+
+          <div class="receipt-preview-stage">
+            ${receiptPreviewHtml(
+              payment,
+              invoiceRow,
+              receipt.document_no ||
+              "-",
+              receipt.document_date ||
+              "-",
+              receipt.note ||
+              ""
+            )}
+          </div>
+
+        </div>
+      `;
+
+      editor.scrollIntoView({
+        behavior:
+          "smooth",
+        block:
+          "start"
+      });
     }
 
 
@@ -6246,11 +7178,26 @@
           );
         }
 
+        const currentQuotationId =
+          paymentReceivedState.quotationId;
+
+
         await loadPaymentReceivedData(
-          paymentReceivedState.quotationId
+          currentQuotationId
         );
 
+
         await loadDesignProjects();
+
+
+        if (
+          result?.receipt?.id
+        ) {
+          previewReceiptDocument(
+            result.receipt.id
+          );
+        }
+
 
         window.alert(
           `ออกใบเสร็จสำเร็จ${
