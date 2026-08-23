@@ -5826,11 +5826,22 @@
         );
       }
 
+      const uploadParams =
+        new URLSearchParams({
+          invoice_id:
+            invoiceId,
+
+          file_name:
+            file.name ||
+            "payment-evidence"
+        });
+
+
       const response =
         await fetch(
           `${DESIGN_PROJECTS_API}/quotations/${encodeURIComponent(
             quotationId
-          )}/payments/evidence`,
+          )}/payments/evidence?${uploadParams.toString()}`,
           {
             method:
               "POST",
@@ -5843,16 +5854,7 @@
                 "application/json",
 
               "Content-Type":
-                mimeType,
-
-              "x-invoice-id":
-                invoiceId,
-
-              "x-file-name":
-                encodeURIComponent(
-                  file.name ||
-                  "payment-evidence"
-                )
+                mimeType
             },
 
             body:
