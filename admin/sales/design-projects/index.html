@@ -4180,7 +4180,9 @@
     }
 
     .payment-received-frame {
-      width: min(1180px, 96vw);
+      width: min(1280px, 96vw);
+      height: min(82vh, 820px);
+      min-height: 650px;
       max-height: 92vh;
       overflow: hidden;
       border-radius: 20px;
@@ -4225,6 +4227,8 @@
     }
 
     .payment-received-body {
+      flex: 1 1 auto;
+      min-height: 0;
       padding: 18px;
       overflow: auto;
       background: #f7f9fc;
@@ -7135,6 +7139,25 @@
           ""
         );
 
+
+      // ใช้เลขใบเสร็จเป็นชื่อไฟล์ PDF
+      // และแทนตัวอักษรที่ Windows ไม่อนุญาตในชื่อไฟล์
+      const receiptFileName =
+        `${String(
+          receipt.document_no ||
+          "Receipt"
+        )
+          .trim()
+          .replace(
+            /[\\/:*?"<>|]+/g,
+            "-"
+          )
+          .replace(
+            /-+/g,
+            "-"
+          )}.pdf`;
+
+
       const printWindow =
         window.open(
           "",
@@ -7375,8 +7398,7 @@
           <head>
             <meta charset="utf-8">
             <title>${escapeHtml(
-              receipt.document_no ||
-              "Receipt"
+              receiptFileName
             )}</title>
 
             <style>
@@ -7412,6 +7434,8 @@
                     function () {
                       setTimeout(
                         function () {
+                          document.title =
+                            ${JSON.stringify(receiptFileName)};
                           window.focus();
                           window.print();
                         },
@@ -7427,6 +7451,9 @@
       `);
 
       printWindow.document.close();
+
+      printWindow.document.title =
+        receiptFileName;
     }
 
 
