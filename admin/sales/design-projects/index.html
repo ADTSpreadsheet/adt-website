@@ -5620,7 +5620,7 @@
                   <td>
                     ${
                       row.type === "DELIVERY"
-                        ? `<button class="billing-btn" type="button" onclick="openBillingEditor('INVOICE', '${escapeHtml(row.localId || "")}')">+ เพิ่มการตั้งเบิก</button>`
+                        ? `<button class="billing-btn green" type="button" onclick="openBillingEditor('INVOICE', '${escapeHtml(row.localId || "")}')">+ สร้างใบวางบิล</button>`
                         : `<span class="badge green">บันทึกแล้ว</span>`
                     }
                   </td>
@@ -5866,7 +5866,7 @@
                     ${
                       isDelivery
                         ? "มูลค่างานที่ส่งมอบครั้งนี้ (บาท)"
-                        : "ยอดตั้งเบิกครั้งนี้ (บาท)"
+                        : "ยอดขอเบิกตามใบวางบิล (บาท)"
                     }
                   </label>
 
@@ -5937,7 +5937,7 @@
                   ${
                     isDelivery
                       ? "บันทึกส่งมอบ"
-                      : "บันทึกตั้งเบิก"
+                      : "บันทึกใบวางบิล"
                   }
                 </button>
               </div>
