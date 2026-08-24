@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>โปรไฟล์ของฉัน | ADTSpreadsheet</title>
+
+  <style>
+    :root {
+      --navy: #071e41;
+      --navy-2: #0b2b5f;
+      --blue: #1677ff;
+      --blue-soft: #eaf3ff;
+      --yellow: #ffc62f;
+      --green: #16a66a;
+      --red: #e65353;
+      --bg: #f3f6fb;
+      --card: #ffffff;
+      --text: #13213c;
+      --muted: #71809b;
+      --border: #e2e8f2;
+      --sidebar-width: 240px;
+      --topbar-height: 74px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans Thai", Tahoma, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+    }
+
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: var(--sidebar-width);
+      background: linear-gradient(180deg, #061c3d 0%, #061a37 100%);
+      color: #fff;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .logo-box {
+      height: 96px;
+      display: flex;
+      align-items: center;
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .logo {
+      background: #fff;
+      width: 126px;
+      height: 50px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+      font-weight: 800;
+      font-size: 15px;
+    }
+
+    .side-member {
+      margin: 20px 14px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .side-avatar {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 50%;
+      background: var(--yellow);
+      color: #102044;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      overflow: hidden;
+    }
+
+    .side-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .side-member-name {
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .side-member-id {
+      margin-top: 4px;
+      font-size: 11px;
+      color: #b3c0d5;
+    }
+
+    .menu-label {
+      padding: 14px 18px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #7690b5;
+    }
+
+    .menu {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 0 8px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #dbe5f5;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 48px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .menu a:hover { background: rgba(255,255,255,.07); }
+
+    .menu a.active {
+      color: #fff;
+      background: linear-gradient(135deg, #1681ff, #1165d9);
+    }
+
+    .menu-icon {
+      width: 20px;
+      text-align: center;
+    }
+
+    .logout-wrap { padding: 20px 12px 28px; }
+
+    .logout-btn {
+      width: 100%;
+      height: 44px;
+      color: #fff;
+      background: rgba(255,255,255,.03);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-width);
+      right: 0;
+      height: var(--topbar-height);
+      background: rgba(255,255,255,.97);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      z-index: 900;
+    }
+
+    .top-title { font-weight: 900; font-size: 17px; }
+    .top-subtitle { margin-top: 4px; font-size: 12px; color: var(--muted); }
+
+    .top-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--yellow);
+      color: #102044;
+      font-weight: 900;
+      overflow: hidden;
+    }
+
+    .top-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .top-user-name { font-size: 13px; font-weight: 800; }
+    .top-user-role { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .main {
+      margin-left: var(--sidebar-width);
+      padding-top: var(--topbar-height);
+    }
+
+    .content {
+      max-width: 1640px;
+      margin: auto;
+      padding: 28px;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 22px;
+    }
+
+    .page-heading h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: -.4px;
+    }
+
+    .page-heading p {
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .page-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .btn {
+      min-height: 42px;
+      border-radius: 10px;
+      border: 0;
+      padding: 0 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .btn-primary { color: #fff; background: var(--blue); }
+    .btn-primary:hover { background: #0868dc; }
+    .btn-secondary { color: var(--text); background: #fff; border: 1px solid var(--border); }
+    .btn-yellow { color: #12213f; background: var(--yellow); }
+
+    .profile-summary {
+      background: linear-gradient(120deg, #071e41 0%, #092a5b 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 24px 26px;
+      display: grid;
+      grid-template-columns: auto 1fr 320px;
+      gap: 22px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .profile-photo-wrap { position: relative; }
+
+    .profile-photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 20px;
+      background: var(--yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b234d;
+      font-weight: 900;
+      font-size: 28px;
+      overflow: hidden;
+      border: 4px solid rgba(255,255,255,.15);
+    }
+
+    .profile-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .photo-upload-label {
+      position: absolute;
+      right: -7px;
+      bottom: -7px;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--navy);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 5px 18px rgba(0,0,0,.23);
+    }
+
+    .photo-upload-label input { display: none; }
+
+    .summary-main h2 { margin: 0; font-size: 22px; }
+
+    .member-line {
+      margin-top: 7px;
+      font-size: 13px;
+      color: #bad0ee;
+    }
+
+    .member-tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: #102047;
+      background: var(--yellow);
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .completion-box {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 15px;
+      padding: 16px;
+    }
+
+    .completion-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 10px;
+      font-size: 12px;
+    }
+
+    .completion-value { font-weight: 900; color: var(--yellow); }
+
+    .progress {
+      height: 8px;
+      background: rgba(255,255,255,.14);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      width: 25%;
+      height: 100%;
+      background: var(--yellow);
+      border-radius: 99px;
+      transition: width .2s;
+    }
+
+    .completion-note {
+      margin-top: 10px;
+      color: #b8cbe4;
+      font-size: 11px;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(500px, 1fr) minmax(480px, .92fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .builder { min-width: 0; }
+    .preview-column { min-width: 0; position: sticky; top: 96px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      margin-bottom: 15px;
+      overflow: hidden;
+    }
+
+    .card-header {
+      min-height: 62px;
+      padding: 16px 19px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-title h3 { margin: 0; font-size: 15px; }
+    .card-title p { margin: 3px 0 0; color: var(--muted); font-size: 11px; }
+    .card-body { padding: 20px; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .field { min-width: 0; }
+    .field.full { grid-column: 1 / -1; }
+
+    .field label {
+      display: block;
+      margin-bottom: 7px;
+      color: #3d4c68;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .required { color: var(--red); }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #dce3ed;
+      border-radius: 9px;
+      background: #fff;
+      color: var(--text);
+      padding: 11px 12px;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 95px;
+      line-height: 1.6;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(22,119,255,.09);
+    }
+
+    input[readonly] {
+      background: #f5f7fb;
+      color: #75839a;
+    }
+
+    .field-hint {
+      margin-top: 5px;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 12px 0;
+      border-bottom: 1px solid #edf0f5;
+    }
+
+    .toggle-row:last-child { border-bottom: 0; }
+    .toggle-title { font-size: 12px; font-weight: 750; }
+    .toggle-note { margin-top: 3px; color: var(--muted); font-size: 10px; }
+
+    .switch {
+      position: relative;
+      width: 42px;
+      height: 23px;
+      flex: 0 0 auto;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      border-radius: 99px;
+      background: #cfd6e0;
+      transition: .2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: .2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    }
+
+    .switch input:checked + .slider { background: var(--blue); }
+    .switch input:checked + .slider::before { transform: translateX(19px); }
+
+    .item {
+      position: relative;
+      padding: 16px;
+      margin-bottom: 12px;
+      background: #f9fbfe;
+      border: 1px solid #e8edf5;
+      border-radius: 12px;
+    }
+
+    .item:last-child { margin-bottom: 0; }
+
+    .item-number {
+      margin-bottom: 13px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--blue);
+    }
+
+    .remove-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 31px;
+      height: 31px;
+      border: 0;
+      border-radius: 8px;
+      background: #fff1f1;
+      color: var(--red);
+    }
+
+    .add-btn {
+      margin-top: 14px;
+      min-height: 39px;
+      border: 1px dashed #8cbaff;
+      border-radius: 9px;
+      padding: 0 14px;
+      background: #f6faff;
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .skills-input-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .skills-input-row input { flex: 1; }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .skill-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #1558a8;
+      background: #eaf3ff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .skill-tag button {
+      border: 0;
+      background: transparent;
+      color: #7793b8;
+      font-weight: 900;
+      padding: 0;
+    }
+
+    .preview-toolbar {
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .preview-toolbar-title { font-weight: 900; font-size: 15px; }
+    .preview-toolbar-subtitle { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    .resume-shell {
+      background: #dfe4ec;
+      padding: 20px;
+      border-radius: 15px;
+      overflow-x: auto;
+    }
+
+    .resume-paper {
+      width: 100%;
+      max-width: 794px;
+      min-height: 1123px;
+      margin: auto;
+      background: white;
+      box-shadow: 0 7px 28px rgba(14,35,69,.13);
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      color: #19223a;
+    }
+
+    .resume-left {
+      background: #08234b;
+      color: #fff;
+      padding: 35px 25px;
+    }
+
+    .resume-photo {
+      width: 128px;
+      height: 128px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--yellow);
+      color: #09224b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 900;
+      border: 5px solid rgba(255,255,255,.15);
+    }
+
+    .resume-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .resume-side-section { margin-top: 27px; }
+
+    .resume-side-title {
+      padding-bottom: 7px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,.2);
+      color: var(--yellow);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    }
+
+    .resume-contact {
+      margin-bottom: 8px;
+      font-size: 10px;
+      line-height: 1.55;
+      color: #dfe9f6;
+      word-break: break-word;
+    }
+
+    .resume-skill {
+      margin: 0 0 7px;
+      font-size: 10px;
+      color: #e5edf8;
+    }
+
+    .resume-main { padding: 47px 37px; }
+
+    .resume-name {
+      margin: 0;
+      color: #09234c;
+      font-size: 29px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .resume-position {
+      margin-top: 7px;
+      color: #3b78c8;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .resume-member-id {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 9px;
+      border-radius: 5px;
+      background: #f0f5fc;
+      color: #596d8b;
+      font-size: 8px;
+      font-weight: 800;
+    }
+
+    .resume-section { margin-top: 30px; }
+
+    .resume-section-title {
+      padding-bottom: 7px;
+      margin-bottom: 13px;
+      border-bottom: 2px solid #102f5e;
+      color: #102f5e;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .7px;
+    }
+
+    .resume-about {
+      margin: 0;
+      font-size: 10px;
+      line-height: 1.75;
+      color: #5b6577;
+      white-space: pre-line;
+    }
+
+    .resume-entry {
+      position: relative;
+      margin-bottom: 16px;
+      padding-left: 15px;
+    }
+
+    .resume-entry::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 5px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #2584e5;
+    }
+
+    .resume-entry-title {
+      font-size: 10px;
+      font-weight: 900;
+      color: #263654;
+    }
+
+    .resume-entry-meta {
+      margin-top: 3px;
+      font-size: 8.5px;
+      color: #748197;
+    }
+
+    .resume-entry-desc {
+      margin-top: 5px;
+      font-size: 9px;
+      line-height: 1.55;
+      color: #657186;
+      white-space: pre-line;
+    }
+
+    .resume-empty {
+      padding: 12px;
+      border: 1px dashed #d7deea;
+      border-radius: 8px;
+      color: #9aa5b6;
+      font-size: 9px;
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      right: 25px;
+      bottom: 25px;
+      z-index: 5000;
+      min-width: 260px;
+      max-width: 400px;
+      padding: 14px 17px;
+      border-radius: 12px;
+      background: #122644;
+      color: white;
+      font-size: 12px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.18);
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+      transition: .25s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1260px) {
+      .workspace { grid-template-columns: 1fr; }
+      .preview-column { position: static; }
+    }
+
+    @media (max-width: 900px) {
+      :root { --sidebar-width: 0px; }
+      .sidebar { display: none; }
+      .topbar { left: 0; }
+      .content { padding: 18px; }
+      .profile-summary { grid-template-columns: auto 1fr; }
+      .completion-box { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 650px) {
+      .page-heading { flex-direction: column; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .profile-summary { grid-template-columns: 1fr; text-align: center; }
+      .profile-photo-wrap { margin: auto; }
+      .resume-shell { padding: 8px; }
+      .resume-paper { min-width: 640px; }
+      .top-user-name, .top-user-role { display: none; }
+    }
+
+    @media print {
+      body * { visibility: hidden !important; }
+
+      #resumePaper,
+      #resumePaper * {
+        visibility: visible !important;
+      }
+
+      #resumePaper {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 210mm !important;
+        min-height: 297mm !important;
+        box-shadow: none !important;
+        margin: 0 !important;
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+
+    <div class="logo-box">
+      <div class="logo">ADTSpreadsheet</div>
+    </div>
+
+    <div class="side-member">
+      <div class="side-avatar" id="sideAvatar">AG</div>
+
+      <div>
+        <div class="side-member-name" id="sideMemberName">สมาชิก ADT</div>
+        <div class="side-member-id" id="sideMemberId">MEM-000001</div>
+      </div>
+    </div>
+
+    <div class="menu-label">MEMBER AREA</div>
+
+    <nav class="menu">
+      <a href="/member/dashboard/">
+        <span class="menu-icon">🏠</span>
+        Dashboard
+      </a>
+
+      <a href="/member/profile/" class="active">
+        <span class="menu-icon">👤</span>
+        โปรไฟล์ของฉัน
+      </a>
+
+      <a href="#">
+        <span class="menu-icon">💻</span>
+        โปรแกรมของฉัน
+      </a>
+
+      <a href="#">
+        <span class="menu-icon">🎓</span>
+        การอบรมของฉัน
+      </a>
+
+      <a href="#">
+        <span class="menu-icon">🏅</span>
+        ใบประกาศ
+      </a>
+    </nav>
+
+    <div class="menu-label">PROFESSIONAL PROFILE</div>
+
+    <nav class="menu">
+      <a href="#resumeBuilder">
+        <span class="menu-icon">📄</span>
+        Resume Builder
+      </a>
+
+      <a href="#portfolioSection">
+        <span class="menu-icon">🗂️</span>
+        Portfolio
+      </a>
+    </nav>
+
+    <div class="menu-label">ACCOUNT</div>
+
+    <nav class="menu">
+      <a href="#">
+        <span class="menu-icon">🎫</span>
+        Support
+      </a>
+
+      <a href="#">
+        <span class="menu-icon">🧾</span>
+        การชำระเงิน
+      </a>
+    </nav>
+
+    <div class="logout-wrap">
+      <button class="logout-btn">ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <header class="topbar">
+    <div>
+      <div class="top-title">โปรไฟล์ของฉัน</div>
+      <div class="top-subtitle">Professional Profile & Resume Builder</div>
+    </div>
+
+    <div class="top-user">
+      <div class="top-avatar" id="topAvatar">AG</div>
+
+      <div>
+        <div class="top-user-name" id="topMemberName">สมาชิก ADT</div>
+        <div class="top-user-role">ADT Professional Member</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="content">
+
+      <section class="page-heading">
+        <div>
+          <h1>Professional Profile</h1>
+          <p>สร้างข้อมูลวิชาชีพของคุณ และนำไปใช้เป็น Resume หรือ Portfolio ได้</p>
+        </div>
+
+        <div class="page-actions">
+          <button type="button" class="btn btn-secondary" id="previewBtn">👁 ดูตัวอย่าง</button>
+          <button type="button" class="btn btn-yellow" id="printBtn">📄 Export PDF</button>
+          <button type="button" class="btn btn-primary" id="saveBtn">💾 บันทึกข้อมูล</button>
+        </div>
+      </section>
+
+      <section class="profile-summary">
+        <div class="profile-photo-wrap">
+          <div class="profile-photo" id="profilePhoto">AG</div>
+
+          <label class="photo-upload-label" title="เปลี่ยนรูปโปรไฟล์">
+            📷
+            <input type="file" id="photoInput" accept="image/*" />
+          </label>
+        </div>
+
+        <div class="summary-main">
+          <h2 id="summaryName">สมาชิก ADTSpreadsheet</h2>
+
+          <div class="member-line">
+            Member ID:
+            <strong id="summaryMemberId">MEM-000001</strong>
+          </div>
+
+          <span class="member-tag">ADT PROFESSIONAL MEMBER</span>
+        </div>
+
+        <div class="completion-box">
+          <div class="completion-top">
+            <span>ความสมบูรณ์ของโปรไฟล์</span>
+            <span class="completion-value" id="completionValue">0%</span>
+          </div>
+
+          <div class="progress">
+            <div class="progress-bar" id="completionBar"></div>
+          </div>
+
+          <div class="completion-note">
+            กรอกข้อมูลให้ครบเพื่อสร้าง Resume ที่สมบูรณ์ยิ่งขึ้น
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace" id="resumeBuilder">
+
+        <div class="builder">
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="card-icon">👤</div>
+
+                <div>
+                  <h3>ข้อมูลส่วนตัว</h3>
+                  <p>Personal Information</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="grid-3">
+                <div class="field">
+                  <label>คำนำหน้า</label>
+
+                  <select id="prefix">
+                    <option value="">เลือก</option>
+                    <option>นาย</option>
+                    <option>นาง</option>
+                    <option>นางสาว</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label>ชื่อ <span class="required">*</span></label>
+                  <input id="firstName" type="text" placeholder="ชื่อ" />
+                </div>
+
+                <div class="field">
+                  <label>นามสกุล <span class="required">*</span></label>
+                  <input id="lastName" type="text" placeholder="นามสกุล" />
+                </div>
+              </div>
+
+              <div class="grid-2" style="margin-top:15px;">
+                <div class="field">
+                  <label>ชื่อที่ต้องการแสดง</label>
+                  <input id="displayName" type="text" placeholder="เช่น อ.เก่ง" />
+                </div>
+
+                <div class="field">
+                  <label>Member ID</label>
+                  <input id="memberId" type="text" value="MEM-000001" readonly />
+                </div>
+
+                <div class="field">
+                  <label>เบอร์โทรศัพท์</label>
+                  <input id="phone" type="tel" placeholder="08x-xxx-xxxx" />
+                </div>
+
+                <div class="field">
+                  <label>อีเมล</label>
+                  <input id="email" type="email" placeholder="example@email.com" />
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="card-icon">🏗️</div>
+
+                <div>
+                  <h3>ข้อมูลวิชาชีพ</h3>
+                  <p>Professional Information</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="grid-2">
+                <div class="field">
+                  <label>วิชาชีพ</label>
+                  <input id="profession" type="text" placeholder="เช่น วิศวกรโยธา" />
+                </div>
+
+                <div class="field">
+                  <label>ตำแหน่ง</label>
+                  <input id="position" type="text" placeholder="เช่น Structural Engineer" />
+                </div>
+
+                <div class="field">
+                  <label>บริษัท / หน่วยงาน</label>
+                  <input id="company" type="text" placeholder="ชื่อบริษัทหรือหน่วยงาน" />
+                </div>
+
+                <div class="field">
+                  <label>สาขาความเชี่ยวชาญ</label>
+                  <input id="specialization" type="text" placeholder="เช่น Structural Design" />
+                </div>
+
+                <div class="field">
+                  <label>ระดับใบอนุญาต</label>
+                  <input id="licenseLevel" type="text" placeholder="เช่น ภาคีวิศวกร" />
+                </div>
+
+                <div class="field">
+                  <label>เลขใบอนุญาตวิชาชีพ</label>
+                  <input id="licenseNo" type="text" placeholder="เช่น ภย.12345" />
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="card-icon">✍️</div>
+
+                <div>
+                  <h3>เกี่ยวกับฉัน</h3>
+                  <p>Professional Summary</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="field">
+                <label>แนะนำตัว / Professional Summary</label>
+
+                <textarea
+                  id="bio"
+                  maxlength="1000"
+                  placeholder="เขียนแนะนำตัว ประสบการณ์ ความเชี่ยวชาญ หรือเป้าหมายในการทำงาน..."
+                ></textarea>
+
+                <div class="field-hint">แนะนำประมาณ 3–5 บรรทัด</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="card-icon">⚙️</div>
+
+                <div>
+                  <h3>ทักษะและความเชี่ยวชาญ</h3>
+                  <p>Skills & Expertise</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="skills-input-row">
+                <input
+                  id="skillInput"
+                  type="text"
+                  placeholder="เช่น AutoCAD, Excel VBA, Structural Design"
+                />
+
+                <button type="button" class="btn btn-primary" id="addSkillBtn">+ เพิ่ม</button>
+              </div>
+
+              <div class="skills-list" id="skillsList"></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="card-icon">💼</div>
+
+                <div>
+                  <h3>ประสบการณ์ทำงาน</h3>
+                  <p>Work Experience</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div id="experienceList"></div>
+
+              <button type="button" class="add-btn" id="addExperienceBtn">
+                + เพิ่มประสบการณ์ทำงาน
+              </button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="card-icon">🎓</div>
+
+                <div>
+                  <h3>การศึกษา</h3>
+                  <p>Education</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div id="educationList"></div>
+
+              <button type="button" class="add-btn" id="addEducationBtn">
+                + เพิ่มประวัติการศึกษา
+              </button>
+            </div>
+          </article>
+
+          <article class="card" id="portfolioSection">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="card-icon">🗂️</div>
+
+                <div>
+                  <h3>ผลงานและโครงการ</h3>
+                  <p>Projects & Portfolio</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div id="projectList"></div>
+
+              <button type="button" class="add-btn" id="addProjectBtn">
+                + เพิ่มผลงาน / โครงการ
+              </button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="card-icon">🔐</div>
+
+                <div>
+                  <h3>การแสดงผลและความเป็นส่วนตัว</h3>
+                  <p>Privacy & Visibility</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body">
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-title">เปิด Professional Profile สาธารณะ</div>
+                  <div class="toggle-note">สมาชิกอื่นสามารถดูหน้า Portfolio ของคุณได้</div>
+                </div>
+
+                <label class="switch">
+                  <input id="publicProfile" type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-title">แสดงเบอร์โทรใน Resume</div>
+                  <div class="toggle-note">สามารถปิดได้โดยข้อมูลต้นฉบับยังคงอยู่</div>
+                </div>
+
+                <label class="switch">
+                  <input id="showPhone" type="checkbox" checked />
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="toggle-row">
+                <div>
+                  <div class="toggle-title">ยินยอมรับข่าวสารจาก ADTSpreadsheet</div>
+                  <div class="toggle-note">ข่าวโปรแกรม การอบรม และกิจกรรมที่เกี่ยวข้อง</div>
+                </div>
+
+                <label class="switch">
+                  <input id="marketingConsent" type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <aside class="preview-column">
+          <div class="preview-toolbar">
+            <div>
+              <div class="preview-toolbar-title">Resume Preview</div>
+              <div class="preview-toolbar-subtitle">ตัวอย่างเอกสาร A4</div>
+            </div>
+
+            <button type="button" class="btn btn-secondary" id="printBtn2">🖨 Print</button>
+          </div>
+
+          <div class="resume-shell">
+            <div class="resume-paper" id="resumePaper">
+
+              <div class="resume-left">
+                <div class="resume-photo" id="resumePhoto">AG</div>
+
+                <section class="resume-side-section">
+                  <div class="resume-side-title">Contact</div>
+
+                  <div class="resume-contact" id="resumePhone">โทรศัพท์: -</div>
+                  <div class="resume-contact" id="resumeEmail">Email: -</div>
+                  <div class="resume-contact" id="resumeCompany">Company: -</div>
+                </section>
+
+                <section class="resume-side-section">
+                  <div class="resume-side-title">Professional</div>
+
+                  <div class="resume-contact" id="resumeProfession">วิชาชีพ: -</div>
+                  <div class="resume-contact" id="resumeSpecialization">ความเชี่ยวชาญ: -</div>
+                  <div class="resume-contact" id="resumeLicense">ใบอนุญาต: -</div>
+                </section>
+
+                <section class="resume-side-section">
+                  <div class="resume-side-title">Skills</div>
+
+                  <div id="resumeSkills">
+                    <div class="resume-contact">ยังไม่ได้เพิ่มทักษะ</div>
+                  </div>
+                </section>
+              </div>
+
+              <div class="resume-main">
+                <h1 class="resume-name" id="resumeName">ชื่อ นามสกุล</h1>
+                <div class="resume-position" id="resumePosition">Professional Member</div>
+                <div class="resume-member-id" id="resumeMemberId">ADT MEMBER · MEM-000001</div>
+
+                <section class="resume-section">
+                  <div class="resume-section-title">PROFESSIONAL SUMMARY</div>
+
+                  <p class="resume-about" id="resumeBio">
+                    เพิ่มข้อมูลแนะนำตัว เพื่อแสดง Professional Summary
+                  </p>
+                </section>
+
+                <section class="resume-section">
+                  <div class="resume-section-title">WORK EXPERIENCE</div>
+
+                  <div id="resumeExperience">
+                    <div class="resume-empty">ยังไม่มีข้อมูลประสบการณ์ทำงาน</div>
+                  </div>
+                </section>
+
+                <section class="resume-section">
+                  <div class="resume-section-title">EDUCATION</div>
+
+                  <div id="resumeEducation">
+                    <div class="resume-empty">ยังไม่มีข้อมูลการศึกษา</div>
+                  </div>
+                </section>
+
+                <section class="resume-section">
+                  <div class="resume-section-title">SELECTED PROJECTS</div>
+
+                  <div id="resumeProjects">
+                    <div class="resume-empty">ยังไม่มีข้อมูลผลงานหรือโครงการ</div>
+                  </div>
+                </section>
+              </div>
+
+            </div>
+          </div>
+        </aside>
+
+      </section>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+
+    const state = {
+      photo: "",
+      skills: [],
+      experiences: [],
+      educations: [],
+      projects: []
+    };
+
+    const basicFields = [
+      "prefix",
+      "firstName",
+      "lastName",
+      "displayName",
+      "memberId",
+      "phone",
+      "email",
+      "profession",
+      "position",
+      "company",
+      "specialization",
+      "licenseLevel",
+      "licenseNo",
+      "bio"
+    ];
+
+    $("#photoInput").addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        showToast("กรุณาเลือกไฟล์รูปภาพ");
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        showToast("ไฟล์รูปต้องไม่เกิน 5 MB");
+        event.target.value = "";
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        state.photo = e.target.result;
+        renderPhoto();
+        calculateCompletion();
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    function renderPhoto() {
+      const containers = [
+        $("#profilePhoto"),
+        $("#resumePhoto"),
+        $("#sideAvatar"),
+        $("#topAvatar")
+      ];
+
+      containers.forEach((container) => {
+        if (state.photo) {
+          container.innerHTML = `<img src="${state.photo}" alt="Profile" />`;
+        } else {
+          container.textContent = "AG";
+        }
+      });
+    }
+
+    basicFields.forEach((id) => {
+      const element = $("#" + id);
+      if (!element) return;
+
+      element.addEventListener("input", () => {
+        updateResume();
+        calculateCompletion();
+      });
+
+      element.addEventListener("change", () => {
+        updateResume();
+        calculateCompletion();
+      });
+    });
+
+    $("#showPhone").addEventListener("change", updateResume);
+
+    $("#addSkillBtn").addEventListener("click", addSkill);
+
+    $("#skillInput").addEventListener("keydown", (event) => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        addSkill();
+      }
+    });
+
+    function addSkill() {
+      const input = $("#skillInput");
+      const value = input.value.trim();
+
+      if (!value) return;
+
+      const exists = state.skills.some(
+        skill => skill.toLowerCase() === value.toLowerCase()
+      );
+
+      if (exists) {
+        showToast("มีทักษะนี้อยู่แล้ว");
+        return;
+      }
+
+      state.skills.push(value);
+      input.value = "";
+
+      renderSkills();
+      updateResume();
+      calculateCompletion();
+    }
+
+    function renderSkills() {
+      const list = $("#skillsList");
+      list.innerHTML = "";
+
+      state.skills.forEach((skill, index) => {
+        const tag = document.createElement("div");
+        tag.className = "skill-tag";
+
+        tag.innerHTML = `
+          <span>${escapeHtml(skill)}</span>
+          <button type="button" title="ลบ">×</button>
+        `;
+
+        tag.querySelector("button").addEventListener("click", () => {
+          state.skills.splice(index, 1);
+          renderSkills();
+          updateResume();
+          calculateCompletion();
+        });
+
+        list.appendChild(tag);
+      });
+    }
+
+    $("#addExperienceBtn").addEventListener("click", () => {
+      state.experiences.push({
+        position: "",
+        company: "",
+        start: "",
+        end: "",
+        description: ""
+      });
+
+      renderExperiences();
+    });
+
+    function renderExperiences() {
+      const container = $("#experienceList");
+      container.innerHTML = "";
+
+      state.experiences.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "item";
+
+        div.innerHTML = `
+          <div class="item-number">EXPERIENCE ${index + 1}</div>
+
+          <button type="button" class="remove-btn" title="ลบ">×</button>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>ตำแหน่ง</label>
+              <input
+                data-field="position"
+                value="${escapeAttribute(item.position)}"
+                placeholder="เช่น Project Engineer"
+              />
+            </div>
+
+            <div class="field">
+              <label>บริษัท / หน่วยงาน</label>
+              <input
+                data-field="company"
+                value="${escapeAttribute(item.company)}"
+                placeholder="ชื่อบริษัท"
+              />
+            </div>
+
+            <div class="field">
+              <label>เริ่ม</label>
+              <input
+                data-field="start"
+                value="${escapeAttribute(item.start)}"
+                placeholder="เช่น 2565"
+              />
+            </div>
+
+            <div class="field">
+              <label>ถึง</label>
+              <input
+                data-field="end"
+                value="${escapeAttribute(item.end)}"
+                placeholder="ปัจจุบัน"
+              />
+            </div>
+
+            <div class="field full">
+              <label>รายละเอียดงาน</label>
+
+              <textarea
+                data-field="description"
+                placeholder="หน้าที่ ความรับผิดชอบ หรือผลงานสำคัญ"
+              >${escapeHtml(item.description)}</textarea>
+            </div>
+          </div>
+        `;
+
+        bindCollectionItem(
+          div,
+          state.experiences,
+          index,
+          renderExperiences
+        );
+
+        container.appendChild(div);
+      });
+
+      updateResume();
+    }
+
+    $("#addEducationBtn").addEventListener("click", () => {
+      state.educations.push({
+        degree: "",
+        institute: "",
+        field: "",
+        year: ""
+      });
+
+      renderEducations();
+    });
+
+    function renderEducations() {
+      const container = $("#educationList");
+      container.innerHTML = "";
+
+      state.educations.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "item";
+
+        div.innerHTML = `
+          <div class="item-number">EDUCATION ${index + 1}</div>
+
+          <button type="button" class="remove-btn" title="ลบ">×</button>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>ระดับการศึกษา</label>
+              <input
+                data-field="degree"
+                value="${escapeAttribute(item.degree)}"
+                placeholder="เช่น วิศวกรรมศาสตรบัณฑิต"
+              />
+            </div>
+
+            <div class="field">
+              <label>สถาบันการศึกษา</label>
+              <input
+                data-field="institute"
+                value="${escapeAttribute(item.institute)}"
+                placeholder="มหาวิทยาลัย"
+              />
+            </div>
+
+            <div class="field">
+              <label>สาขาวิชา</label>
+              <input
+                data-field="field"
+                value="${escapeAttribute(item.field)}"
+                placeholder="เช่น วิศวกรรมโยธา"
+              />
+            </div>
+
+            <div class="field">
+              <label>ปีที่สำเร็จการศึกษา</label>
+              <input
+                data-field="year"
+                value="${escapeAttribute(item.year)}"
+                placeholder="เช่น 2560"
+              />
+            </div>
+          </div>
+        `;
+
+        bindCollectionItem(
+          div,
+          state.educations,
+          index,
+          renderEducations
+        );
+
+        container.appendChild(div);
+      });
+
+      updateResume();
+    }
+
+    $("#addProjectBtn").addEventListener("click", () => {
+      state.projects.push({
+        title: "",
+        role: "",
+        year: "",
+        description: ""
+      });
+
+      renderProjects();
+    });
+
+    function renderProjects() {
+      const container = $("#projectList");
+      container.innerHTML = "";
+
+      state.projects.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "item";
+
+        div.innerHTML = `
+          <div class="item-number">PROJECT ${index + 1}</div>
+
+          <button type="button" class="remove-btn" title="ลบ">×</button>
+
+          <div class="grid-2">
+            <div class="field">
+              <label>ชื่อโครงการ / ผลงาน</label>
+              <input
+                data-field="title"
+                value="${escapeAttribute(item.title)}"
+                placeholder="ชื่อผลงาน"
+              />
+            </div>
+
+            <div class="field">
+              <label>หน้าที่ / Role</label>
+              <input
+                data-field="role"
+                value="${escapeAttribute(item.role)}"
+                placeholder="เช่น วิศวกรผู้ออกแบบ"
+              />
+            </div>
+
+            <div class="field">
+              <label>ปี</label>
+              <input
+                data-field="year"
+                value="${escapeAttribute(item.year)}"
+                placeholder="2569"
+              />
+            </div>
+
+            <div class="field full">
+              <label>รายละเอียด</label>
+
+              <textarea
+                data-field="description"
+                placeholder="รายละเอียดโครงการ ขอบเขตงาน หรือผลงาน"
+              >${escapeHtml(item.description)}</textarea>
+            </div>
+          </div>
+        `;
+
+        bindCollectionItem(
+          div,
+          state.projects,
+          index,
+          renderProjects
+        );
+
+        container.appendChild(div);
+      });
+
+      updateResume();
+    }
+
+    function bindCollectionItem(
+      element,
+      collection,
+      index,
+      renderFunction
+    ) {
+      element.querySelectorAll("[data-field]").forEach((input) => {
+        input.addEventListener("input", () => {
+          const field = input.dataset.field;
+          collection[index][field] = input.value;
+
+          updateResume();
+          calculateCompletion();
+        });
+      });
+
+      element.querySelector(".remove-btn").addEventListener("click", () => {
+        collection.splice(index, 1);
+        renderFunction();
+        calculateCompletion();
+      });
+    }
+
+    function updateResume() {
+      const firstName = $("#firstName").value.trim();
+      const lastName = $("#lastName").value.trim();
+      const displayName = $("#displayName").value.trim();
+
+      const fullName =
+        displayName ||
+        [firstName, lastName].filter(Boolean).join(" ") ||
+        "ชื่อ นามสกุล";
+
+      $("#resumeName").textContent = fullName;
+      $("#summaryName").textContent = fullName;
+      $("#sideMemberName").textContent = fullName;
+      $("#topMemberName").textContent = fullName;
+
+      const memberId = $("#memberId").value || "MEM-000001";
+
+      $("#resumeMemberId").textContent = "ADT MEMBER · " + memberId;
+      $("#summaryMemberId").textContent = memberId;
+      $("#sideMemberId").textContent = memberId;
+
+      const position = $("#position").value.trim();
+      const profession = $("#profession").value.trim();
+
+      $("#resumePosition").textContent =
+        position || profession || "Professional Member";
+
+      const showPhone = $("#showPhone").checked;
+
+      $("#resumePhone").textContent =
+        showPhone
+          ? "โทรศัพท์: " + ($("#phone").value.trim() || "-")
+          : "โทรศัพท์: Private";
+
+      $("#resumeEmail").textContent =
+        "Email: " + ($("#email").value.trim() || "-");
+
+      $("#resumeCompany").textContent =
+        "Company: " + ($("#company").value.trim() || "-");
+
+      $("#resumeProfession").textContent =
+        "วิชาชีพ: " + (profession || "-");
+
+      $("#resumeSpecialization").textContent =
+        "ความเชี่ยวชาญ: " +
+        ($("#specialization").value.trim() || "-");
+
+      const licenseLevel = $("#licenseLevel").value.trim();
+      const licenseNo = $("#licenseNo").value.trim();
+
+      $("#resumeLicense").textContent =
+        "ใบอนุญาต: " +
+        ([licenseLevel, licenseNo].filter(Boolean).join(" · ") || "-");
+
+      $("#resumeBio").textContent =
+        $("#bio").value.trim() ||
+        "เพิ่มข้อมูลแนะนำตัว เพื่อแสดง Professional Summary";
+
+      renderResumeSkills();
+      renderResumeExperience();
+      renderResumeEducation();
+      renderResumeProjects();
+    }
+
+    function renderResumeSkills() {
+      const container = $("#resumeSkills");
+
+      if (!state.skills.length) {
+        container.innerHTML = `
+          <div class="resume-contact">
+            ยังไม่ได้เพิ่มทักษะ
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = state.skills
+        .map(
+          skill => `
+            <div class="resume-skill">
+              • ${escapeHtml(skill)}
+            </div>
+          `
+        )
+        .join("");
+    }
+
+    function renderResumeExperience() {
+      const container = $("#resumeExperience");
+
+      const valid = state.experiences.filter(
+        item =>
+          item.position ||
+          item.company ||
+          item.description
+      );
+
+      if (!valid.length) {
+        container.innerHTML = `
+          <div class="resume-empty">
+            ยังไม่มีข้อมูลประสบการณ์ทำงาน
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = valid
+        .map(item => {
+          const meta = [
+            item.company,
+            [item.start, item.end].filter(Boolean).join(" - ")
+          ]
+          .filter(Boolean)
+          .join(" | ");
+
+          return `
+            <div class="resume-entry">
+              <div class="resume-entry-title">
+                ${escapeHtml(
+                  item.position ||
+                  item.company ||
+                  "Work Experience"
+                )}
+              </div>
+
+              ${
+                meta
+                  ? `
+                  <div class="resume-entry-meta">
+                    ${escapeHtml(meta)}
+                  </div>
+                `
+                  : ""
+              }
+
+              ${
+                item.description
+                  ? `
+                  <div class="resume-entry-desc">
+                    ${escapeHtml(item.description)}
+                  </div>
+                `
+                  : ""
+              }
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function renderResumeEducation() {
+      const container = $("#resumeEducation");
+
+      const valid = state.educations.filter(
+        item =>
+          item.degree ||
+          item.institute ||
+          item.field
+      );
+
+      if (!valid.length) {
+        container.innerHTML = `
+          <div class="resume-empty">
+            ยังไม่มีข้อมูลการศึกษา
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = valid
+        .map(
+          item => `
+            <div class="resume-entry">
+              <div class="resume-entry-title">
+                ${escapeHtml(
+                  item.degree ||
+                  item.field ||
+                  "Education"
+                )}
+              </div>
+
+              <div class="resume-entry-meta">
+                ${escapeHtml(
+                  [
+                    item.institute,
+                    item.field,
+                    item.year
+                  ]
+                  .filter(Boolean)
+                  .join(" | ")
+                )}
+              </div>
+            </div>
+          `
+        )
+        .join("");
+    }
+
+    function renderResumeProjects() {
+      const container = $("#resumeProjects");
+
+      const valid = state.projects.filter(
+        item =>
+          item.title ||
+          item.role ||
+          item.description
+      );
+
+      if (!valid.length) {
+        container.innerHTML = `
+          <div class="resume-empty">
+            ยังไม่มีข้อมูลผลงานหรือโครงการ
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = valid
+        .map(
+          item => `
+            <div class="resume-entry">
+              <div class="resume-entry-title">
+                ${escapeHtml(item.title || "Project")}
+              </div>
+
+              <div class="resume-entry-meta">
+                ${escapeHtml(
+                  [item.role, item.year]
+                  .filter(Boolean)
+                  .join(" | ")
+                )}
+              </div>
+
+              ${
+                item.description
+                  ? `
+                  <div class="resume-entry-desc">
+                    ${escapeHtml(item.description)}
+                  </div>
+                `
+                  : ""
+              }
+            </div>
+          `
+        )
+        .join("");
+    }
+
+    function calculateCompletion() {
+      const checks = [
+        !!state.photo,
+        !!$("#firstName").value.trim(),
+        !!$("#lastName").value.trim(),
+        !!$("#phone").value.trim(),
+        !!$("#email").value.trim(),
+        !!$("#profession").value.trim(),
+        !!$("#position").value.trim(),
+        !!$("#bio").value.trim(),
+        state.skills.length > 0,
+        state.experiences.length > 0,
+        state.educations.length > 0,
+        state.projects.length > 0
+      ];
+
+      const completed = checks.filter(Boolean).length;
+
+      const percent = Math.round(
+        completed / checks.length * 100
+      );
+
+      $("#completionValue").textContent = percent + "%";
+      $("#completionBar").style.width = percent + "%";
+    }
+
+    $("#saveBtn").addEventListener("click", saveProfile);
+
+    function saveProfile() {
+      const profile = {};
+
+      basicFields.forEach((id) => {
+        const el = $("#" + id);
+        if (el) profile[id] = el.value;
+      });
+
+      profile.publicProfile = $("#publicProfile").checked;
+      profile.showPhone = $("#showPhone").checked;
+      profile.marketingConsent = $("#marketingConsent").checked;
+
+      const data = {
+        profile,
+        photo: state.photo,
+        skills: state.skills,
+        experiences: state.experiences,
+        educations: state.educations,
+        projects: state.projects
+      };
+
+      try {
+        localStorage.setItem(
+          "adt_member_profile_draft",
+          JSON.stringify(data)
+        );
+
+        showToast("บันทึก Draft โปรไฟล์เรียบร้อย ✓");
+      } catch (error) {
+        console.error(error);
+        showToast("ไม่สามารถบันทึก Draft ได้");
+      }
+    }
+
+    function loadProfile() {
+      try {
+        const raw = localStorage.getItem(
+          "adt_member_profile_draft"
+        );
+
+        if (!raw) return;
+
+        const data = JSON.parse(raw);
+
+        if (data.profile) {
+          basicFields.forEach((id) => {
+            if (data.profile[id] !== undefined) {
+              const el = $("#" + id);
+
+              if (el) {
+                el.value = data.profile[id];
+              }
+            }
+          });
+
+          $("#publicProfile").checked =
+            !!data.profile.publicProfile;
+
+          $("#showPhone").checked =
+            data.profile.showPhone !== false;
+
+          $("#marketingConsent").checked =
+            !!data.profile.marketingConsent;
+        }
+
+        state.photo = data.photo || "";
+
+        state.skills =
+          Array.isArray(data.skills)
+            ? data.skills
+            : [];
+
+        state.experiences =
+          Array.isArray(data.experiences)
+            ? data.experiences
+            : [];
+
+        state.educations =
+          Array.isArray(data.educations)
+            ? data.educations
+            : [];
+
+        state.projects =
+          Array.isArray(data.projects)
+            ? data.projects
+            : [];
+
+        renderPhoto();
+        renderSkills();
+        renderExperiences();
+        renderEducations();
+        renderProjects();
+        updateResume();
+        calculateCompletion();
+
+      } catch (error) {
+        console.warn(
+          "Load profile draft failed:",
+          error
+        );
+      }
+    }
+
+    $("#previewBtn").addEventListener("click", () => {
+      document
+        .querySelector(".preview-column")
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+    });
+
+    $("#printBtn").addEventListener(
+      "click",
+      () => window.print()
+    );
+
+    $("#printBtn2").addEventListener(
+      "click",
+      () => window.print()
+    );
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function escapeAttribute(value) {
+      return escapeHtml(value);
+    }
+
+    let toastTimer;
+
+    function showToast(message) {
+      const toast = $("#toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+
+      clearTimeout(toastTimer);
+
+      toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2600);
+    }
+
+    loadProfile();
+    updateResume();
+    calculateCompletion();
+  </script>
+</body>
+</html>
