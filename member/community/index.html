@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADT Community | ADTSpreadsheet</title>
+<meta name="description" content="พื้นที่แลกเปลี่ยนความรู้ ถามตอบ และ Live Group Chat สำหรับสมาชิก ADTSpreadsheet">
+<link rel="icon" type="image/png" href="/assets/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --navy:#06152d;
+  --navy-2:#0a2855;
+  --blue:#1677ff;
+  --blue-soft:#eaf3ff;
+  --yellow:#ffc928;
+  --green:#17b26a;
+  --red:#ef3d48;
+  --orange:#f79009;
+  --purple:#7a5af8;
+  --ink:#142033;
+  --muted:#6c7a90;
+  --line:#dce5ef;
+  --surface:#f4f7fb;
+  --white:#ffffff;
+  --sidebar:280px;
+  --shadow:0 16px 42px rgba(4,27,60,.10);
+  --radius:22px;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Prompt",sans-serif;
+  color:var(--ink);
+  background:var(--surface);
+}
+button,input,textarea,select{font:inherit}
+a{color:inherit}
+img{display:block;max-width:100%}
+.app{min-height:100vh}
+
+/* =========================================================
+   MEMBER SYSTEM SHELL — SAME AS DASHBOARD
+========================================================= */
+
+.sidebar{
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:1000;
+  width:var(--sidebar);
+  display:flex;
+  flex-direction:column;
+  color:#fff;
+  background:
+    radial-gradient(circle at 20% 5%,rgba(22,119,255,.28),transparent 28%),
+    linear-gradient(180deg,#06152d,#031025);
+  border-right:1px solid rgba(255,255,255,.08);
+}
+.sidebar-head{
+  min-height:92px;
+  display:flex;
+  align-items:center;
+  padding:18px 22px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.sidebar-logo{
+  width:220px;
+  max-height:56px;
+  object-fit:contain;
+  object-position:left center;
+}
+.member-mini{
+  margin:18px;
+  padding:17px;
+  display:grid;
+  grid-template-columns:52px 1fr;
+  gap:12px;
+  align-items:center;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.11);
+}
+.member-mini-avatar{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:50%;
+  color:var(--navy);
+  background:var(--yellow);
+  font-weight:800;
+}
+.member-mini strong{display:block;font-size:.93rem}
+.member-mini span{
+  display:block;
+  margin-top:3px;
+  color:#bcd0e7;
+  font-size:.73rem;
+}
+.sidebar-nav{
+  padding:4px 14px 22px;
+  display:grid;
+  gap:7px;
+  overflow:auto;
+}
+.nav-group{
+  padding:15px 12px 5px;
+  color:#7896b7;
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.nav-link{
+  position:relative;
+  min-height:48px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-radius:13px;
+  text-decoration:none;
+  color:#d8e6f5;
+  font-size:.88rem;
+  font-weight:600;
+  transition:.2s;
+}
+.nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-link.active{
+  color:#fff;
+  background:linear-gradient(135deg,var(--blue),#0d5fd1);
+  box-shadow:0 10px 26px rgba(22,119,255,.28);
+}
+.nav-icon{
+  width:24px;
+  text-align:center;
+  font-size:1.05rem;
+}
+.nav-badge{
+  margin-left:auto;
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  color:#fff;
+  background:var(--red);
+  font:800 .64rem "Inter";
+}
+.sidebar-foot{
+  margin-top:auto;
+  padding:15px 18px 20px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.logout-btn{
+  width:100%;
+  min-height:44px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:12px;
+  color:#fff;
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+}
+
+.main{
+  margin-left:var(--sidebar);
+  min-height:100vh;
+}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:900;
+  min-height:76px;
+  padding:0 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.mobile-menu{
+  display:none;
+  width:44px;
+  height:44px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  cursor:pointer;
+}
+.topbar-title strong{display:block;color:var(--navy);font-size:1.05rem}
+.topbar-title span{display:block;margin-top:2px;color:var(--muted);font-size:.75rem}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.icon-btn{
+  position:relative;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:12px;
+  color:var(--navy);
+  background:#fff;
+  cursor:pointer;
+}
+.notification-dot{
+  position:absolute;
+  right:8px;
+  top:7px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--red);
+}
+.profile-chip{
+  padding:6px 10px 6px 7px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+}
+.profile-chip-avatar{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:50%;
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.78rem;
+  font-weight:800;
+}
+.profile-chip strong{display:block;font-size:.78rem}
+.profile-chip span{display:block;color:var(--muted);font-size:.66rem}
+
+.content{
+  width:min(1480px,calc(100% - 48px));
+  margin:auto;
+  padding:30px 0 56px;
+}
+
+/* =========================================================
+   COMMUNITY PAGE
+========================================================= */
+
+.page-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+}
+.page-head h1{
+  margin:0;
+  color:var(--navy);
+  font-size:1.65rem;
+}
+.page-head p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:.84rem;
+}
+.page-actions{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+}
+.btn{
+  min-height:44px;
+  padding:0 16px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:0;
+  border-radius:12px;
+  font-size:.75rem;
+  font-weight:800;
+  cursor:pointer;
+}
+.btn-white{
+  color:var(--navy);
+  background:#fff;
+  border:1px solid var(--line);
+}
+.btn-blue{
+  color:#fff;
+  background:var(--blue);
+}
+.btn-purple{
+  color:#fff;
+  background:var(--purple);
+}
+
+.community-stats{
+  margin-top:22px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+.stat-card{
+  padding:19px 20px;
+  min-height:108px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  border-radius:var(--radius);
+  background:#fff;
+  border:1px solid #e6edf5;
+  box-shadow:var(--shadow);
+}
+.stat-icon{
+  flex:0 0 50px;
+  width:50px;
+  height:50px;
+  display:grid;
+  place-items:center;
+  border-radius:15px;
+  background:var(--blue-soft);
+  font-size:1.2rem;
+}
+.stat-card:nth-child(2) .stat-icon{background:#eefbf5}
+.stat-card:nth-child(3) .stat-icon{background:#f1edff}
+.stat-card:nth-child(4) .stat-icon{background:#fff5d8}
+.stat-card span{display:block;color:var(--muted);font-size:.68rem}
+.stat-card strong{
+  display:block;
+  margin-top:3px;
+  color:var(--navy);
+  font:800 1.32rem "Inter";
+}
+.stat-card small{
+  display:block;
+  margin-top:3px;
+  color:#93a0b2;
+  font-size:.62rem;
+}
+
+.community-layout{
+  margin-top:22px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 380px;
+  gap:22px;
+  align-items:start;
+}
+
+.feed-panel,
+.side-panel,
+.chat-panel{
+  border-radius:var(--radius);
+  background:#fff;
+  border:1px solid #e6edf5;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.panel-head{
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  border-bottom:1px solid var(--line);
+}
+.panel-head h2{
+  margin:0;
+  color:var(--navy);
+  font-size:1rem;
+}
+.panel-head p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:.7rem;
+}
+.feed-tabs{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.tab-btn{
+  min-height:34px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  color:#66758a;
+  background:#fff;
+  font-size:.68rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.tab-btn.active{
+  color:#fff;
+  background:var(--blue);
+  border-color:var(--blue);
+}
+
+.composer{
+  margin:18px;
+  padding:14px;
+  display:flex;
+  gap:12px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:#f9fbfd;
+}
+.avatar{
+  flex:0 0 42px;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:50%;
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.72rem;
+  font-weight:800;
+}
+.composer-main{flex:1;min-width:0}
+.composer-box{
+  width:100%;
+  min-height:44px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  border:1px solid #e0e7ef;
+  border-radius:13px;
+  color:#8a97a8;
+  background:#fff;
+  cursor:text;
+  font-size:.73rem;
+}
+.composer-tools{
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+.tool-group{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.tool-btn{
+  min-height:32px;
+  padding:0 10px;
+  border:0;
+  border-radius:9px;
+  color:#5f6f85;
+  background:#eef3f8;
+  font-size:.65rem;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.post{
+  padding:19px 20px;
+  border-top:1px solid #edf1f5;
+}
+.post:first-of-type{border-top:0}
+.post-head{
+  display:flex;
+  gap:11px;
+  align-items:flex-start;
+}
+.post-meta{
+  flex:1;
+  min-width:0;
+}
+.post-meta strong{
+  color:var(--navy);
+  font-size:.78rem;
+}
+.post-meta span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.64rem;
+}
+.badge{
+  display:inline-flex !important;
+  width:auto;
+  margin-top:5px !important;
+  padding:4px 7px;
+  border-radius:999px;
+  color:#1766c2 !important;
+  background:#eaf3ff;
+  font-size:.57rem !important;
+  font-weight:800;
+}
+.post-menu{
+  border:0;
+  background:transparent;
+  color:#8e9aaa;
+  cursor:pointer;
+}
+.post h3{
+  margin:14px 0 0;
+  color:var(--navy);
+  font-size:.93rem;
+}
+.post p{
+  margin:8px 0 0;
+  color:#4f5f74;
+  font-size:.75rem;
+  line-height:1.75;
+}
+.post-tag{
+  margin-top:11px;
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.tag{
+  padding:5px 8px;
+  border-radius:999px;
+  color:#1766c2;
+  background:#f0f6ff;
+  font-size:.59rem;
+  font-weight:700;
+}
+.post-metrics{
+  margin-top:14px;
+  padding-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-top:1px solid #eef2f6;
+}
+.metrics-left{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.metric-btn{
+  min-height:34px;
+  padding:0 10px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:0;
+  border-radius:10px;
+  color:#607086;
+  background:#f5f7fa;
+  font-size:.64rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.metric-btn.liked{
+  color:#d93645;
+  background:#fff0f2;
+}
+.views{
+  color:#8d99a9;
+  font-size:.62rem;
+}
+
+.right-stack{
+  display:grid;
+  gap:18px;
+}
+.side-body{
+  padding:16px 18px 18px;
+}
+.trending-list,
+.member-list,
+.qa-list{
+  display:grid;
+  gap:10px;
+}
+.trending-item,
+.qa-item{
+  padding:12px;
+  border-radius:13px;
+  background:#f8fafc;
+}
+.trending-item strong,
+.qa-item strong{
+  display:block;
+  color:var(--navy);
+  font-size:.7rem;
+  line-height:1.45;
+}
+.trending-item span,
+.qa-item span{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:.6rem;
+}
+.member-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.member-avatar{
+  position:relative;
+  flex:0 0 38px;
+  width:38px;
+  height:38px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#eaf3ff;
+  color:#174f91;
+  font-size:.64rem;
+  font-weight:800;
+}
+.online-dot{
+  position:absolute;
+  right:-1px;
+  bottom:0;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  border:2px solid #fff;
+  background:var(--green);
+}
+.member-row strong{
+  display:block;
+  color:var(--navy);
+  font-size:.69rem;
+}
+.member-row span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.59rem;
+}
+
+.chat-panel{
+  margin-top:22px;
+}
+.chat-layout{
+  display:grid;
+  grid-template-columns:240px 1fr;
+  min-height:560px;
+}
+.chat-rooms{
+  border-right:1px solid var(--line);
+  background:#f8fafc;
+}
+.chat-room-head{
+  padding:16px;
+  border-bottom:1px solid var(--line);
+}
+.chat-room-head strong{
+  color:var(--navy);
+  font-size:.75rem;
+}
+.room-list{
+  padding:10px;
+  display:grid;
+  gap:6px;
+}
+.room-btn{
+  width:100%;
+  min-height:48px;
+  padding:8px 10px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border:0;
+  border-radius:11px;
+  text-align:left;
+  color:#52627a;
+  background:transparent;
+  cursor:pointer;
+}
+.room-btn:hover,
+.room-btn.active{
+  color:var(--navy);
+  background:#fff;
+}
+.room-icon{
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:#eaf3ff;
+}
+.room-text{
+  flex:1;
+  min-width:0;
+}
+.room-text strong{
+  display:block;
+  font-size:.66rem;
+}
+.room-text span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.56rem;
+}
+.room-unread{
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  color:#fff;
+  background:var(--red);
+  font:800 .56rem "Inter";
+}
+
+.chat-main{
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  min-width:0;
+}
+.chat-head{
+  min-height:68px;
+  padding:12px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-bottom:1px solid var(--line);
+}
+.chat-title strong{
+  display:block;
+  color:var(--navy);
+  font-size:.78rem;
+}
+.chat-title span{
+  display:block;
+  margin-top:2px;
+  color:var(--green);
+  font-size:.6rem;
+}
+.chat-controls{
+  display:flex;
+  gap:7px;
+}
+.control-btn{
+  min-height:34px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:#5f6f85;
+  background:#fff;
+  font-size:.62rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.control-btn.active{
+  color:#087443;
+  background:#effaf5;
+  border-color:#cdeedd;
+}
+.chat-messages{
+  height:430px;
+  padding:18px;
+  overflow:auto;
+  background:
+    radial-gradient(circle at 90% 20%,rgba(22,119,255,.04),transparent 25%),
+    #fcfdff;
+}
+.message-row{
+  margin-bottom:14px;
+  display:flex;
+  gap:9px;
+  align-items:flex-end;
+}
+.message-row.mine{
+  justify-content:flex-end;
+}
+.message-row.mine .message-avatar{
+  display:none;
+}
+.message-avatar{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#edf3f9;
+  color:#315272;
+  font-size:.57rem;
+  font-weight:800;
+}
+.message-content{
+  max-width:72%;
+}
+.message-name{
+  margin-bottom:4px;
+  color:#7a8797;
+  font-size:.57rem;
+}
+.bubble{
+  padding:10px 12px;
+  border-radius:14px 14px 14px 4px;
+  color:#435268;
+  background:#eef3f8;
+  font-size:.68rem;
+  line-height:1.55;
+}
+.mine .bubble{
+  color:#fff;
+  background:linear-gradient(135deg,var(--blue),#0e63d9);
+  border-radius:14px 14px 4px 14px;
+}
+.message-time{
+  margin-top:3px;
+  color:#99a4b2;
+  font-size:.52rem;
+}
+.mine .message-time{text-align:right}
+
+.chat-compose{
+  padding:12px 14px;
+  display:grid;
+  grid-template-columns:auto 1fr auto auto;
+  gap:8px;
+  border-top:1px solid var(--line);
+  background:#fff;
+}
+.chat-tool{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  cursor:pointer;
+}
+.chat-input{
+  width:100%;
+  height:40px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  outline:none;
+}
+.chat-input:focus{
+  border-color:#9bc9ff;
+  box-shadow:0 0 0 4px rgba(22,119,255,.07);
+}
+.send-btn{
+  width:46px;
+  height:40px;
+  border:0;
+  border-radius:10px;
+  color:#fff;
+  background:var(--blue);
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* notification popover */
+.notify-menu{
+  position:fixed;
+  right:155px;
+  top:68px;
+  z-index:2500;
+  width:340px;
+  display:none;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 20px 60px rgba(3,16,37,.20);
+  overflow:hidden;
+}
+.notify-menu.show{display:block}
+.notify-head{
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+}
+.notify-head strong{
+  color:var(--navy);
+  font-size:.75rem;
+}
+.notify-head button{
+  border:0;
+  color:var(--blue);
+  background:transparent;
+  font-size:.6rem;
+  cursor:pointer;
+}
+.notify-item{
+  padding:12px 14px;
+  display:flex;
+  gap:10px;
+  border-bottom:1px solid #eef2f6;
+  background:#fff;
+}
+.notify-item.unread{background:#f5f9ff}
+.notify-icon{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:#eaf3ff;
+}
+.notify-item strong{
+  display:block;
+  color:var(--navy);
+  font-size:.65rem;
+}
+.notify-item span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:.57rem;
+  line-height:1.45;
+}
+
+/* create post modal */
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:3000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(3,16,37,.60);
+}
+.modal-backdrop.show{display:flex}
+.modal{
+  width:min(620px,100%);
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 30px 80px rgba(3,16,37,.25);
+  overflow:hidden;
+}
+.modal-head{
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+}
+.modal-head h3{
+  margin:0;
+  color:var(--navy);
+  font-size:.92rem;
+}
+.modal-close{
+  width:36px;
+  height:36px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  cursor:pointer;
+}
+.modal-body{
+  padding:20px;
+}
+.field{margin-bottom:13px}
+.field label{
+  display:block;
+  margin-bottom:6px;
+  color:var(--navy);
+  font-size:.68rem;
+  font-weight:700;
+}
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  outline:none;
+}
+.field input,
+.field select{
+  height:42px;
+  padding:0 11px;
+}
+.field textarea{
+  min-height:120px;
+  padding:11px;
+  resize:vertical;
+}
+.modal-foot{
+  padding:14px 20px 20px;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+/* responsive */
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:950;
+  display:none;
+  background:rgba(3,16,37,.58);
+}
+@media(max-width:1180px){
+  .community-stats{grid-template-columns:repeat(2,1fr)}
+  .community-layout{grid-template-columns:1fr}
+}
+@media(max-width:920px){
+  .sidebar{
+    transform:translateX(-100%);
+    transition:.25s;
+  }
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .main{margin-left:0}
+  .mobile-menu{display:grid;place-items:center}
+  .chat-layout{grid-template-columns:200px 1fr}
+}
+@media(max-width:700px){
+  .topbar{padding:0 14px}
+  .profile-chip-text{display:none}
+  .content{width:min(100% - 24px,1480px);padding-top:18px}
+  .page-head{align-items:flex-start;flex-direction:column}
+  .page-actions{width:100%}
+  .page-actions .btn{flex:1}
+  .community-stats{grid-template-columns:1fr}
+  .chat-layout{grid-template-columns:1fr}
+  .chat-rooms{display:none}
+  .message-content{max-width:86%}
+  .chat-compose{grid-template-columns:auto 1fr auto}
+  .chat-tool.attach{display:none}
+  .notify-menu{
+    right:12px;
+    left:12px;
+    top:70px;
+    width:auto;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <a href="/" aria-label="ADTSpreadsheet หน้าแรก">
+        <img class="sidebar-logo"
+             src="/assets/images/logo-header.png"
+             onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
+             alt="ADTSpreadsheet">
+      </a>
+    </div>
+
+    <div class="member-mini">
+      <div class="member-mini-avatar" id="miniAvatar">AG</div>
+      <div>
+        <strong id="miniName">ชื่อ นามสกุล</strong>
+        <span id="miniMemberId">MEM-000001</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="เมนูสมาชิก">
+      <div class="nav-group">MEMBER AREA</div>
+      <a class="nav-link" href="/member/dashboard/"><span class="nav-icon">🏠</span>Dashboard</a>
+      <a class="nav-link" href="/member/programs/"><span class="nav-icon">💻</span>โปรแกรมของฉัน</a>
+      <a class="nav-link" href="/member/training/"><span class="nav-icon">🎓</span>การอบรมของฉัน</a>
+      <a class="nav-link" href="/member/certificates/"><span class="nav-icon">🏅</span>ใบประกาศ</a>
+
+      <div class="nav-group">KNOWLEDGE</div>
+      <a class="nav-link" href="/articles/"><span class="nav-icon">📰</span>บทความวิศวกรรม</a>
+      <a class="nav-link" href="/member/knowledge/"><span class="nav-icon">📚</span>Knowledge Center</a>
+      <a class="nav-link active" href="/member/community/">
+        <span class="nav-icon">💬</span>
+        Community
+        <span class="nav-badge" id="communityBadge">3</span>
+      </a>
+
+      <div class="nav-group">ACCOUNT</div>
+      <a class="nav-link" href="/member/support/"><span class="nav-icon">🎫</span>Support</a>
+      <a class="nav-link" href="/member/payments/"><span class="nav-icon">🧾</span>การชำระเงิน</a>
+      <a class="nav-link" href="/member/profile/"><span class="nav-icon">👤</span>โปรไฟล์ของฉัน</a>
+      <a class="nav-link" href="/member/settings/"><span class="nav-icon">⚙️</span>ตั้งค่า</a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button class="logout-btn" id="logoutButton" type="button">ออกจากระบบ</button>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">☰</button>
+        <div class="topbar-title">
+          <strong>ADT Community</strong>
+          <span>พื้นที่แลกเปลี่ยนความรู้ ถามตอบ และพูดคุยของสมาชิก ADT</span>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" id="notificationBtn" type="button" aria-label="การแจ้งเตือน">
+          🔔
+          <span class="notification-dot" id="notificationDot"></span>
+        </button>
+
+        <div class="profile-chip">
+          <div class="profile-chip-avatar" id="topAvatar">AG</div>
+          <div class="profile-chip-text">
+            <strong id="topName">ชื่อ นามสกุล</strong>
+            <span>ADT Professional Member</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <section class="page-head">
+        <div>
+          <h1>Community</h1>
+          <p>ถาม แชร์ คุย แลกเปลี่ยนประสบการณ์ และติดตามสิ่งที่กำลังเกิดขึ้นใน ADT Community</p>
+        </div>
+
+        <div class="page-actions">
+          <button class="btn btn-white" id="soundBtn" type="button">🔊 เสียงแจ้งเตือน: เปิด</button>
+          <button class="btn btn-purple" id="jumpChatBtn" type="button">💬 Live Group Chat</button>
+          <button class="btn btn-blue" id="createPostBtn" type="button">＋ สร้างโพสต์</button>
+        </div>
+      </section>
+
+      <section class="community-stats">
+        <article class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div>
+            <span>สมาชิกใน Community</span>
+            <strong>286</strong>
+            <small>Frontend Demo</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">🟢</div>
+          <div>
+            <span>ออนไลน์ตอนนี้</span>
+            <strong>18</strong>
+            <small>สถานะ Realtime จะเชื่อมภายหลัง</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">💬</div>
+          <div>
+            <span>ข้อความที่ยังไม่ได้อ่าน</span>
+            <strong id="unreadStat">3</strong>
+            <small>รวม Live Chat และ Mention</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div>
+            <span>หัวข้อกำลังพูดถึง</span>
+            <strong>7</strong>
+            <small>จากโพสต์และ Q&A ล่าสุด</small>
+          </div>
+        </article>
+      </section>
+
+      <section class="community-layout">
+
+        <article class="feed-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Community Feed</h2>
+              <p>โพสต์ล่าสุด คำถาม และการแชร์ความรู้จากสมาชิก</p>
+            </div>
+
+            <div class="feed-tabs">
+              <button class="tab-btn active" type="button" data-feed="all">ทั้งหมด</button>
+              <button class="tab-btn" type="button" data-feed="qa">Q&A</button>
+              <button class="tab-btn" type="button" data-feed="article">บทความ</button>
+              <button class="tab-btn" type="button" data-feed="project">ผลงาน</button>
+            </div>
+          </div>
+
+          <div class="composer">
+            <div class="avatar" id="composerAvatar">AG</div>
+
+            <div class="composer-main">
+              <button class="composer-box" id="composerOpen" type="button">
+                แชร์ความรู้ ตั้งคำถาม หรือเล่าอะไรให้ Community ฟัง...
+              </button>
+
+              <div class="composer-tools">
+                <div class="tool-group">
+                  <button class="tool-btn" type="button">🖼 รูปภาพ</button>
+                  <button class="tool-btn" type="button">📎 ไฟล์</button>
+                  <button class="tool-btn" type="button">🏷 หมวดหมู่</button>
+                </div>
+
+                <button class="tool-btn" id="quickAskBtn" type="button">❓ ตั้งคำถาม</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="feedList">
+
+            <article class="post" data-type="qa">
+              <div class="post-head">
+                <div class="avatar">NS</div>
+
+                <div class="post-meta">
+                  <strong>นที ศรีวัฒน์</strong>
+                  <span>วิศวกรโยธา · 12 นาทีที่แล้ว</span>
+                  <span class="badge">Q&A</span>
+                </div>
+
+                <button class="post-menu" type="button">•••</button>
+              </div>
+
+              <h3>กรณีเสาเข็มอยู่นอก Critical Perimeter ต้องพิจารณา Punching Shear อย่างไรครับ?</h3>
+              <p>
+                กำลังตรวจฐานรากเสาเข็มเยื้องศูนย์ แล้วมีบางต้นอยู่นอกแนว Critical Perimeter
+                อยากทราบว่าปกติพี่ ๆ ใช้แนวคิดไหนในการตัดสินว่ากรณีไหน Governing ครับ
+              </p>
+
+              <div class="post-tag">
+                <span class="tag">#Foundation</span>
+                <span class="tag">#PunchingShear</span>
+                <span class="tag">#Structural</span>
+              </div>
+
+              <div class="post-metrics">
+                <div class="metrics-left">
+                  <button class="metric-btn like-btn" type="button">👍 <span>14</span></button>
+                  <button class="metric-btn" type="button">💬 8 คำตอบ</button>
+                  <button class="metric-btn" type="button">🔖 บันทึก</button>
+                </div>
+
+                <span class="views">👁 128 views</span>
+              </div>
+            </article>
+
+            <article class="post" data-type="article">
+              <div class="post-head">
+                <div class="avatar">KP</div>
+
+                <div class="post-meta">
+                  <strong>กิตติพงษ์ พรหมชัย</strong>
+                  <span>Structural Engineer · 38 นาทีที่แล้ว</span>
+                  <span class="badge">บทความ</span>
+                </div>
+
+                <button class="post-menu" type="button">•••</button>
+              </div>
+
+              <h3>แชร์เทคนิคจัด Load Combination ในงานตรวจสอบโครงสร้างอาคารเดิม</h3>
+              <p>
+                สรุป Workflow ที่ผมใช้แยก Existing Load / Proposed Load ก่อนนำไปตรวจสอบกำลังรับน้ำหนัก
+                เผื่อเป็นแนวทางสำหรับคนที่ทำงาน Renovation ครับ
+              </p>
+
+              <div class="post-tag">
+                <span class="tag">#Renovation</span>
+                <span class="tag">#LoadCombination</span>
+              </div>
+
+              <div class="post-metrics">
+                <div class="metrics-left">
+                  <button class="metric-btn like-btn" type="button">👍 <span>26</span></button>
+                  <button class="metric-btn" type="button">💬 5 ความคิดเห็น</button>
+                  <button class="metric-btn" type="button">🔖 บันทึก</button>
+                </div>
+
+                <span class="views">👁 241 views</span>
+              </div>
+            </article>
+
+            <article class="post" data-type="project">
+              <div class="post-head">
+                <div class="avatar">PK</div>
+
+                <div class="post-meta">
+                  <strong>ภาคิน คงดี</strong>
+                  <span>ADT Member · 1 ชั่วโมงที่แล้ว</span>
+                  <span class="badge">ผลงาน</span>
+                </div>
+
+                <button class="post-menu" type="button">•••</button>
+              </div>
+
+              <h3>ลองใช้ ADT-PILEFiX เช็กฐาน F2 งานล่าสุดครับ</h3>
+              <p>
+                เอาผลคำนวณมาเทียบกับ Spreadsheet ที่ใช้อยู่เดิม ค่า Reaction ใกล้กันมาก
+                แต่ชอบตรงแสดงตำแหน่ง CG และ Punching Line ให้ดูเร็วขึ้นครับ
+              </p>
+
+              <div class="post-tag">
+                <span class="tag">#ADTPILEFiX</span>
+                <span class="tag">#PileFoundation</span>
+              </div>
+
+              <div class="post-metrics">
+                <div class="metrics-left">
+                  <button class="metric-btn like-btn" type="button">👍 <span>19</span></button>
+                  <button class="metric-btn" type="button">💬 11 ความคิดเห็น</button>
+                  <button class="metric-btn" type="button">🔖 บันทึก</button>
+                </div>
+
+                <span class="views">👁 195 views</span>
+              </div>
+            </article>
+
+          </div>
+        </article>
+
+        <aside class="right-stack">
+
+          <article class="side-panel">
+            <div class="panel-head">
+              <div>
+                <h2>🔥 กำลังพูดถึง</h2>
+                <p>หัวข้อที่มีคนอ่านและตอบเยอะ</p>
+              </div>
+            </div>
+
+            <div class="side-body">
+              <div class="trending-list">
+                <div class="trending-item">
+                  <strong>#PunchingShear</strong>
+                  <span>24 โพสต์ · 1.8K views</span>
+                </div>
+
+                <div class="trending-item">
+                  <strong>#ADTPILEFiX</strong>
+                  <span>18 โพสต์ · 1.2K views</span>
+                </div>
+
+                <div class="trending-item">
+                  <strong>#Renovation</strong>
+                  <span>11 โพสต์ · 640 views</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="side-panel">
+            <div class="panel-head">
+              <div>
+                <h2>🟢 สมาชิกออนไลน์</h2>
+                <p>ตัวอย่างสถานะ Online</p>
+              </div>
+            </div>
+
+            <div class="side-body">
+              <div class="member-list">
+                <div class="member-row">
+                  <div class="member-avatar">NS<span class="online-dot"></span></div>
+                  <div>
+                    <strong>นที ศรีวัฒน์</strong>
+                    <span>วิศวกรโยธา</span>
+                  </div>
+                </div>
+
+                <div class="member-row">
+                  <div class="member-avatar">KP<span class="online-dot"></span></div>
+                  <div>
+                    <strong>กิตติพงษ์ พรหมชัย</strong>
+                    <span>Structural Engineer</span>
+                  </div>
+                </div>
+
+                <div class="member-row">
+                  <div class="member-avatar">PK<span class="online-dot"></span></div>
+                  <div>
+                    <strong>ภาคิน คงดี</strong>
+                    <span>ADT Member</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="side-panel">
+            <div class="panel-head">
+              <div>
+                <h2>❓ คำถามล่าสุด</h2>
+                <p>Q&A ที่ยังรอคำตอบ</p>
+              </div>
+            </div>
+
+            <div class="side-body">
+              <div class="qa-list">
+                <div class="qa-item">
+                  <strong>แรงเยื้องศูนย์ในฐาน F1 ควรตั้ง Reference ที่จุดไหน?</strong>
+                  <span>0 คำตอบ · 9 นาที</span>
+                </div>
+
+                <div class="qa-item">
+                  <strong>การเลือกค่า SDL งานครัวในอาคารเดิม</strong>
+                  <span>2 คำตอบ · 21 นาที</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
+        </aside>
+
+      </section>
+
+      <section class="chat-panel" id="liveChat">
+        <div class="panel-head">
+          <div>
+            <h2>💬 Community Live Group Chat</h2>
+            <p>Frontend Demo — Realtime จริงจะเชื่อมในขั้น Backend</p>
+          </div>
+        </div>
+
+        <div class="chat-layout">
+
+          <aside class="chat-rooms">
+            <div class="chat-room-head">
+              <strong>ห้องสนทนา</strong>
+            </div>
+
+            <div class="room-list">
+              <button class="room-btn active" type="button">
+                <span class="room-icon">💬</span>
+                <span class="room-text">
+                  <strong>ADT Community</strong>
+                  <span>ห้องพูดคุยทั่วไป</span>
+                </span>
+                <span class="room-unread" id="roomUnread">3</span>
+              </button>
+
+              <button class="room-btn" type="button">
+                <span class="room-icon">🏗️</span>
+                <span class="room-text">
+                  <strong>Structural Talk</strong>
+                  <span>โครงสร้างและฐานราก</span>
+                </span>
+              </button>
+
+              <button class="room-btn" type="button">
+                <span class="room-icon">💻</span>
+                <span class="room-text">
+                  <strong>ADT Software Users</strong>
+                  <span>แลกเปลี่ยนการใช้งาน</span>
+                </span>
+              </button>
+            </div>
+          </aside>
+
+          <div class="chat-main">
+
+            <div class="chat-head">
+              <div class="chat-title">
+                <strong># ADT Community</strong>
+                <span>● 18 คนออนไลน์</span>
+              </div>
+
+              <div class="chat-controls">
+                <button class="control-btn active" id="chatSoundBtn" type="button">🔊 Sound On</button>
+                <button class="control-btn" id="mentionModeBtn" type="button">@ Mention</button>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+
+              <div class="message-row">
+                <div class="message-avatar">NS</div>
+                <div class="message-content">
+                  <div class="message-name">นที</div>
+                  <div class="bubble">มีใครเคยใช้ PILEFiX กับฐานที่เสาเข็มเยื้องเยอะ ๆ ไหมครับ</div>
+                  <div class="message-time">11:08</div>
+                </div>
+              </div>
+
+              <div class="message-row">
+                <div class="message-avatar">KP</div>
+                <div class="message-content">
+                  <div class="message-name">กิตติพงษ์</div>
+                  <div class="bubble">เคยครับ ผมใช้ดู Reaction ก่อน แล้วค่อยเช็ก Punching ต่อครับ</div>
+                  <div class="message-time">11:09</div>
+                </div>
+              </div>
+
+              <div class="message-row mine">
+                <div class="message-content">
+                  <div class="bubble">เดี๋ยวผมลองเทียบกับไฟล์คำนวณเดิมดูครับ 😆</div>
+                  <div class="message-time">11:10</div>
+                </div>
+              </div>
+
+              <div class="message-row">
+                <div class="message-avatar">PK</div>
+                <div class="message-content">
+                  <div class="message-name">ภาคิน</div>
+                  <div class="bubble">@AG ถ้าได้ผลยังไงมาแชร์ด้วยนะครับ</div>
+                  <div class="message-time">11:11</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="chat-compose">
+              <button class="chat-tool attach" type="button">📎</button>
+              <input class="chat-input" id="chatInput" type="text" placeholder="พิมพ์ข้อความ... ใช้ @ เพื่อ Mention สมาชิก">
+              <button class="chat-tool" id="emojiBtn" type="button">🙂</button>
+              <button class="send-btn" id="sendBtn" type="button">➤</button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- Notification -->
+<div class="notify-menu" id="notifyMenu">
+  <div class="notify-head">
+    <strong>การแจ้งเตือน</strong>
+    <button id="markAllReadBtn" type="button">อ่านทั้งหมด</button>
+  </div>
+
+  <div class="notify-item unread">
+    <div class="notify-icon">💬</div>
+    <div>
+      <strong>ภาคิน Mention คุณใน Live Chat</strong>
+      <span>“@AG ถ้าได้ผลยังไงมาแชร์ด้วยนะครับ” · 2 นาที</span>
+    </div>
+  </div>
+
+  <div class="notify-item unread">
+    <div class="notify-icon">👍</div>
+    <div>
+      <strong>มีคนกดถูกใจโพสต์ของคุณ</strong>
+      <span>โพสต์เรื่อง ADT-PILEFiX · 8 นาที</span>
+    </div>
+  </div>
+
+  <div class="notify-item unread">
+    <div class="notify-icon">💡</div>
+    <div>
+      <strong>มีคำตอบใหม่ในกระทู้ที่คุณติดตาม</strong>
+      <span>หัวข้อ Punching Shear · 15 นาที</span>
+    </div>
+  </div>
+</div>
+
+<!-- Create Post Modal -->
+<div class="modal-backdrop" id="postModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>สร้างโพสต์ใหม่</h3>
+      <button class="modal-close" id="postModalClose" type="button">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="field">
+        <label>ประเภทโพสต์</label>
+        <select id="postType">
+          <option value="qa">Q&A / ตั้งคำถาม</option>
+          <option value="article">แชร์ความรู้ / บทความ</option>
+          <option value="project">แชร์ผลงาน</option>
+          <option value="general">พูดคุยทั่วไป</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>หัวข้อ</label>
+        <input id="postTitle" type="text" placeholder="เขียนหัวข้อโพสต์">
+      </div>
+
+      <div class="field">
+        <label>รายละเอียด</label>
+        <textarea id="postBody" placeholder="เขียนรายละเอียดที่ต้องการแชร์..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Tag</label>
+        <input id="postTags" type="text" placeholder="เช่น Foundation, Structural, ADTPILEFiX">
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn btn-white" id="cancelPostBtn" type="button">ยกเลิก</button>
+      <button class="btn btn-blue" id="submitPostBtn" type="button">โพสต์</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+
+let soundEnabled = true;
+let unreadCount = 3;
+
+/* =========================================================
+   MEMBER SESSION
+========================================================= */
+
+function getStoredMember(){
+  const storages = [localStorage,sessionStorage];
+
+  for(const storage of storages){
+    try{
+      const raw = storage.getItem("adt_member_profile");
+      if(raw) return JSON.parse(raw);
+    }catch(error){}
+  }
+
+  return null;
+}
+
+function applyMemberHeader(){
+  const member = getStoredMember();
+  if(!member) return;
+
+  const fullName =
+    member.display_name ||
+    member.full_name ||
+    [member.first_name,member.last_name].filter(Boolean).join(" ") ||
+    member.name ||
+    "สมาชิก ADT";
+
+  const memberId =
+    member.member_no ||
+    member.member_id ||
+    member.member_code ||
+    "MEM-000001";
+
+  $("#miniName").textContent = fullName;
+  $("#miniMemberId").textContent = memberId;
+  $("#topName").textContent = fullName;
+
+  const initials = fullName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(word => word.charAt(0))
+    .join("")
+    .toUpperCase() || "AG";
+
+  $("#miniAvatar").textContent = initials;
+  $("#topAvatar").textContent = initials;
+  $("#composerAvatar").textContent = initials;
+}
+
+/* =========================================================
+   NOTIFICATION / SOUND
+========================================================= */
+
+function updateUnreadUI(){
+  $("#communityBadge").textContent = unreadCount;
+  $("#roomUnread").textContent = unreadCount;
+  $("#unreadStat").textContent = unreadCount;
+
+  const visible = unreadCount > 0;
+  $("#communityBadge").style.display = visible ? "grid" : "none";
+  $("#roomUnread").style.display = visible ? "grid" : "none";
+  $("#notificationDot").style.display = visible ? "block" : "none";
+}
+
+function playNotificationSound(){
+  if(!soundEnabled) return;
+
+  try{
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.frequency.setValueAtTime(880, ctx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + .12);
+
+    gain.gain.setValueAtTime(.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.12, ctx.currentTime + .01);
+    gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .16);
+
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + .17);
+  }catch(error){
+    console.warn("Sound unavailable:",error);
+  }
+}
+
+function setSound(enabled){
+  soundEnabled = enabled;
+
+  $("#soundBtn").textContent =
+    enabled
+      ? "🔊 เสียงแจ้งเตือน: เปิด"
+      : "🔇 เสียงแจ้งเตือน: ปิด";
+
+  $("#chatSoundBtn").textContent =
+    enabled
+      ? "🔊 Sound On"
+      : "🔇 Sound Off";
+
+  $("#chatSoundBtn").classList.toggle("active",enabled);
+}
+
+$("#soundBtn").addEventListener("click",()=>{
+  setSound(!soundEnabled);
+});
+
+$("#chatSoundBtn").addEventListener("click",()=>{
+  setSound(!soundEnabled);
+});
+
+$("#notificationBtn").addEventListener("click",()=>{
+  $("#notifyMenu").classList.toggle("show");
+});
+
+$("#markAllReadBtn").addEventListener("click",()=>{
+  unreadCount = 0;
+  updateUnreadUI();
+  $$(".notify-item").forEach(item=>item.classList.remove("unread"));
+  $("#notifyMenu").classList.remove("show");
+});
+
+/* =========================================================
+   FEED FILTER
+========================================================= */
+
+$$(".tab-btn").forEach(button=>{
+  button.addEventListener("click",()=>{
+    $$(".tab-btn").forEach(btn=>btn.classList.remove("active"));
+    button.classList.add("active");
+
+    const filter = button.dataset.feed;
+
+    $$("#feedList .post").forEach(post=>{
+      post.style.display =
+        filter === "all" || post.dataset.type === filter
+          ? ""
+          : "none";
+    });
+  });
+});
+
+/* LIKE */
+$$(".like-btn").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const countEl = button.querySelector("span");
+    let count = Number(countEl.textContent || "0");
+
+    if(button.classList.toggle("liked")){
+      count++;
+    }else{
+      count--;
+    }
+
+    countEl.textContent = count;
+  });
+});
+
+/* =========================================================
+   CREATE POST MODAL
+========================================================= */
+
+function openPostModal(type){
+  $("#postModal").classList.add("show");
+
+  if(type){
+    $("#postType").value = type;
+  }
+}
+
+function closePostModal(){
+  $("#postModal").classList.remove("show");
+}
+
+$("#createPostBtn").addEventListener("click",()=>openPostModal());
+$("#composerOpen").addEventListener("click",()=>openPostModal());
+$("#quickAskBtn").addEventListener("click",()=>openPostModal("qa"));
+$("#postModalClose").addEventListener("click",closePostModal);
+$("#cancelPostBtn").addEventListener("click",closePostModal);
+
+$("#submitPostBtn").addEventListener("click",()=>{
+  const title = $("#postTitle").value.trim();
+  const body = $("#postBody").value.trim();
+
+  if(!title || !body){
+    alert("กรุณากรอกหัวข้อและรายละเอียดก่อนโพสต์");
+    return;
+  }
+
+  alert("Frontend Demo: ขั้น Backend จะบันทึกโพสต์นี้ผูกกับ Member ID ของผู้ใช้งาน");
+  closePostModal();
+});
+
+/* =========================================================
+   LIVE CHAT DEMO
+========================================================= */
+
+$("#jumpChatBtn").addEventListener("click",()=>{
+  $("#liveChat").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+  unreadCount = 0;
+  updateUnreadUI();
+});
+
+$("#emojiBtn").addEventListener("click",()=>{
+  $("#chatInput").value += " 😆";
+  $("#chatInput").focus();
+});
+
+function sendMessage(){
+  const input = $("#chatInput");
+  const value = input.value.trim();
+
+  if(!value) return;
+
+  const row = document.createElement("div");
+  row.className = "message-row mine";
+
+  const now = new Date();
+  const time = now.toLocaleTimeString("th-TH",{
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+
+  row.innerHTML = `
+    <div class="message-content">
+      <div class="bubble">${escapeHtml(value)}</div>
+      <div class="message-time">${time}</div>
+    </div>
+  `;
+
+  $("#chatMessages").appendChild(row);
+  $("#chatMessages").scrollTop = $("#chatMessages").scrollHeight;
+  input.value = "";
+
+  setTimeout(()=>{
+    simulateReply();
+  },700);
+}
+
+function simulateReply(){
+  const row = document.createElement("div");
+  row.className = "message-row";
+
+  row.innerHTML = `
+    <div class="message-avatar">NS</div>
+    <div class="message-content">
+      <div class="message-name">นที</div>
+      <div class="bubble">โอเคครับ เดี๋ยวตามดูผลครับ 😄</div>
+      <div class="message-time">เมื่อสักครู่</div>
+    </div>
+  `;
+
+  $("#chatMessages").appendChild(row);
+  $("#chatMessages").scrollTop = $("#chatMessages").scrollHeight;
+
+  unreadCount++;
+  updateUnreadUI();
+  playNotificationSound();
+}
+
+$("#sendBtn").addEventListener("click",sendMessage);
+
+$("#chatInput").addEventListener("keydown",event=>{
+  if(event.key === "Enter"){
+    event.preventDefault();
+    sendMessage();
+  }
+});
+
+$("#mentionModeBtn").addEventListener("click",()=>{
+  $("#chatInput").value += "@";
+  $("#chatInput").focus();
+});
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar = $("#sidebar");
+const overlay = $("#overlay");
+const mobileMenu = $("#mobileMenu");
+
+mobileMenu.addEventListener("click",()=>{
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("show");
+});
+
+overlay.addEventListener("click",()=>{
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+});
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+$("#logoutButton").addEventListener("click",()=>{
+  [
+    "adt_access_token",
+    "adt_refresh_token",
+    "adt_token_expires_at",
+    "adt_member_profile"
+  ].forEach(key=>{
+    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
+  });
+
+  window.location.href="/member/";
+});
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+applyMemberHeader();
+setSound(true);
+updateUnreadUI();
+</script>
+</body>
+</html>
