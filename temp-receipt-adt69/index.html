@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Temporary Receipt | ADTSpreadsheet</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="icon" type="image/png" href="/assets/images/favicon.png">
+<style>
+body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#f4f7fb;color:#142033}
+*{box-sizing:border-box}
+.page{max-width:1450px;margin:auto;padding:24px}
+.topbar,.panel{background:#fff;border:1px solid #dce5ef;border-radius:18px;box-shadow:0 16px 42px rgba(4,27,60,.10)}
+.topbar{padding:18px 20px;margin-bottom:20px;display:flex;justify-content:space-between;gap:15px;align-items:center}
+.topbar h1{margin:0;color:#06152d;font-size:22px}.topbar p{margin:5px 0 0;color:#6c7a90;font-size:13px}
+.badge{padding:7px 10px;border-radius:999px;background:#fff4cf;border:1px solid #f7d772;color:#8a5600;font-size:11px;font-weight:700}
+.workspace{display:grid;grid-template-columns:minmax(430px,.8fr) minmax(700px,1.2fr);gap:22px;align-items:start}
+.panel{overflow:hidden}.panel-head{padding:17px 20px;border-bottom:1px solid #dce5ef}.panel-head strong{display:block;color:#06152d}.panel-head span{display:block;margin-top:4px;color:#6c7a90;font-size:11px}
+.form-body{padding:20px}.section-title{margin:18px 0 10px;padding-bottom:7px;border-bottom:1px solid #edf1f5;color:#06152d;font-size:12px;font-weight:800}.section-title:first-child{margin-top:0}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{margin-bottom:12px}.full{grid-column:1/-1}
+label{display:block;margin-bottom:6px;color:#40506a;font-size:11px;font-weight:700}
+input,select,textarea{width:100%;border:1px solid #dce5ef;border-radius:10px;font:inherit;color:#142033;background:#fff;outline:none}
+input,select{height:42px;padding:0 11px}textarea{min-height:78px;padding:10px 11px;resize:vertical}
+.actions{margin-top:18px;display:flex;gap:9px;flex-wrap:wrap}.btn{min-height:42px;padding:0 15px;border:0;border-radius:11px;font-weight:800;cursor:pointer}.blue{color:#fff;background:#1677ff}.green{color:#fff;background:#17b26a}.gray{background:#eef2f6;color:#142033}
+.preview-stage{padding:18px;overflow:auto;background:#e9eef5}
+.receipt-paper{width:210mm;min-height:297mm;margin:auto;padding:15mm 14mm;background:#fff;color:#111827;box-shadow:0 8px 30px rgba(15,23,42,.13)}
+.receipt-head{display:grid;grid-template-columns:1fr auto;gap:20px;padding-bottom:14px;border-bottom:2px solid #0a2855}
+.company{display:flex;gap:14px;align-items:flex-start}.company img{width:90px;max-height:70px;object-fit:contain}.company strong{display:block;color:#06152d;font-size:15px}.company p{margin:5px 0 0;font-size:9px;line-height:1.65;color:#475569}
+.doc-title{text-align:right}.doc-title h2{margin:0;color:#06152d;font-size:20px;line-height:1.25}.doc-title p{margin:8px 0 0;font-size:9px;line-height:1.7;color:#475569}
+.receipt-info{margin-top:14px;padding:11px 12px;border:1px solid #dbe3ed;border-radius:8px;font-size:9px;line-height:1.8}.info-row{display:grid;grid-template-columns:135px 1fr;gap:8px}
+table{width:100%;margin-top:14px;border-collapse:collapse;font-size:9px}th{padding:8px 6px;border:1px solid #cbd5e1;color:#fff;background:#0a2855;text-align:center}td{padding:9px 6px;border:1px solid #cbd5e1;vertical-align:top}.center{text-align:center}.right{text-align:right}
+.summary{width:45%;margin:12px 0 0 auto;font-size:9px}.sumrow{display:grid;grid-template-columns:1fr auto;gap:10px;padding:6px 0;border-bottom:1px solid #e2e8f0}.grand{font-size:11px;font-weight:800;border-bottom:2px solid #06152d}
+.note{margin-top:12px;min-height:52px;padding:9px;border:1px solid #dbe3ed;font-size:8.5px;line-height:1.65}
+.signatures{margin-top:38px;display:grid;grid-template-columns:1fr 1fr;gap:60px;text-align:center;font-size:9px}.sign-line{width:150px;margin:42px auto 7px;border-top:1px dotted #64748b}
+.person,.company-fields{display:none}
+@media(max-width:1180px){.workspace{grid-template-columns:1fr}}
+@media print{body{background:#fff}.topbar,.form-panel,.preview-panel>.panel-head{display:none!important}.page{max-width:none;padding:0}.workspace{display:block}.preview-panel{border:0;box-shadow:none}.preview-stage{padding:0;background:#fff}.receipt-paper{box-shadow:none;margin:0}@page{size:A4;margin:0}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="topbar"><div><h1>ออกใบเสร็จรับเงินชั่วคราว</h1><p>กรอกข้อมูล → Preview → Print / Save as PDF โดยไม่บันทึกฐานข้อมูล</p></div><span class="badge">TEMPORARY</span></div>
+<div class="workspace">
+
+<section class="panel form-panel">
+<div class="panel-head"><strong>ข้อมูลใบเสร็จรับเงิน</strong><span>ไม่ต้องแนบสลิป ใช้สำหรับออกใบเสร็จชั่วคราว</span></div>
+<div class="form-body">
+<div class="section-title">1. ข้อมูลเอกสาร</div>
+<div class="grid-2">
+<div class="field"><label>เลขที่ใบเสร็จ</label><input id="receiptNo" value="ADT-RC-260824-001"></div>
+<div class="field"><label>วันที่ออกใบเสร็จ</label><input id="receiptDate" type="date"></div>
+</div>
+
+<div class="section-title">2. ข้อมูลผู้รับใบเสร็จ</div>
+<div class="field"><label>ประเภทผู้รับ</label><select id="customerType"><option value="company">นิติบุคคล / บริษัท</option><option value="person">บุคคลธรรมดา</option></select></div>
+
+<div class="company-fields">
+<div class="field"><label>ชื่อบริษัท / นิติบุคคล</label><input id="companyName" placeholder="บริษัท ตัวอย่าง จำกัด"></div>
+<div class="grid-2">
+<div class="field"><label>เลขประจำตัวผู้เสียภาษี</label><input id="companyTaxId" placeholder="0-0000-00000-00-0"></div>
+<div class="field"><label>สาขา</label><input id="branch" value="สำนักงานใหญ่"></div>
+</div>
+<div class="field"><label>ผู้ติดต่อ</label><input id="companyContact"></div>
+</div>
+
+<div class="person">
+<div class="field"><label>ชื่อ-นามสกุล</label><input id="personName" placeholder="นาย/นาง/นางสาว ..."></div>
+<div class="field"><label>เลขบัตรประชาชน / Tax ID (ถ้ามี)</label><input id="personTaxId"></div>
+</div>
+
+<div class="field"><label>ที่อยู่</label><textarea id="customerAddress"></textarea></div>
+<div class="grid-2">
+<div class="field"><label>โทรศัพท์</label><input id="customerPhone"></div>
+<div class="field"><label>อีเมล</label><input id="customerEmail" type="email"></div>
+</div>
+
+<div class="section-title">3. รายการรับเงิน</div>
+<div class="field"><label>สินค้า / โปรแกรม</label><input id="description" value="ค่าลิขสิทธิ์โปรแกรม ADT-PILEFiX Professional 1.0"></div>
+<div class="grid-2">
+<div class="field"><label>จำนวน</label><input id="qty" type="number" min="1" value="1"></div>
+<div class="field"><label>ราคา/หน่วย (บาท)</label><input id="unitPrice" type="number" step="0.01" value="4999"></div>
+</div>
+<div class="grid-2">
+<div class="field"><label>ส่วนลด (บาท)</label><input id="discount" type="number" step="0.01" value="0"></div>
+<div class="field"><label>ช่องทางรับชำระ</label><select id="paymentMethod"><option>โอนเงินผ่านธนาคาร</option><option>QR Payment</option><option>เงินสด</option><option>อื่น ๆ</option></select></div>
+</div>
+<div class="field"><label>หมายเหตุ</label><textarea id="note"></textarea></div>
+
+<div class="actions">
+<button class="btn blue" type="button" onclick="renderReceipt()">อัปเดตตัวอย่าง</button>
+<button class="btn green" type="button" onclick="window.print()">Print / Save PDF</button>
+<button class="btn gray" type="button" onclick="clearForm()">ล้างข้อมูล</button>
+</div>
+</div>
+</section>
+
+<section class="panel preview-panel">
+<div class="panel-head"><strong>Live Preview — ใบเสร็จรับเงิน</strong><span>A4 พร้อม Print / Save PDF</span></div>
+<div class="preview-stage"><div id="receiptPreview"></div></div>
+</section>
+
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+const money=v=>Number(v||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2});
+function today(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
+function dateTH(v){if(!v)return"-";const [y,m,d]=v.split("-");return d+"/"+m+"/"+(Number(y)+543)}
+function customer(){
+ if($("customerType").value==="company") return {name:$("companyName").value||"-",tax:$("companyTaxId").value||"-",branch:$("branch").value||"-",contact:$("companyContact").value||"-"};
+ return {name:$("personName").value||"-",tax:$("personTaxId").value||"-",branch:"-",contact:"-"};
+}
+function toggleType(){
+ const co=$("customerType").value==="company";
+ document.querySelectorAll(".company-fields").forEach(x=>x.style.display=co?"block":"none");
+ document.querySelectorAll(".person").forEach(x=>x.style.display=co?"none":"block");
+ renderReceipt();
+}
+function renderReceipt(){
+ const c=customer(),qty=Number($("qty").value||0),price=Number($("unitPrice").value||0),disc=Number($("discount").value||0),sub=qty*price,total=Math.max(0,sub-disc);
+ $("receiptPreview").innerHTML=`
+ <div class="receipt-paper">
+  <div class="receipt-head">
+   <div class="company"><img src="/assets/images/adt-company-logo.png" onerror="this.onerror=null;this.src='/assets/images/logo-header.png';"><div><strong>บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด</strong><p>428 หมู่ 1 ต.พบพระ อ.พบพระ จ.ตาก 63160<br>เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>โทร. : 092-6191220 &nbsp; e-mail : 2531kaeng@gmail.com</p></div></div>
+   <div class="doc-title"><h2>ใบเสร็จรับเงิน<br>RECEIPT</h2><p>Receipt No. : <strong>${esc($("receiptNo").value||"-")}</strong><br>Receipt Date : <strong>${esc(dateTH($("receiptDate").value))}</strong></p></div>
+  </div>
+  <div class="receipt-info">
+   <div class="info-row"><strong>ลูกค้า / Customer :</strong><span>${esc(c.name)}</span></div>
+   <div class="info-row"><strong>ที่อยู่ / Address :</strong><span>${esc($("customerAddress").value||"-")}</span></div>
+   <div class="info-row"><strong>เลขประจำตัวผู้เสียภาษี / Tax ID :</strong><span>${esc(c.tax)} ${$("customerType").value==="company"?"&nbsp;&nbsp; สาขา : "+esc(c.branch):""}</span></div>
+   <div class="info-row"><strong>ผู้ติดต่อ / Attention :</strong><span>${esc(c.contact)}</span></div>
+   <div class="info-row"><strong>Tel / e-mail :</strong><span>${esc($("customerPhone").value||"-")} &nbsp;&nbsp; ${esc($("customerEmail").value||"-")}</span></div>
+  </div>
+  <table><thead><tr><th style="width:9%">No.</th><th>Description</th><th style="width:12%">Qty</th><th style="width:17%">Unit Price</th><th style="width:17%">Amount</th></tr></thead><tbody><tr><td class="center">1</td><td>${esc($("description").value||"-")}</td><td class="center">${qty}</td><td class="right">${money(price)}</td><td class="right">${money(sub)}</td></tr></tbody></table>
+  <div class="summary">
+   <div class="sumrow"><span>Subtotal</span><strong>${money(sub)}</strong></div>
+   <div class="sumrow"><span>Discount</span><strong>${money(disc)}</strong></div>
+   <div class="sumrow grand"><span>Total Received</span><strong>${money(total)} บาท</strong></div>
+  </div>
+  <div class="note"><strong>ช่องทางรับชำระ :</strong> ${esc($("paymentMethod").value)}<br><br><strong>หมายเหตุ :</strong> ${esc($("note").value||"-")}</div>
+  <div class="signatures"><div><div class="sign-line"></div>ผู้ชำระเงิน / Payer<br>วันที่ ........................................</div><div><div class="sign-line"></div>ผู้รับเงิน / Receiver<br>บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด</div></div>
+ </div>`;
+}
+function clearForm(){if(!confirm("ล้างข้อมูลทั้งหมดหรือไม่?"))return;location.reload()}
+$("receiptDate").value=today();
+$("customerType").addEventListener("change",toggleType);
+["receiptNo","receiptDate","companyName","companyTaxId","branch","companyContact","personName","personTaxId","customerAddress","customerPhone","customerEmail","description","qty","unitPrice","discount","paymentMethod","note"].forEach(id=>{$(id).addEventListener("input",renderReceipt);$(id).addEventListener("change",renderReceipt)});
+toggleType();
+</script>
+</body>
+</html>
