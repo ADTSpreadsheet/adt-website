@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>โปรไฟล์ของฉัน | ADTSpreadsheet</title>
+<link rel="icon" type="image/png" href="/assets/images/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 
   <style>
     :root {
@@ -860,129 +865,525 @@
         margin: 0;
       }
     }
-  </style>
+  
+/* =========================================================
+   MEMBER SYSTEM SHELL — EXACTLY MATCH DASHBOARD TEMPLATE
+   DO NOT MODIFY PER PAGE
+========================================================= */
+
+:root{
+  --navy:#06152d;
+  --navy-2:#0a2855;
+  --blue:#1677ff;
+  --blue-soft:#eaf3ff;
+  --yellow:#ffc928;
+  --green:#17b26a;
+  --red:#ef3d48;
+  --ink:#142033;
+  --muted:#6c7a90;
+  --line:#dce5ef;
+  --surface:#f4f7fb;
+  --white:#ffffff;
+  --sidebar:280px;
+  --shadow:0 16px 42px rgba(4,27,60,.10);
+  --radius:22px;
+
+  --resume-primary:#08234b;
+  --resume-accent:#ffc62f;
+  --resume-heading:#102f5e;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0 !important;
+  font-family:"Prompt",sans-serif !important;
+  color:var(--ink) !important;
+  background:var(--surface) !important;
+}
+button,input,textarea,select{font:inherit}
+a{color:inherit}
+img{display:block;max-width:100%}
+
+.app{min-height:100vh}
+
+/* SIDEBAR — copied from Dashboard */
+.sidebar{
+  position:fixed !important;
+  inset:0 auto 0 0 !important;
+  z-index:1000 !important;
+  width:var(--sidebar) !important;
+  display:flex !important;
+  flex-direction:column !important;
+  padding:0 !important;
+  color:#fff !important;
+  background:
+    radial-gradient(circle at 20% 5%,rgba(22,119,255,.28),transparent 28%),
+    linear-gradient(180deg,#06152d,#031025) !important;
+  border-right:1px solid rgba(255,255,255,.08) !important;
+  overflow:hidden !important;
+}
+
+.sidebar-head{
+  min-height:92px !important;
+  height:auto !important;
+  display:flex !important;
+  align-items:center !important;
+  padding:18px 22px !important;
+  margin:0 !important;
+  border-bottom:1px solid rgba(255,255,255,.08) !important;
+}
+
+.sidebar-logo{
+  width:220px !important;
+  max-height:56px !important;
+  object-fit:contain !important;
+  object-position:left center !important;
+}
+
+.member-mini{
+  margin:18px !important;
+  padding:17px !important;
+  min-height:0 !important;
+  display:grid !important;
+  grid-template-columns:52px 1fr !important;
+  gap:12px !important;
+  align-items:center !important;
+  border-radius:18px !important;
+  background:rgba(255,255,255,.08) !important;
+  border:1px solid rgba(255,255,255,.11) !important;
+}
+
+.member-mini-avatar{
+  width:52px !important;
+  height:52px !important;
+  min-width:52px !important;
+  display:grid !important;
+  place-items:center !important;
+  overflow:hidden !important;
+  border-radius:50% !important;
+  color:var(--navy) !important;
+  background:var(--yellow) !important;
+  font-weight:800 !important;
+}
+
+.member-mini-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.member-mini strong{
+  display:block !important;
+  font-size:.93rem !important;
+  line-height:1.35 !important;
+}
+
+.member-mini span{
+  display:block !important;
+  margin-top:3px !important;
+  color:#bcd0e7 !important;
+  font-size:.73rem !important;
+}
+
+.sidebar-nav{
+  padding:4px 14px 22px !important;
+  margin:0 !important;
+  display:grid !important;
+  gap:7px !important;
+  overflow:auto !important;
+}
+
+.nav-group{
+  padding:15px 12px 5px !important;
+  margin:0 !important;
+  color:#7896b7 !important;
+  font-size:.68rem !important;
+  font-weight:800 !important;
+  letter-spacing:.12em !important;
+}
+
+.nav-link{
+  min-height:48px !important;
+  height:auto !important;
+  padding:0 14px !important;
+  margin:0 !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:12px !important;
+  border-radius:13px !important;
+  text-decoration:none !important;
+  color:#d8e6f5 !important;
+  font-size:.88rem !important;
+  font-weight:600 !important;
+  line-height:1.35 !important;
+  transition:.2s !important;
+}
+
+.nav-link:hover{
+  background:rgba(255,255,255,.08) !important;
+  color:#fff !important;
+}
+
+.nav-link.active{
+  color:#fff !important;
+  background:linear-gradient(135deg,var(--blue),#0d5fd1) !important;
+  box-shadow:0 10px 26px rgba(22,119,255,.28) !important;
+}
+
+.nav-icon{
+  width:24px !important;
+  min-width:24px !important;
+  height:auto !important;
+  display:inline !important;
+  text-align:center !important;
+  font-size:1.05rem !important;
+  line-height:normal !important;
+}
+
+.sidebar-foot{
+  margin-top:auto !important;
+  padding:15px 18px 20px !important;
+  border-top:1px solid rgba(255,255,255,.08) !important;
+}
+
+.logout-btn{
+  width:100% !important;
+  min-height:44px !important;
+  height:auto !important;
+  margin:0 !important;
+  border:1px solid rgba(255,255,255,.16) !important;
+  border-radius:12px !important;
+  color:#fff !important;
+  background:rgba(255,255,255,.06) !important;
+  cursor:pointer !important;
+}
+
+/* MAIN — copied from Dashboard */
+.main{
+  margin-left:var(--sidebar) !important;
+  padding-top:0 !important;
+  min-height:100vh !important;
+}
+
+.topbar{
+  position:sticky !important;
+  top:0 !important;
+  left:auto !important;
+  right:auto !important;
+  z-index:900 !important;
+  min-height:76px !important;
+  height:auto !important;
+  padding:0 32px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  gap:20px !important;
+  background:rgba(255,255,255,.94) !important;
+  backdrop-filter:blur(16px) !important;
+  border-bottom:1px solid var(--line) !important;
+}
+
+.mobile-menu{
+  display:none;
+  width:44px;
+  height:44px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  cursor:pointer;
+}
+
+.topbar-title strong{
+  display:block;
+  color:var(--navy);
+  font-size:1.05rem;
+}
+
+.topbar-title span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.75rem;
+}
+
+.topbar-actions{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.icon-btn{
+  position:relative;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:12px;
+  color:var(--navy);
+  background:#fff;
+  cursor:pointer;
+}
+
+.notification-dot{
+  position:absolute;
+  right:8px;
+  top:7px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--red);
+}
+
+.profile-chip{
+  padding:6px 10px 6px 7px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+}
+
+.profile-chip-avatar{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:50%;
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.78rem;
+  font-weight:800;
+}
+
+.profile-chip-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profile-chip strong{
+  display:block;
+  font-size:.78rem;
+}
+
+.profile-chip span{
+  display:block;
+  color:var(--muted);
+  font-size:.66rem;
+}
+
+.content{
+  width:min(1480px,calc(100% - 48px)) !important;
+  max-width:none !important;
+  margin:auto !important;
+  padding:30px 0 56px !important;
+}
+
+/* mobile behavior copied from Dashboard */
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:950;
+  display:none;
+  background:rgba(3,16,37,.58);
+}
+
+@media(max-width:920px){
+  :root{--sidebar:280px}
+
+  .sidebar{
+    transform:translateX(-100%);
+    transition:.25s;
+  }
+
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .main{margin-left:0 !important}
+  .mobile-menu{display:grid;place-items:center}
+}
+
+@media(max-width:700px){
+  .topbar{padding:0 14px !important}
+  .profile-chip-text{display:none}
+  .content{
+    width:min(100% - 24px,1480px) !important;
+    padding-top:18px !important;
+  }
+}
+
+
+/* =========================================================
+   PROFILE PAGE — RIGHT SIDE ONLY
+   Left navigation/topbar remain Dashboard standard
+========================================================= */
+
+.page-heading{
+  margin:0 0 22px;
+}
+
+.page-heading h1{
+  margin:0;
+  color:var(--navy);
+  font-size:1.55rem;
+  line-height:1.25;
+  letter-spacing:0;
+}
+
+.page-heading p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:.82rem;
+}
+
+.page-actions .btn{
+  min-height:44px;
+  border-radius:12px;
+  font-size:.78rem;
+}
+
+.profile-summary{
+  border-radius:24px;
+  box-shadow:var(--shadow);
+}
+
+.workspace{
+  gap:22px;
+}
+
+.card{
+  border-radius:var(--radius);
+  border:1px solid #e6edf5;
+  box-shadow:var(--shadow);
+}
+
+.card-header{
+  min-height:68px;
+  padding:15px 18px;
+}
+
+.card-title h3{
+  color:var(--navy);
+  font-size:.92rem;
+}
+
+.card-title p{
+  font-size:.69rem;
+}
+
+.card-body{
+  padding:20px;
+}
+
+.field label{
+  color:var(--navy);
+  font-size:.75rem;
+  font-weight:700;
+}
+
+input,select,textarea{
+  font-size:.82rem;
+  border:1px solid var(--line);
+}
+
+.section-btn{
+  font-family:"Prompt",sans-serif;
+}
+
+.preview-toolbar-title{
+  color:var(--navy);
+}
+
+@media(max-width:1260px){
+  .workspace{grid-template-columns:1fr}
+  .preview-column{position:static}
+}
+
+</style>
 </head>
 
 <body>
 
-  <!-- SHARED MEMBER SIDEBAR : KEEP IDENTICAL ON EVERY MEMBER PAGE -->
-  <aside class="sidebar">
+  <div class="app">
 
-    <div class="logo-box">
-      <a class="logo" href="/" aria-label="ADTSpreadsheet หน้าแรก">
-        <img
-          src="/assets/images/logo-header.png"
-          onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
-          alt="ADTSpreadsheet"
-        />
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <a href="/" aria-label="ADTSpreadsheet หน้าแรก">
+        <img class="sidebar-logo"
+             src="/assets/images/logo-header.png"
+             onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
+             alt="ADTSpreadsheet">
       </a>
     </div>
 
-    <div class="side-member">
-      <div class="side-avatar" id="sideAvatar">AG</div>
-
+    <div class="member-mini">
+      <div class="member-mini-avatar" id="miniAvatar">AG</div>
       <div>
-        <div class="side-member-name" id="sideMemberName">ชื่อ นามสกุล</div>
-        <div class="side-member-id" id="sideMemberId">MEM-000001</div>
+        <strong id="miniName">ชื่อ นามสกุล</strong>
+        <span id="miniMemberId">MEM-000001</span>
       </div>
     </div>
 
-    <div class="menu-label">MEMBER AREA</div>
+    <nav class="sidebar-nav" aria-label="เมนูสมาชิก">
+      <div class="nav-group">MEMBER AREA</div>
+      <a class="nav-link" href="/member/dashboard/"><span class="nav-icon">🏠</span>Dashboard</a>
+      <a class="nav-link" href="/member/programs/"><span class="nav-icon">💻</span>โปรแกรมของฉัน</a>
+      <a class="nav-link" href="/member/training/"><span class="nav-icon">🎓</span>การอบรมของฉัน</a>
+      <a class="nav-link" href="/member/certificates/"><span class="nav-icon">🏅</span>ใบประกาศ</a>
 
-    <nav class="menu">
-      <a href="/member/dashboard/">
-        <span class="menu-icon">🏠</span>
-        <span>Dashboard</span>
-      </a>
+      <div class="nav-group">KNOWLEDGE</div>
+      <a class="nav-link" href="/articles/"><span class="nav-icon">📰</span>บทความวิศวกรรม</a>
+      <a class="nav-link" href="/member/knowledge/"><span class="nav-icon">📚</span>Knowledge Center</a>
+      <a class="nav-link" href="/member/community/"><span class="nav-icon">💬</span>Community</a>
 
-      <a href="/member/software/">
-        <span class="menu-icon">💻</span>
-        <span>โปรแกรมของฉัน</span>
-      </a>
-
-      <a href="/member/training/">
-        <span class="menu-icon">🎓</span>
-        <span>การอบรมของฉัน</span>
-      </a>
-
-      <a href="/member/certificates/">
-        <span class="menu-icon">🏅</span>
-        <span>ใบประกาศ</span>
-      </a>
+      <div class="nav-group">ACCOUNT</div>
+      <a class="nav-link" href="/member/support/"><span class="nav-icon">🎫</span>Support</a>
+      <a class="nav-link" href="/member/payments/"><span class="nav-icon">🧾</span>การชำระเงิน</a>
+      <a class="nav-link active" href="/member/profile/"><span class="nav-icon">👤</span>โปรไฟล์ของฉัน</a>
+      <a class="nav-link" href="/member/settings/"><span class="nav-icon">⚙️</span>ตั้งค่า</a>
     </nav>
 
-    <div class="menu-label">KNOWLEDGE</div>
-
-    <nav class="menu">
-      <a href="/member/articles/">
-        <span class="menu-icon">📰</span>
-        <span>บทความวิศวกรรม</span>
-      </a>
-
-      <a href="/member/knowledge/">
-        <span class="menu-icon">📚</span>
-        <span>Knowledge Center</span>
-      </a>
-
-      <a href="/member/community/">
-        <span class="menu-icon">💬</span>
-        <span>Community</span>
-      </a>
-    </nav>
-
-    <div class="menu-label">ACCOUNT</div>
-
-    <nav class="menu">
-      <a href="/member/support/">
-        <span class="menu-icon">🎫</span>
-        <span>Support</span>
-      </a>
-
-      <a href="/member/payments/">
-        <span class="menu-icon">🧾</span>
-        <span>การชำระเงิน</span>
-      </a>
-
-      <a href="/member/profile/" class="active">
-        <span class="menu-icon">👤</span>
-        <span>โปรไฟล์ของฉัน</span>
-      </a>
-
-      <a href="/member/settings/">
-        <span class="menu-icon">⚙️</span>
-        <span>ตั้งค่า</span>
-      </a>
-    </nav>
-
-    <div class="logout-wrap">
-      <button class="logout-btn" id="sidebarLogoutBtn" type="button">
-        ออกจากระบบ
-      </button>
+    <div class="sidebar-foot">
+      <button class="logout-btn" id="logoutButton" type="button">ออกจากระบบ</button>
     </div>
-
   </aside>
-  <!-- END SHARED MEMBER SIDEBAR -->
 
-  <header class="topbar">
-    <div>
-      <div class="top-title">โปรไฟล์ของฉัน</div>
-      <div class="top-subtitle">Professional Profile & Resume Builder</div>
-    </div>
-
-    <div class="top-user">
-      <div class="top-avatar" id="topAvatar">AG</div>
-
-      <div>
-        <div class="top-user-name" id="topMemberName">สมาชิก ADT</div>
-        <div class="top-user-role">ADT Professional Member</div>
-      </div>
-    </div>
-  </header>
+  <div class="overlay" id="overlay"></div>
 
   <main class="main">
-    <div class="content">
 
-      <section class="page-heading">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">☰</button>
+
+        <div class="topbar-title">
+          <strong>โปรไฟล์ของฉัน</strong>
+          <span>Professional Profile & Resume Builder</span>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <button class="icon-btn" type="button" aria-label="การแจ้งเตือน">
+          🔔
+          <span class="notification-dot"></span>
+        </button>
+
+        <div class="profile-chip">
+          <div class="profile-chip-avatar" id="topAvatar">AG</div>
+
+          <div class="profile-chip-text">
+            <strong id="topName">ชื่อ นามสกุล</strong>
+            <span>ADT Professional Member</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+<section class="page-heading">
         <div>
           <h1>Professional Profile</h1>
           <p>สร้างข้อมูลวิชาชีพของคุณ และนำไปใช้เป็น Resume หรือ Portfolio ได้</p>
@@ -1495,6 +1896,9 @@
     </div>
   </main>
 
+</div>
+<!-- END MEMBER APP -->
+
   <div class="toast" id="toast"></div>
 
   <script>
@@ -1880,7 +2284,7 @@
 
       const uiPhoto = state.photo;
 
-      [$("#profilePhoto"), $("#sideAvatar"), $("#topAvatar")].forEach((container) => {
+      [$("#profilePhoto"), $("#miniAvatar"), $("#topAvatar")].forEach((container) => {
         if (uiPhoto) {
           container.innerHTML = `<img src="${uiPhoto}" alt="Profile" />`;
         } else {
@@ -2395,13 +2799,13 @@
         "ชื่อ นามสกุล";
 
       $("#summaryName").textContent = savedName;
-      $("#sideMemberName").textContent = savedName;
-      $("#topMemberName").textContent = savedName;
+      $("#miniName").textContent = savedName;
+      $("#topName").textContent = savedName;
 
       const memberId = p.memberId || "MEM-000001";
 
       $("#summaryMemberId").textContent = memberId;
-      $("#sideMemberId").textContent = memberId;
+      $("#miniMemberId").textContent = memberId;
     }
 
     function renderResumeSkills() {
@@ -2679,7 +3083,7 @@
        Shared Member Menu
     ===================================================== */
 
-    const sidebarLogoutBtn = $("#sidebarLogoutBtn");
+    const sidebarLogoutBtn = $("#logoutButton");
 
     if (sidebarLogoutBtn) {
       sidebarLogoutBtn.addEventListener("click", () => {
@@ -2696,6 +3100,36 @@
         });
 
         window.location.href = "/member/";
+      });
+    }
+
+
+    /* =====================================================
+       MEMBER SHELL — MOBILE MENU (same behavior as Dashboard)
+    ===================================================== */
+
+    const memberSidebar = $("#sidebar");
+    const memberOverlay = $("#overlay");
+    const memberMobileMenu = $("#mobileMenu");
+
+    if (memberMobileMenu && memberSidebar && memberOverlay) {
+      memberMobileMenu.addEventListener("click", () => {
+        memberSidebar.classList.toggle("open");
+        memberOverlay.classList.toggle("show");
+      });
+
+      memberOverlay.addEventListener("click", () => {
+        memberSidebar.classList.remove("open");
+        memberOverlay.classList.remove("show");
+      });
+
+      memberSidebar.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (window.innerWidth <= 920) {
+            memberSidebar.classList.remove("open");
+            memberOverlay.classList.remove("show");
+          }
+        });
       });
     }
 
