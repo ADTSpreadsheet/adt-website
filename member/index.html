@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard สมาชิก | ADTSpreadsheet</title>
-<meta name="description" content="พื้นที่สมาชิก ADTSpreadsheet สำหรับจัดการโปรแกรม การอบรม เอกสาร ข่าวสาร และกิจกรรมทั้งหมดของสมาชิก">
+<title>ADT Community | ADTSpreadsheet</title>
+<meta name="description" content="พื้นที่แลกเปลี่ยนความรู้ ถามตอบ และ Live Group Chat สำหรับสมาชิก ADTSpreadsheet">
 <link rel="icon" type="image/png" href="/assets/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +19,8 @@
   --yellow:#ffc928;
   --green:#17b26a;
   --red:#ef3d48;
+  --orange:#f79009;
+  --purple:#7a5af8;
   --ink:#142033;
   --muted:#6c7a90;
   --line:#dce5ef;
@@ -37,13 +39,15 @@ body{
   color:var(--ink);
   background:var(--surface);
 }
-button,input{font:inherit}
+button,input,textarea,select{font:inherit}
 a{color:inherit}
 img{display:block;max-width:100%}
-
 .app{min-height:100vh}
 
-/* SIDEBAR */
+/* =========================================================
+   MEMBER SYSTEM SHELL — SAME AS DASHBOARD
+========================================================= */
+
 .sidebar{
   position:fixed;
   inset:0 auto 0 0;
@@ -113,6 +117,7 @@ img{display:block;max-width:100%}
   letter-spacing:.12em;
 }
 .nav-link{
+  position:relative;
   min-height:48px;
   padding:0 14px;
   display:flex;
@@ -136,6 +141,18 @@ img{display:block;max-width:100%}
   text-align:center;
   font-size:1.05rem;
 }
+.nav-badge{
+  margin-left:auto;
+  min-width:22px;
+  height:22px;
+  padding:0 6px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  color:#fff;
+  background:var(--red);
+  font:800 .64rem "Inter";
+}
 .sidebar-foot{
   margin-top:auto;
   padding:15px 18px 20px;
@@ -151,7 +168,6 @@ img{display:block;max-width:100%}
   cursor:pointer;
 }
 
-/* MAIN */
 .main{
   margin-left:var(--sidebar);
   min-height:100vh;
@@ -217,6 +233,7 @@ img{display:block;max-width:100%}
   height:34px;
   display:grid;
   place-items:center;
+  overflow:hidden;
   border-radius:50%;
   color:var(--navy);
   background:var(--yellow);
@@ -232,403 +249,757 @@ img{display:block;max-width:100%}
   padding:30px 0 56px;
 }
 
-/* HERO */
-.welcome{
-  position:relative;
-  overflow:hidden;
-  padding:34px;
-  display:grid;
-  grid-template-columns:1.25fr .75fr;
-  gap:30px;
-  border-radius:28px;
-  color:#fff;
-  background:
-    radial-gradient(circle at 85% 25%,rgba(255,201,40,.20),transparent 20%),
-    radial-gradient(circle at 15% 10%,rgba(22,119,255,.35),transparent 30%),
-    linear-gradient(135deg,#031025,#0a2855);
-  box-shadow:var(--shadow);
-}
-.welcome:after{
-  content:"";
-  position:absolute;
-  right:-80px;
-  bottom:-120px;
-  width:330px;
-  height:330px;
-  border-radius:50%;
-  border:55px solid rgba(255,255,255,.035);
-}
-.welcome-copy{position:relative;z-index:2}
-.eyebrow{
-  margin:0 0 8px;
-  color:var(--yellow);
-  font-size:.72rem;
-  font-weight:800;
-  letter-spacing:.12em;
-}
-.welcome h1{
-  margin:0;
-  font-size:clamp(2rem,4vw,3.4rem);
-  line-height:1.16;
-}
-.welcome p{
-  max-width:760px;
-  margin:16px 0 0;
-  color:#d6e4f5;
-  line-height:1.8;
-}
-.welcome-actions{
-  margin-top:24px;
+/* =========================================================
+   COMMUNITY PAGE
+========================================================= */
+
+.page-head{
   display:flex;
-  gap:10px;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+}
+.page-head h1{
+  margin:0;
+  color:var(--navy);
+  font-size:1.65rem;
+}
+.page-head p{
+  margin:6px 0 0;
+  color:var(--muted);
+  font-size:.84rem;
+}
+.page-actions{
+  display:flex;
+  gap:9px;
   flex-wrap:wrap;
 }
 .btn{
-  min-height:48px;
-  padding:0 19px;
+  min-height:44px;
+  padding:0 16px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
   gap:8px;
   border:0;
-  border-radius:13px;
-  text-decoration:none;
-  font-weight:700;
+  border-radius:12px;
+  font-size:.75rem;
+  font-weight:800;
   cursor:pointer;
 }
-.btn-yellow{color:var(--navy);background:var(--yellow)}
-.btn-white{color:var(--navy);background:#fff}
-.btn-blue{color:#fff;background:var(--blue)}
-.btn-soft{color:var(--blue);background:var(--blue-soft)}
-.btn-outline{color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2)}
-
-.member-card{
-  position:relative;
-  z-index:2;
-  padding:22px;
-  align-self:stretch;
-  border-radius:22px;
-  background:rgba(255,255,255,.09);
-  border:1px solid rgba(255,255,255,.14);
-}
-.member-card-top{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-.member-card-avatar{
-  width:70px;
-  height:70px;
-  display:grid;
-  place-items:center;
-  border-radius:20px;
+.btn-white{
   color:var(--navy);
-  background:var(--yellow);
-  font:800 1.2rem "Inter";
-}
-.member-card h3{margin:0;font-size:1.05rem}
-.member-card-role{margin:4px 0 0;color:#bcd0e7;font-size:.77rem}
-.member-level{
-  display:inline-flex;
-  margin-top:10px;
-  padding:6px 9px;
-  border-radius:999px;
-  color:#10213f;
-  background:var(--yellow);
-  font-size:.65rem;
-  font-weight:800;
-}
-.member-card-grid{
-  margin-top:20px;
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:10px;
-}
-.member-info{
-  padding:12px;
-  border-radius:13px;
-  background:rgba(255,255,255,.07);
-}
-.member-info span{display:block;color:#9fb6d0;font-size:.66rem}
-.member-info strong{display:block;margin-top:4px;font-size:.8rem}
-
-/* COMMON */
-.section-head{
-  margin:34px 0 16px;
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-  gap:18px;
-}
-.section-head h2{
-  margin:0;
-  color:var(--navy);
-  font-size:1.45rem;
-}
-.section-head p{
-  margin:5px 0 0;
-  color:var(--muted);
-  font-size:.83rem;
-}
-.section-link{
-  text-decoration:none;
-  color:var(--blue);
-  font-size:.8rem;
-  font-weight:800;
-}
-.card{
-  border-radius:var(--radius);
   background:#fff;
-  border:1px solid #e6edf5;
-  box-shadow:var(--shadow);
+  border:1px solid var(--line);
+}
+.btn-blue{
+  color:#fff;
+  background:var(--blue);
+}
+.btn-purple{
+  color:#fff;
+  background:var(--purple);
 }
 
-/* STAT CARDS */
-.stats{
+.community-stats{
   margin-top:22px;
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:16px;
 }
 .stat-card{
-  padding:20px;
+  padding:19px 20px;
+  min-height:108px;
   display:flex;
   align-items:center;
-  gap:15px;
+  gap:14px;
+  border-radius:var(--radius);
+  background:#fff;
+  border:1px solid #e6edf5;
+  box-shadow:var(--shadow);
 }
 .stat-icon{
-  flex:0 0 52px;
-  width:52px;
-  height:52px;
+  flex:0 0 50px;
+  width:50px;
+  height:50px;
   display:grid;
   place-items:center;
-  border-radius:16px;
-  font-size:1.25rem;
+  border-radius:15px;
   background:var(--blue-soft);
+  font-size:1.2rem;
 }
-.stat-card:nth-child(2) .stat-icon{background:#ecfbf4}
-.stat-card:nth-child(3) .stat-icon{background:#fff7d8}
-.stat-card:nth-child(4) .stat-icon{background:#f3edff}
-.stat-card span{display:block;color:var(--muted);font-size:.72rem}
-.stat-card strong{display:block;margin-top:3px;color:var(--navy);font:800 1.4rem "Inter"}
-
-/* MAIN GRID */
-.dashboard-grid{
-  display:grid;
-  grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);
-  gap:22px;
-}
-.stack{display:grid;gap:22px}
-
-/* PROGRAM */
-.program-card{
-  overflow:hidden;
-  display:grid;
-  grid-template-columns:210px 1fr;
-}
-.program-visual{
-  min-height:250px;
-  padding:24px;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  color:#fff;
-  background:
-    radial-gradient(circle at 80% 20%,rgba(255,201,40,.24),transparent 26%),
-    linear-gradient(145deg,#0a2855,#06152d);
-}
-.program-visual-label{
-  display:inline-flex;
-  align-self:flex-start;
-  padding:7px 10px;
-  border-radius:999px;
-  color:var(--navy);
-  background:var(--yellow);
-  font-size:.65rem;
-  font-weight:800;
-}
-.program-mark{
-  color:rgba(255,255,255,.92);
-  font:800 3rem "Inter";
-  letter-spacing:-.06em;
-}
-.program-body{padding:26px}
-.program-top{
-  display:flex;
-  justify-content:space-between;
-  gap:16px;
-}
-.program-body h3{margin:0;color:var(--navy);font-size:1.28rem}
-.status{
-  flex:0 0 auto;
-  padding:7px 10px;
-  border-radius:999px;
-  font-size:.67rem;
-  font-weight:800;
-}
-.status-green{color:#087443;background:#e7f8f0}
-.status-blue{color:#0d5fd1;background:#eaf3ff}
-.status-yellow{color:#7d5b00;background:#fff5cb}
-.program-body p{margin:12px 0 0;color:var(--muted);line-height:1.75;font-size:.84rem}
-.progress{
-  height:8px;
-  margin-top:20px;
-  overflow:hidden;
-  border-radius:999px;
-  background:#edf2f7;
-}
-.progress span{
+.stat-card:nth-child(2) .stat-icon{background:#eefbf5}
+.stat-card:nth-child(3) .stat-icon{background:#f1edff}
+.stat-card:nth-child(4) .stat-icon{background:#fff5d8}
+.stat-card span{display:block;color:var(--muted);font-size:.68rem}
+.stat-card strong{
   display:block;
-  width:100%;
-  height:100%;
-  border-radius:inherit;
-  background:linear-gradient(90deg,var(--blue),#59a5ff);
+  margin-top:3px;
+  color:var(--navy);
+  font:800 1.32rem "Inter";
 }
-.program-meta{
-  margin-top:16px;
+.stat-card small{
+  display:block;
+  margin-top:3px;
+  color:#93a0b2;
+  font-size:.62rem;
+}
+
+.community-layout{
+  margin-top:22px;
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
+  grid-template-columns:minmax(0,1fr) 380px;
+  gap:22px;
+  align-items:start;
 }
-.meta-box{
-  padding:12px;
-  border-radius:13px;
-  background:#f6f9fc;
+
+.feed-panel,
+.side-panel,
+.chat-panel{
+  border-radius:var(--radius);
+  background:#fff;
+  border:1px solid #e6edf5;
+  box-shadow:var(--shadow);
+  overflow:hidden;
 }
-.meta-box span{display:block;color:var(--muted);font-size:.65rem}
-.meta-box strong{display:block;margin-top:4px;color:var(--navy);font-size:.78rem}
-.program-actions{
-  margin-top:18px;
+.panel-head{
+  padding:18px 20px;
   display:flex;
-  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  border-bottom:1px solid var(--line);
+}
+.panel-head h2{
+  margin:0;
+  color:var(--navy);
+  font-size:1rem;
+}
+.panel-head p{
+  margin:4px 0 0;
+  color:var(--muted);
+  font-size:.7rem;
+}
+.feed-tabs{
+  display:flex;
+  gap:7px;
   flex-wrap:wrap;
 }
-
-/* EVENT */
-.event-card{padding:24px}
-.event-date{
-  display:inline-flex;
-  padding:7px 10px;
-  border-radius:999px;
-  color:#0d5fd1;
-  background:var(--blue-soft);
+.tab-btn{
+  min-height:34px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  color:#66758a;
+  background:#fff;
   font-size:.68rem;
-  font-weight:800;
+  font-weight:700;
+  cursor:pointer;
 }
-.event-card h3{margin:13px 0 0;color:var(--navy);font-size:1.2rem}
-.event-card p{margin:10px 0 0;color:var(--muted);line-height:1.7;font-size:.82rem}
-.event-details{
-  margin-top:17px;
-  display:grid;
-  gap:9px;
+.tab-btn.active{
+  color:#fff;
+  background:var(--blue);
+  border-color:var(--blue);
 }
-.event-detail{
-  padding:10px 12px;
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  border-radius:11px;
-  background:#f6f9fc;
-  font-size:.75rem;
-}
-.event-detail span{color:var(--muted)}
-.event-detail strong{color:var(--navy)}
-.event-card .btn{width:100%;margin-top:17px}
 
-/* QUICK ACTIONS */
-.quick-grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:12px;
-}
-.quick-card{
-  min-height:128px;
-  padding:18px;
+.composer{
+  margin:18px;
+  padding:14px;
   display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  text-decoration:none;
-  transition:.2s;
+  gap:12px;
+  border:1px solid var(--line);
+  border-radius:17px;
+  background:#f9fbfd;
 }
-.quick-card:hover{transform:translateY(-3px)}
-.quick-card-icon{
+.avatar{
+  flex:0 0 42px;
   width:42px;
   height:42px;
   display:grid;
   place-items:center;
-  border-radius:13px;
-  background:var(--blue-soft);
-}
-.quick-card strong{color:var(--navy);font-size:.9rem}
-.quick-card span{color:var(--muted);font-size:.7rem}
-
-/* NEWS */
-.news-card{padding:8px 22px}
-.news-item{
-  padding:17px 0;
-  display:grid;
-  grid-template-columns:10px 1fr auto;
-  gap:12px;
-  align-items:start;
-  border-bottom:1px solid var(--line);
-}
-.news-item:last-child{border-bottom:0}
-.news-dot{
-  width:8px;
-  height:8px;
-  margin-top:7px;
+  overflow:hidden;
   border-radius:50%;
-  background:var(--blue);
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.72rem;
+  font-weight:800;
 }
-.news-item strong{display:block;color:var(--navy);font-size:.84rem}
-.news-item p{margin:4px 0 0;color:var(--muted);font-size:.72rem;line-height:1.6}
-.news-item time{color:#8b99aa;font-size:.65rem;white-space:nowrap}
-
-/* ACTIVITY */
-.activity-card{padding:8px 22px}
-.activity-item{
-  padding:16px 0;
+.composer-main{flex:1;min-width:0}
+.composer-box{
+  width:100%;
+  min-height:44px;
+  padding:0 14px;
   display:flex;
-  gap:13px;
-  border-bottom:1px solid var(--line);
+  align-items:center;
+  border:1px solid #e0e7ef;
+  border-radius:13px;
+  color:#8a97a8;
+  background:#fff;
+  cursor:text;
+  font-size:.73rem;
 }
-.activity-item:last-child{border-bottom:0}
-.activity-icon{
+.composer-tools{
+  margin-top:10px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+}
+.tool-group{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.tool-btn{
+  min-height:32px;
+  padding:0 10px;
+  border:0;
+  border-radius:9px;
+  color:#5f6f85;
+  background:#eef3f8;
+  font-size:.65rem;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.post{
+  padding:19px 20px;
+  border-top:1px solid #edf1f5;
+}
+.post:first-of-type{border-top:0}
+.post-head{
+  display:flex;
+  gap:11px;
+  align-items:flex-start;
+}
+.post-meta{
+  flex:1;
+  min-width:0;
+}
+.post-meta strong{
+  color:var(--navy);
+  font-size:.78rem;
+}
+.post-meta span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.64rem;
+}
+.badge{
+  display:inline-flex !important;
+  width:auto;
+  margin-top:5px !important;
+  padding:4px 7px;
+  border-radius:999px;
+  color:#1766c2 !important;
+  background:#eaf3ff;
+  font-size:.57rem !important;
+  font-weight:800;
+}
+.post-menu{
+  border:0;
+  background:transparent;
+  color:#8e9aaa;
+  cursor:pointer;
+}
+.post h3{
+  margin:14px 0 0;
+  color:var(--navy);
+  font-size:.93rem;
+}
+.post p{
+  margin:8px 0 0;
+  color:#4f5f74;
+  font-size:.75rem;
+  line-height:1.75;
+}
+.post-tag{
+  margin-top:11px;
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.tag{
+  padding:5px 8px;
+  border-radius:999px;
+  color:#1766c2;
+  background:#f0f6ff;
+  font-size:.59rem;
+  font-weight:700;
+}
+.post-metrics{
+  margin-top:14px;
+  padding-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-top:1px solid #eef2f6;
+}
+.metrics-left{
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+.metric-btn{
+  min-height:34px;
+  padding:0 10px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border:0;
+  border-radius:10px;
+  color:#607086;
+  background:#f5f7fa;
+  font-size:.64rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.metric-btn.liked{
+  color:#d93645;
+  background:#fff0f2;
+}
+.views{
+  color:#8d99a9;
+  font-size:.62rem;
+}
+
+.right-stack{
+  display:grid;
+  gap:18px;
+}
+.side-body{
+  padding:16px 18px 18px;
+}
+.trending-list,
+.member-list,
+.qa-list{
+  display:grid;
+  gap:10px;
+}
+.trending-item,
+.qa-item{
+  padding:12px;
+  border-radius:13px;
+  background:#f8fafc;
+}
+.trending-item strong,
+.qa-item strong{
+  display:block;
+  color:var(--navy);
+  font-size:.7rem;
+  line-height:1.45;
+}
+.trending-item span,
+.qa-item span{
+  display:block;
+  margin-top:4px;
+  color:var(--muted);
+  font-size:.6rem;
+}
+.member-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.member-avatar{
+  position:relative;
   flex:0 0 38px;
   width:38px;
   height:38px;
   display:grid;
   place-items:center;
-  border-radius:12px;
-  background:#f1f6fc;
+  border-radius:50%;
+  background:#eaf3ff;
+  color:#174f91;
+  font-size:.64rem;
+  font-weight:800;
 }
-.activity-item strong{display:block;color:var(--navy);font-size:.8rem}
-.activity-item p{margin:3px 0 0;color:var(--muted);font-size:.7rem;line-height:1.55}
+.online-dot{
+  position:absolute;
+  right:-1px;
+  bottom:0;
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  border:2px solid #fff;
+  background:var(--green);
+}
+.member-row strong{
+  display:block;
+  color:var(--navy);
+  font-size:.69rem;
+}
+.member-row span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.59rem;
+}
 
-/* PROFILE COMPLETION */
-.profile-progress{padding:22px}
-.profile-progress-top{
+.chat-panel{
+  margin-top:22px;
+}
+.chat-layout{
+  display:grid;
+  grid-template-columns:240px 1fr;
+  min-height:560px;
+}
+.chat-rooms{
+  border-right:1px solid var(--line);
+  background:#f8fafc;
+}
+.chat-room-head{
+  padding:16px;
+  border-bottom:1px solid var(--line);
+}
+.chat-room-head strong{
+  color:var(--navy);
+  font-size:.75rem;
+}
+.room-list{
+  padding:10px;
+  display:grid;
+  gap:6px;
+}
+.room-btn{
+  width:100%;
+  min-height:48px;
+  padding:8px 10px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border:0;
+  border-radius:11px;
+  text-align:left;
+  color:#52627a;
+  background:transparent;
+  cursor:pointer;
+}
+.room-btn:hover,
+.room-btn.active{
+  color:var(--navy);
+  background:#fff;
+}
+.room-icon{
+  width:32px;
+  height:32px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:#eaf3ff;
+}
+.room-text{
+  flex:1;
+  min-width:0;
+}
+.room-text strong{
+  display:block;
+  font-size:.66rem;
+}
+.room-text span{
+  display:block;
+  margin-top:2px;
+  color:var(--muted);
+  font-size:.56rem;
+}
+.room-unread{
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  color:#fff;
+  background:var(--red);
+  font:800 .56rem "Inter";
+}
+
+.chat-main{
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  min-width:0;
+}
+.chat-head{
+  min-height:68px;
+  padding:12px 16px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:16px;
+  gap:12px;
+  border-bottom:1px solid var(--line);
 }
-.profile-progress h3{margin:0;color:var(--navy);font-size:1rem}
-.profile-progress strong{color:var(--blue);font:800 1.2rem "Inter"}
-.profile-progress p{margin:8px 0 0;color:var(--muted);font-size:.75rem;line-height:1.65}
-.profile-progress .progress span{width:75%}
-.profile-progress .btn{width:100%;margin-top:16px}
+.chat-title strong{
+  display:block;
+  color:var(--navy);
+  font-size:.78rem;
+}
+.chat-title span{
+  display:block;
+  margin-top:2px;
+  color:var(--green);
+  font-size:.6rem;
+}
+.chat-controls{
+  display:flex;
+  gap:7px;
+}
+.control-btn{
+  min-height:34px;
+  padding:0 10px;
+  border:1px solid var(--line);
+  border-radius:9px;
+  color:#5f6f85;
+  background:#fff;
+  font-size:.62rem;
+  font-weight:700;
+  cursor:pointer;
+}
+.control-btn.active{
+  color:#087443;
+  background:#effaf5;
+  border-color:#cdeedd;
+}
+.chat-messages{
+  height:430px;
+  padding:18px;
+  overflow:auto;
+  background:
+    radial-gradient(circle at 90% 20%,rgba(22,119,255,.04),transparent 25%),
+    #fcfdff;
+}
+.message-row{
+  margin-bottom:14px;
+  display:flex;
+  gap:9px;
+  align-items:flex-end;
+}
+.message-row.mine{
+  justify-content:flex-end;
+}
+.message-row.mine .message-avatar{
+  display:none;
+}
+.message-avatar{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#edf3f9;
+  color:#315272;
+  font-size:.57rem;
+  font-weight:800;
+}
+.message-content{
+  max-width:72%;
+}
+.message-name{
+  margin-bottom:4px;
+  color:#7a8797;
+  font-size:.57rem;
+}
+.bubble{
+  padding:10px 12px;
+  border-radius:14px 14px 14px 4px;
+  color:#435268;
+  background:#eef3f8;
+  font-size:.68rem;
+  line-height:1.55;
+}
+.mine .bubble{
+  color:#fff;
+  background:linear-gradient(135deg,var(--blue),#0e63d9);
+  border-radius:14px 14px 4px 14px;
+}
+.message-time{
+  margin-top:3px;
+  color:#99a4b2;
+  font-size:.52rem;
+}
+.mine .message-time{text-align:right}
 
-.footer-note{
-  margin-top:36px;
-  padding-top:20px;
-  text-align:center;
-  color:#8a98aa;
-  font-size:.72rem;
+.chat-compose{
+  padding:12px 14px;
+  display:grid;
+  grid-template-columns:auto 1fr auto auto;
+  gap:8px;
   border-top:1px solid var(--line);
+  background:#fff;
+}
+.chat-tool{
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  cursor:pointer;
+}
+.chat-input{
+  width:100%;
+  height:40px;
+  padding:0 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  outline:none;
+}
+.chat-input:focus{
+  border-color:#9bc9ff;
+  box-shadow:0 0 0 4px rgba(22,119,255,.07);
+}
+.send-btn{
+  width:46px;
+  height:40px;
+  border:0;
+  border-radius:10px;
+  color:#fff;
+  background:var(--blue);
+  font-weight:800;
+  cursor:pointer;
 }
 
-/* MOBILE */
+/* notification popover */
+.notify-menu{
+  position:fixed;
+  right:155px;
+  top:68px;
+  z-index:2500;
+  width:340px;
+  display:none;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 20px 60px rgba(3,16,37,.20);
+  overflow:hidden;
+}
+.notify-menu.show{display:block}
+.notify-head{
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+}
+.notify-head strong{
+  color:var(--navy);
+  font-size:.75rem;
+}
+.notify-head button{
+  border:0;
+  color:var(--blue);
+  background:transparent;
+  font-size:.6rem;
+  cursor:pointer;
+}
+.notify-item{
+  padding:12px 14px;
+  display:flex;
+  gap:10px;
+  border-bottom:1px solid #eef2f6;
+  background:#fff;
+}
+.notify-item.unread{background:#f5f9ff}
+.notify-icon{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:10px;
+  background:#eaf3ff;
+}
+.notify-item strong{
+  display:block;
+  color:var(--navy);
+  font-size:.65rem;
+}
+.notify-item span{
+  display:block;
+  margin-top:3px;
+  color:var(--muted);
+  font-size:.57rem;
+  line-height:1.45;
+}
+
+/* create post modal */
+.modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:3000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(3,16,37,.60);
+}
+.modal-backdrop.show{display:flex}
+.modal{
+  width:min(620px,100%);
+  border-radius:22px;
+  background:#fff;
+  box-shadow:0 30px 80px rgba(3,16,37,.25);
+  overflow:hidden;
+}
+.modal-head{
+  padding:18px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+}
+.modal-head h3{
+  margin:0;
+  color:var(--navy);
+  font-size:.92rem;
+}
+.modal-close{
+  width:36px;
+  height:36px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  cursor:pointer;
+}
+.modal-body{
+  padding:20px;
+}
+.field{margin-bottom:13px}
+.field label{
+  display:block;
+  margin-bottom:6px;
+  color:var(--navy);
+  font-size:.68rem;
+  font-weight:700;
+}
+.field input,
+.field select,
+.field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:11px;
+  outline:none;
+}
+.field input,
+.field select{
+  height:42px;
+  padding:0 11px;
+}
+.field textarea{
+  min-height:120px;
+  padding:11px;
+  resize:vertical;
+}
+.modal-foot{
+  padding:14px 20px 20px;
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+/* responsive */
 .overlay{
   position:fixed;
   inset:0;
@@ -637,11 +1008,10 @@ img{display:block;max-width:100%}
   background:rgba(3,16,37,.58);
 }
 @media(max-width:1180px){
-  .stats{grid-template-columns:repeat(2,1fr)}
-  .dashboard-grid{grid-template-columns:1fr}
+  .community-stats{grid-template-columns:repeat(2,1fr)}
+  .community-layout{grid-template-columns:1fr}
 }
 @media(max-width:920px){
-  :root{--sidebar:280px}
   .sidebar{
     transform:translateX(-100%);
     transition:.25s;
@@ -650,20 +1020,27 @@ img{display:block;max-width:100%}
   .overlay.show{display:block}
   .main{margin-left:0}
   .mobile-menu{display:grid;place-items:center}
-  .welcome{grid-template-columns:1fr}
+  .chat-layout{grid-template-columns:200px 1fr}
 }
 @media(max-width:700px){
   .topbar{padding:0 14px}
   .profile-chip-text{display:none}
   .content{width:min(100% - 24px,1480px);padding-top:18px}
-  .welcome{padding:24px}
-  .stats{grid-template-columns:1fr}
-  .program-card{grid-template-columns:1fr}
-  .program-visual{min-height:190px}
-  .program-meta{grid-template-columns:1fr}
-  .quick-grid{grid-template-columns:1fr}
-  .section-head{align-items:start}
-  .section-link{display:none}
+  .page-head{align-items:flex-start;flex-direction:column}
+  .page-actions{width:100%}
+  .page-actions .btn{flex:1}
+  .community-stats{grid-template-columns:1fr}
+  .chat-layout{grid-template-columns:1fr}
+  .chat-rooms{display:none}
+  .message-content{max-width:86%}
+  .chat-compose{grid-template-columns:auto 1fr auto}
+  .chat-tool.attach{display:none}
+  .notify-menu{
+    right:12px;
+    left:12px;
+    top:70px;
+    width:auto;
+  }
 }
 </style>
 </head>
@@ -684,22 +1061,26 @@ img{display:block;max-width:100%}
     <div class="member-mini">
       <div class="member-mini-avatar" id="miniAvatar">AG</div>
       <div>
-        <strong id="miniName">อานนท์ แซ้นสีดา</strong>
+        <strong id="miniName">ชื่อ นามสกุล</strong>
         <span id="miniMemberId">MEM-000001</span>
       </div>
     </div>
 
     <nav class="sidebar-nav" aria-label="เมนูสมาชิก">
       <div class="nav-group">MEMBER AREA</div>
-      <a class="nav-link active" href="/member/dashboard/"><span class="nav-icon">🏠</span>Dashboard</a>
+      <a class="nav-link" href="/member/dashboard/"><span class="nav-icon">🏠</span>Dashboard</a>
       <a class="nav-link" href="/member/programs/"><span class="nav-icon">💻</span>โปรแกรมของฉัน</a>
       <a class="nav-link" href="/member/training/"><span class="nav-icon">🎓</span>การอบรมของฉัน</a>
       <a class="nav-link" href="/member/certificates/"><span class="nav-icon">🏅</span>ใบประกาศ</a>
 
       <div class="nav-group">KNOWLEDGE</div>
-      <a class="nav-link" href="/member/articles/index.html"><span class="nav-icon">📰</span>บทความวิศวกรรม</a>
+      <a class="nav-link" href="/member/articles/"><span class="nav-icon">📰</span>บทความวิศวกรรม</a>
       <a class="nav-link" href="/member/knowledge/"><span class="nav-icon">📚</span>Knowledge Center</a>
-      <a class="nav-link" href="/member/community/"><span class="nav-icon">💬</span>Community</a>
+      <a class="nav-link active" href="/member/community/">
+        <span class="nav-icon">💬</span>
+        Community
+        <span class="nav-badge" id="communityBadge">3</span>
+      </a>
 
       <div class="nav-group">ACCOUNT</div>
       <a class="nav-link" href="/member/support/"><span class="nav-icon">🎫</span>Support</a>
@@ -720,20 +1101,21 @@ img{display:block;max-width:100%}
       <div style="display:flex;align-items:center;gap:12px">
         <button class="mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">☰</button>
         <div class="topbar-title">
-          <strong>Dashboard สมาชิก</strong>
-          <span>ศูนย์รวมบริการและกิจกรรมทั้งหมดของ ADT</span>
+          <strong>ADT Community</strong>
+          <span>พื้นที่แลกเปลี่ยนความรู้ ถามตอบ และพูดคุยของสมาชิก ADT</span>
         </div>
       </div>
 
       <div class="topbar-actions">
-        <button class="icon-btn" type="button" aria-label="การแจ้งเตือน">
+        <button class="icon-btn" id="notificationBtn" type="button" aria-label="การแจ้งเตือน">
           🔔
-          <span class="notification-dot"></span>
+          <span class="notification-dot" id="notificationDot"></span>
         </button>
+
         <div class="profile-chip">
           <div class="profile-chip-avatar" id="topAvatar">AG</div>
           <div class="profile-chip-text">
-            <strong id="topName">อานนท์ แซ้นสีดา</strong>
+            <strong id="topName">ชื่อ นามสกุล</strong>
             <span>ADT Professional Member</span>
           </div>
         </div>
@@ -742,329 +1124,823 @@ img{display:block;max-width:100%}
 
     <div class="content">
 
-      <section class="welcome">
-        <div class="welcome-copy">
-          <p class="eyebrow">ADT MEMBER DASHBOARD</p>
-          <h1>สวัสดีครับ <span id="welcomeName">อ.เก่ง</span> 👋</h1>
-          <p>ยินดีต้อนรับกลับสู่พื้นที่สมาชิกของ ADT ตรวจสอบโปรแกรมที่ถือครอง เข้าร่วมการอบรม ดาวน์โหลดเอกสาร ติดตามข่าวสาร และจัดการกิจกรรมทั้งหมดได้จากหน้าเดียว</p>
-
-          <div class="welcome-actions">
-            <a class="btn btn-yellow" href="/member/programs/">ดูโปรแกรมของฉัน</a>
-            <a class="btn btn-outline" href="/member/training/">การอบรมของฉัน</a>
-          </div>
-        </div>
-
-        <div class="member-card">
-          <div class="member-card-top">
-            <div class="member-card-avatar" id="memberAvatar">AG</div>
-            <div>
-              <h3 id="memberFullName">นายช่างอานนท์ แซ้นสีดา</h3>
-              <p class="member-card-role" id="memberProfession">วิศวกรโยธา</p>
-              <span class="member-level">ADT PROFESSIONAL MEMBER</span>
-            </div>
-          </div>
-
-          <div class="member-card-grid">
-            <div class="member-info">
-              <span>Member ID</span>
-              <strong id="memberId">MEM-000001</strong>
-            </div>
-            <div class="member-info">
-              <span>วันที่สมัคร</span>
-              <strong id="joinedDate">6 ส.ค. 2569</strong>
-            </div>
-            <div class="member-info">
-              <span>สถานะบัญชี</span>
-              <strong>ยืนยันแล้ว</strong>
-            </div>
-            <div class="member-info">
-              <span>สิทธิ์สมาชิก</span>
-              <strong>Professional</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="stats" aria-label="สรุปข้อมูลสมาชิก">
-        <article class="card stat-card">
-          <div class="stat-icon">💻</div>
-          <div><span>โปรแกรมที่ถือครอง</span><strong>1</strong></div>
-        </article>
-        <article class="card stat-card">
-          <div class="stat-icon">🎓</div>
-          <div><span>การอบรมที่ลงทะเบียน</span><strong>1</strong></div>
-        </article>
-        <article class="card stat-card">
-          <div class="stat-icon">🏅</div>
-          <div><span>ใบประกาศ</span><strong>0</strong></div>
-        </article>
-        <article class="card stat-card">
-          <div class="stat-icon">🎫</div>
-          <div><span>Support ที่เปิดอยู่</span><strong>0</strong></div>
-        </article>
-      </section>
-
-      <div class="dashboard-grid">
-
+      <section class="page-head">
         <div>
-          <div class="section-head">
-            <div>
-              <h2>โปรแกรมของฉัน</h2>
-              <p>โปรแกรมและสิทธิ์การใช้งานที่เชื่อมกับบัญชีสมาชิกนี้</p>
-            </div>
-            <a class="section-link" href="/member/programs/">ดูทั้งหมด →</a>
-          </div>
-
-          <article class="card program-card">
-            <div class="program-visual">
-              <span class="program-visual-label">PROFESSIONAL</span>
-              <div class="program-mark">ADT<br>PILEFiX</div>
-            </div>
-
-            <div class="program-body">
-              <div class="program-top">
-                <div>
-                  <h3>ADT-PILEFiX Professional</h3>
-                  <span style="display:block;margin-top:5px;color:var(--muted);font-size:.72rem">Version 1.0</span>
-                </div>
-                <span class="status status-green">ACTIVATED</span>
-              </div>
-
-              <p>โปรแกรมวิเคราะห์และออกแบบฐานรากเสาเข็มเยื้องศูนย์ พร้อมระบบตรวจสอบ Beam Shear, Punching Shear และรายงานผลการคำนวณ</p>
-
-              <div class="progress"><span></span></div>
-
-              <div class="program-meta">
-                <div class="meta-box">
-                  <span>License</span>
-                  <strong>Professional</strong>
-                </div>
-                <div class="meta-box">
-                  <span>Machine ID</span>
-                  <strong>ADT-PC-001</strong>
-                </div>
-                <div class="meta-box">
-                  <span>สถานะล่าสุด</span>
-                  <strong>พร้อมใช้งาน</strong>
-                </div>
-              </div>
-
-              <div class="program-actions">
-                <a class="btn btn-blue" href="/member/programs/adt-pilefix/">เปิดหน้าจัดการ</a>
-                <a class="btn btn-soft" href="/member/downloads/">ดาวน์โหลดล่าสุด</a>
-              </div>
-            </div>
-          </article>
-
-          <div class="section-head">
-            <div>
-              <h2>ข่าวสารสำหรับสมาชิก</h2>
-              <p>ประกาศ อัปเดต และข้อมูลสำคัญจาก ADT</p>
-            </div>
-            <a class="section-link" href="/member/news/">ดูทั้งหมด →</a>
-          </div>
-
-          <section class="card news-card">
-            <article class="news-item">
-              <span class="news-dot"></span>
-              <div>
-                <strong>ยินดีต้อนรับเข้าสู่ระบบสมาชิก ADT</strong>
-                <p>สมาชิกสามารถตรวจสอบโปรแกรม การอบรม และสิทธิ์ทั้งหมดได้จาก Dashboard นี้</p>
-              </div>
-              <time>วันนี้</time>
-            </article>
-            <article class="news-item">
-              <span class="news-dot"></span>
-              <div>
-                <strong>ADT-PILEFiX Professional Version 1.0</strong>
-                <p>โปรดตรวจสอบเวอร์ชันล่าสุดและดาวน์โหลดไฟล์จากเมนูโปรแกรมของฉัน</p>
-              </div>
-              <time>1 วันที่แล้ว</time>
-            </article>
-            <article class="news-item">
-              <span class="news-dot"></span>
-              <div>
-                <strong>Knowledge Center พร้อมใช้งาน</strong>
-                <p>รวมคู่มือ วิดีโอ และเอกสารสนับสนุนสำหรับสมาชิก ADT</p>
-              </div>
-              <time>3 วันที่แล้ว</time>
-            </article>
-          </section>
+          <h1>Community</h1>
+          <p>ถาม แชร์ คุย แลกเปลี่ยนประสบการณ์ และติดตามสิ่งที่กำลังเกิดขึ้นใน ADT Community</p>
         </div>
 
-        <aside class="stack">
+        <div class="page-actions">
+          <button class="btn btn-white" id="soundBtn" type="button">🔊 เสียงแจ้งเตือน: เปิด</button>
+          <button class="btn btn-purple" id="jumpChatBtn" type="button">💬 Live Group Chat</button>
+          <button class="btn btn-blue" id="createPostBtn" type="button">＋ สร้างโพสต์</button>
+        </div>
+      </section>
+
+      <section class="community-stats">
+        <article class="stat-card">
+          <div class="stat-icon">👥</div>
           <div>
-            <div class="section-head">
-              <div>
-                <h2>กิจกรรมถัดไป</h2>
-                <p>รายการที่สมาชิกลงทะเบียนไว้</p>
-              </div>
+            <span>สมาชิกใน Community</span>
+            <strong>286</strong>
+            <small>Frontend Demo</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">🟢</div>
+          <div>
+            <span>ออนไลน์ตอนนี้</span>
+            <strong>18</strong>
+            <small>สถานะ Realtime จะเชื่อมภายหลัง</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">💬</div>
+          <div>
+            <span>ข้อความที่ยังไม่ได้อ่าน</span>
+            <strong id="unreadStat">3</strong>
+            <small>รวม Live Chat และ Mention</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">🔥</div>
+          <div>
+            <span>หัวข้อกำลังพูดถึง</span>
+            <strong>7</strong>
+            <small>จากโพสต์และ Q&A ล่าสุด</small>
+          </div>
+        </article>
+      </section>
+
+      <section class="community-layout">
+
+        <article class="feed-panel">
+          <div class="panel-head">
+            <div>
+              <h2>Community Feed</h2>
+              <p>โพสต์ล่าสุด คำถาม และการแชร์ความรู้จากสมาชิก</p>
             </div>
 
-            <article class="card event-card">
-              <span class="event-date">ลงทะเบียนแล้ว</span>
-              <h3>สัมมนา ADT-PILEFiX</h3>
-              <p>การออกแบบฐานรากเสาเข็มเยื้องศูนย์ และ Workshop การใช้งานโปรแกรม</p>
+            <div class="feed-tabs">
+              <button class="tab-btn active" type="button" data-feed="all">ทั้งหมด</button>
+              <button class="tab-btn" type="button" data-feed="qa">Q&A</button>
+              <button class="tab-btn" type="button" data-feed="article">บทความ</button>
+              <button class="tab-btn" type="button" data-feed="project">ผลงาน</button>
+            </div>
+          </div>
 
-              <div class="event-details">
-                <div class="event-detail"><span>วันที่</span><strong>9 สิงหาคม 2569</strong></div>
-                <div class="event-detail"><span>เวลา</span><strong>19:00–21:00 น.</strong></div>
-                <div class="event-detail"><span>รูปแบบ</span><strong>Zoom Online</strong></div>
+          <div class="composer">
+            <div class="avatar" id="composerAvatar">AG</div>
+
+            <div class="composer-main">
+              <button class="composer-box" id="composerOpen" type="button">
+                แชร์ความรู้ ตั้งคำถาม หรือเล่าอะไรให้ Community ฟัง...
+              </button>
+
+              <div class="composer-tools">
+                <div class="tool-group">
+                  <button class="tool-btn" type="button">🖼 รูปภาพ</button>
+                  <button class="tool-btn" type="button">📎 ไฟล์</button>
+                  <button class="tool-btn" type="button">🏷 หมวดหมู่</button>
+                </div>
+
+                <button class="tool-btn" id="quickAskBtn" type="button">❓ ตั้งคำถาม</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="feedList">
+
+            <article class="post" data-type="qa">
+              <div class="post-head">
+                <div class="avatar">NS</div>
+
+                <div class="post-meta">
+                  <strong>นที ศรีวัฒน์</strong>
+                  <span>วิศวกรโยธา · 12 นาทีที่แล้ว</span>
+                  <span class="badge">Q&A</span>
+                </div>
+
+                <button class="post-menu" type="button">•••</button>
               </div>
 
-              <a class="btn btn-blue" href="/member/training/adt-pilefix/">ดูรายละเอียดกิจกรรม</a>
+              <h3>กรณีเสาเข็มอยู่นอก Critical Perimeter ต้องพิจารณา Punching Shear อย่างไรครับ?</h3>
+              <p>
+                กำลังตรวจฐานรากเสาเข็มเยื้องศูนย์ แล้วมีบางต้นอยู่นอกแนว Critical Perimeter
+                อยากทราบว่าปกติพี่ ๆ ใช้แนวคิดไหนในการตัดสินว่ากรณีไหน Governing ครับ
+              </p>
+
+              <div class="post-tag">
+                <span class="tag">#Foundation</span>
+                <span class="tag">#PunchingShear</span>
+                <span class="tag">#Structural</span>
+              </div>
+
+              <div class="post-metrics">
+                <div class="metrics-left">
+                  <button class="metric-btn like-btn" type="button">👍 <span>14</span></button>
+                  <button class="metric-btn" type="button">💬 8 คำตอบ</button>
+                  <button class="metric-btn" type="button">🔖 บันทึก</button>
+                </div>
+
+                <span class="views">👁 128 views</span>
+              </div>
             </article>
-          </div>
 
-          <div>
-            <div class="section-head">
+            <article class="post" data-type="article">
+              <div class="post-head">
+                <div class="avatar">KP</div>
+
+                <div class="post-meta">
+                  <strong>กิตติพงษ์ พรหมชัย</strong>
+                  <span>Structural Engineer · 38 นาทีที่แล้ว</span>
+                  <span class="badge">บทความ</span>
+                </div>
+
+                <button class="post-menu" type="button">•••</button>
+              </div>
+
+              <h3>แชร์เทคนิคจัด Load Combination ในงานตรวจสอบโครงสร้างอาคารเดิม</h3>
+              <p>
+                สรุป Workflow ที่ผมใช้แยก Existing Load / Proposed Load ก่อนนำไปตรวจสอบกำลังรับน้ำหนัก
+                เผื่อเป็นแนวทางสำหรับคนที่ทำงาน Renovation ครับ
+              </p>
+
+              <div class="post-tag">
+                <span class="tag">#Renovation</span>
+                <span class="tag">#LoadCombination</span>
+              </div>
+
+              <div class="post-metrics">
+                <div class="metrics-left">
+                  <button class="metric-btn like-btn" type="button">👍 <span>26</span></button>
+                  <button class="metric-btn" type="button">💬 5 ความคิดเห็น</button>
+                  <button class="metric-btn" type="button">🔖 บันทึก</button>
+                </div>
+
+                <span class="views">👁 241 views</span>
+              </div>
+            </article>
+
+            <article class="post" data-type="project">
+              <div class="post-head">
+                <div class="avatar">PK</div>
+
+                <div class="post-meta">
+                  <strong>ภาคิน คงดี</strong>
+                  <span>ADT Member · 1 ชั่วโมงที่แล้ว</span>
+                  <span class="badge">ผลงาน</span>
+                </div>
+
+                <button class="post-menu" type="button">•••</button>
+              </div>
+
+              <h3>ลองใช้ ADT-PILEFiX เช็กฐาน F2 งานล่าสุดครับ</h3>
+              <p>
+                เอาผลคำนวณมาเทียบกับ Spreadsheet ที่ใช้อยู่เดิม ค่า Reaction ใกล้กันมาก
+                แต่ชอบตรงแสดงตำแหน่ง CG และ Punching Line ให้ดูเร็วขึ้นครับ
+              </p>
+
+              <div class="post-tag">
+                <span class="tag">#ADTPILEFiX</span>
+                <span class="tag">#PileFoundation</span>
+              </div>
+
+              <div class="post-metrics">
+                <div class="metrics-left">
+                  <button class="metric-btn like-btn" type="button">👍 <span>19</span></button>
+                  <button class="metric-btn" type="button">💬 11 ความคิดเห็น</button>
+                  <button class="metric-btn" type="button">🔖 บันทึก</button>
+                </div>
+
+                <span class="views">👁 195 views</span>
+              </div>
+            </article>
+
+          </div>
+        </article>
+
+        <aside class="right-stack">
+
+          <article class="side-panel">
+            <div class="panel-head">
               <div>
-                <h2>เมนูลัด</h2>
-                <p>เข้าถึงบริการที่ใช้งานบ่อย</p>
+                <h2>🔥 กำลังพูดถึง</h2>
+                <p>หัวข้อที่มีคนอ่านและตอบเยอะ</p>
               </div>
             </div>
 
-            <div class="quick-grid">
-              <a class="card quick-card" href="/member/knowledge/">
-                <div class="quick-card-icon">📚</div>
-                <div><strong>Knowledge Center</strong><span>คู่มือ วิดีโอ และเอกสาร</span></div>
-              </a>
-              <a class="card quick-card" href="/member/support/">
-                <div class="quick-card-icon">🎫</div>
-                <div><strong>แจ้งปัญหา</strong><span>เปิดและติดตาม Support</span></div>
-              </a>
-              <a class="card quick-card" href="/member/community/">
-                <div class="quick-card-icon">💬</div>
-                <div><strong>Community</strong><span>ถาม–ตอบและแลกเปลี่ยน</span></div>
-              </a>
-              <a class="card quick-card" href="/member/certificates/">
-                <div class="quick-card-icon">🏅</div>
-                <div><strong>ใบประกาศ</strong><span>ดูและดาวน์โหลดเอกสาร</span></div>
-              </a>
-            </div>
-          </div>
+            <div class="side-body">
+              <div class="trending-list">
+                <div class="trending-item">
+                  <strong>#PunchingShear</strong>
+                  <span>24 โพสต์ · 1.8K views</span>
+                </div>
 
-          <article class="card profile-progress">
-            <div class="profile-progress-top">
-              <h3>ความสมบูรณ์ของโปรไฟล์</h3>
-              <strong>75%</strong>
+                <div class="trending-item">
+                  <strong>#ADTPILEFiX</strong>
+                  <span>18 โพสต์ · 1.2K views</span>
+                </div>
+
+                <div class="trending-item">
+                  <strong>#Renovation</strong>
+                  <span>11 โพสต์ · 640 views</span>
+                </div>
+              </div>
             </div>
-            <p>กรอกข้อมูลวิชาชีพและข้อมูลติดต่อให้ครบ เพื่อใช้สมัครกิจกรรมและสร้าง Professional Profile ของคุณ</p>
-            <div class="progress"><span></span></div>
-            <a class="btn btn-soft" href="/member/profile/">กรอกข้อมูลโปรไฟล์</a>
           </article>
 
-          <div>
-            <div class="section-head">
+          <article class="side-panel">
+            <div class="panel-head">
               <div>
-                <h2>กิจกรรมล่าสุด</h2>
-                <p>ความเคลื่อนไหวของบัญชี</p>
+                <h2>🟢 สมาชิกออนไลน์</h2>
+                <p>ตัวอย่างสถานะ Online</p>
               </div>
             </div>
 
-            <section class="card activity-card">
-              <article class="activity-item">
-                <div class="activity-icon">✅</div>
-                <div>
-                  <strong>เปิดใช้งาน ADT-PILEFiX สำเร็จ</strong>
-                  <p>License ถูกเชื่อมเข้ากับบัญชีสมาชิกแล้ว</p>
+            <div class="side-body">
+              <div class="member-list">
+                <div class="member-row">
+                  <div class="member-avatar">NS<span class="online-dot"></span></div>
+                  <div>
+                    <strong>นที ศรีวัฒน์</strong>
+                    <span>วิศวกรโยธา</span>
+                  </div>
                 </div>
-              </article>
-              <article class="activity-item">
-                <div class="activity-icon">🎓</div>
-                <div>
-                  <strong>ลงทะเบียนสัมมนาเรียบร้อย</strong>
-                  <p>กิจกรรมถูกเพิ่มลงใน “การอบรมของฉัน”</p>
+
+                <div class="member-row">
+                  <div class="member-avatar">KP<span class="online-dot"></span></div>
+                  <div>
+                    <strong>กิตติพงษ์ พรหมชัย</strong>
+                    <span>Structural Engineer</span>
+                  </div>
                 </div>
-              </article>
-              <article class="activity-item">
-                <div class="activity-icon">👤</div>
-                <div>
-                  <strong>สร้างบัญชีสมาชิกสำเร็จ</strong>
-                  <p>ยินดีต้อนรับเข้าสู่ ADT Membership</p>
+
+                <div class="member-row">
+                  <div class="member-avatar">PK<span class="online-dot"></span></div>
+                  <div>
+                    <strong>ภาคิน คงดี</strong>
+                    <span>ADT Member</span>
+                  </div>
                 </div>
-              </article>
-            </section>
-          </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="side-panel">
+            <div class="panel-head">
+              <div>
+                <h2>❓ คำถามล่าสุด</h2>
+                <p>Q&A ที่ยังรอคำตอบ</p>
+              </div>
+            </div>
+
+            <div class="side-body">
+              <div class="qa-list">
+                <div class="qa-item">
+                  <strong>แรงเยื้องศูนย์ในฐาน F1 ควรตั้ง Reference ที่จุดไหน?</strong>
+                  <span>0 คำตอบ · 9 นาที</span>
+                </div>
+
+                <div class="qa-item">
+                  <strong>การเลือกค่า SDL งานครัวในอาคารเดิม</strong>
+                  <span>2 คำตอบ · 21 นาที</span>
+                </div>
+              </div>
+            </div>
+          </article>
+
         </aside>
 
-      </div>
+      </section>
 
-      <div class="footer-note">
-        © 2026 ADTSpreadsheet — Member Dashboard Template v1.0
-      </div>
+      <section class="chat-panel" id="liveChat">
+        <div class="panel-head">
+          <div>
+            <h2>💬 Community Live Group Chat</h2>
+            <p>Frontend Demo — Realtime จริงจะเชื่อมในขั้น Backend</p>
+          </div>
+        </div>
+
+        <div class="chat-layout">
+
+          <aside class="chat-rooms">
+            <div class="chat-room-head">
+              <strong>ห้องสนทนา</strong>
+            </div>
+
+            <div class="room-list">
+              <button class="room-btn active" type="button">
+                <span class="room-icon">💬</span>
+                <span class="room-text">
+                  <strong>ADT Community</strong>
+                  <span>ห้องพูดคุยทั่วไป</span>
+                </span>
+                <span class="room-unread" id="roomUnread">3</span>
+              </button>
+
+              <button class="room-btn" type="button">
+                <span class="room-icon">🏗️</span>
+                <span class="room-text">
+                  <strong>Structural Talk</strong>
+                  <span>โครงสร้างและฐานราก</span>
+                </span>
+              </button>
+
+              <button class="room-btn" type="button">
+                <span class="room-icon">💻</span>
+                <span class="room-text">
+                  <strong>ADT Software Users</strong>
+                  <span>แลกเปลี่ยนการใช้งาน</span>
+                </span>
+              </button>
+            </div>
+          </aside>
+
+          <div class="chat-main">
+
+            <div class="chat-head">
+              <div class="chat-title">
+                <strong># ADT Community</strong>
+                <span>● 18 คนออนไลน์</span>
+              </div>
+
+              <div class="chat-controls">
+                <button class="control-btn active" id="chatSoundBtn" type="button">🔊 Sound On</button>
+                <button class="control-btn" id="mentionModeBtn" type="button">@ Mention</button>
+              </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+
+              <div class="message-row">
+                <div class="message-avatar">NS</div>
+                <div class="message-content">
+                  <div class="message-name">นที</div>
+                  <div class="bubble">มีใครเคยใช้ PILEFiX กับฐานที่เสาเข็มเยื้องเยอะ ๆ ไหมครับ</div>
+                  <div class="message-time">11:08</div>
+                </div>
+              </div>
+
+              <div class="message-row">
+                <div class="message-avatar">KP</div>
+                <div class="message-content">
+                  <div class="message-name">กิตติพงษ์</div>
+                  <div class="bubble">เคยครับ ผมใช้ดู Reaction ก่อน แล้วค่อยเช็ก Punching ต่อครับ</div>
+                  <div class="message-time">11:09</div>
+                </div>
+              </div>
+
+              <div class="message-row mine">
+                <div class="message-content">
+                  <div class="bubble">เดี๋ยวผมลองเทียบกับไฟล์คำนวณเดิมดูครับ 😆</div>
+                  <div class="message-time">11:10</div>
+                </div>
+              </div>
+
+              <div class="message-row">
+                <div class="message-avatar">PK</div>
+                <div class="message-content">
+                  <div class="message-name">ภาคิน</div>
+                  <div class="bubble">@AG ถ้าได้ผลยังไงมาแชร์ด้วยนะครับ</div>
+                  <div class="message-time">11:11</div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="chat-compose">
+              <button class="chat-tool attach" type="button">📎</button>
+              <input class="chat-input" id="chatInput" type="text" placeholder="พิมพ์ข้อความ... ใช้ @ เพื่อ Mention สมาชิก">
+              <button class="chat-tool" id="emojiBtn" type="button">🙂</button>
+              <button class="send-btn" id="sendBtn" type="button">➤</button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
     </div>
   </main>
 </div>
 
+<!-- Notification -->
+<div class="notify-menu" id="notifyMenu">
+  <div class="notify-head">
+    <strong>การแจ้งเตือน</strong>
+    <button id="markAllReadBtn" type="button">อ่านทั้งหมด</button>
+  </div>
+
+  <div class="notify-item unread">
+    <div class="notify-icon">💬</div>
+    <div>
+      <strong>ภาคิน Mention คุณใน Live Chat</strong>
+      <span>“@AG ถ้าได้ผลยังไงมาแชร์ด้วยนะครับ” · 2 นาที</span>
+    </div>
+  </div>
+
+  <div class="notify-item unread">
+    <div class="notify-icon">👍</div>
+    <div>
+      <strong>มีคนกดถูกใจโพสต์ของคุณ</strong>
+      <span>โพสต์เรื่อง ADT-PILEFiX · 8 นาที</span>
+    </div>
+  </div>
+
+  <div class="notify-item unread">
+    <div class="notify-icon">💡</div>
+    <div>
+      <strong>มีคำตอบใหม่ในกระทู้ที่คุณติดตาม</strong>
+      <span>หัวข้อ Punching Shear · 15 นาที</span>
+    </div>
+  </div>
+</div>
+
+<!-- Create Post Modal -->
+<div class="modal-backdrop" id="postModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>สร้างโพสต์ใหม่</h3>
+      <button class="modal-close" id="postModalClose" type="button">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="field">
+        <label>ประเภทโพสต์</label>
+        <select id="postType">
+          <option value="qa">Q&A / ตั้งคำถาม</option>
+          <option value="article">แชร์ความรู้ / บทความ</option>
+          <option value="project">แชร์ผลงาน</option>
+          <option value="general">พูดคุยทั่วไป</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>หัวข้อ</label>
+        <input id="postTitle" type="text" placeholder="เขียนหัวข้อโพสต์">
+      </div>
+
+      <div class="field">
+        <label>รายละเอียด</label>
+        <textarea id="postBody" placeholder="เขียนรายละเอียดที่ต้องการแชร์..."></textarea>
+      </div>
+
+      <div class="field">
+        <label>Tag</label>
+        <input id="postTags" type="text" placeholder="เช่น Foundation, Structural, ADTPILEFiX">
+      </div>
+    </div>
+
+    <div class="modal-foot">
+      <button class="btn btn-white" id="cancelPostBtn" type="button">ยกเลิก</button>
+      <button class="btn btn-blue" id="submitPostBtn" type="button">โพสต์</button>
+    </div>
+  </div>
+</div>
+
 <script>
-/*
-  ============================================================
-  ADT MEMBER DASHBOARD — FRONTEND TEMPLATE v1.0
-  ------------------------------------------------------------
-  ปัจจุบันใช้ข้อมูลตัวอย่างในหน้าเว็บก่อน
-  ขั้นต่อไปสามารถเปลี่ยนให้โหลดข้อมูลจาก Supabase/API ได้
-  โดยนำค่าที่ได้มาใส่ใน object memberData ด้านล่าง
-  ============================================================
-*/
+"use strict";
 
-const memberData = {
-  firstName: "อ.เก่ง",
-  fullName: "นายช่างอานนท์ แซ้นสีดา",
-  shortName: "อานนท์ แซ้นสีดา",
-  initials: "AG",
-  profession: "วิศวกรโยธา",
-  memberId: "MEM-000001",
-  joinedDate: "6 ส.ค. 2569"
-};
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
 
-function setText(id, value){
-  const element = document.getElementById(id);
-  if(element) element.textContent = value;
+let soundEnabled = true;
+let unreadCount = 3;
+
+/* =========================================================
+   MEMBER SESSION
+========================================================= */
+
+function getStoredMember(){
+  const storages = [localStorage,sessionStorage];
+
+  for(const storage of storages){
+    try{
+      const raw = storage.getItem("adt_member_profile");
+      if(raw) return JSON.parse(raw);
+    }catch(error){}
+  }
+
+  return null;
 }
 
-function renderMember(){
-  setText("welcomeName", memberData.firstName);
-  setText("memberFullName", memberData.fullName);
-  setText("memberProfession", memberData.profession);
-  setText("memberId", memberData.memberId);
-  setText("joinedDate", memberData.joinedDate);
-  setText("miniName", memberData.shortName);
-  setText("miniMemberId", memberData.memberId);
-  setText("topName", memberData.shortName);
+function applyMemberHeader(){
+  const member = getStoredMember();
+  if(!member) return;
 
-  ["miniAvatar","topAvatar","memberAvatar"].forEach(id => {
-    setText(id, memberData.initials);
+  const fullName =
+    member.display_name ||
+    member.full_name ||
+    [member.first_name,member.last_name].filter(Boolean).join(" ") ||
+    member.name ||
+    "สมาชิก ADT";
+
+  const memberId =
+    member.member_no ||
+    member.member_id ||
+    member.member_code ||
+    "MEM-000001";
+
+  $("#miniName").textContent = fullName;
+  $("#miniMemberId").textContent = memberId;
+  $("#topName").textContent = fullName;
+
+  const initials = fullName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(word => word.charAt(0))
+    .join("")
+    .toUpperCase() || "AG";
+
+  $("#miniAvatar").textContent = initials;
+  $("#topAvatar").textContent = initials;
+  $("#composerAvatar").textContent = initials;
+}
+
+/* =========================================================
+   NOTIFICATION / SOUND
+========================================================= */
+
+function updateUnreadUI(){
+  $("#communityBadge").textContent = unreadCount;
+  $("#roomUnread").textContent = unreadCount;
+  $("#unreadStat").textContent = unreadCount;
+
+  const visible = unreadCount > 0;
+  $("#communityBadge").style.display = visible ? "grid" : "none";
+  $("#roomUnread").style.display = visible ? "grid" : "none";
+  $("#notificationDot").style.display = visible ? "block" : "none";
+}
+
+function playNotificationSound(){
+  if(!soundEnabled) return;
+
+  try{
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    oscillator.frequency.setValueAtTime(880, ctx.currentTime);
+    oscillator.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + .12);
+
+    gain.gain.setValueAtTime(.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.12, ctx.currentTime + .01);
+    gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .16);
+
+    oscillator.start();
+    oscillator.stop(ctx.currentTime + .17);
+  }catch(error){
+    console.warn("Sound unavailable:",error);
+  }
+}
+
+function setSound(enabled){
+  soundEnabled = enabled;
+
+  $("#soundBtn").textContent =
+    enabled
+      ? "🔊 เสียงแจ้งเตือน: เปิด"
+      : "🔇 เสียงแจ้งเตือน: ปิด";
+
+  $("#chatSoundBtn").textContent =
+    enabled
+      ? "🔊 Sound On"
+      : "🔇 Sound Off";
+
+  $("#chatSoundBtn").classList.toggle("active",enabled);
+}
+
+$("#soundBtn").addEventListener("click",()=>{
+  setSound(!soundEnabled);
+});
+
+$("#chatSoundBtn").addEventListener("click",()=>{
+  setSound(!soundEnabled);
+});
+
+$("#notificationBtn").addEventListener("click",()=>{
+  $("#notifyMenu").classList.toggle("show");
+});
+
+$("#markAllReadBtn").addEventListener("click",()=>{
+  unreadCount = 0;
+  updateUnreadUI();
+  $$(".notify-item").forEach(item=>item.classList.remove("unread"));
+  $("#notifyMenu").classList.remove("show");
+});
+
+/* =========================================================
+   FEED FILTER
+========================================================= */
+
+$$(".tab-btn").forEach(button=>{
+  button.addEventListener("click",()=>{
+    $$(".tab-btn").forEach(btn=>btn.classList.remove("active"));
+    button.classList.add("active");
+
+    const filter = button.dataset.feed;
+
+    $$("#feedList .post").forEach(post=>{
+      post.style.display =
+        filter === "all" || post.dataset.type === filter
+          ? ""
+          : "none";
+    });
   });
+});
+
+/* LIKE */
+$$(".like-btn").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const countEl = button.querySelector("span");
+    let count = Number(countEl.textContent || "0");
+
+    if(button.classList.toggle("liked")){
+      count++;
+    }else{
+      count--;
+    }
+
+    countEl.textContent = count;
+  });
+});
+
+/* =========================================================
+   CREATE POST MODAL
+========================================================= */
+
+function openPostModal(type){
+  $("#postModal").classList.add("show");
+
+  if(type){
+    $("#postType").value = type;
+  }
 }
 
-const sidebar = document.getElementById("sidebar");
-const overlay = document.getElementById("overlay");
-const mobileMenu = document.getElementById("mobileMenu");
-
-function closeSidebar(){
-  sidebar.classList.remove("open");
-  overlay.classList.remove("show");
+function closePostModal(){
+  $("#postModal").classList.remove("show");
 }
 
-mobileMenu?.addEventListener("click", () => {
+$("#createPostBtn").addEventListener("click",()=>openPostModal());
+$("#composerOpen").addEventListener("click",()=>openPostModal());
+$("#quickAskBtn").addEventListener("click",()=>openPostModal("qa"));
+$("#postModalClose").addEventListener("click",closePostModal);
+$("#cancelPostBtn").addEventListener("click",closePostModal);
+
+$("#submitPostBtn").addEventListener("click",()=>{
+  const title = $("#postTitle").value.trim();
+  const body = $("#postBody").value.trim();
+
+  if(!title || !body){
+    alert("กรุณากรอกหัวข้อและรายละเอียดก่อนโพสต์");
+    return;
+  }
+
+  alert("Frontend Demo: ขั้น Backend จะบันทึกโพสต์นี้ผูกกับ Member ID ของผู้ใช้งาน");
+  closePostModal();
+});
+
+/* =========================================================
+   LIVE CHAT DEMO
+========================================================= */
+
+$("#jumpChatBtn").addEventListener("click",()=>{
+  $("#liveChat").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+  unreadCount = 0;
+  updateUnreadUI();
+});
+
+$("#emojiBtn").addEventListener("click",()=>{
+  $("#chatInput").value += " 😆";
+  $("#chatInput").focus();
+});
+
+function sendMessage(){
+  const input = $("#chatInput");
+  const value = input.value.trim();
+
+  if(!value) return;
+
+  const row = document.createElement("div");
+  row.className = "message-row mine";
+
+  const now = new Date();
+  const time = now.toLocaleTimeString("th-TH",{
+    hour:"2-digit",
+    minute:"2-digit"
+  });
+
+  row.innerHTML = `
+    <div class="message-content">
+      <div class="bubble">${escapeHtml(value)}</div>
+      <div class="message-time">${time}</div>
+    </div>
+  `;
+
+  $("#chatMessages").appendChild(row);
+  $("#chatMessages").scrollTop = $("#chatMessages").scrollHeight;
+  input.value = "";
+
+  setTimeout(()=>{
+    simulateReply();
+  },700);
+}
+
+function simulateReply(){
+  const row = document.createElement("div");
+  row.className = "message-row";
+
+  row.innerHTML = `
+    <div class="message-avatar">NS</div>
+    <div class="message-content">
+      <div class="message-name">นที</div>
+      <div class="bubble">โอเคครับ เดี๋ยวตามดูผลครับ 😄</div>
+      <div class="message-time">เมื่อสักครู่</div>
+    </div>
+  `;
+
+  $("#chatMessages").appendChild(row);
+  $("#chatMessages").scrollTop = $("#chatMessages").scrollHeight;
+
+  unreadCount++;
+  updateUnreadUI();
+  playNotificationSound();
+}
+
+$("#sendBtn").addEventListener("click",sendMessage);
+
+$("#chatInput").addEventListener("keydown",event=>{
+  if(event.key === "Enter"){
+    event.preventDefault();
+    sendMessage();
+  }
+});
+
+$("#mentionModeBtn").addEventListener("click",()=>{
+  $("#chatInput").value += "@";
+  $("#chatInput").focus();
+});
+
+/* =========================================================
+   MOBILE SIDEBAR
+========================================================= */
+
+const sidebar = $("#sidebar");
+const overlay = $("#overlay");
+const mobileMenu = $("#mobileMenu");
+
+mobileMenu.addEventListener("click",()=>{
   sidebar.classList.toggle("open");
   overlay.classList.toggle("show");
 });
 
-overlay?.addEventListener("click", closeSidebar);
-
-document.getElementById("logoutButton")?.addEventListener("click", () => {
-  /*
-    ขั้นเชื่อมระบบจริง:
-    1. เรียก Supabase Auth signOut()
-    2. ล้าง token/session
-    3. redirect ไป /member/login/
-  */
-  alert("ปุ่มออกจากระบบพร้อมเชื่อม Supabase Auth ในขั้นถัดไป");
+overlay.addEventListener("click",()=>{
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
 });
 
-renderMember();
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+$("#logoutButton").addEventListener("click",()=>{
+  [
+    "adt_access_token",
+    "adt_refresh_token",
+    "adt_token_expires_at",
+    "adt_member_profile"
+  ].forEach(key=>{
+    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
+  });
+
+  window.location.href="/member/";
+});
+
+function escapeHtml(value){
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+applyMemberHeader();
+setSound(true);
+updateUnreadUI();
 </script>
 </body>
 </html>
