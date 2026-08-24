@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>เข้าสู่ระบบสมาชิก | ADTSpreadsheet</title>
-<meta name="description" content="เข้าสู่ระบบสมาชิก ADTSpreadsheet เพื่อเข้าถึงโปรแกรมทดลอง บทความ PDF ตัวอย่างงานออกแบบ Community การอบรม และบริการสำหรับสมาชิก">
+<title>Dashboard สมาชิก | ADTSpreadsheet</title>
+<meta name="description" content="พื้นที่สมาชิก ADTSpreadsheet สำหรับจัดการโปรแกรม การอบรม เอกสาร ข่าวสาร และกิจกรรมทั้งหมดของสมาชิก">
 <link rel="icon" type="image/png" href="/assets/images/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,6 +15,7 @@
   --navy:#06152d;
   --navy-2:#0a2855;
   --blue:#1677ff;
+  --blue-soft:#eaf3ff;
   --yellow:#ffc928;
   --green:#17b26a;
   --red:#ef3d48;
@@ -22,1000 +23,1048 @@
   --muted:#6c7a90;
   --line:#dce5ef;
   --surface:#f4f7fb;
-  --white:#fff;
-  --shadow:0 24px 70px rgba(4,27,60,.16);
-  --radius:28px;
+  --white:#ffffff;
+  --sidebar:280px;
+  --shadow:0 16px 42px rgba(4,27,60,.10);
+  --radius:22px;
 }
 
 *{box-sizing:border-box}
-html,body{min-height:100%}
+html{scroll-behavior:smooth}
 body{
   margin:0;
   font-family:"Prompt",sans-serif;
   color:var(--ink);
-  background:
-    radial-gradient(circle at 15% 10%,rgba(22,119,255,.16),transparent 26%),
-    radial-gradient(circle at 85% 90%,rgba(255,201,40,.13),transparent 24%),
-    var(--surface);
+  background:var(--surface);
 }
+button,input{font:inherit}
 a{color:inherit}
 img{display:block;max-width:100%}
-button,input{font:inherit}
 
-.page{
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:minmax(0,1.1fr) minmax(520px,.9fr);
-}
+.app{min-height:100vh}
 
-/* LEFT PANEL */
-.brand-panel{
-  position:relative;
-  overflow:hidden;
-  min-height:100vh;
-  padding:34px 42px 44px;
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:1000;
+  width:var(--sidebar);
   display:flex;
   flex-direction:column;
   color:#fff;
   background:
-    radial-gradient(circle at 18% 16%,rgba(22,119,255,.35),transparent 28%),
-    radial-gradient(circle at 88% 82%,rgba(255,201,40,.18),transparent 24%),
-    linear-gradient(145deg,#031025 0%,#06152d 48%,#0a2855 100%);
+    radial-gradient(circle at 20% 5%,rgba(22,119,255,.28),transparent 28%),
+    linear-gradient(180deg,#06152d,#031025);
+  border-right:1px solid rgba(255,255,255,.08);
 }
-.brand-panel:before,
-.brand-panel:after{
-  content:"";
-  position:absolute;
+.sidebar-head{
+  min-height:92px;
+  display:flex;
+  align-items:center;
+  padding:18px 22px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.sidebar-logo{
+  width:220px;
+  max-height:56px;
+  object-fit:contain;
+  object-position:left center;
+}
+.member-mini{
+  margin:18px;
+  padding:17px;
+  display:grid;
+  grid-template-columns:52px 1fr;
+  gap:12px;
+  align-items:center;
+  border-radius:18px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.11);
+}
+.member-mini-avatar{
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
   border-radius:50%;
-  border:1px solid rgba(255,255,255,.07);
+  color:var(--navy);
+  background:var(--yellow);
+  font-weight:800;
 }
-.brand-panel:before{
-  width:430px;
-  height:430px;
-  right:-170px;
-  top:-140px;
-  box-shadow:0 0 0 70px rgba(255,255,255,.025),0 0 0 140px rgba(255,255,255,.018);
+.member-mini strong{display:block;font-size:.93rem}
+.member-mini span{
+  display:block;
+  margin-top:3px;
+  color:#bcd0e7;
+  font-size:.73rem;
 }
-.brand-panel:after{
-  width:280px;
-  height:280px;
-  left:-120px;
-  bottom:-110px;
-  box-shadow:0 0 0 55px rgba(255,255,255,.025);
+.sidebar-nav{
+  padding:4px 14px 22px;
+  display:grid;
+  gap:7px;
+  overflow:auto;
 }
-.brand-top{
-  position:relative;
-  z-index:2;
+.nav-group{
+  padding:15px 12px 5px;
+  color:#7896b7;
+  font-size:.68rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.nav-link{
+  min-height:48px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border-radius:13px;
+  text-decoration:none;
+  color:#d8e6f5;
+  font-size:.88rem;
+  font-weight:600;
+  transition:.2s;
+}
+.nav-link:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-link.active{
+  color:#fff;
+  background:linear-gradient(135deg,var(--blue),#0d5fd1);
+  box-shadow:0 10px 26px rgba(22,119,255,.28);
+}
+.nav-icon{
+  width:24px;
+  text-align:center;
+  font-size:1.05rem;
+}
+.sidebar-foot{
+  margin-top:auto;
+  padding:15px 18px 20px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.logout-btn{
+  width:100%;
+  min-height:44px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:12px;
+  color:#fff;
+  background:rgba(255,255,255,.06);
+  cursor:pointer;
+}
+
+/* MAIN */
+.main{
+  margin-left:var(--sidebar);
+  min-height:100vh;
+}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:900;
+  min-height:76px;
+  padding:0 32px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:20px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
 }
-.logo{
-  width:260px;
-  max-height:68px;
-  object-fit:contain;
-  object-position:left center;
+.mobile-menu{
+  display:none;
+  width:44px;
+  height:44px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  cursor:pointer;
 }
-.back-home{
-  padding:10px 14px;
-  border-radius:999px;
+.topbar-title strong{display:block;color:var(--navy);font-size:1.05rem}
+.topbar-title span{display:block;margin-top:2px;color:var(--muted);font-size:.75rem}
+.topbar-actions{display:flex;align-items:center;gap:10px}
+.icon-btn{
+  position:relative;
+  width:44px;
+  height:44px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:12px;
+  color:var(--navy);
+  background:#fff;
+  cursor:pointer;
+}
+.notification-dot{
+  position:absolute;
+  right:8px;
+  top:7px;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--red);
+}
+.profile-chip{
+  padding:6px 10px 6px 7px;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+}
+.profile-chip-avatar{
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.78rem;
+  font-weight:800;
+}
+.profile-chip strong{display:block;font-size:.78rem}
+.profile-chip span{display:block;color:var(--muted);font-size:.66rem}
+
+.content{
+  width:min(1480px,calc(100% - 48px));
+  margin:auto;
+  padding:30px 0 56px;
+}
+
+/* HERO */
+.welcome{
+  position:relative;
+  overflow:hidden;
+  padding:34px;
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:30px;
+  border-radius:28px;
+  color:#fff;
+  background:
+    radial-gradient(circle at 85% 25%,rgba(255,201,40,.20),transparent 20%),
+    radial-gradient(circle at 15% 10%,rgba(22,119,255,.35),transparent 30%),
+    linear-gradient(135deg,#031025,#0a2855);
+  box-shadow:var(--shadow);
+}
+.welcome:after{
+  content:"";
+  position:absolute;
+  right:-80px;
+  bottom:-120px;
+  width:330px;
+  height:330px;
+  border-radius:50%;
+  border:55px solid rgba(255,255,255,.035);
+}
+.welcome-copy{position:relative;z-index:2}
+.eyebrow{
+  margin:0 0 8px;
+  color:var(--yellow);
+  font-size:.72rem;
+  font-weight:800;
+  letter-spacing:.12em;
+}
+.welcome h1{
+  margin:0;
+  font-size:clamp(2rem,4vw,3.4rem);
+  line-height:1.16;
+}
+.welcome p{
+  max-width:760px;
+  margin:16px 0 0;
+  color:#d6e4f5;
+  line-height:1.8;
+}
+.welcome-actions{
+  margin-top:24px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.btn{
+  min-height:48px;
+  padding:0 19px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border:0;
+  border-radius:13px;
   text-decoration:none;
-  color:#dce8f6;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.12);
-  font-size:.76rem;
   font-weight:700;
+  cursor:pointer;
 }
-.brand-content{
+.btn-yellow{color:var(--navy);background:var(--yellow)}
+.btn-white{color:var(--navy);background:#fff}
+.btn-blue{color:#fff;background:var(--blue)}
+.btn-soft{color:var(--blue);background:var(--blue-soft)}
+.btn-outline{color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.2)}
+
+.member-card{
   position:relative;
   z-index:2;
-  width:min(720px,100%);
-  margin:auto 0;
-  padding:54px 0;
+  padding:22px;
+  align-self:stretch;
+  border-radius:22px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.14);
 }
-.eyebrow{
-  margin:0 0 14px;
-  color:var(--yellow);
-  font:800 .75rem "Inter";
-  letter-spacing:.13em;
-}
-.brand-content h1{
-  max-width:740px;
-  margin:0;
-  font-size:clamp(2.8rem,6vw,5.6rem);
-  line-height:1.05;
-  letter-spacing:-.03em;
-}
-.brand-content h1 span{color:var(--yellow)}
-.brand-content>p{
-  max-width:690px;
-  margin:24px 0 0;
-  color:#d7e5f5;
-  font-size:clamp(1rem,1.5vw,1.18rem);
-  line-height:1.9;
-}
-.feature-grid{
-  margin-top:34px;
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+.member-card-top{
+  display:flex;
+  align-items:center;
   gap:14px;
 }
-.feature{
-  padding:17px;
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-  border-radius:18px;
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.11);
+.member-card-avatar{
+  width:70px;
+  height:70px;
+  display:grid;
+  place-items:center;
+  border-radius:20px;
+  color:var(--navy);
+  background:var(--yellow);
+  font:800 1.2rem "Inter";
 }
-.feature-icon{
-  flex:0 0 42px;
+.member-card h3{margin:0;font-size:1.05rem}
+.member-card-role{margin:4px 0 0;color:#bcd0e7;font-size:.77rem}
+.member-level{
+  display:inline-flex;
+  margin-top:10px;
+  padding:6px 9px;
+  border-radius:999px;
+  color:#10213f;
+  background:var(--yellow);
+  font-size:.65rem;
+  font-weight:800;
+}
+.member-card-grid{
+  margin-top:20px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.member-info{
+  padding:12px;
+  border-radius:13px;
+  background:rgba(255,255,255,.07);
+}
+.member-info span{display:block;color:#9fb6d0;font-size:.66rem}
+.member-info strong{display:block;margin-top:4px;font-size:.8rem}
+
+/* COMMON */
+.section-head{
+  margin:34px 0 16px;
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:18px;
+}
+.section-head h2{
+  margin:0;
+  color:var(--navy);
+  font-size:1.45rem;
+}
+.section-head p{
+  margin:5px 0 0;
+  color:var(--muted);
+  font-size:.83rem;
+}
+.section-link{
+  text-decoration:none;
+  color:var(--blue);
+  font-size:.8rem;
+  font-weight:800;
+}
+.card{
+  border-radius:var(--radius);
+  background:#fff;
+  border:1px solid #e6edf5;
+  box-shadow:var(--shadow);
+}
+
+/* STAT CARDS */
+.stats{
+  margin-top:22px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+}
+.stat-card{
+  padding:20px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.stat-icon{
+  flex:0 0 52px;
+  width:52px;
+  height:52px;
+  display:grid;
+  place-items:center;
+  border-radius:16px;
+  font-size:1.25rem;
+  background:var(--blue-soft);
+}
+.stat-card:nth-child(2) .stat-icon{background:#ecfbf4}
+.stat-card:nth-child(3) .stat-icon{background:#fff7d8}
+.stat-card:nth-child(4) .stat-icon{background:#f3edff}
+.stat-card span{display:block;color:var(--muted);font-size:.72rem}
+.stat-card strong{display:block;margin-top:3px;color:var(--navy);font:800 1.4rem "Inter"}
+
+/* MAIN GRID */
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);
+  gap:22px;
+}
+.stack{display:grid;gap:22px}
+
+/* PROGRAM */
+.program-card{
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:210px 1fr;
+}
+.program-visual{
+  min-height:250px;
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  color:#fff;
+  background:
+    radial-gradient(circle at 80% 20%,rgba(255,201,40,.24),transparent 26%),
+    linear-gradient(145deg,#0a2855,#06152d);
+}
+.program-visual-label{
+  display:inline-flex;
+  align-self:flex-start;
+  padding:7px 10px;
+  border-radius:999px;
+  color:var(--navy);
+  background:var(--yellow);
+  font-size:.65rem;
+  font-weight:800;
+}
+.program-mark{
+  color:rgba(255,255,255,.92);
+  font:800 3rem "Inter";
+  letter-spacing:-.06em;
+}
+.program-body{padding:26px}
+.program-top{
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+}
+.program-body h3{margin:0;color:var(--navy);font-size:1.28rem}
+.status{
+  flex:0 0 auto;
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:.67rem;
+  font-weight:800;
+}
+.status-green{color:#087443;background:#e7f8f0}
+.status-blue{color:#0d5fd1;background:#eaf3ff}
+.status-yellow{color:#7d5b00;background:#fff5cb}
+.program-body p{margin:12px 0 0;color:var(--muted);line-height:1.75;font-size:.84rem}
+.progress{
+  height:8px;
+  margin-top:20px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#edf2f7;
+}
+.progress span{
+  display:block;
+  width:100%;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,var(--blue),#59a5ff);
+}
+.program-meta{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.meta-box{
+  padding:12px;
+  border-radius:13px;
+  background:#f6f9fc;
+}
+.meta-box span{display:block;color:var(--muted);font-size:.65rem}
+.meta-box strong{display:block;margin-top:4px;color:var(--navy);font-size:.78rem}
+.program-actions{
+  margin-top:18px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+/* EVENT */
+.event-card{padding:24px}
+.event-date{
+  display:inline-flex;
+  padding:7px 10px;
+  border-radius:999px;
+  color:#0d5fd1;
+  background:var(--blue-soft);
+  font-size:.68rem;
+  font-weight:800;
+}
+.event-card h3{margin:13px 0 0;color:var(--navy);font-size:1.2rem}
+.event-card p{margin:10px 0 0;color:var(--muted);line-height:1.7;font-size:.82rem}
+.event-details{
+  margin-top:17px;
+  display:grid;
+  gap:9px;
+}
+.event-detail{
+  padding:10px 12px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  border-radius:11px;
+  background:#f6f9fc;
+  font-size:.75rem;
+}
+.event-detail span{color:var(--muted)}
+.event-detail strong{color:var(--navy)}
+.event-card .btn{width:100%;margin-top:17px}
+
+/* QUICK ACTIONS */
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+.quick-card{
+  min-height:128px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  text-decoration:none;
+  transition:.2s;
+}
+.quick-card:hover{transform:translateY(-3px)}
+.quick-card-icon{
   width:42px;
   height:42px;
   display:grid;
   place-items:center;
   border-radius:13px;
-  color:var(--navy);
-  background:var(--yellow);
-  font-size:1rem;
+  background:var(--blue-soft);
 }
-.feature strong{display:block;font-size:.86rem}
-.feature span{
-  display:block;
-  margin-top:4px;
-  color:#bcd0e7;
-  font-size:.69rem;
-  line-height:1.55;
-}
-.brand-foot{
-  position:relative;
-  z-index:2;
-  display:flex;
-  justify-content:space-between;
-  gap:20px;
-  color:#91abc8;
-  font-size:.68rem;
-}
+.quick-card strong{color:var(--navy);font-size:.9rem}
+.quick-card span{color:var(--muted);font-size:.7rem}
 
-/* LOGIN PANEL */
-.login-panel{
-  min-height:100vh;
-  padding:32px;
+/* NEWS */
+.news-card{padding:8px 22px}
+.news-item{
+  padding:17px 0;
   display:grid;
-  place-items:center;
-}
-.login-wrap{
-  width:min(520px,100%);
-}
-.mobile-logo{
-  display:none;
-  width:240px;
-  margin:0 auto 24px;
-}
-.login-card{
-  padding:38px;
-  border-radius:var(--radius);
-  background:rgba(255,255,255,.96);
-  border:1px solid rgba(220,229,239,.92);
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(15px);
-}
-.login-head{
-  margin-bottom:28px;
-}
-.login-head .label{
-  margin:0 0 8px;
-  color:var(--blue);
-  font:800 .72rem "Inter";
-  letter-spacing:.12em;
-}
-.login-head h2{
-  margin:0;
-  color:var(--navy);
-  font-size:clamp(2rem,4vw,2.8rem);
-  line-height:1.2;
-}
-.login-head p{
-  margin:12px 0 0;
-  color:var(--muted);
-  line-height:1.75;
-  font-size:.86rem;
-}
-.form-group{margin-bottom:18px}
-.form-label{
-  display:flex;
-  justify-content:space-between;
+  grid-template-columns:10px 1fr auto;
   gap:12px;
-  margin-bottom:8px;
-  color:var(--navy);
-  font-size:.78rem;
-  font-weight:800;
+  align-items:start;
+  border-bottom:1px solid var(--line);
 }
-.field{
-  position:relative;
+.news-item:last-child{border-bottom:0}
+.news-dot{
+  width:8px;
+  height:8px;
+  margin-top:7px;
+  border-radius:50%;
+  background:var(--blue);
 }
-.field-icon{
-  position:absolute;
-  left:15px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#7b8ba1;
-  font-size:1rem;
-  pointer-events:none;
+.news-item strong{display:block;color:var(--navy);font-size:.84rem}
+.news-item p{margin:4px 0 0;color:var(--muted);font-size:.72rem;line-height:1.6}
+.news-item time{color:#8b99aa;font-size:.65rem;white-space:nowrap}
+
+/* ACTIVITY */
+.activity-card{padding:8px 22px}
+.activity-item{
+  padding:16px 0;
+  display:flex;
+  gap:13px;
+  border-bottom:1px solid var(--line);
 }
-.form-control{
-  width:100%;
-  height:54px;
-  padding:0 48px 0 46px;
-  border:1px solid var(--line);
-  border-radius:15px;
-  outline:none;
-  color:var(--ink);
-  background:#f9fbfd;
-  transition:.2s;
-}
-.form-control:focus{
-  border-color:#94c3ff;
-  background:#fff;
-  box-shadow:0 0 0 4px rgba(22,119,255,.09);
-}
-.password-toggle{
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
+.activity-item:last-child{border-bottom:0}
+.activity-icon{
+  flex:0 0 38px;
   width:38px;
   height:38px;
   display:grid;
   place-items:center;
-  border:0;
-  border-radius:10px;
-  color:#64748b;
-  background:transparent;
-  cursor:pointer;
+  border-radius:12px;
+  background:#f1f6fc;
 }
-.form-row{
-  margin:2px 0 22px;
+.activity-item strong{display:block;color:var(--navy);font-size:.8rem}
+.activity-item p{margin:3px 0 0;color:var(--muted);font-size:.7rem;line-height:1.55}
+
+/* PROFILE COMPLETION */
+.profile-progress{padding:22px}
+.profile-progress-top{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:16px;
 }
-.remember{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:#52627a;
-  font-size:.74rem;
-}
-.remember input{
-  width:17px;
-  height:17px;
-  accent-color:var(--blue);
-}
-.text-link{
-  color:var(--blue);
-  text-decoration:none;
-  font-size:.74rem;
-  font-weight:800;
-}
-.login-button{
-  width:100%;
-  min-height:54px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  border:0;
-  border-radius:15px;
-  color:#fff;
-  background:linear-gradient(135deg,var(--blue),#0d5fd1);
-  box-shadow:0 15px 30px rgba(22,119,255,.23);
-  font-weight:800;
-  cursor:pointer;
-  transition:.2s;
-}
-.login-button:hover{transform:translateY(-2px)}
-.login-button:disabled{
-  opacity:.7;
-  cursor:not-allowed;
-  transform:none;
-}
-.spinner{
-  display:none;
-  width:18px;
-  height:18px;
-  border:2px solid rgba(255,255,255,.35);
-  border-top-color:#fff;
-  border-radius:50%;
-  animation:spin .75s linear infinite;
-}
-.login-button.loading .spinner{display:block}
-.login-button.loading .button-text{opacity:.85}
-@keyframes spin{to{transform:rotate(360deg)}}
+.profile-progress h3{margin:0;color:var(--navy);font-size:1rem}
+.profile-progress strong{color:var(--blue);font:800 1.2rem "Inter"}
+.profile-progress p{margin:8px 0 0;color:var(--muted);font-size:.75rem;line-height:1.65}
+.profile-progress .progress span{width:75%}
+.profile-progress .btn{width:100%;margin-top:16px}
 
-.alert{
-  display:none;
-  margin-bottom:18px;
-  padding:12px 14px;
-  border-radius:13px;
-  font-size:.74rem;
-  line-height:1.6;
-}
-.alert.show{display:block}
-.alert-error{
-  color:#9f1d2c;
-  background:#fff0f2;
-  border:1px solid #ffd1d7;
-}
-.alert-success{
-  color:#087443;
-  background:#eaf9f2;
-  border:1px solid #c9efdd;
-}
-.divider{
-  margin:25px 0;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  color:#9aa7b7;
-  font-size:.68rem;
-}
-.divider:before,
-.divider:after{
-  content:"";
-  height:1px;
-  flex:1;
-  background:var(--line);
-}
-.register-box{
-  padding:17px;
-  border-radius:16px;
+.footer-note{
+  margin-top:36px;
+  padding-top:20px;
   text-align:center;
-  background:#f5f9ff;
-  border:1px solid #dfeeff;
-}
-.register-box p{
-  margin:0;
-  color:#617188;
-  font-size:.76rem;
-  line-height:1.65;
-}
-.register-box a{
-  color:var(--blue);
-  font-weight:800;
-  text-decoration:none;
-}
-.security-note{
-  margin-top:17px;
-  display:flex;
-  align-items:flex-start;
-  gap:9px;
-  color:#8795a7;
-  font-size:.66rem;
-  line-height:1.55;
-}
-.security-note span:first-child{
-  color:var(--green);
-}
-.login-footer{
-  margin-top:18px;
-  text-align:center;
-  color:#8c99a9;
-  font-size:.67rem;
-}
-.login-footer a{
-  color:#60738c;
-  text-decoration:none;
+  color:#8a98aa;
+  font-size:.72rem;
+  border-top:1px solid var(--line);
 }
 
-/* RESPONSIVE */
-@media(max-width:1100px){
-  .page{grid-template-columns:1fr}
-  .brand-panel{display:none}
-  .login-panel{
-    min-height:100vh;
-    padding:28px 20px;
+/* MOBILE */
+.overlay{
+  position:fixed;
+  inset:0;
+  z-index:950;
+  display:none;
+  background:rgba(3,16,37,.58);
+}
+@media(max-width:1180px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .dashboard-grid{grid-template-columns:1fr}
+}
+@media(max-width:920px){
+  :root{--sidebar:280px}
+  .sidebar{
+    transform:translateX(-100%);
+    transition:.25s;
   }
-  .mobile-logo{display:block}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .main{margin-left:0}
+  .mobile-menu{display:grid;place-items:center}
+  .welcome{grid-template-columns:1fr}
 }
-@media(max-width:560px){
-  .login-panel{padding:20px 14px}
-  .login-card{
-    padding:26px 20px;
-    border-radius:22px;
-  }
-  .form-row{
-    align-items:flex-start;
-    flex-direction:column;
-    gap:10px;
-  }
+@media(max-width:700px){
+  .topbar{padding:0 14px}
+  .profile-chip-text{display:none}
+  .content{width:min(100% - 24px,1480px);padding-top:18px}
+  .welcome{padding:24px}
+  .stats{grid-template-columns:1fr}
+  .program-card{grid-template-columns:1fr}
+  .program-visual{min-height:190px}
+  .program-meta{grid-template-columns:1fr}
+  .quick-grid{grid-template-columns:1fr}
+  .section-head{align-items:start}
+  .section-link{display:none}
 }
-
-/* MEMBERSHIP BENEFITS */
-.brand-content{
-  width:min(760px,100%);
-  padding:42px 0;
-}
-.brand-content h1{
-  font-size:clamp(2.55rem,5vw,4.9rem);
-}
-.brand-content>p{
-  max-width:720px;
-  margin-top:20px;
-  font-size:clamp(.95rem,1.35vw,1.1rem);
-}
-.feature-grid{
-  margin-top:28px;
-}
-.feature{
-  min-height:116px;
-  padding:16px;
-}
-.feature strong{
-  font-size:.84rem;
-  line-height:1.45;
-}
-.feature span{
-  margin-top:5px;
-  font-size:.68rem;
-}
-.member-benefits{
-  margin-top:16px;
-  padding:18px;
-  border-radius:20px;
-  background:rgba(255,255,255,.075);
-  border:1px solid rgba(255,255,255,.12);
-}
-.member-benefits-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-}
-.member-benefits-head strong{
-  color:#fff;
-  font-size:.86rem;
-}
-.member-benefits-head span{
-  padding:6px 9px;
-  border-radius:999px;
-  color:var(--navy);
-  background:var(--yellow);
-  font-size:.61rem;
-  font-weight:800;
-}
-.member-benefits-list{
-  margin-top:13px;
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:9px 14px;
-}
-.member-benefit-item{
-  display:flex;
-  gap:8px;
-  align-items:flex-start;
-  color:#d8e6f6;
-  font-size:.66rem;
-  line-height:1.55;
-}
-.member-benefit-item b{
-  color:#64e5a2;
-}
-.member-value-note{
-  margin-top:14px;
-  padding:12px 14px;
-  border-radius:15px;
-  color:#c8d9ec;
-  background:rgba(3,16,37,.28);
-  border:1px solid rgba(255,255,255,.08);
-  font-size:.65rem;
-  line-height:1.65;
-}
-.member-value-note strong{color:var(--yellow)}
-@media(max-width:1350px){
-  .brand-content h1{
-    font-size:clamp(2.3rem,4.4vw,4.2rem);
-  }
-  .feature-grid{gap:11px}
-  .feature{min-height:108px}
-}
-@media(max-height:850px) and (min-width:1101px){
-  .brand-panel{padding-top:24px;padding-bottom:28px}
-  .brand-content{padding:25px 0}
-  .feature-grid{margin-top:20px}
-  .member-benefits{margin-top:12px}
-  .member-value-note{display:none}
-}
-@media(max-width:640px){
-  .member-benefits-list{grid-template-columns:1fr}
-}
-
 </style>
 </head>
 
 <body>
-<div class="page">
+<div class="app">
 
-  <section class="brand-panel">
-    <div class="brand-top">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
       <a href="/" aria-label="ADTSpreadsheet หน้าแรก">
-        <img class="logo"
+        <img class="sidebar-logo"
              src="/assets/images/logo-header.png"
              onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
              alt="ADTSpreadsheet">
       </a>
-      <a class="back-home" href="/">← กลับหน้าเว็บไซต์</a>
     </div>
 
-    <div class="brand-content">
-      <p class="eyebrow">ADT MEMBERSHIP</p>
+    <div class="member-mini">
+      <div class="member-mini-avatar" id="miniAvatar">AG</div>
+      <div>
+        <strong id="miniName">อานนท์ แซ้นสีดา</strong>
+        <span id="miniMemberId">MEM-000001</span>
+      </div>
+    </div>
 
-      <h1>
-        ปลดล็อก<br>
-        <span>เครื่องมือ ความรู้</span><br>
-        และโอกาสสำหรับวิศวกร
-      </h1>
+    <nav class="sidebar-nav" aria-label="เมนูสมาชิก">
+      <div class="nav-group">MEMBER AREA</div>
+      <a class="nav-link active" href="/member/dashboard/"><span class="nav-icon">🏠</span>Dashboard</a>
+      <a class="nav-link" href="/member/programs/"><span class="nav-icon">💻</span>โปรแกรมของฉัน</a>
+      <a class="nav-link" href="/member/training/"><span class="nav-icon">🎓</span>การอบรมของฉัน</a>
+      <a class="nav-link" href="/member/certificates/"><span class="nav-icon">🏅</span>ใบประกาศ</a>
 
-      <p>
-        บัญชีสมาชิก ADT เพียงบัญชีเดียว ช่วยให้คุณเข้าถึงโปรแกรมทดลอง
-        คลังบทความ เอกสารตัวอย่างงานออกแบบ Community การอบรม
-        และบริการสำหรับสมาชิกทั้งหมด
-      </p>
+      <div class="nav-group">KNOWLEDGE</div>
+      <a class="nav-link" href="/member/articles/"><span class="nav-icon">📰</span>บทความวิศวกรรม</a>
+      <a class="nav-link" href="/member/knowledge/"><span class="nav-icon">📚</span>Knowledge Center</a>
+      <a class="nav-link" href="/member/community/"><span class="nav-icon">💬</span>Community</a>
 
-      <div class="feature-grid">
-        <article class="feature">
-          <div class="feature-icon">💻</div>
-          <div>
-            <strong>ทดลองใช้ทุกโปรแกรมของ ADT</strong>
-            <span>ดาวน์โหลดเวอร์ชันทดลองของทุกโปรแกรมที่ ADT มีจำหน่าย เพื่อทดลองก่อนตัดสินใจ</span>
-          </div>
-        </article>
+      <div class="nav-group">ACCOUNT</div>
+      <a class="nav-link" href="/member/support/"><span class="nav-icon">🎫</span>Support</a>
+      <a class="nav-link" href="/member/payments/"><span class="nav-icon">🧾</span>การชำระเงิน</a>
+      <a class="nav-link" href="/member/profile/"><span class="nav-icon">👤</span>โปรไฟล์ของฉัน</a>
+      <a class="nav-link" href="/member/settings/"><span class="nav-icon">⚙️</span>ตั้งค่า</a>
+    </nav>
 
-        <article class="feature">
-          <div class="feature-icon">📚</div>
-          <div>
-            <strong>บทความวิศวกรรมแบบ PDF</strong>
-            <span>อ่านบทความทั้งหมดของ ADT และดาวน์โหลดเก็บเป็นไฟล์ PDF สำหรับศึกษาและอ้างอิง</span>
-          </div>
-        </article>
+    <div class="sidebar-foot">
+      <button class="logout-btn" id="logoutButton" type="button">ออกจากระบบ</button>
+    </div>
+  </aside>
 
-        <article class="feature">
-          <div class="feature-icon">📂</div>
-          <div>
-            <strong>คลังตัวอย่างงานออกแบบ</strong>
-            <span>ดาวน์โหลดแบบก่อสร้าง DWG/PDF รายการคำนวณ และตัวอย่าง BOQ Excel จากผลงานของ อ.เก่ง</span>
-          </div>
-        </article>
+  <div class="overlay" id="overlay"></div>
 
-        <article class="feature">
-          <div class="feature-icon">✍️</div>
-          <div>
-            <strong>เผยแพร่บทความของคุณ</strong>
-            <span>เขียนบทความทางวิศวกรรม แบ่งปันความรู้ และสร้างผลงานบนโปรไฟล์สมาชิกของคุณ</span>
-          </div>
-        </article>
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="mobile-menu" id="mobileMenu" type="button" aria-label="เปิดเมนู">☰</button>
+        <div class="topbar-title">
+          <strong>Dashboard สมาชิก</strong>
+          <span>ศูนย์รวมบริการและกิจกรรมทั้งหมดของ ADT</span>
+        </div>
       </div>
 
-      <section class="member-benefits">
-        <div class="member-benefits-head">
-          <strong>สิทธิพิเศษสำหรับสมาชิก ADT</strong>
-          <span>สมัครฟรี</span>
+      <div class="topbar-actions">
+        <button class="icon-btn" type="button" aria-label="การแจ้งเตือน">
+          🔔
+          <span class="notification-dot"></span>
+        </button>
+        <div class="profile-chip">
+          <div class="profile-chip-avatar" id="topAvatar">AG</div>
+          <div class="profile-chip-text">
+            <strong id="topName">อานนท์ แซ้นสีดา</strong>
+            <span>ADT Professional Member</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <section class="welcome">
+        <div class="welcome-copy">
+          <p class="eyebrow">ADT MEMBER DASHBOARD</p>
+          <h1>สวัสดีครับ <span id="welcomeName">อ.เก่ง</span> 👋</h1>
+          <p>ยินดีต้อนรับกลับสู่พื้นที่สมาชิกของ ADT ตรวจสอบโปรแกรมที่ถือครอง เข้าร่วมการอบรม ดาวน์โหลดเอกสาร ติดตามข่าวสาร และจัดการกิจกรรมทั้งหมดได้จากหน้าเดียว</p>
+
+          <div class="welcome-actions">
+            <a class="btn btn-yellow" href="/member/programs/">ดูโปรแกรมของฉัน</a>
+            <a class="btn btn-outline" href="/member/training/">การอบรมของฉัน</a>
+          </div>
         </div>
 
-        <div class="member-benefits-list">
-          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลดโปรแกรมทดลองทุกโปรแกรม</span></div>
-          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลดบทความทั้งหมดเป็น PDF</span></div>
-          <div class="member-benefit-item"><b>✓</b><span>ดาวน์โหลด DWG / PDF / BOQ Excel</span></div>
-          <div class="member-benefit-item"><b>✓</b><span>เขียนและเผยแพร่บทความวิศวกรรม</span></div>
-          <div class="member-benefit-item"><b>✓</b><span>เข้าร่วม Community วิศวกร</span></div>
-          <div class="member-benefit-item"><b>✓</b><span>ติดตามการอบรม กิจกรรม และบริการ Support</span></div>
-        </div>
-
-        <div class="member-value-note">
-          <strong>บัญชีเดียว เข้าถึงทุกบริการของ ADT</strong><br>
-          โปรแกรม • ความรู้ • เอกสารตัวอย่าง • การอบรม • Community • Support
-        </div>
-      </section>
-    </div>
-
-    <div class="brand-foot">
-      <span>ADTSpreadsheet Member System</span>
-      <span>Software • Knowledge • Training • Community • Support</span>
-    </div>
-  </section>
-
-  <main class="login-panel">
-    <div class="login-wrap">
-      <img class="mobile-logo"
-           src="/assets/images/logo-header.png"
-           onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
-           alt="ADTSpreadsheet">
-
-      <section class="login-card">
-        <div class="login-head">
-          <p class="label">MEMBER LOGIN</p>
-          <h2>เข้าสู่ระบบสมาชิก</h2>
-          <p>เข้าสู่ระบบด้วยบัญชี ADT ID เพื่อใช้สิทธิ์สมาชิกและเข้าถึงบริการทั้งหมดของคุณ</p>
-        </div>
-
-        <div class="alert alert-error" id="errorAlert" role="alert"></div>
-        <div class="alert alert-success" id="successAlert" role="status"></div>
-
-        <form id="loginForm" novalidate>
-          <div class="form-group">
-            <label class="form-label" for="username">
-              <span>Username</span>
-            </label>
-            <div class="field">
-              <span class="field-icon">👤</span>
-              <input
-                class="form-control"
-                id="username"
-                name="username"
-                type="text"
-                autocomplete="username"
-                placeholder="กรอก Username"
-                maxlength="100"
-                required>
+        <div class="member-card">
+          <div class="member-card-top">
+            <div class="member-card-avatar" id="memberAvatar">AG</div>
+            <div>
+              <h3 id="memberFullName">นายช่างอานนท์ แซ้นสีดา</h3>
+              <p class="member-card-role" id="memberProfession">วิศวกรโยธา</p>
+              <span class="member-level">ADT PROFESSIONAL MEMBER</span>
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label" for="password">
-              <span>Password</span>
-            </label>
-            <div class="field">
-              <span class="field-icon">🔒</span>
-              <input
-                class="form-control"
-                id="password"
-                name="password"
-                type="password"
-                autocomplete="current-password"
-                placeholder="กรอก Password"
-                maxlength="100"
-                required>
-              <button class="password-toggle" id="passwordToggle" type="button" aria-label="แสดงรหัสผ่าน">👁️</button>
+          <div class="member-card-grid">
+            <div class="member-info">
+              <span>Member ID</span>
+              <strong id="memberId">MEM-000001</strong>
+            </div>
+            <div class="member-info">
+              <span>วันที่สมัคร</span>
+              <strong id="joinedDate">6 ส.ค. 2569</strong>
+            </div>
+            <div class="member-info">
+              <span>สถานะบัญชี</span>
+              <strong>ยืนยันแล้ว</strong>
+            </div>
+            <div class="member-info">
+              <span>สิทธิ์สมาชิก</span>
+              <strong>Professional</strong>
             </div>
           </div>
-
-          <div class="form-row">
-            <label class="remember">
-              <input id="rememberMe" type="checkbox">
-              <span>จดจำการเข้าสู่ระบบ</span>
-            </label>
-
-            <a class="text-link" href="/member/forgot-password/">ลืมรหัสผ่าน?</a>
-          </div>
-
-          <button class="login-button" id="loginButton" type="submit">
-            <span class="spinner" aria-hidden="true"></span>
-            <span class="button-text">เข้าสู่ระบบ</span>
-          </button>
-        </form>
-
-        <div class="divider">หรือ</div>
-
-        <div class="register-box">
-          <p>
-            ยังไม่มีบัญชีสมาชิก ADT?
-            <a href="/member/register/">สมัครสมาชิก</a>
-          </p>
-        </div>
-
-        <div class="security-note">
-          <span>●</span>
-          <span>ระบบจะตรวจสอบสิทธิ์สมาชิกก่อนเข้าสู่ Dashboard และไม่ควรบันทึกรหัสผ่านไว้ในอุปกรณ์สาธารณะ</span>
         </div>
       </section>
 
-      <div class="login-footer">
-        <a href="/privacy/">นโยบายความเป็นส่วนตัว</a>
-        &nbsp;•&nbsp;
-        <a href="/terms/">ข้อกำหนดการใช้งาน</a>
-        <br>
-        © 2026 ADTSpreadsheet
+      <section class="stats" aria-label="สรุปข้อมูลสมาชิก">
+        <article class="card stat-card">
+          <div class="stat-icon">💻</div>
+          <div><span>โปรแกรมที่ถือครอง</span><strong>1</strong></div>
+        </article>
+        <article class="card stat-card">
+          <div class="stat-icon">🎓</div>
+          <div><span>การอบรมที่ลงทะเบียน</span><strong>1</strong></div>
+        </article>
+        <article class="card stat-card">
+          <div class="stat-icon">🏅</div>
+          <div><span>ใบประกาศ</span><strong>0</strong></div>
+        </article>
+        <article class="card stat-card">
+          <div class="stat-icon">🎫</div>
+          <div><span>Support ที่เปิดอยู่</span><strong>0</strong></div>
+        </article>
+      </section>
+
+      <div class="dashboard-grid">
+
+        <div>
+          <div class="section-head">
+            <div>
+              <h2>โปรแกรมของฉัน</h2>
+              <p>โปรแกรมและสิทธิ์การใช้งานที่เชื่อมกับบัญชีสมาชิกนี้</p>
+            </div>
+            <a class="section-link" href="/member/programs/">ดูทั้งหมด →</a>
+          </div>
+
+          <article class="card program-card">
+            <div class="program-visual">
+              <span class="program-visual-label">PROFESSIONAL</span>
+              <div class="program-mark">ADT<br>PILEFiX</div>
+            </div>
+
+            <div class="program-body">
+              <div class="program-top">
+                <div>
+                  <h3>ADT-PILEFiX Professional</h3>
+                  <span style="display:block;margin-top:5px;color:var(--muted);font-size:.72rem">Version 1.0</span>
+                </div>
+                <span class="status status-green">ACTIVATED</span>
+              </div>
+
+              <p>โปรแกรมวิเคราะห์และออกแบบฐานรากเสาเข็มเยื้องศูนย์ พร้อมระบบตรวจสอบ Beam Shear, Punching Shear และรายงานผลการคำนวณ</p>
+
+              <div class="progress"><span></span></div>
+
+              <div class="program-meta">
+                <div class="meta-box">
+                  <span>License</span>
+                  <strong>Professional</strong>
+                </div>
+                <div class="meta-box">
+                  <span>Machine ID</span>
+                  <strong>ADT-PC-001</strong>
+                </div>
+                <div class="meta-box">
+                  <span>สถานะล่าสุด</span>
+                  <strong>พร้อมใช้งาน</strong>
+                </div>
+              </div>
+
+              <div class="program-actions">
+                <a class="btn btn-blue" href="/member/programs/adt-pilefix/">เปิดหน้าจัดการ</a>
+                <a class="btn btn-soft" href="/member/downloads/">ดาวน์โหลดล่าสุด</a>
+              </div>
+            </div>
+          </article>
+
+          <div class="section-head">
+            <div>
+              <h2>ข่าวสารสำหรับสมาชิก</h2>
+              <p>ประกาศ อัปเดต และข้อมูลสำคัญจาก ADT</p>
+            </div>
+            <a class="section-link" href="/member/news/">ดูทั้งหมด →</a>
+          </div>
+
+          <section class="card news-card">
+            <article class="news-item">
+              <span class="news-dot"></span>
+              <div>
+                <strong>ยินดีต้อนรับเข้าสู่ระบบสมาชิก ADT</strong>
+                <p>สมาชิกสามารถตรวจสอบโปรแกรม การอบรม และสิทธิ์ทั้งหมดได้จาก Dashboard นี้</p>
+              </div>
+              <time>วันนี้</time>
+            </article>
+            <article class="news-item">
+              <span class="news-dot"></span>
+              <div>
+                <strong>ADT-PILEFiX Professional Version 1.0</strong>
+                <p>โปรดตรวจสอบเวอร์ชันล่าสุดและดาวน์โหลดไฟล์จากเมนูโปรแกรมของฉัน</p>
+              </div>
+              <time>1 วันที่แล้ว</time>
+            </article>
+            <article class="news-item">
+              <span class="news-dot"></span>
+              <div>
+                <strong>Knowledge Center พร้อมใช้งาน</strong>
+                <p>รวมคู่มือ วิดีโอ และเอกสารสนับสนุนสำหรับสมาชิก ADT</p>
+              </div>
+              <time>3 วันที่แล้ว</time>
+            </article>
+          </section>
+        </div>
+
+        <aside class="stack">
+          <div>
+            <div class="section-head">
+              <div>
+                <h2>กิจกรรมถัดไป</h2>
+                <p>รายการที่สมาชิกลงทะเบียนไว้</p>
+              </div>
+            </div>
+
+            <article class="card event-card">
+              <span class="event-date">ลงทะเบียนแล้ว</span>
+              <h3>สัมมนา ADT-PILEFiX</h3>
+              <p>การออกแบบฐานรากเสาเข็มเยื้องศูนย์ และ Workshop การใช้งานโปรแกรม</p>
+
+              <div class="event-details">
+                <div class="event-detail"><span>วันที่</span><strong>9 สิงหาคม 2569</strong></div>
+                <div class="event-detail"><span>เวลา</span><strong>19:00–21:00 น.</strong></div>
+                <div class="event-detail"><span>รูปแบบ</span><strong>Zoom Online</strong></div>
+              </div>
+
+              <a class="btn btn-blue" href="/member/training/adt-pilefix/">ดูรายละเอียดกิจกรรม</a>
+            </article>
+          </div>
+
+          <div>
+            <div class="section-head">
+              <div>
+                <h2>เมนูลัด</h2>
+                <p>เข้าถึงบริการที่ใช้งานบ่อย</p>
+              </div>
+            </div>
+
+            <div class="quick-grid">
+              <a class="card quick-card" href="/member/knowledge/">
+                <div class="quick-card-icon">📚</div>
+                <div><strong>Knowledge Center</strong><span>คู่มือ วิดีโอ และเอกสาร</span></div>
+              </a>
+              <a class="card quick-card" href="/member/support/">
+                <div class="quick-card-icon">🎫</div>
+                <div><strong>แจ้งปัญหา</strong><span>เปิดและติดตาม Support</span></div>
+              </a>
+              <a class="card quick-card" href="/member/community/">
+                <div class="quick-card-icon">💬</div>
+                <div><strong>Community</strong><span>ถาม–ตอบและแลกเปลี่ยน</span></div>
+              </a>
+              <a class="card quick-card" href="/member/certificates/">
+                <div class="quick-card-icon">🏅</div>
+                <div><strong>ใบประกาศ</strong><span>ดูและดาวน์โหลดเอกสาร</span></div>
+              </a>
+            </div>
+          </div>
+
+          <article class="card profile-progress">
+            <div class="profile-progress-top">
+              <h3>ความสมบูรณ์ของโปรไฟล์</h3>
+              <strong>75%</strong>
+            </div>
+            <p>กรอกข้อมูลวิชาชีพและข้อมูลติดต่อให้ครบ เพื่อใช้สมัครกิจกรรมและสร้าง Professional Profile ของคุณ</p>
+            <div class="progress"><span></span></div>
+            <a class="btn btn-soft" href="/member/profile/">กรอกข้อมูลโปรไฟล์</a>
+          </article>
+
+          <div>
+            <div class="section-head">
+              <div>
+                <h2>กิจกรรมล่าสุด</h2>
+                <p>ความเคลื่อนไหวของบัญชี</p>
+              </div>
+            </div>
+
+            <section class="card activity-card">
+              <article class="activity-item">
+                <div class="activity-icon">✅</div>
+                <div>
+                  <strong>เปิดใช้งาน ADT-PILEFiX สำเร็จ</strong>
+                  <p>License ถูกเชื่อมเข้ากับบัญชีสมาชิกแล้ว</p>
+                </div>
+              </article>
+              <article class="activity-item">
+                <div class="activity-icon">🎓</div>
+                <div>
+                  <strong>ลงทะเบียนสัมมนาเรียบร้อย</strong>
+                  <p>กิจกรรมถูกเพิ่มลงใน “การอบรมของฉัน”</p>
+                </div>
+              </article>
+              <article class="activity-item">
+                <div class="activity-icon">👤</div>
+                <div>
+                  <strong>สร้างบัญชีสมาชิกสำเร็จ</strong>
+                  <p>ยินดีต้อนรับเข้าสู่ ADT Membership</p>
+                </div>
+              </article>
+            </section>
+          </div>
+        </aside>
+
+      </div>
+
+      <div class="footer-note">
+        © 2026 ADTSpreadsheet — Member Dashboard Template v1.0
       </div>
     </div>
   </main>
-
 </div>
 
 <script>
-"use strict";
+/*
+  ============================================================
+  ADT MEMBER DASHBOARD — FRONTEND TEMPLATE v1.0
+  ------------------------------------------------------------
+  ปัจจุบันใช้ข้อมูลตัวอย่างในหน้าเว็บก่อน
+  ขั้นต่อไปสามารถเปลี่ยนให้โหลดข้อมูลจาก Supabase/API ได้
+  โดยนำค่าที่ได้มาใส่ใน object memberData ด้านล่าง
+  ============================================================
+*/
 
-/* ============================================================
-   ADT MEMBER LOGIN — REAL API LOGIN
-   POST https://adt-website-api.onrender.com/api/member/login
-   ============================================================ */
-
-const MEMBER_API_BASE_URL =
-  "https://adt-website-api.onrender.com";
-
-const LOGIN_ENDPOINT =
-  `${MEMBER_API_BASE_URL}/api/member/login`;
-
-const DASHBOARD_URL =
-  "/member/dashboard/";
-
-const TOKEN_KEYS = {
-  accessToken: "adt_access_token",
-  refreshToken: "adt_refresh_token",
-  expiresAt: "adt_token_expires_at",
-  member: "adt_member_profile"
+const memberData = {
+  firstName: "อ.เก่ง",
+  fullName: "นายช่างอานนท์ แซ้นสีดา",
+  shortName: "อานนท์ แซ้นสีดา",
+  initials: "AG",
+  profession: "วิศวกรโยธา",
+  memberId: "MEM-000001",
+  joinedDate: "6 ส.ค. 2569"
 };
 
-const loginForm =
-  document.getElementById("loginForm");
-
-const usernameInput =
-  document.getElementById("username");
-
-const passwordInput =
-  document.getElementById("password");
-
-const passwordToggle =
-  document.getElementById("passwordToggle");
-
-const rememberMeInput =
-  document.getElementById("rememberMe");
-
-const loginButton =
-  document.getElementById("loginButton");
-
-const errorAlert =
-  document.getElementById("errorAlert");
-
-const successAlert =
-  document.getElementById("successAlert");
-
-function showAlert(element, message) {
-  errorAlert.classList.remove("show");
-  successAlert.classList.remove("show");
-
-  element.textContent = message;
-  element.classList.add("show");
+function setText(id, value){
+  const element = document.getElementById(id);
+  if(element) element.textContent = value;
 }
 
-function clearAlerts() {
-  errorAlert.classList.remove("show");
-  successAlert.classList.remove("show");
-}
+function renderMember(){
+  setText("welcomeName", memberData.firstName);
+  setText("memberFullName", memberData.fullName);
+  setText("memberProfession", memberData.profession);
+  setText("memberId", memberData.memberId);
+  setText("joinedDate", memberData.joinedDate);
+  setText("miniName", memberData.shortName);
+  setText("miniMemberId", memberData.memberId);
+  setText("topName", memberData.shortName);
 
-function setLoading(isLoading) {
-  loginButton.disabled = isLoading;
-  loginButton.classList.toggle(
-    "loading",
-    isLoading
-  );
-}
-
-function clearOldSession() {
-  Object.values(TOKEN_KEYS).forEach(key => {
-    localStorage.removeItem(key);
-    sessionStorage.removeItem(key);
+  ["miniAvatar","topAvatar","memberAvatar"].forEach(id => {
+    setText(id, memberData.initials);
   });
 }
 
-function saveLoginSession(result, remember) {
-  const storage =
-    remember
-      ? localStorage
-      : sessionStorage;
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const mobileMenu = document.getElementById("mobileMenu");
 
-  clearOldSession();
-
-  storage.setItem(
-    TOKEN_KEYS.accessToken,
-    result.session.access_token
-  );
-
-  storage.setItem(
-    TOKEN_KEYS.refreshToken,
-    result.session.refresh_token
-  );
-
-  storage.setItem(
-    TOKEN_KEYS.expiresAt,
-    String(
-      result.session.expires_at || ""
-    )
-  );
-
-  storage.setItem(
-    TOKEN_KEYS.member,
-    JSON.stringify(
-      result.member || {}
-    )
-  );
+function closeSidebar(){
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
 }
 
-function validateInputs(username, password) {
-  if (!username) {
-    showAlert(
-      errorAlert,
-      "กรุณากรอก Username"
-    );
+mobileMenu?.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("show");
+});
 
-    usernameInput.focus();
-    return false;
-  }
+overlay?.addEventListener("click", closeSidebar);
 
-  if (
-    !/^[A-Za-z0-9._-]{4,40}$/.test(
-      username
-    )
-  ) {
-    showAlert(
-      errorAlert,
-      "Username ไม่ถูกต้อง"
-    );
+document.getElementById("logoutButton")?.addEventListener("click", () => {
+  /*
+    ขั้นเชื่อมระบบจริง:
+    1. เรียก Supabase Auth signOut()
+    2. ล้าง token/session
+    3. redirect ไป /member/login/
+  */
+  alert("ปุ่มออกจากระบบพร้อมเชื่อม Supabase Auth ในขั้นถัดไป");
+});
 
-    usernameInput.focus();
-    return false;
-  }
-
-  if (!password) {
-    showAlert(
-      errorAlert,
-      "กรุณากรอก Password"
-    );
-
-    passwordInput.focus();
-    return false;
-  }
-
-  if (password.length < 8) {
-    showAlert(
-      errorAlert,
-      "Password ต้องมีอย่างน้อย 8 ตัวอักษร"
-    );
-
-    passwordInput.focus();
-    return false;
-  }
-
-  return true;
-}
-
-passwordToggle.addEventListener(
-  "click",
-  () => {
-    const isPassword =
-      passwordInput.type ===
-      "password";
-
-    passwordInput.type =
-      isPassword
-        ? "text"
-        : "password";
-
-    passwordToggle.textContent =
-      isPassword
-        ? "🙈"
-        : "👁️";
-
-    passwordToggle.setAttribute(
-      "aria-label",
-      isPassword
-        ? "ซ่อนรหัสผ่าน"
-        : "แสดงรหัสผ่าน"
-    );
-  }
-);
-
-loginForm.addEventListener(
-  "submit",
-  async event => {
-    event.preventDefault();
-    clearAlerts();
-
-    const username =
-      usernameInput.value.trim();
-
-    const password =
-      passwordInput.value;
-
-    const remember =
-      rememberMeInput.checked;
-
-    if (
-      !validateInputs(
-        username,
-        password
-      )
-    ) {
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const response =
-        await fetch(
-          LOGIN_ENDPOINT,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type":
-                "application/json"
-            },
-            body: JSON.stringify({
-              username,
-              password,
-              remember
-            })
-          }
-        );
-
-      let result = {};
-
-      try {
-        result =
-          await response.json();
-      } catch {
-        result = {};
-      }
-
-      if (!response.ok) {
-        throw new Error(
-          result.message ||
-          "Username หรือ Password ไม่ถูกต้อง"
-        );
-      }
-
-      if (
-        !result.success ||
-        !result.session
-          ?.access_token ||
-        !result.session
-          ?.refresh_token ||
-        !result.member
-      ) {
-        throw new Error(
-          "ข้อมูลตอบกลับจากระบบเข้าสู่ระบบไม่สมบูรณ์"
-        );
-      }
-
-      saveLoginSession(
-        result,
-        remember
-      );
-
-      showAlert(
-        successAlert,
-        "เข้าสู่ระบบสำเร็จ กำลังเปิด Dashboard สมาชิก..."
-      );
-
-      window.setTimeout(
-        () => {
-          window.location.href =
-            result.next_url ||
-            DASHBOARD_URL;
-        },
-        650
-      );
-
-    } catch (error) {
-      clearOldSession();
-
-      showAlert(
-        errorAlert,
-        error.message ||
-        "ไม่สามารถเข้าสู่ระบบได้ กรุณาลองใหม่อีกครั้ง"
-      );
-
-      passwordInput.value = "";
-      passwordInput.focus();
-
-    } finally {
-      setLoading(false);
-    }
-  }
-);
+renderMember();
 </script>
 </body>
 </html>
