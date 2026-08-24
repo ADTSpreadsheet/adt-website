@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>บทความวิศวกรรม | ADTSpreadsheet Member</title>
+  <meta name="description" content="พื้นที่บทความวิศวกรรมสำหรับสมาชิก ADTSpreadsheet">
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --navy:#06152d;
+      --navy-2:#0a2855;
+      --blue:#1677ff;
+      --blue-soft:#eaf3ff;
+      --yellow:#ffc928;
+      --green:#17b26a;
+      --red:#ef3d48;
+      --orange:#f79009;
+      --purple:#7a5af8;
+      --ink:#142033;
+      --muted:#6c7a90;
+      --line:#dce5ef;
+      --surface:#f4f7fb;
+      --white:#ffffff;
+      --sidebar:280px;
+      --shadow:0 16px 42px rgba(4,27,60,.10);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:"Prompt",sans-serif;
+      color:var(--ink);
+      background:var(--surface);
+    }
+
+    button,input,select{font:inherit}
+    a{color:inherit}
+    img{display:block;max-width:100%}
+
+    .app{min-height:100vh}
+
+    /* =========================================================
+       MEMBER SYSTEM SHELL
+    ========================================================= */
+
+    .sidebar{
+      position:fixed;
+      inset:0 auto 0 0;
+      z-index:1000;
+      width:var(--sidebar);
+      display:flex;
+      flex-direction:column;
+      color:#fff;
+      background:
+        radial-gradient(circle at 20% 5%,rgba(22,119,255,.28),transparent 28%),
+        linear-gradient(180deg,#06152d,#031025);
+      border-right:1px solid rgba(255,255,255,.08);
+    }
+
+    .sidebar-head{
+      min-height:92px;
+      display:flex;
+      align-items:center;
+      padding:18px 22px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .sidebar-logo{
+      width:220px;
+      max-height:56px;
+      object-fit:contain;
+      object-position:left center;
+    }
+
+    .member-mini{
+      margin:18px;
+      padding:17px;
+      display:grid;
+      grid-template-columns:52px 1fr;
+      gap:12px;
+      align-items:center;
+      border-radius:18px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.11);
+    }
+
+    .member-mini-avatar{
+      width:52px;
+      height:52px;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      border-radius:50%;
+      color:var(--navy);
+      background:var(--yellow);
+      font-weight:800;
+    }
+
+    .member-mini strong{display:block;font-size:.93rem}
+    .member-mini span{
+      display:block;
+      margin-top:3px;
+      color:#bcd0e7;
+      font-size:.73rem;
+    }
+
+    .sidebar-nav{
+      padding:4px 14px 22px;
+      display:grid;
+      gap:7px;
+      overflow:auto;
+    }
+
+    .nav-group{
+      padding:15px 12px 5px;
+      color:#7896b7;
+      font-size:.68rem;
+      font-weight:800;
+      letter-spacing:.12em;
+    }
+
+    .nav-link{
+      min-height:48px;
+      padding:0 14px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border-radius:13px;
+      text-decoration:none;
+      color:#d8e6f5;
+      font-size:.88rem;
+      font-weight:600;
+      transition:.2s;
+    }
+
+    .nav-link:hover{
+      background:rgba(255,255,255,.08);
+      color:#fff;
+    }
+
+    .nav-link.active{
+      color:#fff;
+      background:linear-gradient(135deg,var(--blue),#0d5fd1);
+      box-shadow:0 10px 26px rgba(22,119,255,.28);
+    }
+
+    .nav-icon{
+      width:24px;
+      text-align:center;
+      font-size:1.05rem;
+    }
+
+    .sidebar-foot{
+      margin-top:auto;
+      padding:15px 18px 20px;
+      border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    .logout-btn{
+      width:100%;
+      min-height:44px;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:12px;
+      color:#fff;
+      background:rgba(255,255,255,.06);
+      cursor:pointer;
+    }
+
+    .main{
+      margin-left:var(--sidebar);
+      min-height:100vh;
+    }
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:900;
+      min-height:76px;
+      padding:0 32px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+      background:rgba(255,255,255,.94);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--line);
+    }
+
+    .mobile-menu{
+      display:none;
+      width:44px;
+      height:44px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      background:#fff;
+      cursor:pointer;
+    }
+
+    .topbar-title strong{
+      display:block;
+      color:var(--navy);
+      font-size:1.05rem;
+    }
+
+    .topbar-title span{
+      display:block;
+      margin-top:2px;
+      color:var(--muted);
+      font-size:.75rem;
+    }
+
+    .topbar-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .icon-btn{
+      position:relative;
+      width:44px;
+      height:44px;
+      display:grid;
+      place-items:center;
+      border:1px solid var(--line);
+      border-radius:12px;
+      color:var(--navy);
+      background:#fff;
+      cursor:pointer;
+    }
+
+    .notification-dot{
+      position:absolute;
+      right:8px;
+      top:7px;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:var(--red);
+    }
+
+    .profile-chip{
+      padding:6px 10px 6px 7px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:#fff;
+    }
+
+    .profile-chip-avatar{
+      width:34px;
+      height:34px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      color:var(--navy);
+      background:var(--yellow);
+      font-size:.78rem;
+      font-weight:800;
+    }
+
+    .profile-chip strong{display:block;font-size:.78rem}
+    .profile-chip span{
+      display:block;
+      color:var(--muted);
+      font-size:.66rem;
+    }
+
+    .content{
+      width:min(1480px,calc(100% - 48px));
+      margin:auto;
+      padding:30px 0 56px;
+    }
+
+    /* =========================================================
+       ARTICLES PAGE
+    ========================================================= */
+
+    .page-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .page-head h1{
+      margin:0;
+      color:var(--navy);
+      font-size:1.7rem;
+    }
+
+    .page-head p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:.84rem;
+    }
+
+    .page-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      min-height:44px;
+      padding:0 16px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      border:0;
+      border-radius:12px;
+      text-decoration:none;
+      font-size:.75rem;
+      font-weight:800;
+      cursor:pointer;
+    }
+
+    .btn-blue{color:#fff;background:var(--blue)}
+    .btn-white{color:var(--navy);background:#fff;border:1px solid var(--line)}
+    .btn-yellow{color:var(--navy);background:var(--yellow)}
+
+    .stats{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+
+    .stat-card{
+      min-height:112px;
+      padding:20px;
+      display:flex;
+      align-items:center;
+      gap:15px;
+      border-radius:var(--radius);
+      background:#fff;
+      border:1px solid #e6edf5;
+      box-shadow:var(--shadow);
+    }
+
+    .stat-icon{
+      flex:0 0 52px;
+      width:52px;
+      height:52px;
+      display:grid;
+      place-items:center;
+      border-radius:16px;
+      background:var(--blue-soft);
+      font-size:1.25rem;
+    }
+
+    .stat-card:nth-child(2) .stat-icon{background:#ecfbf4}
+    .stat-card:nth-child(3) .stat-icon{background:#fff7d8}
+    .stat-card:nth-child(4) .stat-icon{background:#f3edff}
+    .stat-card span{display:block;color:var(--muted);font-size:.72rem}
+    .stat-card strong{
+      display:block;
+      margin-top:3px;
+      color:var(--navy);
+      font:800 1.35rem "Inter";
+    }
+    .stat-card small{
+      display:block;
+      margin-top:4px;
+      color:#94a0b0;
+      font-size:.63rem;
+    }
+
+    .hero{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);
+      gap:18px;
+    }
+
+    .hero-main{
+      position:relative;
+      min-height:360px;
+      padding:34px;
+      overflow:hidden;
+      border-radius:28px;
+      color:#fff;
+      background:
+        linear-gradient(90deg,rgba(3,16,37,.94),rgba(3,16,37,.52)),
+        radial-gradient(circle at 88% 18%,rgba(255,201,40,.30),transparent 24%),
+        linear-gradient(135deg,#06152d,#0a2855);
+      box-shadow:var(--shadow);
+    }
+
+    .hit-badge{
+      position:absolute;
+      top:22px;
+      right:22px;
+      padding:8px 12px;
+      border-radius:10px;
+      color:#fff;
+      background:var(--red);
+      font:800 .72rem "Inter";
+    }
+
+    .hero-tag{
+      display:inline-flex;
+      padding:7px 10px;
+      border-radius:999px;
+      color:var(--navy);
+      background:var(--yellow);
+      font-size:.65rem;
+      font-weight:800;
+    }
+
+    .hero-main h2{
+      max-width:760px;
+      margin:24px 0 0;
+      font-size:clamp(1.8rem,3vw,3rem);
+      line-height:1.25;
+    }
+
+    .hero-main p{
+      max-width:760px;
+      margin:14px 0 0;
+      color:#d5e4f5;
+      font-size:.86rem;
+      line-height:1.8;
+    }
+
+    .hero-meta{
+      margin-top:24px;
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      color:#bdd0e6;
+      font-size:.7rem;
+    }
+
+    .hero-side{
+      display:grid;
+      gap:18px;
+    }
+
+    .hot-card{
+      position:relative;
+      min-height:171px;
+      padding:20px;
+      border-radius:22px;
+      background:#fff;
+      border:1px solid #e6edf5;
+      box-shadow:var(--shadow);
+    }
+
+    .hot-card .mini-hit{
+      position:absolute;
+      right:14px;
+      top:14px;
+      padding:5px 8px;
+      border-radius:8px;
+      color:#fff;
+      background:var(--red);
+      font-size:.58rem;
+      font-weight:800;
+    }
+
+    .hot-card span{
+      color:var(--blue);
+      font-size:.64rem;
+      font-weight:800;
+    }
+
+    .hot-card h3{
+      margin:10px 0 0;
+      color:var(--navy);
+      font-size:.94rem;
+      line-height:1.5;
+    }
+
+    .hot-card small{
+      display:block;
+      margin-top:10px;
+      color:var(--muted);
+      font-size:.62rem;
+    }
+
+    .toolbar{
+      margin-top:22px;
+      padding:16px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      border-radius:18px;
+      background:#fff;
+      border:1px solid #e6edf5;
+      box-shadow:var(--shadow);
+    }
+
+    .search-box{
+      flex:1;
+      max-width:500px;
+    }
+
+    .search-box input{
+      width:100%;
+      height:44px;
+      padding:0 14px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      outline:none;
+    }
+
+    .tabs{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .tab-btn{
+      min-height:36px;
+      padding:0 11px;
+      border:1px solid var(--line);
+      border-radius:10px;
+      color:#617187;
+      background:#fff;
+      font-size:.66rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .tab-btn.active{
+      color:#fff;
+      background:var(--blue);
+      border-color:var(--blue);
+    }
+
+    .section-head{
+      margin:28px 0 14px;
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .section-head h2{
+      margin:0;
+      color:var(--navy);
+      font-size:1.25rem;
+    }
+
+    .section-head p{
+      margin:4px 0 0;
+      color:var(--muted);
+      font-size:.75rem;
+    }
+
+    .article-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .article-card{
+      overflow:hidden;
+      border-radius:22px;
+      background:#fff;
+      border:1px solid #e6edf5;
+      box-shadow:var(--shadow);
+      transition:.2s;
+    }
+
+    .article-card:hover{transform:translateY(-3px)}
+
+    .cover{
+      position:relative;
+      min-height:170px;
+      padding:18px;
+      display:flex;
+      align-items:flex-end;
+      color:#fff;
+      background:linear-gradient(145deg,#0a2855,#1677ff);
+    }
+
+    .cover.alt{background:linear-gradient(145deg,#194f43,#2f8b74)}
+    .cover.alt2{background:linear-gradient(145deg,#5a2332,#9d4964)}
+
+    .cover .hit{
+      position:absolute;
+      top:14px;
+      left:14px;
+      padding:6px 9px;
+      border-radius:8px;
+      background:var(--red);
+      font-size:.58rem;
+      font-weight:800;
+    }
+
+    .cover strong{
+      font-size:1.15rem;
+      line-height:1.4;
+    }
+
+    .article-body{padding:18px}
+    .article-cat{
+      color:var(--blue);
+      font-size:.62rem;
+      font-weight:800;
+    }
+
+    .article-body h3{
+      margin:8px 0 0;
+      color:var(--navy);
+      font-size:.94rem;
+      line-height:1.55;
+    }
+
+    .article-body p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:.7rem;
+      line-height:1.7;
+    }
+
+    .article-meta{
+      margin-top:14px;
+      padding-top:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-top:1px solid #edf1f5;
+      color:#8a97a8;
+      font-size:.61rem;
+    }
+
+    .creator-panel{
+      margin-top:24px;
+      padding:22px;
+      border-radius:22px;
+      background:#fff;
+      border:1px solid #e6edf5;
+      box-shadow:var(--shadow);
+    }
+
+    .creator-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .creator-head h2{
+      margin:0;
+      color:var(--navy);
+      font-size:1rem;
+    }
+
+    .creator-head p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:.72rem;
+    }
+
+    .creator-grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .creator-stat{
+      padding:14px;
+      border-radius:14px;
+      background:#f7f9fc;
+    }
+
+    .creator-stat span{
+      display:block;
+      color:var(--muted);
+      font-size:.62rem;
+    }
+
+    .creator-stat strong{
+      display:block;
+      margin-top:4px;
+      color:var(--navy);
+      font:800 1.1rem "Inter";
+    }
+
+    .my-articles{
+      margin-top:18px;
+      overflow:hidden;
+      border-radius:16px;
+      border:1px solid var(--line);
+    }
+
+    .my-row{
+      padding:14px 16px;
+      display:grid;
+      grid-template-columns:1fr auto auto auto;
+      gap:14px;
+      align-items:center;
+      border-bottom:1px solid var(--line);
+      background:#fff;
+    }
+
+    .my-row:last-child{border-bottom:0}
+
+    .my-title strong{
+      display:block;
+      color:var(--navy);
+      font-size:.77rem;
+    }
+
+    .my-title span{
+      display:block;
+      margin-top:3px;
+      color:var(--muted);
+      font-size:.62rem;
+    }
+
+    .status{
+      padding:6px 9px;
+      border-radius:999px;
+      font-size:.61rem;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .status-published{color:#087443;background:#e7f8f0}
+    .status-draft{color:#7d5b00;background:#fff5cb}
+
+    .row-meta{
+      color:var(--muted);
+      font-size:.62rem;
+      white-space:nowrap;
+    }
+
+    .row-btn{
+      min-height:32px;
+      padding:0 10px;
+      border:1px solid var(--line);
+      border-radius:9px;
+      color:var(--navy);
+      background:#fff;
+      font-size:.62rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      z-index:950;
+      display:none;
+      background:rgba(3,16,37,.58);
+    }
+
+    @media(max-width:1180px){
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .hero{grid-template-columns:1fr}
+      .hero-side{grid-template-columns:1fr 1fr}
+      .article-grid{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:920px){
+      .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+      }
+
+      .sidebar.open{transform:translateX(0)}
+      .overlay.show{display:block}
+      .main{margin-left:0}
+      .mobile-menu{display:grid;place-items:center}
+    }
+
+    @media(max-width:700px){
+      .topbar{padding:0 14px}
+      .profile-chip-text{display:none}
+      .content{width:min(100% - 24px,1480px);padding-top:18px}
+      .page-head{align-items:flex-start;flex-direction:column}
+      .page-actions{width:100%}
+      .page-actions .btn{flex:1}
+      .stats{grid-template-columns:1fr}
+      .hero-main{padding:24px;min-height:320px}
+      .hero-side{grid-template-columns:1fr}
+      .toolbar{align-items:stretch;flex-direction:column}
+      .article-grid{grid-template-columns:1fr}
+      .creator-grid{grid-template-columns:repeat(2,1fr)}
+      .my-row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <a href="/" aria-label="ADTSpreadsheet หน้าแรก">
+        <img
+          class="sidebar-logo"
+          src="/assets/images/logo-header.png"
+          onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
+          alt="ADTSpreadsheet"
+        >
+      </a>
+    </div>
+
+    <div class="member-mini">
+      <div class="member-mini-avatar" id="miniAvatar">AG</div>
+      <div>
+        <strong id="miniName">ชื่อ นามสกุล</strong>
+        <span id="miniMemberId">MEM-000001</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="เมนูสมาชิก">
+      <div class="nav-group">MEMBER AREA</div>
+
+      <a class="nav-link" href="/member/dashboard/">
+        <span class="nav-icon">🏠</span>
+        Dashboard
+      </a>
+
+      <a class="nav-link" href="/member/programs/">
+        <span class="nav-icon">💻</span>
+        โปรแกรมของฉัน
+      </a>
+
+      <a class="nav-link" href="/member/training/">
+        <span class="nav-icon">🎓</span>
+        การอบรมของฉัน
+      </a>
+
+      <a class="nav-link" href="/member/certificates/">
+        <span class="nav-icon">🏅</span>
+        ใบประกาศ
+      </a>
+
+      <div class="nav-group">KNOWLEDGE</div>
+
+      <a class="nav-link active" href="/member/articles/">
+        <span class="nav-icon">📰</span>
+        บทความวิศวกรรม
+      </a>
+
+      <a class="nav-link" href="/member/knowledge/">
+        <span class="nav-icon">📚</span>
+        Knowledge Center
+      </a>
+
+      <a class="nav-link" href="/member/community/">
+        <span class="nav-icon">💬</span>
+        Community
+      </a>
+
+      <div class="nav-group">ACCOUNT</div>
+
+      <a class="nav-link" href="/member/support/">
+        <span class="nav-icon">🎫</span>
+        Support
+      </a>
+
+      <a class="nav-link" href="/member/payments/">
+        <span class="nav-icon">🧾</span>
+        การชำระเงิน
+      </a>
+
+      <a class="nav-link" href="/member/profile/">
+        <span class="nav-icon">👤</span>
+        โปรไฟล์ของฉัน
+      </a>
+
+      <a class="nav-link" href="/member/settings/">
+        <span class="nav-icon">⚙️</span>
+        ตั้งค่า
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button class="logout-btn" id="logoutButton" type="button">
+        ออกจากระบบ
+      </button>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+
+        <button
+          class="mobile-menu"
+          id="mobileMenu"
+          type="button"
+          aria-label="เปิดเมนู"
+        >
+          ☰
+        </button>
+
+        <div class="topbar-title">
+          <strong>บทความวิศวกรรม</strong>
+          <span>Engineering Articles & Creator Dashboard</span>
+        </div>
+
+      </div>
+
+      <div class="topbar-actions">
+
+        <button class="icon-btn" type="button" aria-label="การแจ้งเตือน">
+          🔔
+          <span class="notification-dot"></span>
+        </button>
+
+        <div class="profile-chip">
+          <div class="profile-chip-avatar" id="topAvatar">AG</div>
+
+          <div class="profile-chip-text">
+            <strong id="topName">ชื่อ นามสกุล</strong>
+            <span>ADT Professional Member</span>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <div class="content">
+
+      <section class="page-head">
+        <div>
+          <h1>บทความวิศวกรรม</h1>
+          <p>อ่าน แชร์ สร้างบทความ และติดตามผลงานของคุณใน ADT Community</p>
+        </div>
+
+        <div class="page-actions">
+          <button class="btn btn-white" type="button" id="myArticlesButton">
+            📄 บทความของฉัน
+          </button>
+
+          <button class="btn btn-blue" type="button" id="createArticleButton">
+            ✍️ สร้างบทความ
+          </button>
+        </div>
+      </section>
+
+      <section class="stats">
+
+        <article class="stat-card">
+          <div class="stat-icon">📝</div>
+          <div>
+            <span>บทความของฉัน</span>
+            <strong>6</strong>
+            <small>เผยแพร่แล้ว 4 · Draft 2</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">👁️</div>
+          <div>
+            <span>ยอดอ่านรวม</span>
+            <strong>8.4K</strong>
+            <small>เพิ่มขึ้น 18% จากสัปดาห์ก่อน</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">❤️</div>
+          <div>
+            <span>ถูกใจรวม</span>
+            <strong>326</strong>
+            <small>จากบทความทั้งหมด</small>
+          </div>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div>
+            <span>ผู้ติดตาม</span>
+            <strong>84</strong>
+            <small>ติดตามโปรไฟล์นักเขียนของคุณ</small>
+          </div>
+        </article>
+
+      </section>
+
+      <section class="hero">
+
+        <article class="hero-main">
+
+          <span class="hit-badge">HIT</span>
+          <span class="hero-tag">🔥 HOT THIS WEEK</span>
+
+          <h2>
+            การออกแบบฐานรากเสาเข็มเยื้องศูนย์:
+            จากแรงปฏิกิริยาเสาเข็มถึง Punching Shear
+          </h2>
+
+          <p>
+            บทความยอดนิยมประจำสัปดาห์
+            รวมแนวคิดสำคัญในการตรวจสอบฐานรากเสาเข็มเยื้องศูนย์
+            และตัวอย่างการพิจารณาแรงภายใน
+          </p>
+
+          <div class="hero-meta">
+            <span>✍️ อ.เก่ง</span>
+            <span>👁 2,841 Views</span>
+            <span>❤️ 186</span>
+            <span>💬 32 ความคิดเห็น</span>
+          </div>
+
+        </article>
+
+        <div class="hero-side">
+
+          <article class="hot-card">
+            <span class="mini-hit">HIT</span>
+            <span>STRUCTURAL</span>
+
+            <h3>
+              Load Combination สำหรับงานปรับปรุงอาคารเดิม
+            </h3>
+
+            <small>👁 1,420 views · 6 นาที</small>
+          </article>
+
+          <article class="hot-card">
+            <span class="mini-hit">HIT</span>
+            <span>EXCEL / VBA</span>
+
+            <h3>
+              สร้าง Spreadsheet วิศวกรรมให้ตรวจสอบง่ายและลด Human Error
+            </h3>
+
+            <small>👁 1,018 views · 5 นาที</small>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="toolbar">
+
+        <div class="search-box">
+          <input
+            id="articleSearch"
+            type="search"
+            placeholder="ค้นหาบทความ หัวข้อ หรือผู้เขียน..."
+          >
+        </div>
+
+        <div class="tabs">
+          <button class="tab-btn active" type="button">ทั้งหมด</button>
+          <button class="tab-btn" type="button">กำลังมาแรง</button>
+          <button class="tab-btn" type="button">ล่าสุด</button>
+          <button class="tab-btn" type="button">ติดตาม</button>
+          <button class="tab-btn" type="button">บันทึกไว้</button>
+        </div>
+
+      </section>
+
+      <div class="section-head">
+        <div>
+          <h2>บทความล่าสุดจากสมาชิก</h2>
+          <p>เนื้อหาที่สมาชิก ADT เพิ่งเผยแพร่</p>
+        </div>
+      </div>
+
+      <section class="article-grid">
+
+        <article class="article-card">
+          <div class="cover">
+            <span class="hit">HIT</span>
+            <strong>Punching Shear ในฐานรากเสาเข็ม</strong>
+          </div>
+
+          <div class="article-body">
+            <span class="article-cat">FOUNDATION</span>
+
+            <h3>
+              แนวทางอ่าน Critical Perimeter
+              และตำแหน่งเสาเข็มที่มีผลต่อการตรวจสอบ
+            </h3>
+
+            <p>
+              สรุปแนวคิดพื้นฐานและจุดที่มักทำให้เกิดความสับสน
+              ในการตรวจ Punching Shear
+            </p>
+
+            <div class="article-meta">
+              <span>อ.เก่ง · วันนี้</span>
+              <span>👁 842 · ❤️ 41</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <div class="cover alt">
+            <strong>Existing Structure & Renovation</strong>
+          </div>
+
+          <div class="article-body">
+            <span class="article-cat">STRUCTURAL</span>
+
+            <h3>
+              ตรวจสอบโครงสร้างอาคารเดิมก่อนเปลี่ยนการใช้งาน
+              ต้องดูอะไรบ้าง?
+            </h3>
+
+            <p>
+              เรียงลำดับข้อมูลเดิม น้ำหนักใช้งานใหม่
+              และจุดที่ควรตรวจสอบก่อนจัดทำรายการคำนวณ
+            </p>
+
+            <div class="article-meta">
+              <span>กิตติพงษ์ · 1 วัน</span>
+              <span>👁 631 · ❤️ 28</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="article-card">
+          <div class="cover alt2">
+            <strong>Excel Engineering Workflow</strong>
+          </div>
+
+          <div class="article-body">
+            <span class="article-cat">EXCEL / VBA</span>
+
+            <h3>
+              ออกแบบ Input Sheet อย่างไรให้วิศวกรใช้งานง่าย
+              และลดความผิดพลาด
+            </h3>
+
+            <p>
+              แนวคิดการแยก Input, Calculation และ Report
+              สำหรับ Spreadsheet ที่ใช้งานจริง
+            </p>
+
+            <div class="article-meta">
+              <span>ภาคิน · 2 วัน</span>
+              <span>👁 510 · ❤️ 32</span>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+      <section class="creator-panel">
+
+        <div class="creator-head">
+          <div>
+            <h2>Creator Dashboard ของฉัน</h2>
+            <p>ดูสถานะบทความและสถิติส่วนตัวของคุณ</p>
+          </div>
+
+          <button class="btn btn-blue" type="button">
+            จัดการบทความทั้งหมด
+          </button>
+        </div>
+
+        <div class="creator-grid">
+
+          <div class="creator-stat">
+            <span>บทความเผยแพร่</span>
+            <strong>4</strong>
+          </div>
+
+          <div class="creator-stat">
+            <span>Draft</span>
+            <strong>2</strong>
+          </div>
+
+          <div class="creator-stat">
+            <span>Views เดือนนี้</span>
+            <strong>2.1K</strong>
+          </div>
+
+          <div class="creator-stat">
+            <span>Like เดือนนี้</span>
+            <strong>96</strong>
+          </div>
+
+        </div>
+
+        <div class="my-articles">
+
+          <div class="my-row">
+            <div class="my-title">
+              <strong>การออกแบบฐานรากเสาเข็มเยื้องศูนย์</strong>
+              <span>แก้ไขล่าสุด วันนี้ 09:20 น.</span>
+            </div>
+
+            <span class="status status-published">เผยแพร่แล้ว</span>
+            <span class="row-meta">👁 2,841 · ❤️ 186</span>
+            <button class="row-btn" type="button">แก้ไข</button>
+          </div>
+
+          <div class="my-row">
+            <div class="my-title">
+              <strong>การตรวจสอบ Load Combination งาน Renovation</strong>
+              <span>แก้ไขล่าสุด เมื่อวาน</span>
+            </div>
+
+            <span class="status status-draft">Draft</span>
+            <span class="row-meta">ยังไม่เผยแพร่</span>
+            <button class="row-btn" type="button">เขียนต่อ</button>
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+"use strict";
+
+const $ = selector => document.querySelector(selector);
+const $$ = selector => [...document.querySelectorAll(selector)];
+
+function getStoredMember(){
+  const storages = [sessionStorage, localStorage];
+
+  for(const storage of storages){
+    try{
+      const raw = storage.getItem("adt_member_profile");
+      if(raw) return JSON.parse(raw);
+    }catch(error){}
+  }
+
+  return null;
+}
+
+function applyMemberHeader(){
+  const member = getStoredMember();
+
+  if(!member) return;
+
+  const fullName =
+    member.display_name ||
+    member.full_name ||
+    [member.first_name,member.last_name].filter(Boolean).join(" ") ||
+    member.name ||
+    "สมาชิก ADT";
+
+  const memberId =
+    member.member_no ||
+    member.member_id ||
+    member.member_code ||
+    "MEM-000001";
+
+  $("#miniName").textContent = fullName;
+  $("#miniMemberId").textContent = memberId;
+  $("#topName").textContent = fullName;
+
+  const initials = fullName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0,2)
+    .map(word => word.charAt(0))
+    .join("")
+    .toUpperCase() || "AG";
+
+  $("#miniAvatar").textContent = initials;
+  $("#topAvatar").textContent = initials;
+}
+
+$$(".tab-btn").forEach(button => {
+  button.addEventListener("click", () => {
+    $$(".tab-btn").forEach(item => item.classList.remove("active"));
+    button.classList.add("active");
+  });
+});
+
+$("#createArticleButton").addEventListener("click", () => {
+  alert("Frontend Demo: ขั้นต่อไปจะเปิดหน้า Article Editor สำหรับสมาชิก");
+});
+
+$("#myArticlesButton").addEventListener("click", () => {
+  document.querySelector(".creator-panel").scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+});
+
+const sidebar = $("#sidebar");
+const overlay = $("#overlay");
+const mobileMenu = $("#mobileMenu");
+
+mobileMenu.addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("show");
+});
+
+overlay.addEventListener("click", () => {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+});
+
+$("#logoutButton").addEventListener("click", () => {
+  [
+    "adt_access_token",
+    "adt_refresh_token",
+    "adt_token_expires_at",
+    "adt_member_profile"
+  ].forEach(key => {
+    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
+  });
+
+  window.location.href = "/member/";
+});
+
+applyMemberHeader();
+</script>
+
+</body>
+</html>
