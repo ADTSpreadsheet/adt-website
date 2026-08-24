@@ -19,8 +19,13 @@
       --text: #13213c;
       --muted: #71809b;
       --border: #e2e8f2;
-      --sidebar-width: 240px;
+      --sidebar-width: 272px;
       --topbar-height: 74px;
+
+      /* Resume theme */
+      --resume-primary: #08234b;
+      --resume-accent: #ffc62f;
+      --resume-heading: #102f5e;
     }
 
     * { box-sizing: border-box; }
@@ -49,41 +54,49 @@
     }
 
     .logo-box {
-      height: 96px;
+      min-height: 126px;
       display: flex;
       align-items: center;
-      padding: 14px 18px;
+      padding: 18px 15px;
       border-bottom: 1px solid rgba(255,255,255,.08);
     }
 
     .logo {
+      width: 135px;
+      min-height: 66px;
+      padding: 8px;
+      border-radius: 0;
       background: #fff;
-      width: 126px;
-      height: 50px;
-      border-radius: 2px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: var(--navy);
-      font-weight: 800;
-      font-size: 15px;
+      overflow: hidden;
+    }
+
+    .logo img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 52px;
+      object-fit: contain;
     }
 
     .side-member {
-      margin: 20px 14px;
-      padding: 16px;
+      margin: 18px 14px 16px;
+      padding: 15px 16px;
+      min-height: 88px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.1);
+      gap: 13px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.075);
+      border: 1px solid rgba(255,255,255,.12);
     }
 
     .side-avatar {
-      width: 48px;
-      height: 48px;
-      min-width: 48px;
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
       border-radius: 50%;
       background: var(--yellow);
       color: #102044;
@@ -113,11 +126,11 @@
     }
 
     .menu-label {
-      padding: 14px 18px 8px;
+      padding: 17px 19px 8px;
       font-size: 10px;
       font-weight: 800;
-      letter-spacing: 1px;
-      color: #7690b5;
+      letter-spacing: 1.05px;
+      color: #7894b8;
     }
 
     .menu {
@@ -133,11 +146,11 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      min-height: 48px;
-      padding: 11px 14px;
+      min-height: 49px;
+      padding: 11px 16px;
       border-radius: 10px;
       font-size: 14px;
-      font-weight: 650;
+      font-weight: 700;
     }
 
     .menu a:hover { background: rgba(255,255,255,.07); }
@@ -148,15 +161,17 @@
     }
 
     .menu-icon {
-      width: 20px;
+      width: 22px;
+      flex: 0 0 22px;
       text-align: center;
+      font-size: 15px;
     }
 
-    .logout-wrap { padding: 20px 12px 28px; }
+    .logout-wrap { padding: 18px 12px 30px; }
 
     .logout-btn {
       width: 100%;
-      height: 44px;
+      height: 46px;
       color: #fff;
       background: rgba(255,255,255,.03);
       border: 1px solid rgba(255,255,255,.2);
@@ -343,7 +358,7 @@
       font-size: 12px;
     }
 
-    .completion-value { font-weight: 900; color: var(--yellow); }
+    .completion-value { font-weight: 900; color: var(--resume-accent); }
 
     .progress {
       height: 8px;
@@ -630,7 +645,7 @@
     }
 
     .resume-left {
-      background: #08234b;
+      background: var(--resume-primary);
       color: #fff;
       padding: 35px 25px;
     }
@@ -659,7 +674,7 @@
       padding-bottom: 7px;
       margin-bottom: 10px;
       border-bottom: 1px solid rgba(255,255,255,.2);
-      color: var(--yellow);
+      color: var(--resume-accent);
       font-size: 11px;
       font-weight: 900;
       letter-spacing: .7px;
@@ -713,8 +728,8 @@
     .resume-section-title {
       padding-bottom: 7px;
       margin-bottom: 13px;
-      border-bottom: 2px solid #102f5e;
-      color: #102f5e;
+      border-bottom: 2px solid var(--resume-heading);
+      color: var(--resume-heading);
       font-size: 12px;
       font-weight: 900;
       letter-spacing: .7px;
@@ -853,14 +868,20 @@
   <aside class="sidebar">
 
     <div class="logo-box">
-      <div class="logo">ADTSpreadsheet</div>
+      <a class="logo" href="/" aria-label="ADTSpreadsheet หน้าแรก">
+        <img
+          src="/assets/images/logo-header.png"
+          onerror="this.onerror=null;this.src='/assets/images/logo-full.png';"
+          alt="ADTSpreadsheet"
+        />
+      </a>
     </div>
 
     <div class="side-member">
       <div class="side-avatar" id="sideAvatar">AG</div>
 
       <div>
-        <div class="side-member-name" id="sideMemberName">สมาชิก ADT</div>
+        <div class="side-member-name" id="sideMemberName">ชื่อ นามสกุล</div>
         <div class="side-member-id" id="sideMemberId">MEM-000001</div>
       </div>
     </div>
@@ -870,61 +891,74 @@
     <nav class="menu">
       <a href="/member/dashboard/">
         <span class="menu-icon">🏠</span>
-        Dashboard
+        <span>Dashboard</span>
       </a>
 
-      <a href="/member/profile/" class="active">
-        <span class="menu-icon">👤</span>
-        โปรไฟล์ของฉัน
-      </a>
-
-      <a href="#">
+      <a href="/member/software/">
         <span class="menu-icon">💻</span>
-        โปรแกรมของฉัน
+        <span>โปรแกรมของฉัน</span>
       </a>
 
-      <a href="#">
+      <a href="/member/training/">
         <span class="menu-icon">🎓</span>
-        การอบรมของฉัน
+        <span>การอบรมของฉัน</span>
       </a>
 
-      <a href="#">
+      <a href="/member/certificates/">
         <span class="menu-icon">🏅</span>
-        ใบประกาศ
+        <span>ใบประกาศ</span>
       </a>
     </nav>
 
-    <div class="menu-label">PROFESSIONAL PROFILE</div>
+    <div class="menu-label">KNOWLEDGE</div>
 
     <nav class="menu">
-      <a href="#resumeBuilder">
-        <span class="menu-icon">📄</span>
-        Resume Builder
+      <a href="/member/articles/">
+        <span class="menu-icon">📰</span>
+        <span>บทความวิศวกรรม</span>
       </a>
 
-      <a href="#portfolioSection">
-        <span class="menu-icon">🗂️</span>
-        Portfolio
+      <a href="/member/knowledge/">
+        <span class="menu-icon">📚</span>
+        <span>Knowledge Center</span>
+      </a>
+
+      <a href="/member/community/">
+        <span class="menu-icon">💬</span>
+        <span>Community</span>
       </a>
     </nav>
 
     <div class="menu-label">ACCOUNT</div>
 
     <nav class="menu">
-      <a href="#">
+      <a href="/member/support/">
         <span class="menu-icon">🎫</span>
-        Support
+        <span>Support</span>
       </a>
 
-      <a href="#">
+      <a href="/member/payments/">
         <span class="menu-icon">🧾</span>
-        การชำระเงิน
+        <span>การชำระเงิน</span>
+      </a>
+
+      <a href="/member/profile/" class="active">
+        <span class="menu-icon">👤</span>
+        <span>โปรไฟล์ของฉัน</span>
+      </a>
+
+      <a href="/member/settings/">
+        <span class="menu-icon">⚙️</span>
+        <span>ตั้งค่า</span>
       </a>
     </nav>
 
     <div class="logout-wrap">
-      <button class="logout-btn">ออกจากระบบ</button>
+      <button class="logout-btn" id="sidebarLogoutBtn" type="button">
+        ออกจากระบบ
+      </button>
     </div>
+
   </aside>
 
   <header class="topbar">
@@ -955,7 +989,6 @@
         <div class="page-actions">
           <button type="button" class="btn btn-secondary" id="previewBtn">👁 ดูตัวอย่าง</button>
           <button type="button" class="btn btn-yellow" id="printBtn">📄 Export PDF</button>
-          <button type="button" class="btn btn-primary" id="saveBtn">💾 บันทึกข้อมูล</button>
         </div>
       </section>
 
@@ -1000,7 +1033,7 @@
 
         <div class="builder">
 
-          <article class="card">
+          <article class="card" data-section="personal">
             <div class="card-header">
               <div class="card-title">
                 <div class="card-icon">👤</div>
@@ -1060,7 +1093,7 @@
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-section="professional">
             <div class="card-header">
               <div class="card-title">
                 <div class="card-icon">🏗️</div>
@@ -1107,7 +1140,7 @@
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-section="about">
             <div class="card-header">
               <div class="card-title">
                 <div class="card-icon">✍️</div>
@@ -1134,7 +1167,7 @@
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-section="skills">
             <div class="card-header">
               <div class="card-title">
                 <div class="card-icon">⚙️</div>
@@ -1161,7 +1194,7 @@
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-section="experience">
             <div class="card-header">
               <div class="card-title">
                 <div class="card-icon">💼</div>
@@ -1182,7 +1215,7 @@
             </div>
           </article>
 
-          <article class="card">
+          <article class="card" data-section="education">
             <div class="card-header">
               <div class="card-title">
                 <div class="card-icon">🎓</div>
@@ -1203,7 +1236,7 @@
             </div>
           </article>
 
-          <article class="card" id="portfolioSection">
+          <article class="card" id="portfolioSection" data-section="projects">
             <div class="card-header">
               <div class="card-title">
                 <div class="card-icon">🗂️</div>
@@ -1224,7 +1257,103 @@
             </div>
           </article>
 
-          <article class="card">
+          
+          <!-- RESUME THEME -->
+
+          <article class="card" data-section="theme">
+
+            <div class="card-header">
+
+              <div class="card-title">
+
+                <div class="card-icon">
+                  🎨
+                </div>
+
+                <div>
+                  <h3>รูปแบบสี Resume</h3>
+                  <p>Resume Theme</p>
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <div class="card-body">
+
+              <div class="theme-options" id="themeOptions">
+
+                <button type="button" class="theme-option selected" data-theme="navy"
+                  data-primary="#08234b" data-accent="#ffc62f" data-heading="#102f5e">
+                  <div class="theme-dot" style="background:#08234b;"></div>
+                  <div class="theme-name">Navy</div>
+                </button>
+
+                <button type="button" class="theme-option" data-theme="blue"
+                  data-primary="#123f7a" data-accent="#57a5ff" data-heading="#174f91">
+                  <div class="theme-dot" style="background:#123f7a;"></div>
+                  <div class="theme-name">Blue</div>
+                </button>
+
+                <button type="button" class="theme-option" data-theme="green"
+                  data-primary="#194f43" data-accent="#75d3a8" data-heading="#246d5e">
+                  <div class="theme-dot" style="background:#194f43;"></div>
+                  <div class="theme-name">Green</div>
+                </button>
+
+                <button type="button" class="theme-option" data-theme="burgundy"
+                  data-primary="#5a2332" data-accent="#e3a5b4" data-heading="#7d3045">
+                  <div class="theme-dot" style="background:#5a2332;"></div>
+                  <div class="theme-name">Burgundy</div>
+                </button>
+
+                <button type="button" class="theme-option" data-theme="gray"
+                  data-primary="#3d4652" data-accent="#c9d0d8" data-heading="#515d6c">
+                  <div class="theme-dot" style="background:#3d4652;"></div>
+                  <div class="theme-name">Gray</div>
+                </button>
+
+                <button type="button" class="theme-option" data-theme="black"
+                  data-primary="#17191c" data-accent="#d3d3d3" data-heading="#2f3338">
+                  <div class="theme-dot" style="background:#17191c;"></div>
+                  <div class="theme-name">Black</div>
+                </button>
+
+              </div>
+
+              <div class="custom-theme-row">
+
+                <div class="field">
+                  <label>สีหลัก</label>
+
+                  <div class="color-field">
+                    <input type="color" id="customPrimary" value="#08234b" />
+                    <input type="text" class="color-code" id="customPrimaryText" value="#08234b" />
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label>สี Accent</label>
+
+                  <div class="color-field">
+                    <input type="color" id="customAccent" value="#ffc62f" />
+                    <input type="text" class="color-code" id="customAccentText" value="#ffc62f" />
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="field-hint" style="margin-top:12px;">
+                สีนี้เปลี่ยนเฉพาะ Resume / Professional Profile ของสมาชิก ไม่กระทบ Theme หลักของ ADTSpreadsheet
+              </div>
+
+            </div>
+
+          </article>
+
+
+<article class="card" data-section="privacy">
             <div class="card-header">
               <div class="card-title">
                 <div class="card-icon">🔐</div>
@@ -1367,7 +1496,27 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    /*
+    ==========================================================
+    ADT MEMBER PROFILE
+    Frontend Prototype 2.0
+
+    UPDATE:
+    - Save / Edit แยกแต่ละ Section
+    - Save แล้ว Lock ช่องข้อมูล
+    - Edit เพื่อเปิดแก้ไข
+    - Cancel คืนค่าที่ Save ล่าสุด
+    - Resume Preview ใช้เฉพาะข้อมูลที่ Save แล้ว
+    - Resume Theme เลือกสีได้
+    - Theme Preview เปลี่ยนสีแบบ Real-time ระหว่าง Edit
+    - LocalStorage ใช้จำลอง Database ก่อนเชื่อม Supabase
+    ==========================================================
+    */
+
     const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
+    const STORAGE_KEY = "adt_member_profile_saved_v2";
 
     const state = {
       photo: "",
@@ -1377,25 +1526,328 @@
       projects: []
     };
 
-    const basicFields = [
-      "prefix",
-      "firstName",
-      "lastName",
-      "displayName",
-      "memberId",
-      "phone",
-      "email",
-      "profession",
-      "position",
-      "company",
-      "specialization",
-      "licenseLevel",
-      "licenseNo",
-      "bio"
-    ];
+    let savedData = {
+      profile: {},
+      photo: "",
+      skills: [],
+      experiences: [],
+      educations: [],
+      projects: [],
+      privacy: {},
+      theme: {
+        name: "navy",
+        primary: "#08234b",
+        accent: "#ffc62f",
+        heading: "#102f5e"
+      },
+      savedSections: {}
+    };
+
+    const sectionFields = {
+      personal: [
+        "prefix",
+        "firstName",
+        "lastName",
+        "displayName",
+        "memberId",
+        "phone",
+        "email"
+      ],
+
+      professional: [
+        "profession",
+        "position",
+        "company",
+        "specialization",
+        "licenseLevel",
+        "licenseNo"
+      ],
+
+      about: [
+        "bio"
+      ],
+
+      privacy: [
+        "publicProfile",
+        "showPhone",
+        "marketingConsent"
+      ]
+    };
+
+    const sectionLabels = {
+      personal: "ข้อมูลส่วนตัว",
+      professional: "ข้อมูลวิชาชีพ",
+      about: "เกี่ยวกับฉัน",
+      skills: "ทักษะ",
+      experience: "ประสบการณ์ทำงาน",
+      education: "การศึกษา",
+      projects: "ผลงานและโครงการ",
+      theme: "รูปแบบสี Resume",
+      privacy: "ความเป็นส่วนตัว"
+    };
+
+    /* =====================================================
+       SECTION CONTROLS
+    ===================================================== */
+
+    function createSectionActions() {
+      $$("[data-section]").forEach((card) => {
+        const section = card.dataset.section;
+        const header = card.querySelector(".card-header");
+
+        if (!header || header.querySelector(".section-actions")) return;
+
+        const actions = document.createElement("div");
+        actions.className = "section-actions";
+
+        actions.innerHTML = `
+          <span class="section-status" data-role="status">
+            ยังไม่บันทึก
+          </span>
+
+          <button type="button" class="section-btn cancel" data-role="cancel">
+            ยกเลิก
+          </button>
+
+          <button type="button" class="section-btn save" data-role="save">
+            💾 บันทึก
+          </button>
+
+          <button type="button" class="section-btn edit" data-role="edit">
+            ✏️ Edit
+          </button>
+        `;
+
+        header.appendChild(actions);
+
+        actions.querySelector('[data-role="save"]').addEventListener("click", () => {
+          saveSection(section);
+        });
+
+        actions.querySelector('[data-role="edit"]').addEventListener("click", () => {
+          setSectionMode(section, "edit");
+        });
+
+        actions.querySelector('[data-role="cancel"]').addEventListener("click", () => {
+          cancelSection(section);
+        });
+      });
+    }
+
+    function setSectionMode(section, mode) {
+      const card = document.querySelector(`[data-section="${section}"]`);
+      if (!card) return;
+
+      const isLocked = mode === "locked";
+      const status = card.querySelector('[data-role="status"]');
+      const saveBtn = card.querySelector('[data-role="save"]');
+      const editBtn = card.querySelector('[data-role="edit"]');
+      const cancelBtn = card.querySelector('[data-role="cancel"]');
+
+      card.classList.toggle("section-locked", isLocked);
+
+      setSectionDisabled(section, isLocked);
+
+      if (isLocked) {
+        status.textContent = "✓ บันทึกแล้ว";
+        status.className = "section-status saved";
+
+        saveBtn.style.display = "none";
+        cancelBtn.style.display = "none";
+        editBtn.style.display = "inline-flex";
+      } else {
+        status.textContent = savedData.savedSections[section]
+          ? "กำลังแก้ไข"
+          : "ยังไม่บันทึก";
+
+        status.className = savedData.savedSections[section]
+          ? "section-status editing"
+          : "section-status";
+
+        saveBtn.style.display = "inline-flex";
+        cancelBtn.style.display = savedData.savedSections[section]
+          ? "inline-flex"
+          : "none";
+        editBtn.style.display = "none";
+      }
+    }
+
+    function setSectionDisabled(section, disabled) {
+      const card = document.querySelector(`[data-section="${section}"]`);
+      if (!card) return;
+
+      card.querySelectorAll("input, textarea, select").forEach((el) => {
+        if (el.id === "memberId") {
+          el.disabled = false;
+          el.readOnly = true;
+          return;
+        }
+
+        el.disabled = disabled;
+      });
+
+      card.querySelectorAll(".add-btn, .remove-btn, #addSkillBtn, .theme-option").forEach((btn) => {
+        btn.disabled = disabled;
+      });
+
+      if (section === "personal") {
+        $("#photoInput").disabled = disabled;
+        document.querySelector(".photo-upload-label").style.pointerEvents =
+          disabled ? "none" : "auto";
+        document.querySelector(".photo-upload-label").style.opacity =
+          disabled ? ".55" : "1";
+      }
+    }
+
+    function initializeSectionModes() {
+      Object.keys(sectionLabels).forEach((section) => {
+        setSectionMode(
+          section,
+          savedData.savedSections[section] ? "locked" : "edit"
+        );
+      });
+    }
+
+    /* =====================================================
+       SAVE / CANCEL
+    ===================================================== */
+
+    function saveSection(section) {
+      if (section === "personal") {
+        saveFields(sectionFields.personal);
+        savedData.photo = state.photo;
+      }
+
+      if (section === "professional") {
+        saveFields(sectionFields.professional);
+      }
+
+      if (section === "about") {
+        saveFields(sectionFields.about);
+      }
+
+      if (section === "skills") {
+        savedData.skills = clone(state.skills);
+      }
+
+      if (section === "experience") {
+        savedData.experiences = clone(state.experiences);
+      }
+
+      if (section === "education") {
+        savedData.educations = clone(state.educations);
+      }
+
+      if (section === "projects") {
+        savedData.projects = clone(state.projects);
+      }
+
+      if (section === "privacy") {
+        savedData.privacy = {
+          publicProfile: $("#publicProfile").checked,
+          showPhone: $("#showPhone").checked,
+          marketingConsent: $("#marketingConsent").checked
+        };
+      }
+
+      if (section === "theme") {
+        savedData.theme = getCurrentTheme();
+        applyTheme(savedData.theme);
+      }
+
+      savedData.savedSections[section] = true;
+
+      persistSavedData();
+      setSectionMode(section, "locked");
+
+      updateResume();
+      calculateCompletion();
+
+      showToast(`บันทึก${sectionLabels[section]}เรียบร้อย ✓`);
+    }
+
+    function saveFields(ids) {
+      ids.forEach((id) => {
+        const el = $("#" + id);
+        if (!el) return;
+
+        savedData.profile[id] =
+          el.type === "checkbox"
+            ? el.checked
+            : el.value;
+      });
+    }
+
+    function cancelSection(section) {
+      restoreSection(section);
+      setSectionMode(section, "locked");
+
+      if (section === "theme") {
+        applyTheme(savedData.theme);
+      }
+
+      showToast("ยกเลิกการแก้ไขแล้ว");
+    }
+
+    function restoreSection(section) {
+      if (sectionFields[section]) {
+        sectionFields[section].forEach((id) => {
+          const el = $("#" + id);
+          if (!el) return;
+
+          const value = savedData.profile[id];
+
+          if (el.type === "checkbox") {
+            el.checked = !!value;
+          } else if (value !== undefined) {
+            el.value = value;
+          }
+        });
+      }
+
+      if (section === "personal") {
+        state.photo = savedData.photo || "";
+        renderPhoto();
+      }
+
+      if (section === "skills") {
+        state.skills = clone(savedData.skills);
+        renderSkills();
+      }
+
+      if (section === "experience") {
+        state.experiences = clone(savedData.experiences);
+        renderExperiences();
+      }
+
+      if (section === "education") {
+        state.educations = clone(savedData.educations);
+        renderEducations();
+      }
+
+      if (section === "projects") {
+        state.projects = clone(savedData.projects);
+        renderProjects();
+      }
+
+      if (section === "privacy") {
+        $("#publicProfile").checked = !!savedData.privacy.publicProfile;
+        $("#showPhone").checked = savedData.privacy.showPhone !== false;
+        $("#marketingConsent").checked = !!savedData.privacy.marketingConsent;
+      }
+
+      if (section === "theme") {
+        setThemeControls(savedData.theme);
+      }
+    }
+
+    /* =====================================================
+       PROFILE PHOTO
+    ===================================================== */
 
     $("#photoInput").addEventListener("change", (event) => {
       const file = event.target.files[0];
+
       if (!file) return;
 
       if (!file.type.startsWith("image/")) {
@@ -1414,45 +1866,53 @@
       reader.onload = (e) => {
         state.photo = e.target.result;
         renderPhoto();
-        calculateCompletion();
       };
 
       reader.readAsDataURL(file);
     });
 
     function renderPhoto() {
-      const containers = [
-        $("#profilePhoto"),
-        $("#resumePhoto"),
-        $("#sideAvatar"),
-        $("#topAvatar")
-      ];
+      const previewPhoto = savedData.savedSections.personal
+        ? savedData.photo
+        : "";
 
-      containers.forEach((container) => {
-        if (state.photo) {
-          container.innerHTML = `<img src="${state.photo}" alt="Profile" />`;
+      const uiPhoto = state.photo;
+
+      [$("#profilePhoto"), $("#sideAvatar"), $("#topAvatar")].forEach((container) => {
+        if (uiPhoto) {
+          container.innerHTML = `<img src="${uiPhoto}" alt="Profile" />`;
         } else {
           container.textContent = "AG";
         }
       });
+
+      if (previewPhoto) {
+        $("#resumePhoto").innerHTML = `<img src="${previewPhoto}" alt="Profile" />`;
+      } else {
+        $("#resumePhoto").textContent = "AG";
+      }
     }
 
-    basicFields.forEach((id) => {
-      const element = $("#" + id);
-      if (!element) return;
+    /* =====================================================
+       BASIC FORM
+    ===================================================== */
 
-      element.addEventListener("input", () => {
-        updateResume();
-        calculateCompletion();
-      });
+    [
+      ...sectionFields.personal,
+      ...sectionFields.professional,
+      ...sectionFields.about
+    ].forEach((id) => {
+      const el = $("#" + id);
 
-      element.addEventListener("change", () => {
-        updateResume();
-        calculateCompletion();
-      });
+      if (!el) return;
+
+      el.addEventListener("input", calculateCompletion);
+      el.addEventListener("change", calculateCompletion);
     });
 
-    $("#showPhone").addEventListener("change", updateResume);
+    /* =====================================================
+       SKILLS
+    ===================================================== */
 
     $("#addSkillBtn").addEventListener("click", addSkill);
 
@@ -1470,7 +1930,7 @@
       if (!value) return;
 
       const exists = state.skills.some(
-        skill => skill.toLowerCase() === value.toLowerCase()
+        (skill) => skill.toLowerCase() === value.toLowerCase()
       );
 
       if (exists) {
@@ -1482,7 +1942,6 @@
       input.value = "";
 
       renderSkills();
-      updateResume();
       calculateCompletion();
     }
 
@@ -1500,15 +1959,30 @@
         `;
 
         tag.querySelector("button").addEventListener("click", () => {
+          if (savedData.savedSections.skills &&
+              document.querySelector('[data-section="skills"]').classList.contains("section-locked")) {
+            return;
+          }
+
           state.skills.splice(index, 1);
           renderSkills();
-          updateResume();
           calculateCompletion();
         });
 
         list.appendChild(tag);
       });
+
+      const locked = savedData.savedSections.skills &&
+        document.querySelector('[data-section="skills"]')?.classList.contains("section-locked");
+
+      if (locked) {
+        list.querySelectorAll("button").forEach((btn) => btn.disabled = true);
+      }
     }
+
+    /* =====================================================
+       EXPERIENCE
+    ===================================================== */
 
     $("#addExperienceBtn").addEventListener("click", () => {
       state.experiences.push({
@@ -1538,63 +2012,50 @@
           <div class="grid-2">
             <div class="field">
               <label>ตำแหน่ง</label>
-              <input
-                data-field="position"
+              <input data-field="position"
                 value="${escapeAttribute(item.position)}"
-                placeholder="เช่น Project Engineer"
-              />
+                placeholder="เช่น Project Engineer" />
             </div>
 
             <div class="field">
               <label>บริษัท / หน่วยงาน</label>
-              <input
-                data-field="company"
+              <input data-field="company"
                 value="${escapeAttribute(item.company)}"
-                placeholder="ชื่อบริษัท"
-              />
+                placeholder="ชื่อบริษัท" />
             </div>
 
             <div class="field">
               <label>เริ่ม</label>
-              <input
-                data-field="start"
+              <input data-field="start"
                 value="${escapeAttribute(item.start)}"
-                placeholder="เช่น 2565"
-              />
+                placeholder="เช่น 2565" />
             </div>
 
             <div class="field">
               <label>ถึง</label>
-              <input
-                data-field="end"
+              <input data-field="end"
                 value="${escapeAttribute(item.end)}"
-                placeholder="ปัจจุบัน"
-              />
+                placeholder="ปัจจุบัน" />
             </div>
 
             <div class="field full">
               <label>รายละเอียดงาน</label>
-
-              <textarea
-                data-field="description"
-                placeholder="หน้าที่ ความรับผิดชอบ หรือผลงานสำคัญ"
-              >${escapeHtml(item.description)}</textarea>
+              <textarea data-field="description"
+                placeholder="หน้าที่ ความรับผิดชอบ หรือผลงานสำคัญ">${escapeHtml(item.description)}</textarea>
             </div>
           </div>
         `;
 
-        bindCollectionItem(
-          div,
-          state.experiences,
-          index,
-          renderExperiences
-        );
-
+        bindCollectionItem(div, state.experiences, index, renderExperiences);
         container.appendChild(div);
       });
 
-      updateResume();
+      applyDynamicLockedState("experience");
     }
+
+    /* =====================================================
+       EDUCATION
+    ===================================================== */
 
     $("#addEducationBtn").addEventListener("click", () => {
       state.educations.push({
@@ -1623,54 +2084,44 @@
           <div class="grid-2">
             <div class="field">
               <label>ระดับการศึกษา</label>
-              <input
-                data-field="degree"
+              <input data-field="degree"
                 value="${escapeAttribute(item.degree)}"
-                placeholder="เช่น วิศวกรรมศาสตรบัณฑิต"
-              />
+                placeholder="เช่น วิศวกรรมศาสตรบัณฑิต" />
             </div>
 
             <div class="field">
               <label>สถาบันการศึกษา</label>
-              <input
-                data-field="institute"
+              <input data-field="institute"
                 value="${escapeAttribute(item.institute)}"
-                placeholder="มหาวิทยาลัย"
-              />
+                placeholder="มหาวิทยาลัย" />
             </div>
 
             <div class="field">
               <label>สาขาวิชา</label>
-              <input
-                data-field="field"
+              <input data-field="field"
                 value="${escapeAttribute(item.field)}"
-                placeholder="เช่น วิศวกรรมโยธา"
-              />
+                placeholder="เช่น วิศวกรรมโยธา" />
             </div>
 
             <div class="field">
               <label>ปีที่สำเร็จการศึกษา</label>
-              <input
-                data-field="year"
+              <input data-field="year"
                 value="${escapeAttribute(item.year)}"
-                placeholder="เช่น 2560"
-              />
+                placeholder="เช่น 2560" />
             </div>
           </div>
         `;
 
-        bindCollectionItem(
-          div,
-          state.educations,
-          index,
-          renderEducations
-        );
-
+        bindCollectionItem(div, state.educations, index, renderEducations);
         container.appendChild(div);
       });
 
-      updateResume();
+      applyDynamicLockedState("education");
     }
+
+    /* =====================================================
+       PROJECTS
+    ===================================================== */
 
     $("#addProjectBtn").addEventListener("click", () => {
       state.projects.push({
@@ -1699,67 +2150,44 @@
           <div class="grid-2">
             <div class="field">
               <label>ชื่อโครงการ / ผลงาน</label>
-              <input
-                data-field="title"
+              <input data-field="title"
                 value="${escapeAttribute(item.title)}"
-                placeholder="ชื่อผลงาน"
-              />
+                placeholder="ชื่อผลงาน" />
             </div>
 
             <div class="field">
               <label>หน้าที่ / Role</label>
-              <input
-                data-field="role"
+              <input data-field="role"
                 value="${escapeAttribute(item.role)}"
-                placeholder="เช่น วิศวกรผู้ออกแบบ"
-              />
+                placeholder="เช่น วิศวกรผู้ออกแบบ" />
             </div>
 
             <div class="field">
               <label>ปี</label>
-              <input
-                data-field="year"
+              <input data-field="year"
                 value="${escapeAttribute(item.year)}"
-                placeholder="2569"
-              />
+                placeholder="2569" />
             </div>
 
             <div class="field full">
               <label>รายละเอียด</label>
-
-              <textarea
-                data-field="description"
-                placeholder="รายละเอียดโครงการ ขอบเขตงาน หรือผลงาน"
-              >${escapeHtml(item.description)}</textarea>
+              <textarea data-field="description"
+                placeholder="รายละเอียดโครงการ ขอบเขตงาน หรือผลงาน">${escapeHtml(item.description)}</textarea>
             </div>
           </div>
         `;
 
-        bindCollectionItem(
-          div,
-          state.projects,
-          index,
-          renderProjects
-        );
-
+        bindCollectionItem(div, state.projects, index, renderProjects);
         container.appendChild(div);
       });
 
-      updateResume();
+      applyDynamicLockedState("projects");
     }
 
-    function bindCollectionItem(
-      element,
-      collection,
-      index,
-      renderFunction
-    ) {
+    function bindCollectionItem(element, collection, index, renderFunction) {
       element.querySelectorAll("[data-field]").forEach((input) => {
         input.addEventListener("input", () => {
-          const field = input.dataset.field;
-          collection[index][field] = input.value;
-
-          updateResume();
+          collection[index][input.dataset.field] = input.value;
           calculateCompletion();
         });
       });
@@ -1771,403 +2199,449 @@
       });
     }
 
+    function applyDynamicLockedState(section) {
+      const card = document.querySelector(`[data-section="${section}"]`);
+      if (!card) return;
+
+      const locked = savedData.savedSections[section] &&
+        card.classList.contains("section-locked");
+
+      if (locked) {
+        card.querySelectorAll("input, textarea, select, .remove-btn, .add-btn")
+          .forEach((el) => el.disabled = true);
+      }
+    }
+
+    /* =====================================================
+       RESUME THEME
+    ===================================================== */
+
+    $$(".theme-option").forEach((button) => {
+      button.addEventListener("click", () => {
+        $$(".theme-option").forEach((btn) => btn.classList.remove("selected"));
+        button.classList.add("selected");
+
+        const theme = {
+          name: button.dataset.theme,
+          primary: button.dataset.primary,
+          accent: button.dataset.accent,
+          heading: button.dataset.heading
+        };
+
+        $("#customPrimary").value = theme.primary;
+        $("#customPrimaryText").value = theme.primary;
+        $("#customAccent").value = theme.accent;
+        $("#customAccentText").value = theme.accent;
+
+        applyTheme(theme);
+      });
+    });
+
+    ["customPrimary", "customAccent"].forEach((id) => {
+      $("#" + id).addEventListener("input", () => {
+        syncCustomThemeFromPicker();
+      });
+    });
+
+    ["customPrimaryText", "customAccentText"].forEach((id) => {
+      $("#" + id).addEventListener("change", () => {
+        syncCustomThemeFromText();
+      });
+    });
+
+    function syncCustomThemeFromPicker() {
+      $("#customPrimaryText").value = $("#customPrimary").value;
+      $("#customAccentText").value = $("#customAccent").value;
+
+      $$(".theme-option").forEach((btn) => btn.classList.remove("selected"));
+
+      applyTheme({
+        name: "custom",
+        primary: $("#customPrimary").value,
+        accent: $("#customAccent").value,
+        heading: $("#customPrimary").value
+      });
+    }
+
+    function syncCustomThemeFromText() {
+      let primary = normalizeHex($("#customPrimaryText").value, "#08234b");
+      let accent = normalizeHex($("#customAccentText").value, "#ffc62f");
+
+      $("#customPrimaryText").value = primary;
+      $("#customAccentText").value = accent;
+      $("#customPrimary").value = primary;
+      $("#customAccent").value = accent;
+
+      $$(".theme-option").forEach((btn) => btn.classList.remove("selected"));
+
+      applyTheme({
+        name: "custom",
+        primary,
+        accent,
+        heading: primary
+      });
+    }
+
+    function getCurrentTheme() {
+      const selected = document.querySelector(".theme-option.selected");
+
+      if (selected) {
+        return {
+          name: selected.dataset.theme,
+          primary: selected.dataset.primary,
+          accent: selected.dataset.accent,
+          heading: selected.dataset.heading
+        };
+      }
+
+      return {
+        name: "custom",
+        primary: normalizeHex($("#customPrimaryText").value, "#08234b"),
+        accent: normalizeHex($("#customAccentText").value, "#ffc62f"),
+        heading: normalizeHex($("#customPrimaryText").value, "#08234b")
+      };
+    }
+
+    function setThemeControls(theme) {
+      $$(".theme-option").forEach((button) => {
+        button.classList.toggle(
+          "selected",
+          theme.name !== "custom" && button.dataset.theme === theme.name
+        );
+      });
+
+      $("#customPrimary").value = theme.primary;
+      $("#customPrimaryText").value = theme.primary;
+      $("#customAccent").value = theme.accent;
+      $("#customAccentText").value = theme.accent;
+    }
+
+    function applyTheme(theme) {
+      document.documentElement.style.setProperty("--resume-primary", theme.primary);
+      document.documentElement.style.setProperty("--resume-accent", theme.accent);
+      document.documentElement.style.setProperty("--resume-heading", theme.heading || theme.primary);
+    }
+
+    function normalizeHex(value, fallback) {
+      const v = String(value || "").trim();
+
+      return /^#[0-9A-Fa-f]{6}$/.test(v)
+        ? v.toLowerCase()
+        : fallback;
+    }
+
+    /* =====================================================
+       RESUME PREVIEW
+       IMPORTANT: ใช้เฉพาะ savedData
+    ===================================================== */
+
     function updateResume() {
-      const firstName = $("#firstName").value.trim();
-      const lastName = $("#lastName").value.trim();
-      const displayName = $("#displayName").value.trim();
+      const p = savedData.profile || {};
 
       const fullName =
-        displayName ||
-        [firstName, lastName].filter(Boolean).join(" ") ||
+        p.displayName ||
+        [p.firstName, p.lastName].filter(Boolean).join(" ") ||
         "ชื่อ นามสกุล";
 
       $("#resumeName").textContent = fullName;
-      $("#summaryName").textContent = fullName;
-      $("#sideMemberName").textContent = fullName;
-      $("#topMemberName").textContent = fullName;
-
-      const memberId = $("#memberId").value || "MEM-000001";
-
-      $("#resumeMemberId").textContent = "ADT MEMBER · " + memberId;
-      $("#summaryMemberId").textContent = memberId;
-      $("#sideMemberId").textContent = memberId;
-
-      const position = $("#position").value.trim();
-      const profession = $("#profession").value.trim();
-
       $("#resumePosition").textContent =
-        position || profession || "Professional Member";
+        p.position || p.profession || "Professional Member";
 
-      const showPhone = $("#showPhone").checked;
+      $("#resumeMemberId").textContent =
+        "ADT MEMBER · " + (p.memberId || "MEM-000001");
 
       $("#resumePhone").textContent =
-        showPhone
-          ? "โทรศัพท์: " + ($("#phone").value.trim() || "-")
-          : "โทรศัพท์: Private";
+        savedData.privacy.showPhone === false
+          ? "โทรศัพท์: Private"
+          : "โทรศัพท์: " + (p.phone || "-");
 
       $("#resumeEmail").textContent =
-        "Email: " + ($("#email").value.trim() || "-");
+        "Email: " + (p.email || "-");
 
       $("#resumeCompany").textContent =
-        "Company: " + ($("#company").value.trim() || "-");
+        "Company: " + (p.company || "-");
 
       $("#resumeProfession").textContent =
-        "วิชาชีพ: " + (profession || "-");
+        "วิชาชีพ: " + (p.profession || "-");
 
       $("#resumeSpecialization").textContent =
-        "ความเชี่ยวชาญ: " +
-        ($("#specialization").value.trim() || "-");
-
-      const licenseLevel = $("#licenseLevel").value.trim();
-      const licenseNo = $("#licenseNo").value.trim();
+        "ความเชี่ยวชาญ: " + (p.specialization || "-");
 
       $("#resumeLicense").textContent =
         "ใบอนุญาต: " +
-        ([licenseLevel, licenseNo].filter(Boolean).join(" · ") || "-");
+        ([p.licenseLevel, p.licenseNo].filter(Boolean).join(" · ") || "-");
 
       $("#resumeBio").textContent =
-        $("#bio").value.trim() ||
+        p.bio ||
         "เพิ่มข้อมูลแนะนำตัว เพื่อแสดง Professional Summary";
 
       renderResumeSkills();
       renderResumeExperience();
       renderResumeEducation();
       renderResumeProjects();
+
+      updateSavedProfileSummary();
+      renderPhoto();
+    }
+
+    function updateSavedProfileSummary() {
+      const p = savedData.profile || {};
+
+      const savedName =
+        p.displayName ||
+        [p.firstName, p.lastName].filter(Boolean).join(" ") ||
+        "ชื่อ นามสกุล";
+
+      $("#summaryName").textContent = savedName;
+      $("#sideMemberName").textContent = savedName;
+      $("#topMemberName").textContent = savedName;
+
+      const memberId = p.memberId || "MEM-000001";
+
+      $("#summaryMemberId").textContent = memberId;
+      $("#sideMemberId").textContent = memberId;
     }
 
     function renderResumeSkills() {
       const container = $("#resumeSkills");
 
-      if (!state.skills.length) {
-        container.innerHTML = `
-          <div class="resume-contact">
-            ยังไม่ได้เพิ่มทักษะ
-          </div>
-        `;
+      if (!savedData.skills.length) {
+        container.innerHTML = `<div class="resume-contact">ยังไม่ได้เพิ่มทักษะ</div>`;
         return;
       }
 
-      container.innerHTML = state.skills
-        .map(
-          skill => `
-            <div class="resume-skill">
-              • ${escapeHtml(skill)}
-            </div>
-          `
-        )
+      container.innerHTML = savedData.skills
+        .map((skill) => `<div class="resume-skill">• ${escapeHtml(skill)}</div>`)
         .join("");
     }
 
     function renderResumeExperience() {
       const container = $("#resumeExperience");
 
-      const valid = state.experiences.filter(
-        item =>
-          item.position ||
-          item.company ||
-          item.description
+      const valid = savedData.experiences.filter(
+        (item) => item.position || item.company || item.description
       );
 
       if (!valid.length) {
-        container.innerHTML = `
-          <div class="resume-empty">
-            ยังไม่มีข้อมูลประสบการณ์ทำงาน
-          </div>
-        `;
+        container.innerHTML = `<div class="resume-empty">ยังไม่มีข้อมูลประสบการณ์ทำงาน</div>`;
         return;
       }
 
-      container.innerHTML = valid
-        .map(item => {
-          const meta = [
-            item.company,
-            [item.start, item.end].filter(Boolean).join(" - ")
-          ]
-          .filter(Boolean)
-          .join(" | ");
+      container.innerHTML = valid.map((item) => {
+        const meta = [
+          item.company,
+          [item.start, item.end].filter(Boolean).join(" - ")
+        ].filter(Boolean).join(" | ");
 
-          return `
-            <div class="resume-entry">
-              <div class="resume-entry-title">
-                ${escapeHtml(
-                  item.position ||
-                  item.company ||
-                  "Work Experience"
-                )}
-              </div>
-
-              ${
-                meta
-                  ? `
-                  <div class="resume-entry-meta">
-                    ${escapeHtml(meta)}
-                  </div>
-                `
-                  : ""
-              }
-
-              ${
-                item.description
-                  ? `
-                  <div class="resume-entry-desc">
-                    ${escapeHtml(item.description)}
-                  </div>
-                `
-                  : ""
-              }
+        return `
+          <div class="resume-entry">
+            <div class="resume-entry-title">
+              ${escapeHtml(item.position || item.company || "Work Experience")}
             </div>
-          `;
-        })
-        .join("");
+
+            ${meta ? `<div class="resume-entry-meta">${escapeHtml(meta)}</div>` : ""}
+
+            ${item.description
+              ? `<div class="resume-entry-desc">${escapeHtml(item.description)}</div>`
+              : ""}
+          </div>
+        `;
+      }).join("");
     }
 
     function renderResumeEducation() {
       const container = $("#resumeEducation");
 
-      const valid = state.educations.filter(
-        item =>
-          item.degree ||
-          item.institute ||
-          item.field
+      const valid = savedData.educations.filter(
+        (item) => item.degree || item.institute || item.field
       );
 
       if (!valid.length) {
-        container.innerHTML = `
-          <div class="resume-empty">
-            ยังไม่มีข้อมูลการศึกษา
-          </div>
-        `;
+        container.innerHTML = `<div class="resume-empty">ยังไม่มีข้อมูลการศึกษา</div>`;
         return;
       }
 
-      container.innerHTML = valid
-        .map(
-          item => `
-            <div class="resume-entry">
-              <div class="resume-entry-title">
-                ${escapeHtml(
-                  item.degree ||
-                  item.field ||
-                  "Education"
-                )}
-              </div>
+      container.innerHTML = valid.map((item) => `
+        <div class="resume-entry">
+          <div class="resume-entry-title">
+            ${escapeHtml(item.degree || item.field || "Education")}
+          </div>
 
-              <div class="resume-entry-meta">
-                ${escapeHtml(
-                  [
-                    item.institute,
-                    item.field,
-                    item.year
-                  ]
-                  .filter(Boolean)
-                  .join(" | ")
-                )}
-              </div>
-            </div>
-          `
-        )
-        .join("");
+          <div class="resume-entry-meta">
+            ${escapeHtml(
+              [item.institute, item.field, item.year]
+                .filter(Boolean)
+                .join(" | ")
+            )}
+          </div>
+        </div>
+      `).join("");
     }
 
     function renderResumeProjects() {
       const container = $("#resumeProjects");
 
-      const valid = state.projects.filter(
-        item =>
-          item.title ||
-          item.role ||
-          item.description
+      const valid = savedData.projects.filter(
+        (item) => item.title || item.role || item.description
       );
 
       if (!valid.length) {
-        container.innerHTML = `
-          <div class="resume-empty">
-            ยังไม่มีข้อมูลผลงานหรือโครงการ
-          </div>
-        `;
+        container.innerHTML = `<div class="resume-empty">ยังไม่มีข้อมูลผลงานหรือโครงการ</div>`;
         return;
       }
 
-      container.innerHTML = valid
-        .map(
-          item => `
-            <div class="resume-entry">
-              <div class="resume-entry-title">
-                ${escapeHtml(item.title || "Project")}
-              </div>
+      container.innerHTML = valid.map((item) => `
+        <div class="resume-entry">
+          <div class="resume-entry-title">
+            ${escapeHtml(item.title || "Project")}
+          </div>
 
-              <div class="resume-entry-meta">
-                ${escapeHtml(
-                  [item.role, item.year]
-                  .filter(Boolean)
-                  .join(" | ")
-                )}
-              </div>
+          <div class="resume-entry-meta">
+            ${escapeHtml([item.role, item.year].filter(Boolean).join(" | "))}
+          </div>
 
-              ${
-                item.description
-                  ? `
-                  <div class="resume-entry-desc">
-                    ${escapeHtml(item.description)}
-                  </div>
-                `
-                  : ""
-              }
-            </div>
-          `
-        )
-        .join("");
+          ${item.description
+            ? `<div class="resume-entry-desc">${escapeHtml(item.description)}</div>`
+            : ""}
+        </div>
+      `).join("");
     }
 
+    /* =====================================================
+       PROFILE COMPLETION
+       คิดจากข้อมูลที่ Save แล้วเท่านั้น
+    ===================================================== */
+
     function calculateCompletion() {
+      const p = savedData.profile || {};
+
       const checks = [
-        !!state.photo,
-        !!$("#firstName").value.trim(),
-        !!$("#lastName").value.trim(),
-        !!$("#phone").value.trim(),
-        !!$("#email").value.trim(),
-        !!$("#profession").value.trim(),
-        !!$("#position").value.trim(),
-        !!$("#bio").value.trim(),
-        state.skills.length > 0,
-        state.experiences.length > 0,
-        state.educations.length > 0,
-        state.projects.length > 0
+        !!savedData.photo,
+        !!p.firstName,
+        !!p.lastName,
+        !!p.phone,
+        !!p.email,
+        !!p.profession,
+        !!p.position,
+        !!p.bio,
+        savedData.skills.length > 0,
+        savedData.experiences.length > 0,
+        savedData.educations.length > 0,
+        savedData.projects.length > 0
       ];
 
       const completed = checks.filter(Boolean).length;
-
-      const percent = Math.round(
-        completed / checks.length * 100
-      );
+      const percent = Math.round(completed / checks.length * 100);
 
       $("#completionValue").textContent = percent + "%";
       $("#completionBar").style.width = percent + "%";
     }
 
-    $("#saveBtn").addEventListener("click", saveProfile);
+    /* =====================================================
+       STORAGE - FRONTEND DEMO
+    ===================================================== */
 
-    function saveProfile() {
-      const profile = {};
-
-      basicFields.forEach((id) => {
-        const el = $("#" + id);
-        if (el) profile[id] = el.value;
-      });
-
-      profile.publicProfile = $("#publicProfile").checked;
-      profile.showPhone = $("#showPhone").checked;
-      profile.marketingConsent = $("#marketingConsent").checked;
-
-      const data = {
-        profile,
-        photo: state.photo,
-        skills: state.skills,
-        experiences: state.experiences,
-        educations: state.educations,
-        projects: state.projects
-      };
-
+    function persistSavedData() {
       try {
-        localStorage.setItem(
-          "adt_member_profile_draft",
-          JSON.stringify(data)
-        );
-
-        showToast("บันทึก Draft โปรไฟล์เรียบร้อย ✓");
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
       } catch (error) {
-        console.error(error);
-        showToast("ไม่สามารถบันทึก Draft ได้");
+        console.warn("Save localStorage failed:", error);
       }
     }
 
-    function loadProfile() {
+    function loadSavedData() {
       try {
-        const raw = localStorage.getItem(
-          "adt_member_profile_draft"
-        );
+        const raw = localStorage.getItem(STORAGE_KEY);
 
-        if (!raw) return;
+        if (!raw) {
+          // Member ID demo remains available in the form.
+          savedData.profile.memberId = $("#memberId").value;
+          return;
+        }
 
         const data = JSON.parse(raw);
 
-        if (data.profile) {
-          basicFields.forEach((id) => {
-            if (data.profile[id] !== undefined) {
-              const el = $("#" + id);
+        savedData = {
+          profile: data.profile || {},
+          photo: data.photo || "",
+          skills: Array.isArray(data.skills) ? data.skills : [],
+          experiences: Array.isArray(data.experiences) ? data.experiences : [],
+          educations: Array.isArray(data.educations) ? data.educations : [],
+          projects: Array.isArray(data.projects) ? data.projects : [],
+          privacy: data.privacy || {},
+          theme: data.theme || {
+            name: "navy",
+            primary: "#08234b",
+            accent: "#ffc62f",
+            heading: "#102f5e"
+          },
+          savedSections: data.savedSections || {}
+        };
 
-              if (el) {
-                el.value = data.profile[id];
-              }
-            }
-          });
-
-          $("#publicProfile").checked =
-            !!data.profile.publicProfile;
-
-          $("#showPhone").checked =
-            data.profile.showPhone !== false;
-
-          $("#marketingConsent").checked =
-            !!data.profile.marketingConsent;
-        }
-
-        state.photo = data.photo || "";
-
-        state.skills =
-          Array.isArray(data.skills)
-            ? data.skills
-            : [];
-
-        state.experiences =
-          Array.isArray(data.experiences)
-            ? data.experiences
-            : [];
-
-        state.educations =
-          Array.isArray(data.educations)
-            ? data.educations
-            : [];
-
-        state.projects =
-          Array.isArray(data.projects)
-            ? data.projects
-            : [];
-
-        renderPhoto();
-        renderSkills();
-        renderExperiences();
-        renderEducations();
-        renderProjects();
-        updateResume();
-        calculateCompletion();
+        loadSavedDataIntoForm();
 
       } catch (error) {
-        console.warn(
-          "Load profile draft failed:",
-          error
-        );
+        console.warn("Load saved profile failed:", error);
       }
     }
 
+    function loadSavedDataIntoForm() {
+      Object.entries(savedData.profile).forEach(([id, value]) => {
+        const el = $("#" + id);
+        if (!el) return;
+
+        if (el.type === "checkbox") {
+          el.checked = !!value;
+        } else {
+          el.value = value ?? "";
+        }
+      });
+
+      if (!$("#memberId").value) {
+        $("#memberId").value = "MEM-000001";
+      }
+
+      state.photo = savedData.photo || "";
+      state.skills = clone(savedData.skills);
+      state.experiences = clone(savedData.experiences);
+      state.educations = clone(savedData.educations);
+      state.projects = clone(savedData.projects);
+
+      $("#publicProfile").checked = !!savedData.privacy.publicProfile;
+      $("#showPhone").checked = savedData.privacy.showPhone !== false;
+      $("#marketingConsent").checked = !!savedData.privacy.marketingConsent;
+
+      setThemeControls(savedData.theme);
+      applyTheme(savedData.theme);
+
+      renderSkills();
+      renderExperiences();
+      renderEducations();
+      renderProjects();
+      renderPhoto();
+    }
+
+    /* =====================================================
+       PREVIEW / PRINT
+    ===================================================== */
+
     $("#previewBtn").addEventListener("click", () => {
-      document
-        .querySelector(".preview-column")
-        .scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
+      document.querySelector(".preview-column").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
     });
 
-    $("#printBtn").addEventListener(
-      "click",
-      () => window.print()
-    );
+    $("#printBtn").addEventListener("click", () => window.print());
+    $("#printBtn2").addEventListener("click", () => window.print());
 
-    $("#printBtn2").addEventListener(
-      "click",
-      () => window.print()
-    );
+    /* =====================================================
+       HELPERS
+    ===================================================== */
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value ?? null));
+    }
 
     function escapeHtml(value) {
       return String(value ?? "")
@@ -2186,6 +2660,7 @@
 
     function showToast(message) {
       const toast = $("#toast");
+
       toast.textContent = message;
       toast.classList.add("show");
 
@@ -2196,7 +2671,47 @@
       }, 2600);
     }
 
-    loadProfile();
+
+    /* =====================================================
+       SIDEBAR LOGOUT
+       Shared Member Menu
+    ===================================================== */
+
+    const sidebarLogoutBtn = $("#sidebarLogoutBtn");
+
+    if (sidebarLogoutBtn) {
+      sidebarLogoutBtn.addEventListener("click", () => {
+        const tokenKeys = [
+          "adt_access_token",
+          "adt_refresh_token",
+          "adt_token_expires_at",
+          "adt_member_profile"
+        ];
+
+        tokenKeys.forEach((key) => {
+          localStorage.removeItem(key);
+          sessionStorage.removeItem(key);
+        });
+
+        window.location.href = "/member/";
+      });
+    }
+
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
+
+    createSectionActions();
+    loadSavedData();
+    initializeSectionModes();
+
+    // Apply disabled state again after dynamic cards are rendered.
+    Object.keys(sectionLabels).forEach((section) => {
+      if (savedData.savedSections[section]) {
+        setSectionDisabled(section, true);
+      }
+    });
+
     updateResume();
     calculateCompletion();
   </script>
