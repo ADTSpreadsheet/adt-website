@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Knowledge Center | ADTSpreadsheet Member</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700;800&family=Prompt:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#06152d;--blue:#1677ff;--yellow:#ffc928;--ink:#142033;--muted:#6c7a90;--line:#dce5ef;--surface:#f4f7fb;--sidebar:280px;--shadow:0 16px 42px rgba(4,27,60,.10)}
+*{box-sizing:border-box}body{margin:0;font-family:Prompt,sans-serif;color:var(--ink);background:var(--surface)}a{text-decoration:none;color:inherit}button,input{font:inherit}
+.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);display:flex;flex-direction:column;color:#fff;background:radial-gradient(circle at 20% 5%,rgba(22,119,255,.28),transparent 28%),linear-gradient(180deg,#06152d,#031025)}
+.sidebar-head{min-height:92px;display:flex;align-items:center;padding:18px 22px;border-bottom:1px solid #ffffff14}.sidebar-logo{width:220px;max-height:56px;object-fit:contain}
+.member-mini{margin:18px;padding:17px;display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:center;border-radius:18px;background:#ffffff14;border:1px solid #ffffff1c}.avatar{width:52px;height:52px;display:grid;place-items:center;border-radius:50%;background:var(--yellow);color:var(--navy);font-weight:800}.member-mini strong{display:block;font-size:.93rem}.member-mini span{color:#bcd0e7;font-size:.73rem}
+.sidebar-nav{padding:4px 14px 22px;display:grid;gap:7px;overflow:auto}.nav-group{padding:15px 12px 5px;color:#7896b7;font-size:.68rem;font-weight:800;letter-spacing:.12em}.nav-link{min-height:48px;padding:0 14px;display:flex;align-items:center;gap:12px;border-radius:13px;color:#d8e6f5;font-size:.88rem;font-weight:600}.nav-link:hover{background:#ffffff14}.nav-link.active{color:#fff;background:linear-gradient(135deg,var(--blue),#0d5fd1)}.nav-icon{width:24px;text-align:center}.sidebar-foot{margin-top:auto;padding:15px 18px 20px;border-top:1px solid #ffffff14}.logout{width:100%;height:44px;border:1px solid #ffffff29;border-radius:12px;background:#ffffff0f;color:#fff}
+.main{margin-left:var(--sidebar)}.topbar{min-height:76px;padding:0 32px;display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--line)}.topbar strong{color:var(--navy)}.topbar small{display:block;color:var(--muted)}.profile{display:flex;align-items:center;gap:9px}.profile .avatar{width:34px;height:34px;font-size:.75rem}
+.content{width:min(1480px,calc(100% - 48px));margin:auto;padding:30px 0 56px}.page-head{display:flex;justify-content:space-between;align-items:end;gap:20px}.page-head h1{margin:0;color:var(--navy);font-size:1.7rem}.page-head p{margin:6px 0 0;color:var(--muted);font-size:.82rem}.search{width:410px;height:46px;padding:0 15px;border:1px solid var(--line);border-radius:13px;background:#fff}
+.hero{margin-top:22px;padding:30px;border-radius:26px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;color:#fff;background:linear-gradient(135deg,#06152d,#0b3674);box-shadow:var(--shadow)}.badge{display:inline-flex;padding:7px 10px;border-radius:999px;color:var(--navy);background:var(--yellow);font-size:.64rem;font-weight:800}.hero h2{margin:16px 0 0;font-size:2rem}.hero p{color:#cfe0f4;font-size:.82rem;line-height:1.8}.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.hero-stat{padding:17px;border-radius:16px;background:#ffffff19;border:1px solid #ffffff1f}.hero-stat span{display:block;color:#bdd0e7;font-size:.62rem}.hero-stat strong{display:block;margin-top:5px;font:800 1.35rem Inter}
+.section-head{margin:28px 0 14px;display:flex;justify-content:space-between;align-items:end}.section-head h2{margin:0;color:var(--navy);font-size:1.2rem}.section-head p{margin:4px 0 0;color:var(--muted);font-size:.72rem}.view{color:var(--blue);font-size:.7rem;font-weight:700}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{overflow:hidden;border-radius:22px;background:#fff;border:1px solid #e6edf5;box-shadow:var(--shadow)}.cover{min-height:190px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;color:#fff;background:linear-gradient(145deg,#0a2855,#1677ff)}.cover.green{background:linear-gradient(145deg,#16463b,#2d8a72)}.cover.purple{background:linear-gradient(145deg,#39256f,#7559c7)}.cover-icon{width:50px;height:50px;display:grid;place-items:center;border-radius:14px;background:#ffffff24;font-size:1.35rem}.cover h3{margin:18px 0 0}.cover small{color:#d8e8fa}.body{padding:18px}.body p{margin:0;color:var(--muted);font-size:.7rem;line-height:1.7}.pills{margin-top:14px;display:flex;gap:7px;flex-wrap:wrap}.pill{padding:6px 9px;border-radius:999px;background:#f0f5fb;color:#52657b;font-size:.59rem;font-weight:700}.foot{margin-top:16px;padding-top:14px;border-top:1px solid #edf1f5;display:flex;justify-content:space-between;align-items:center}.foot span{color:var(--muted);font-size:.63rem}.open{padding:8px 12px;border-radius:9px;background:var(--blue);color:#fff;font-size:.63rem;font-weight:700}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.quick-card{padding:18px;border-radius:18px;background:#fff;border:1px solid #e6edf5;box-shadow:var(--shadow)}.quick-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:13px;background:#eaf3ff;font-size:1.15rem}.quick-card h3{margin:12px 0 0;color:var(--navy);font-size:.83rem}.quick-card p{margin:5px 0 0;color:var(--muted);font-size:.64rem;line-height:1.6}
+.panel{margin-top:28px;padding:22px;border-radius:22px;background:#fff;border:1px solid #e6edf5;box-shadow:var(--shadow)}.lesson{margin-top:10px;padding:13px 14px;display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:14px}.lesson-icon{width:44px;height:44px;display:grid;place-items:center;border-radius:12px;background:#eaf3ff}.lesson strong{display:block;font-size:.75rem}.lesson span{display:block;color:var(--muted);font-size:.61rem}.lesson button{padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--blue);font-size:.61rem;font-weight:700}
+.note{margin-top:22px;padding:17px 19px;border-radius:16px;background:#fff8dc;border:1px solid #f5df84;color:#665000;font-size:.68rem;line-height:1.7}
+@media(max-width:1100px){.hero{grid-template-columns:1fr}.products{grid-template-columns:1fr 1fr}.quick{grid-template-columns:1fr 1fr}}@media(max-width:850px){.sidebar{display:none}.main{margin-left:0}}@media(max-width:650px){.content{width:calc(100% - 24px)}.page-head{align-items:start;flex-direction:column}.search{width:100%}.products,.quick{grid-template-columns:1fr}.hero-stats{grid-template-columns:1fr}}
+</style></head>
+<body>
+<aside class="sidebar">
+ <div class="sidebar-head"><img class="sidebar-logo" src="/assets/images/logo-header.png" onerror="this.src='/assets/images/logo-full.png'" alt="ADTSpreadsheet"></div>
+ <div class="member-mini"><div class="avatar">AG</div><div><strong>ชื่อ นามสกุล</strong><span>MEM-000001</span></div></div>
+ <nav class="sidebar-nav">
+  <div class="nav-group">MEMBER AREA</div>
+  <a class="nav-link" href="/member/dashboard/"><span class="nav-icon">🏠</span>Dashboard</a>
+  <a class="nav-link" href="/member/programs/"><span class="nav-icon">💻</span>โปรแกรมของฉัน</a>
+  <a class="nav-link" href="/member/training/"><span class="nav-icon">🎓</span>การอบรมของฉัน</a>
+  <a class="nav-link" href="/member/certificates/"><span class="nav-icon">🏅</span>ใบประกาศ</a>
+  <div class="nav-group">KNOWLEDGE</div>
+  <a class="nav-link" href="/member/articles/"><span class="nav-icon">📰</span>บทความวิศวกรรม</a>
+  <a class="nav-link active" href="/member/knowledge/"><span class="nav-icon">📚</span>Knowledge Center</a>
+  <a class="nav-link" href="/member/community/"><span class="nav-icon">💬</span>Community</a>
+  <div class="nav-group">ACCOUNT</div>
+  <a class="nav-link" href="/member/support/"><span class="nav-icon">🎫</span>Support</a>
+  <a class="nav-link" href="/member/payments/"><span class="nav-icon">🧾</span>การชำระเงิน</a>
+  <a class="nav-link" href="/member/profile/"><span class="nav-icon">👤</span>โปรไฟล์ของฉัน</a>
+  <a class="nav-link" href="/member/settings/"><span class="nav-icon">⚙️</span>ตั้งค่า</a>
+ </nav>
+ <div class="sidebar-foot"><button class="logout">ออกจากระบบ</button></div>
+</aside>
+<main class="main">
+<header class="topbar"><div><strong>Knowledge Center</strong><small>คู่มือ วิดีโอ และศูนย์การเรียนรู้ ADT</small></div><div class="profile"><div class="avatar">AG</div><div><strong>ชื่อ นามสกุล</strong><small>ADT Professional Member</small></div></div></header>
+<div class="content">
+ <section class="page-head"><div><h1>Knowledge Center</h1><p>เรียนรู้การใช้งานโปรแกรม ADT ผ่านคู่มือ วิดีโอ และตัวอย่างการใช้งานจริง</p></div><input class="search" placeholder="🔎 ค้นหาคู่มือ วิดีโอ หรือหัวข้อ..."></section>
+ <section class="hero"><div><span class="badge">📚 ADT LEARNING CENTER</span><h2>เรียนรู้โปรแกรม ADT<br>ได้ด้วยตัวเองทุกเวลา</h2><p>รวมคู่มือเริ่มต้น วิดีโอสอนใช้งาน Workshop ตัวอย่างงาน และคำถามที่พบบ่อยไว้ในที่เดียว สมาชิกสามารถเข้ามาศึกษาวิธีใช้งานก่อนตัดสินใจซื้อได้เช่นกัน</p></div><div class="hero-stats"><div class="hero-stat"><span>คู่มือ</span><strong>24</strong></div><div class="hero-stat"><span>วิดีโอ</span><strong>38</strong></div><div class="hero-stat"><span>หัวข้อเรียนรู้</span><strong>62</strong></div></div></section>
+ <div class="section-head"><div><h2>เรียนรู้ตามโปรแกรม</h2><p>เลือกโปรแกรมที่ต้องการศึกษา คู่มือและวิดีโอพื้นฐานเปิดให้สมาชิกเรียนรู้ได้</p></div><a class="view" href="/software/">ดูโปรแกรมทั้งหมด →</a></div>
+ <section class="products">
+  <article class="card"><div class="cover"><div class="cover-icon">💻</div><div><small>ADT SOFTWARE</small><h3>ADT-PILEFiX Professional</h3></div></div><div class="body"><p>เรียนรู้การคำนวณและตรวจสอบฐานรากเสาเข็มเยื้องศูนย์ ตั้งแต่การกำหนด Input ไปจนถึงการอ่านผลลัพธ์</p><div class="pills"><span class="pill">📖 คู่มือ</span><span class="pill">▶️ Video</span><span class="pill">🧪 Workshop</span><span class="pill">❓ FAQ</span></div><div class="foot"><span>18 หัวข้อ</span><a class="open" href="/member/knowledge/pilefix/">เข้าสู่คู่มือ →</a></div></div></article>
+  <article class="card"><div class="cover green"><div class="cover-icon">📊</div><div><small>ADT SOFTWARE</small><h3>ADT Spreadsheet Tools</h3></div></div><div class="body"><p>ศูนย์รวมวิธีใช้งาน Spreadsheet และเครื่องมือช่วยงานวิศวกรรม พร้อมตัวอย่าง Workflow ที่นำไปใช้ได้จริง</p><div class="pills"><span class="pill">📖 คู่มือ</span><span class="pill">▶️ Video</span><span class="pill">💡 Tips</span></div><div class="foot"><span>12 หัวข้อ</span><a class="open" href="/member/knowledge/spreadsheet/">เข้าสู่คู่มือ →</a></div></div></article>
+  <article class="card"><div class="cover purple"><div class="cover-icon">🎓</div><div><small>ADT TRAINING</small><h3>Workshop & Seminar Library</h3></div></div><div class="body"><p>ทบทวนเนื้อหาการอบรม เทคนิคการใช้งาน และตัวอย่างประกอบจากกิจกรรมของ ADT</p><div class="pills"><span class="pill">🎥 Video</span><span class="pill">📑 Material</span><span class="pill">🧠 Review</span></div><div class="foot"><span>8 ชุดการเรียนรู้</span><a class="open" href="/member/knowledge/workshops/">เปิดคลัง →</a></div></div></article>
+ </section>
+ <div class="section-head"><div><h2>ค้นหาความรู้ได้เร็วขึ้น</h2><p>เลือกตามประเภทเนื้อหาที่ต้องการ</p></div></div>
+ <section class="quick">
+  <div class="quick-card"><div class="quick-icon">🚀</div><h3>เริ่มต้นใช้งาน</h3><p>ติดตั้ง เปิดใช้งาน Login และตั้งค่าโปรแกรมครั้งแรก</p></div>
+  <div class="quick-card"><div class="quick-icon">🎥</div><h3>Video Tutorials</h3><p>เรียนรู้แบบ Step-by-step ผ่านวิดีโอสาธิต</p></div>
+  <div class="quick-card"><div class="quick-icon">📖</div><h3>คู่มือการใช้งาน</h3><p>รายละเอียด Input, Calculation และ Output</p></div>
+  <div class="quick-card"><div class="quick-icon">❓</div><h3>FAQ & Troubleshooting</h3><p>คำถามที่พบบ่อยและวิธีแก้ปัญหาเบื้องต้น</p></div>
+ </section>
+ <section class="panel"><div class="section-head" style="margin:0"><div><h2>เรียนต่อจากล่าสุด</h2><p>พื้นที่ประวัติการเรียนของสมาชิกเมื่อเชื่อม Backend</p></div></div>
+  <div class="lesson"><div class="lesson-icon">▶️</div><div><strong>ADT-PILEFiX: การกำหนดตำแหน่งเสาเข็มและ Column Center</strong><span>Video Tutorial · 12 นาที</span></div><button>เรียนต่อ →</button></div>
+  <div class="lesson"><div class="lesson-icon">📖</div><div><strong>การอ่านผล Pile Reaction และตรวจสอบสมดุลแรง</strong><span>คู่มือ · ADT-PILEFiX</span></div><button>เปิดอ่าน →</button></div>
+ </section>
+ <div class="note">💡 <strong>หมายเหตุ:</strong> คู่มือและวิดีโอพื้นฐานสามารถใช้ศึกษาความสามารถของโปรแกรมได้ แต่การใช้งานโปรแกรมจริง การดาวน์โหลดโปรแกรม Update และไฟล์เฉพาะสิทธิ์ จะขึ้นอยู่กับ License ของบัญชีสมาชิก</div>
+</div></main>
+</body></html>
