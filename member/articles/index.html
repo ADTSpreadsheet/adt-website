@@ -387,7 +387,7 @@
 
     .hero-main{
       position:relative;
-      min-height:360px;
+      min-height:430px;
       padding:34px;
       overflow:hidden;
       border-radius:28px;
@@ -577,11 +577,15 @@
       transition:.2s;
     }
 
-    .article-card:hover{transform:translateY(-3px)}
+    .article-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 20px 48px rgba(4,27,60,.14);
+    }
 
     .cover{
       position:relative;
-      min-height:170px;
+      aspect-ratio:16 / 9;
+      min-height:230px;
       padding:18px;
       display:flex;
       align-items:flex-end;
@@ -608,7 +612,7 @@
       line-height:1.4;
     }
 
-    .article-body{padding:18px}
+    .article-body{padding:20px}
     .article-cat{
       color:var(--blue);
       font-size:.62rem;
@@ -641,7 +645,136 @@
       font-size:.61rem;
     }
 
-    .creator-panel{
+    
+    .my-section{
+      margin-top:26px;
+      padding:22px;
+      border-radius:22px;
+      background:#fff;
+      border:1px solid #e6edf5;
+      box-shadow:var(--shadow);
+    }
+
+    .my-section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:16px;
+    }
+
+    .my-section-head h2{
+      margin:0;
+      color:var(--navy);
+      font-size:1.2rem;
+    }
+
+    .my-section-head p{
+      margin:5px 0 0;
+      color:var(--muted);
+      font-size:.72rem;
+    }
+
+    .my-filter{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .my-filter button{
+      min-height:34px;
+      padding:0 10px;
+      border:1px solid var(--line);
+      border-radius:9px;
+      background:#fff;
+      color:#607086;
+      font-size:.62rem;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .my-filter button.active{
+      color:#fff;
+      background:var(--blue);
+      border-color:var(--blue);
+    }
+
+    .my-article-list{
+      display:grid;
+      gap:12px;
+    }
+
+    .my-article-card{
+      display:grid;
+      grid-template-columns:180px 1fr auto;
+      gap:16px;
+      align-items:center;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fbfdff;
+    }
+
+    .my-article-cover{
+      aspect-ratio:16 / 9;
+      min-height:100px;
+      border-radius:13px;
+      display:flex;
+      align-items:flex-end;
+      padding:12px;
+      color:#fff;
+      background:linear-gradient(145deg,#0a2855,#1677ff);
+      font-size:.76rem;
+      font-weight:800;
+      line-height:1.4;
+      overflow:hidden;
+    }
+
+    .my-article-cover.green{
+      background:linear-gradient(145deg,#194f43,#2f8b74);
+    }
+
+    .my-article-cover.gray{
+      background:linear-gradient(145deg,#3d4652,#697686);
+    }
+
+    .my-article-info h3{
+      margin:0;
+      color:var(--navy);
+      font-size:.86rem;
+      line-height:1.5;
+    }
+
+    .my-article-info p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:.66rem;
+      line-height:1.6;
+    }
+
+    .my-article-metrics{
+      margin-top:9px;
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      color:#7f8da0;
+      font-size:.61rem;
+    }
+
+    .my-article-actions{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-end;
+      gap:8px;
+      min-width:120px;
+    }
+
+    .status-review{
+      color:#0d5fd1;
+      background:#eaf3ff;
+    }
+
+.creator-panel{
       margin-top:24px;
       padding:22px;
       border-radius:22px;
@@ -797,6 +930,9 @@
       .article-grid{grid-template-columns:1fr}
       .creator-grid{grid-template-columns:repeat(2,1fr)}
       .my-row{grid-template-columns:1fr}
+      .my-section-head{align-items:flex-start;flex-direction:column}
+      .my-article-card{grid-template-columns:1fr}
+      .my-article-actions{align-items:flex-start;min-width:0}
     }
   </style>
 </head>
@@ -949,9 +1085,9 @@
             📄 บทความของฉัน
           </button>
 
-          <button class="btn btn-blue" type="button" id="createArticleButton">
+          <a class="btn btn-blue" href="/member/articles/create/" id="createArticleButton">
             ✍️ สร้างบทความ
-          </button>
+          </a>
         </div>
       </section>
 
@@ -1156,6 +1292,92 @@
 
       </section>
 
+
+      <section class="my-section" id="myArticlesSection">
+
+        <div class="my-section-head">
+          <div>
+            <h2>บทความของฉัน</h2>
+            <p>จัดการบทความที่คุณเคยเขียน ดูสถานะ แก้ไข Draft และติดตามผลตอบรับ</p>
+          </div>
+
+          <div class="my-filter">
+            <button class="active" type="button">ทั้งหมด</button>
+            <button type="button">เผยแพร่แล้ว</button>
+            <button type="button">Draft</button>
+            <button type="button">รอตรวจสอบ</button>
+          </div>
+        </div>
+
+        <div class="my-article-list">
+
+          <article class="my-article-card">
+            <div class="my-article-cover">
+              การออกแบบฐานรากเสาเข็มเยื้องศูนย์
+            </div>
+
+            <div class="my-article-info">
+              <h3>การออกแบบฐานรากเสาเข็มเยื้องศูนย์: จาก Reaction ถึง Punching Shear</h3>
+              <p>เผยแพร่ล่าสุดวันนี้ 09:20 น. · หมวด Foundation / Structural</p>
+
+              <div class="my-article-metrics">
+                <span>👁 2,841 Views</span>
+                <span>❤️ 186 Likes</span>
+                <span>💬 32 Comments</span>
+              </div>
+            </div>
+
+            <div class="my-article-actions">
+              <span class="status status-published">เผยแพร่แล้ว</span>
+              <button class="row-btn" type="button">แก้ไขบทความ</button>
+            </div>
+          </article>
+
+          <article class="my-article-card">
+            <div class="my-article-cover green">
+              Load Combination งาน Renovation
+            </div>
+
+            <div class="my-article-info">
+              <h3>การตรวจสอบ Load Combination สำหรับงานปรับปรุงอาคารเดิม</h3>
+              <p>บันทึกล่าสุดเมื่อวาน · ยังไม่ได้เผยแพร่</p>
+
+              <div class="my-article-metrics">
+                <span>Draft</span>
+                <span>บันทึกอัตโนมัติแล้ว</span>
+              </div>
+            </div>
+
+            <div class="my-article-actions">
+              <span class="status status-draft">Draft</span>
+              <button class="row-btn" type="button">เขียนต่อ</button>
+            </div>
+          </article>
+
+          <article class="my-article-card">
+            <div class="my-article-cover gray">
+              Spreadsheet Engineering Workflow
+            </div>
+
+            <div class="my-article-info">
+              <h3>ออกแบบ Spreadsheet วิศวกรรมอย่างไรให้ตรวจสอบง่ายและลด Human Error</h3>
+              <p>ส่งตรวจเมื่อ 2 วันที่แล้ว · รอการอนุมัติก่อนเผยแพร่</p>
+
+              <div class="my-article-metrics">
+                <span>Revision 1</span>
+                <span>ส่งตรวจแล้ว</span>
+              </div>
+            </div>
+
+            <div class="my-article-actions">
+              <span class="status status-review">รอตรวจสอบ</span>
+              <button class="row-btn" type="button">ดูตัวอย่าง</button>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
       <section class="creator-panel">
 
         <div class="creator-head">
@@ -1278,6 +1500,14 @@ function applyMemberHeader(){
   $("#topAvatar").textContent = initials;
 }
 
+
+$$(".my-filter button").forEach(button => {
+  button.addEventListener("click", () => {
+    $$(".my-filter button").forEach(item => item.classList.remove("active"));
+    button.classList.add("active");
+  });
+});
+
 $$(".tab-btn").forEach(button => {
   button.addEventListener("click", () => {
     $$(".tab-btn").forEach(item => item.classList.remove("active"));
@@ -1285,12 +1515,8 @@ $$(".tab-btn").forEach(button => {
   });
 });
 
-$("#createArticleButton").addEventListener("click", () => {
-  alert("Frontend Demo: ขั้นต่อไปจะเปิดหน้า Article Editor สำหรับสมาชิก");
-});
-
 $("#myArticlesButton").addEventListener("click", () => {
-  document.querySelector(".creator-panel").scrollIntoView({
+  document.querySelector("#myArticlesSection").scrollIntoView({
     behavior:"smooth",
     block:"start"
   });
