@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Temporary Receipt | ADTSpreadsheet</title>
+<title>Receipt / Tax Invoice | ADTSpreadsheet</title>
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link rel="icon" type="image/png" href="/assets/images/favicon.png">
 <style>
@@ -26,7 +26,7 @@ input,select{height:42px;padding:0 11px}textarea{min-height:78px;padding:10px 11
 .receipt-paper{width:210mm;min-height:297mm;margin:auto;padding:15mm 14mm;background:#fff;color:#111827;box-shadow:0 8px 30px rgba(15,23,42,.13)}
 .receipt-head{display:grid;grid-template-columns:1fr auto;gap:20px;padding-bottom:14px;border-bottom:2px solid #0a2855}
 .company{display:flex;gap:14px;align-items:flex-start}.company img{width:90px;max-height:70px;object-fit:contain}.company strong{display:block;color:#06152d;font-size:15px}.company p{margin:5px 0 0;font-size:9px;line-height:1.65;color:#475569}
-.doc-title{text-align:right}.doc-title h2{margin:0;color:#06152d;font-size:20px;line-height:1.25}.doc-title p{margin:8px 0 0;font-size:9px;line-height:1.7;color:#475569}
+.doc-title{text-align:right}.doc-title h2{margin:0;color:#06152d;font-size:20px;line-height:1.25}.doc-title p{margin:8px 0 0;font-size:9px;line-height:1.7;color:#475569}.original{display:inline-block;margin-bottom:5px;padding:3px 8px;border:1px solid #0a2855;border-radius:999px;color:#0a2855;font-size:8px;font-weight:800}
 .receipt-info{margin-top:14px;padding:11px 12px;border:1px solid #dbe3ed;border-radius:8px;font-size:9px;line-height:1.8}.info-row{display:grid;grid-template-columns:135px 1fr;gap:8px}
 table{width:100%;margin-top:14px;border-collapse:collapse;font-size:9px}th{padding:8px 6px;border:1px solid #cbd5e1;color:#fff;background:#0a2855;text-align:center}td{padding:9px 6px;border:1px solid #cbd5e1;vertical-align:top}.center{text-align:center}.right{text-align:right}
 .summary{width:45%;margin:12px 0 0 auto;font-size:9px}.sumrow{display:grid;grid-template-columns:1fr auto;gap:10px;padding:6px 0;border-bottom:1px solid #e2e8f0}.grand{font-size:11px;font-weight:800;border-bottom:2px solid #06152d}
@@ -39,16 +39,16 @@ table{width:100%;margin-top:14px;border-collapse:collapse;font-size:9px}th{paddi
 </head>
 <body>
 <div class="page">
-<div class="topbar"><div><h1>ออกใบเสร็จรับเงินชั่วคราว</h1><p>กรอกข้อมูล → Preview → Print / Save as PDF โดยไม่บันทึกฐานข้อมูล</p></div><span class="badge">TEMPORARY</span></div>
+<div class="topbar"><div><h1>ออกใบเสร็จรับเงิน / ใบกำกับภาษี</h1><p>กรอกข้อมูล → Preview → Print / Save as PDF โดยไม่บันทึกฐานข้อมูล</p></div><span class="badge">RECEIPT + TAX INVOICE</span></div>
 <div class="workspace">
 
 <section class="panel form-panel">
-<div class="panel-head"><strong>ข้อมูลใบเสร็จรับเงิน</strong><span>ไม่ต้องแนบสลิป ใช้สำหรับออกใบเสร็จชั่วคราว</span></div>
+<div class="panel-head"><strong>ข้อมูลใบเสร็จรับเงิน / ใบกำกับภาษี</strong><span>ใช้เมื่อได้รับชำระเงินแล้ว และต้องการออกเอกสารภาษีในฉบับเดียว</span></div>
 <div class="form-body">
 <div class="section-title">1. ข้อมูลเอกสาร</div>
 <div class="grid-2">
-<div class="field"><label>เลขที่ใบเสร็จ</label><input id="receiptNo" value="ADT-RC-260824-001"></div>
-<div class="field"><label>วันที่ออกใบเสร็จ</label><input id="receiptDate" type="date"></div>
+<div class="field"><label>เลขที่เอกสาร</label><input id="receiptNo" value="ADT-TAX-260902-001"></div>
+<div class="field"><label>วันที่ออกเอกสาร</label><input id="receiptDate" type="date"></div>
 </div>
 
 <div class="section-title">2. ข้อมูลผู้รับใบเสร็จ</div>
@@ -84,7 +84,11 @@ table{width:100%;margin-top:14px;border-collapse:collapse;font-size:9px}th{paddi
 <div class="field"><label>ส่วนลด (บาท)</label><input id="discount" type="number" step="0.01" value="0"></div>
 <div class="field"><label>ช่องทางรับชำระ</label><select id="paymentMethod"><option>โอนเงินผ่านธนาคาร</option><option>QR Payment</option><option>เงินสด</option><option>อื่น ๆ</option></select></div>
 </div>
-<div class="field"><label>หมายเหตุ</label><textarea id="note"></textarea></div>
+<div class="grid-2">
+<div class="field"><label>ภาษีมูลค่าเพิ่ม (VAT)</label><select id="vatRate"><option value="7" selected>7%</option><option value="0">0%</option></select></div>
+<div class="field"><label>ราคาที่กรอก</label><select id="vatMode"><option value="included" selected>รวม VAT แล้ว</option><option value="excluded">ยังไม่รวม VAT</option></select></div>
+</div>
+<div class="field"><label>หมายเหตุ</label><textarea id="note" placeholder="เช่น ชำระเงินครบถ้วนแล้ว"></textarea></div>
 
 <div class="actions">
 <button class="btn blue" type="button" onclick="renderReceipt()">อัปเดตตัวอย่าง</button>
@@ -95,7 +99,7 @@ table{width:100%;margin-top:14px;border-collapse:collapse;font-size:9px}th{paddi
 </section>
 
 <section class="panel preview-panel">
-<div class="panel-head"><strong>Live Preview — ใบเสร็จรับเงิน</strong><span>A4 พร้อม Print / Save PDF</span></div>
+<div class="panel-head"><strong>Live Preview — ใบเสร็จรับเงิน / ใบกำกับภาษี</strong><span>A4 พร้อม Print / Save PDF</span></div>
 <div class="preview-stage"><div id="receiptPreview"></div></div>
 </section>
 
@@ -107,6 +111,32 @@ const esc=v=>String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replac
 const money=v=>Number(v||0).toLocaleString("th-TH",{minimumFractionDigits:2,maximumFractionDigits:2});
 function today(){const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)}
 function dateTH(v){if(!v)return"-";const [y,m,d]=v.split("-");return d+"/"+m+"/"+(Number(y)+543)}
+function bahtText(num){
+ const n=Number(num||0);
+ if(!Number.isFinite(n))return"-";
+ const t=["ศูนย์","หนึ่ง","สอง","สาม","สี่","ห้า","หก","เจ็ด","แปด","เก้า"];
+ const p=["","สิบ","ร้อย","พัน","หมื่น","แสน","ล้าน"];
+ function readInt(s){
+  if(s==="0")return t[0];
+  let out="",len=s.length;
+  for(let i=0;i<len;i++){
+   const d=Number(s[i]),pos=len-i-1;
+   if(!d)continue;
+   if(pos===0 && d===1 && len>1) out+="เอ็ด";
+   else if(pos===1 && d===1) out+="สิบ";
+   else if(pos===1 && d===2) out+="ยี่สิบ";
+   else out+=t[d]+p[pos];
+  }
+  return out;
+ }
+ function readMillion(s){
+  if(s.length<=6)return readInt(s);
+  return readMillion(s.slice(0,-6))+"ล้าน"+readInt(s.slice(-6).replace(/^0+/,"")||"0").replace(/^ศูนย์$/,"");
+ }
+ const fixed=n.toFixed(2), [a,b]=fixed.split(".");
+ const baht=readMillion(a)+"บาท";
+ return Number(b)===0 ? baht+"ถ้วน" : baht+readInt(String(Number(b)))+"สตางค์";
+}
 function customer(){
  if($("customerType").value==="company") return {name:$("companyName").value||"-",tax:$("companyTaxId").value||"-",branch:$("branch").value||"-",contact:$("companyContact").value||"-"};
  return {name:$("personName").value||"-",tax:$("personTaxId").value||"-",branch:"-",contact:"-"};
@@ -118,13 +148,52 @@ function toggleType(){
  renderReceipt();
 }
 function renderReceipt(){
- const c=customer(),qty=Number($("qty").value||0),price=Number($("unitPrice").value||0),disc=Number($("discount").value||0),sub=qty*price,total=Math.max(0,sub-disc);
+ const c=customer(),
+       qty=Number($("qty").value||0),
+       price=Number($("unitPrice").value||0),
+       disc=Number($("discount").value||0),
+       rate=Number($("vatRate").value||0),
+       mode=$("vatMode").value;
+
+ const raw=Math.max(0,(qty*price)-disc);
+ let base=raw,vat=0,total=raw;
+
+ if(rate>0){
+  if(mode==="included"){
+   total=raw;
+   base=total/(1+(rate/100));
+   vat=total-base;
+  }else{
+   base=raw;
+   vat=base*(rate/100);
+   total=base+vat;
+  }
+ }
+
  $("receiptPreview").innerHTML=`
  <div class="receipt-paper">
   <div class="receipt-head">
-   <div class="company"><img src="/assets/images/adt-company-logo.png" onerror="this.onerror=null;this.src='/assets/images/logo-header.png';"><div><strong>บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด</strong><p>428 หมู่ 1 ต.พบพระ อ.พบพระ จ.ตาก 63160<br>เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1<br>โทร. : 092-6191220 &nbsp; e-mail : 2531kaeng@gmail.com</p></div></div>
-   <div class="doc-title"><h2>ใบเสร็จรับเงิน<br>RECEIPT</h2><p>Receipt No. : <strong>${esc($("receiptNo").value||"-")}</strong><br>Receipt Date : <strong>${esc(dateTH($("receiptDate").value))}</strong></p></div>
+   <div class="company">
+    <img src="/assets/images/adt-company-logo.png" onerror="this.onerror=null;this.src='/assets/images/logo-header.png';">
+    <div>
+     <strong>บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด</strong>
+     <p>
+      428 หมู่ 1 ต.พบพระ อ.พบพระ จ.ตาก 63160<br>
+      เลขประจำตัวผู้เสียภาษี : 0-6355-69000-09-1 &nbsp; สำนักงานใหญ่<br>
+      โทร. : 092-6191220 &nbsp; e-mail : 2531kaeng@gmail.com
+     </p>
+    </div>
+   </div>
+   <div class="doc-title">
+    <span class="original">ต้นฉบับ / ORIGINAL</span>
+    <h2>ใบเสร็จรับเงิน / ใบกำกับภาษี<br>RECEIPT / TAX INVOICE</h2>
+    <p>
+     เลขที่ / No. : <strong>${esc($("receiptNo").value||"-")}</strong><br>
+     วันที่ / Date : <strong>${esc(dateTH($("receiptDate").value))}</strong>
+    </p>
+   </div>
   </div>
+
   <div class="receipt-info">
    <div class="info-row"><strong>ลูกค้า / Customer :</strong><span>${esc(c.name)}</span></div>
    <div class="info-row"><strong>ที่อยู่ / Address :</strong><span>${esc($("customerAddress").value||"-")}</span></div>
@@ -132,20 +201,61 @@ function renderReceipt(){
    <div class="info-row"><strong>ผู้ติดต่อ / Attention :</strong><span>${esc(c.contact)}</span></div>
    <div class="info-row"><strong>Tel / e-mail :</strong><span>${esc($("customerPhone").value||"-")} &nbsp;&nbsp; ${esc($("customerEmail").value||"-")}</span></div>
   </div>
-  <table><thead><tr><th style="width:9%">No.</th><th>Description</th><th style="width:12%">Qty</th><th style="width:17%">Unit Price</th><th style="width:17%">Amount</th></tr></thead><tbody><tr><td class="center">1</td><td>${esc($("description").value||"-")}</td><td class="center">${qty}</td><td class="right">${money(price)}</td><td class="right">${money(sub)}</td></tr></tbody></table>
+
+  <table>
+   <thead>
+    <tr>
+     <th style="width:9%">ลำดับ<br>No.</th>
+     <th>รายการ / Description</th>
+     <th style="width:12%">จำนวน<br>Qty</th>
+     <th style="width:17%">ราคา/หน่วย<br>Unit Price</th>
+     <th style="width:17%">จำนวนเงิน<br>Amount</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td class="center">1</td>
+     <td>${esc($("description").value||"-")}</td>
+     <td class="center">${qty}</td>
+     <td class="right">${money(price)}</td>
+     <td class="right">${money(qty*price)}</td>
+    </tr>
+   </tbody>
+  </table>
+
   <div class="summary">
-   <div class="sumrow"><span>Subtotal</span><strong>${money(sub)}</strong></div>
-   <div class="sumrow"><span>Discount</span><strong>${money(disc)}</strong></div>
-   <div class="sumrow grand"><span>Total Received</span><strong>${money(total)} บาท</strong></div>
+   <div class="sumrow"><span>รวมเป็นเงิน / Subtotal</span><strong>${money(qty*price)}</strong></div>
+   <div class="sumrow"><span>ส่วนลด / Discount</span><strong>${money(disc)}</strong></div>
+   <div class="sumrow"><span>มูลค่าก่อน VAT / Taxable Amount</span><strong>${money(base)}</strong></div>
+   <div class="sumrow"><span>VAT ${rate}%</span><strong>${money(vat)}</strong></div>
+   <div class="sumrow grand"><span>ยอดชำระสุทธิ / Grand Total</span><strong>${money(total)} บาท</strong></div>
   </div>
-  <div class="note"><strong>ช่องทางรับชำระ :</strong> ${esc($("paymentMethod").value)}<br><br><strong>หมายเหตุ :</strong> ${esc($("note").value||"-")}</div>
-  <div class="signatures"><div><div class="sign-line"></div>ผู้ชำระเงิน / Payer<br>วันที่ ........................................</div><div><div class="sign-line"></div>ผู้รับเงิน / Receiver<br>บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด</div></div>
+
+  <div class="note">
+   <strong>จำนวนเงินตัวอักษร :</strong> (${esc(bahtText(total))})<br>
+   <strong>ช่องทางรับชำระ :</strong> ${esc($("paymentMethod").value)}<br>
+   <strong>สถานะ :</strong> ได้รับชำระเงินเรียบร้อยแล้ว<br>
+   <strong>หมายเหตุ :</strong> ${esc($("note").value||"-")}
+  </div>
+
+  <div class="signatures">
+   <div>
+    <div class="sign-line"></div>
+    ผู้ชำระเงิน / Payer<br>
+    วันที่ ........................................
+   </div>
+   <div>
+    <div class="sign-line"></div>
+    ผู้รับเงิน / Receiver<br>
+    บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+   </div>
+  </div>
  </div>`;
 }
 function clearForm(){if(!confirm("ล้างข้อมูลทั้งหมดหรือไม่?"))return;location.reload()}
 $("receiptDate").value=today();
 $("customerType").addEventListener("change",toggleType);
-["receiptNo","receiptDate","companyName","companyTaxId","branch","companyContact","personName","personTaxId","customerAddress","customerPhone","customerEmail","description","qty","unitPrice","discount","paymentMethod","note"].forEach(id=>{$(id).addEventListener("input",renderReceipt);$(id).addEventListener("change",renderReceipt)});
+["receiptNo","receiptDate","companyName","companyTaxId","branch","companyContact","personName","personTaxId","customerAddress","customerPhone","customerEmail","description","qty","unitPrice","discount","paymentMethod","vatRate","vatMode","note"].forEach(id=>{$(id).addEventListener("input",renderReceipt);$(id).addEventListener("change",renderReceipt)});
 toggleType();
 </script>
 </body>
