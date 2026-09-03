@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ADT Jacket Shipping Label</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Tahoma", "Noto Sans Thai", sans-serif;
+      background: #f3f5f8;
+      color: #172033;
+    }
+
+    .topbar {
+      background: #ffffff;
+      border-bottom: 1px solid #dce2e8;
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .topbar .subtitle {
+      color: #6c7685;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .search-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 3px 14px rgba(0, 0, 0, 0.06);
+      margin-bottom: 24px;
+    }
+
+    .search-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pf-input {
+      flex: 1;
+      min-width: 240px;
+      height: 46px;
+      border: 1px solid #cfd6df;
+      border-radius: 8px;
+      padding: 0 14px;
+      font-size: 17px;
+      outline: none;
+    }
+
+    .pf-input:focus {
+      border-color: #2065d1;
+      box-shadow: 0 0 0 3px rgba(32, 101, 209, 0.10);
+    }
+
+    button {
+      height: 46px;
+      border: none;
+      border-radius: 8px;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-search {
+      background: #155bd7;
+      color: #ffffff;
+    }
+
+    .btn-search:hover {
+      background: #0e4ebd;
+    }
+
+    .btn-print {
+      background: #131b2b;
+      color: #ffffff;
+    }
+
+    .btn-print:hover {
+      background: #000000;
+    }
+
+    .btn-clear {
+      background: #e9edf2;
+      color: #263143;
+    }
+
+    .status {
+      margin-top: 12px;
+      min-height: 20px;
+      font-size: 14px;
+    }
+
+    .status.error {
+      color: #c62828;
+    }
+
+    .status.success {
+      color: #188038;
+    }
+
+    .preview-wrapper {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+
+    .preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .preview-header h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .preview-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .label-paper {
+      width: 100%;
+      max-width: 900px;
+      min-height: 520px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #cfd6df;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+      padding: 26px;
+      position: relative;
+    }
+
+    .sender {
+      display: grid;
+      grid-template-columns: 145px 1fr;
+      gap: 22px;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #d9dfe7;
+    }
+
+    .sender-logo {
+      width: 130px;
+      height: 130px;
+      object-fit: contain;
+    }
+
+    .sender-company {
+      font-size: 23px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #10213b;
+    }
+
+    .sender-text {
+      font-size: 16px;
+      line-height: 1.65;
+      color: #48556a;
+    }
+
+    .receiver {
+      padding: 26px 12px 12px 12px;
+    }
+
+    .receiver-label {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: #48556a;
+    }
+
+    .receiver-name {
+      font-size: 30px;
+      font-weight: 800;
+      color: #111827;
+      margin-bottom: 10px;
+    }
+
+    .receiver-phone {
+      font-size: 19px;
+      margin-bottom: 14px;
+    }
+
+    .receiver-address {
+      font-size: 24px;
+      line-height: 1.55;
+      font-weight: 600;
+    }
+
+    .postal-code {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      margin-top: 8px;
+    }
+
+    .order-info {
+      position: absolute;
+      right: 26px;
+      bottom: 24px;
+      border: 2px solid #172033;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      min-width: 170px;
+    }
+
+    .order-info .pf {
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+
+    .empty {
+      opacity: 0.35;
+    }
+
+    @media (max-width: 700px) {
+      .sender {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .sender-logo {
+        margin: 0 auto;
+      }
+
+      .label-paper {
+        padding: 18px;
+      }
+
+      .receiver-name {
+        font-size: 25px;
+      }
+
+      .receiver-address {
+        font-size: 20px;
+      }
+
+      .order-info {
+        position: static;
+        margin-top: 28px;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+
+      body {
+        background: #ffffff;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .container {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .preview-wrapper {
+        display: block;
+      }
+
+      .label-paper {
+        width: 190mm;
+        max-width: none;
+        min-height: 130mm;
+        margin: 0;
+        box-shadow: none;
+        border: 1px solid #000;
+        padding: 10mm;
+      }
+
+      .sender-logo {
+        width: 32mm;
+        height: 32mm;
+      }
+
+      .sender-company {
+        font-size: 18pt;
+      }
+
+      .sender-text {
+        font-size: 11pt;
+      }
+
+      .receiver-name {
+        font-size: 23pt;
+      }
+
+      .receiver-phone {
+        font-size: 14pt;
+      }
+
+      .receiver-address {
+        font-size: 18pt;
+      }
+
+      .postal-code {
+        font-size: 25pt;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar no-print">
+    <div>
+      <h1>ADT Jacket Shipping Label</h1>
+      <div class="subtitle">
+        ค้นหาผู้รับจากหมายเลข PF และพิมพ์ฉลากสำหรับแปะกล่อง
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="search-card no-print">
+
+      <div class="search-title">
+        ค้นหาหมายเลข PF
+      </div>
+
+      <div class="search-row">
+
+        <input
+          type="text"
+          id="pfInput"
+          class="pf-input"
+          placeholder="เช่น PF-001"
+          autocomplete="off"
+        />
+
+        <button
+          class="btn-search"
+          onclick="searchOrder()"
+        >
+          ค้นหา
+        </button>
+
+        <button
+          class="btn-clear"
+          onclick="clearLabel()"
+        >
+          ล้าง
+        </button>
+
+      </div>
+
+      <div
+        id="status"
+        class="status"
+      ></div>
+
+    </div>
+
+    <div class="preview-wrapper">
+
+      <div class="preview-header no-print">
+
+        <h2>
+          Preview
+        </h2>
+
+        <div class="preview-actions">
+          <button
+            class="btn-print"
+            onclick="printLabel()"
+          >
+            🖨 PRINT
+          </button>
+        </div>
+
+      </div>
+
+      <div
+        id="labelPaper"
+        class="label-paper empty"
+      >
+
+        <!-- ผู้ส่ง -->
+        <div class="sender">
+
+          <img
+            src="/assets/images/adt-logo.png"
+            alt="ADT Logo"
+            class="sender-logo"
+            id="senderLogo"
+          />
+
+          <div>
+
+            <div class="sender-company">
+              บริษัท เอดีที ซีวิลบิลดิ้ง แอนด์เทคโนโลยี จำกัด
+            </div>
+
+            <div class="sender-text">
+              428 หมู่ 1 ต.พบพระ อ.พบพระ จ.ตาก 63160
+              <br>
+
+              เลขประจำตัวผู้เสียภาษี :
+              0-6355-69000-09-1
+              &nbsp; สำนักงานใหญ่
+
+              <br>
+
+              โทร. : 092-6191220
+              &nbsp;&nbsp;
+              e-mail : 2531kaeng@gmail.com
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ผู้รับ -->
+        <div class="receiver">
+
+          <div class="receiver-label">
+            ผู้รับ
+          </div>
+
+          <div
+            id="receiverName"
+            class="receiver-name"
+          >
+            ชื่อผู้รับ
+          </div>
+
+          <div
+            id="receiverPhone"
+            class="receiver-phone"
+          >
+            โทร. -
+          </div>
+
+          <div
+            id="receiverAddress"
+            class="receiver-address"
+          >
+            ที่อยู่ผู้รับ
+          </div>
+
+          <div
+            id="postalCode"
+            class="postal-code"
+          >
+            -----
+          </div>
+
+        </div>
+
+        <!-- PF / เสื้อ -->
+        <div
+          id="orderInfo"
+          class="order-info"
+        >
+
+          <div
+            id="pfDisplay"
+            class="pf"
+          >
+            PF-XXX
+          </div>
+
+          <div>
+            <span id="jacketColor">
+              -
+            </span>
+            &nbsp; • &nbsp;
+            SIZE
+            <span id="jacketSize">
+              -
+            </span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+
+    /*
+    ===========================================================
+    1. ใส่ค่าของ Supabase ตรงนี้
+    ===========================================================
+    */
+
+    const SUPABASE_URL =
+      "https://YOUR-PROJECT.supabase.co";
+
+    const SUPABASE_ANON_KEY =
+      "YOUR_SUPABASE_ANON_KEY";
+
+
+    /*
+    ===========================================================
+    2. ชื่อตาราง
+    ===========================================================
+    */
+
+    const TABLE_NAME =
+      "jacket_orders";
+
+
+    /*
+    ===========================================================
+    3. ชื่อ Column ที่เก็บหมายเลข PF
+       เปลี่ยนให้ตรงกับฐานข้อมูลจริง
+
+       ตัวอย่าง:
+       booking_no
+       reservation_id
+       pf_code
+    ===========================================================
+    */
+
+    const PF_COLUMN =
+      "booking_no";
+
+
+    /*
+    ===========================================================
+    Supabase Client
+    ===========================================================
+    */
+
+    const supabaseClient =
+      supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+      );
+
+
+    /*
+    ===========================================================
+    Search Order
+    ===========================================================
+    */
+
+    async function searchOrder() {
+
+      const input =
+        document
+          .getElementById("pfInput")
+          .value
+          .trim()
+          .toUpperCase();
+
+      if (!input) {
+
+        setStatus(
+          "กรุณากรอกหมายเลข PF",
+          "error"
+        );
+
+        return;
+      }
+
+
+      setStatus(
+        "กำลังค้นหาข้อมูล...",
+        ""
+      );
+
+
+      try {
+
+        const { data, error } =
+          await supabaseClient
+            .from(TABLE_NAME)
+            .select("*")
+            .eq(PF_COLUMN, input)
+            .maybeSingle();
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        if (!data) {
+
+          setStatus(
+            "ไม่พบข้อมูลหมายเลข " + input,
+            "error"
+          );
+
+          clearLabel(false);
+
+          return;
+        }
+
+
+        renderLabel(
+          data,
+          input
+        );
+
+
+        setStatus(
+          "พบข้อมูล " + input,
+          "success"
+        );
+
+      }
+      catch (err) {
+
+        console.error(err);
+
+        setStatus(
+          "เกิดข้อผิดพลาด: " + err.message,
+          "error"
+        );
+
+      }
+
+    }
+
+
+    /*
+    ===========================================================
+    Render Label
+    ===========================================================
+    */
+
+    function renderLabel(
+      data,
+      pfCode
+    ) {
+
+      const recipientName =
+        data.recipient_name || "-";
+
+      const recipientPhone =
+        data.recipient_phone || "-";
+
+      const shippingAddress =
+        data.shipping_address || "";
+
+      const subdistrict =
+        data.subdistrict || "";
+
+      const district =
+        data.district || "";
+
+      const province =
+        data.province || "";
+
+      const postalCode =
+        data.postal_code || "";
+
+      const jacketColor =
+        data.jacket_color || "-";
+
+      const jacketSize =
+        data.jacket_size || "-";
+
+
+      /*
+      -----------------------------------------
+      ประกอบที่อยู่
+      -----------------------------------------
+      */
+
+      let addressLines = [];
+
+
+      if (shippingAddress) {
+
+        addressLines.push(
+          shippingAddress
+        );
+
+      }
+
+
+      let areaLine = [];
+
+
+      if (subdistrict) {
+
+        areaLine.push(
+          formatSubdistrict(
+            subdistrict
+          )
+        );
+
+      }
+
+
+      if (district) {
+
+        areaLine.push(
+          formatDistrict(
+            district
+          )
+        );
+
+      }
+
+
+      if (areaLine.length > 0) {
+
+        addressLines.push(
+          areaLine.join(" ")
+        );
+
+      }
+
+
+      if (province) {
+
+        addressLines.push(
+          formatProvince(
+            province
+          )
+        );
+
+      }
+
+
+      document
+        .getElementById("receiverName")
+        .textContent =
+        recipientName;
+
+
+      document
+        .getElementById("receiverPhone")
+        .textContent =
+        "โทร. " + recipientPhone;
+
+
+      document
+        .getElementById("receiverAddress")
+        .innerHTML =
+        addressLines.join("<br>");
+
+
+      document
+        .getElementById("postalCode")
+        .textContent =
+        postalCode || "-----";
+
+
+      document
+        .getElementById("pfDisplay")
+        .textContent =
+        pfCode;
+
+
+      document
+        .getElementById("jacketColor")
+        .textContent =
+        jacketColor;
+
+
+      document
+        .getElementById("jacketSize")
+        .textContent =
+        jacketSize;
+
+
+      document
+        .getElementById("labelPaper")
+        .classList
+        .remove("empty");
+
+    }
+
+
+    /*
+    ===========================================================
+    จังหวัด / อำเภอ / ตำบล
+    ===========================================================
+    */
+
+    function formatSubdistrict(value) {
+
+      if (!value) return "";
+
+      if (
+        value.startsWith("ต.") ||
+        value.startsWith("แขวง")
+      ) {
+        return value;
+      }
+
+      return "ต." + value;
+
+    }
+
+
+    function formatDistrict(value) {
+
+      if (!value) return "";
+
+      if (
+        value.startsWith("อ.") ||
+        value.startsWith("เขต")
+      ) {
+        return value;
+      }
+
+      return "อ." + value;
+
+    }
+
+
+    function formatProvince(value) {
+
+      if (!value) return "";
+
+      if (
+        value.startsWith("จ.") ||
+        value === "กรุงเทพมหานคร"
+      ) {
+        return value;
+      }
+
+      return "จ." + value;
+
+    }
+
+
+    /*
+    ===========================================================
+    Print
+    ===========================================================
+    */
+
+    function printLabel() {
+
+      const paper =
+        document.getElementById(
+          "labelPaper"
+        );
+
+      if (
+        paper.classList.contains("empty")
+      ) {
+
+        setStatus(
+          "กรุณาค้นหาข้อมูลก่อนสั่งพิมพ์",
+          "error"
+        );
+
+        return;
+
+      }
+
+
+      window.print();
+
+    }
+
+
+    /*
+    ===========================================================
+    Clear
+    ===========================================================
+    */
+
+    function clearLabel(
+      clearInput = true
+    ) {
+
+      if (clearInput) {
+
+        document
+          .getElementById("pfInput")
+          .value = "";
+
+      }
+
+
+      document
+        .getElementById("receiverName")
+        .textContent =
+        "ชื่อผู้รับ";
+
+
+      document
+        .getElementById("receiverPhone")
+        .textContent =
+        "โทร. -";
+
+
+      document
+        .getElementById("receiverAddress")
+        .textContent =
+        "ที่อยู่ผู้รับ";
+
+
+      document
+        .getElementById("postalCode")
+        .textContent =
+        "-----";
+
+
+      document
+        .getElementById("pfDisplay")
+        .textContent =
+        "PF-XXX";
+
+
+      document
+        .getElementById("jacketColor")
+        .textContent =
+        "-";
+
+
+      document
+        .getElementById("jacketSize")
+        .textContent =
+        "-";
+
+
+      document
+        .getElementById("labelPaper")
+        .classList
+        .add("empty");
+
+
+      if (clearInput) {
+
+        setStatus(
+          "",
+          ""
+        );
+
+        document
+          .getElementById("pfInput")
+          .focus();
+
+      }
+
+    }
+
+
+    /*
+    ===========================================================
+    Status
+    ===========================================================
+    */
+
+    function setStatus(
+      message,
+      type
+    ) {
+
+      const el =
+        document.getElementById(
+          "status"
+        );
+
+
+      el.textContent =
+        message;
+
+
+      el.className =
+        "status";
+
+
+      if (type) {
+
+        el.classList.add(
+          type
+        );
+
+      }
+
+    }
+
+
+    /*
+    ===========================================================
+    Enter = Search
+    ===========================================================
+    */
+
+    document
+      .getElementById("pfInput")
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (
+            event.key === "Enter"
+          ) {
+
+            searchOrder();
+
+          }
+
+        }
+      );
+
+
+    /*
+    ===========================================================
+    Focus ตอนเปิดหน้า
+    ===========================================================
+    */
+
+    window.addEventListener(
+      "load",
+      function() {
+
+        document
+          .getElementById("pfInput")
+          .focus();
+
+      }
+    );
+
+  </script>
+
+</body>
+</html>
