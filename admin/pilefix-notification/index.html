@@ -1,257 +1,965 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ADT-PILEFiX | Admin Notification</title>
+    <meta charset="UTF-8">
 
-<style>
-* {
-    box-sizing: border-box;
-}
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-    background: #f2f5f9;
-    color: #172033;
-}
+    <title>
+        ADT-PILEFiX | Admin Notification
+    </title>
 
-.header {
-    background: linear-gradient(135deg, #031a38, #075196);
-    color: white;
-    padding: 26px 20px;
-}
 
-.header-inner {
-    max-width: 900px;
-    margin: auto;
-}
+    <style>
 
-.logo {
-    font-size: 26px;
-    font-weight: 800;
-}
+        * {
+            box-sizing: border-box;
+        }
 
-.logo span {
-    color: #ffc83d;
-}
 
-.subtitle {
-    margin-top: 4px;
-    color: rgba(255,255,255,.75);
-    font-size: 14px;
-}
+        body {
 
-.container {
-    max-width: 900px;
-    margin: 32px auto;
-    padding: 0 18px;
-}
+            margin: 0;
 
-.card {
-    background: white;
-    border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 8px 30px rgba(0,0,0,.08);
-    margin-bottom: 20px;
-}
+            min-height: 100vh;
 
-h2 {
-    margin: 0 0 22px;
-    color: #082d59;
-}
+            font-family:
+                "Segoe UI",
+                Tahoma,
+                Arial,
+                sans-serif;
 
-.field {
-    margin-bottom: 22px;
-}
+            background: #f2f5f9;
 
-label {
-    display: block;
-    font-weight: 700;
-    margin-bottom: 8px;
-}
+            color: #172033;
 
-select,
-input,
-textarea {
-    width: 100%;
-    padding: 13px 14px;
-    border: 1px solid #ccd5df;
-    border-radius: 9px;
-    font-family: inherit;
-    font-size: 15px;
-    outline: none;
-}
+        }
 
-select:focus,
-input:focus,
-textarea:focus {
-    border-color: #075196;
-}
 
-textarea {
-    min-height: 210px;
-    resize: vertical;
-    line-height: 1.6;
-}
+        /* =================================================
+           HEADER
+        ================================================= */
 
-.hint {
-    margin-top: 7px;
-    color: #778191;
-    font-size: 13px;
-}
+        .header {
 
-.download-box {
-    padding: 15px;
-    border-radius: 10px;
-    background: #f5f8fc;
-    border: 1px solid #dce5ef;
-    word-break: break-all;
-    font-size: 14px;
-}
+            background:
+                linear-gradient(
+                    135deg,
+                    #031a38,
+                    #075196
+                );
 
-.actions {
-    display: flex;
-    gap: 12px;
-}
+            color: white;
 
-button {
-    border: 0;
-    border-radius: 10px;
-    padding: 15px 22px;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-}
+            padding: 26px 20px;
 
-.preview-btn {
-    background: #e9eef5;
-    color: #18344f;
-}
+        }
 
-.send-btn {
-    flex: 1;
-    background: linear-gradient(135deg, #eeb31d, #ffd45a);
-    color: #08244a;
-}
 
-.send-btn:disabled {
-    opacity: .5;
-    cursor: not-allowed;
-}
+        .header-inner {
 
-.preview {
-    white-space: pre-wrap;
-    background: #f7f8fa;
-    padding: 20px;
-    border-radius: 10px;
-    line-height: 1.65;
-    display: none;
-}
+            max-width: 1100px;
 
-.status {
-    display: none;
-    margin-top: 18px;
-    padding: 14px;
-    border-radius: 9px;
-}
+            margin: auto;
 
-.status.success {
-    display: block;
-    background: #eaf8ef;
-    color: #176b38;
-}
+        }
 
-.status.error {
-    display: block;
-    background: #fff0f0;
-    color: #a62a2a;
-}
 
-@media(max-width:600px) {
-    .card {
-        padding: 22px;
-    }
+        .logo {
 
-    .actions {
-        flex-direction: column;
-    }
-}
-</style>
+            font-size: 28px;
+
+            font-weight: 800;
+
+        }
+
+
+        .logo span {
+
+            color: #ffc83d;
+
+        }
+
+
+        .subtitle {
+
+            margin-top: 4px;
+
+            color:
+                rgba(
+                    255,
+                    255,
+                    255,
+                    0.75
+                );
+
+            font-size: 14px;
+
+        }
+
+
+        /* =================================================
+           PAGE
+        ================================================= */
+
+        .container {
+
+            max-width: 1100px;
+
+            margin: 30px auto;
+
+            padding: 0 18px 40px;
+
+        }
+
+
+        .card {
+
+            background: white;
+
+            border-radius: 16px;
+
+            padding: 28px;
+
+            box-shadow:
+                0 8px 30px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+
+            margin-bottom: 20px;
+
+        }
+
+
+        h2 {
+
+            margin: 0;
+
+            color: #082d59;
+
+            font-size: 21px;
+
+        }
+
+
+        .section-head {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        /* =================================================
+           SUMMARY
+        ================================================= */
+
+        .summary {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    3,
+                    1fr
+                );
+
+            gap: 14px;
+
+            margin-bottom: 22px;
+
+        }
+
+
+        .summary-box {
+
+            padding: 18px;
+
+            background: #f6f8fb;
+
+            border:
+                1px solid
+                #e0e6ed;
+
+            border-radius: 12px;
+
+        }
+
+
+        .summary-label {
+
+            color: #6c7785;
+
+            font-size: 13px;
+
+        }
+
+
+        .summary-number {
+
+            margin-top: 4px;
+
+            color: #082d59;
+
+            font-size: 25px;
+
+            font-weight: 800;
+
+        }
+
+
+        /* =================================================
+           BUTTONS
+        ================================================= */
+
+        button {
+
+            border: 0;
+
+            border-radius: 9px;
+
+            padding: 12px 17px;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+        }
+
+
+        button:disabled {
+
+            opacity: 0.5;
+
+            cursor: not-allowed;
+
+        }
+
+
+        .reload-btn {
+
+            background: #e8eef5;
+
+            color: #163b60;
+
+        }
+
+
+        .select-btn {
+
+            background: #e9eef5;
+
+            color: #18344f;
+
+        }
+
+
+        .clear-btn {
+
+            background: #f1f2f4;
+
+            color: #5a6570;
+
+        }
+
+
+        .preview-btn {
+
+            background: #e9eef5;
+
+            color: #18344f;
+
+        }
+
+
+        .send-btn {
+
+            flex: 1;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #eeb31d,
+                    #ffd45a
+                );
+
+            color: #08244a;
+
+            font-size: 15px;
+
+            padding: 15px 22px;
+
+        }
+
+
+        /* =================================================
+           TOOLBAR
+        ================================================= */
+
+        .toolbar {
+
+            display: flex;
+
+            gap: 10px;
+
+            align-items: center;
+
+            margin-bottom: 16px;
+
+            flex-wrap: wrap;
+
+        }
+
+
+        .search {
+
+            flex: 1;
+
+            min-width: 220px;
+
+        }
+
+
+        input,
+        textarea {
+
+            width: 100%;
+
+            border:
+                1px solid
+                #ccd5df;
+
+            border-radius: 9px;
+
+            padding: 12px 14px;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            outline: none;
+
+        }
+
+
+        input:focus,
+        textarea:focus {
+
+            border-color: #075196;
+
+        }
+
+
+        /* =================================================
+           USERS TABLE
+        ================================================= */
+
+        .table-wrap {
+
+            border:
+                1px solid
+                #e0e6ed;
+
+            border-radius: 11px;
+
+            overflow: auto;
+
+            max-height: 430px;
+
+        }
+
+
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            min-width: 680px;
+
+        }
+
+
+        thead {
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 2;
+
+        }
+
+
+        th {
+
+            background: #f3f6fa;
+
+            color: #425466;
+
+            font-size: 13px;
+
+            text-align: left;
+
+            padding: 13px 12px;
+
+            border-bottom:
+                1px solid
+                #dfe5ec;
+
+        }
+
+
+        td {
+
+            padding: 13px 12px;
+
+            border-bottom:
+                1px solid
+                #edf0f3;
+
+            font-size: 14px;
+
+        }
+
+
+        tbody tr:hover {
+
+            background: #fafbfd;
+
+        }
+
+
+        .check-col {
+
+            width: 55px;
+
+            text-align: center;
+
+        }
+
+
+        .user-check {
+
+            width: 18px;
+
+            height: 18px;
+
+            cursor: pointer;
+
+        }
+
+
+        .booking {
+
+            color: #075196;
+
+            font-weight: 800;
+
+        }
+
+
+        .line-ok {
+
+            display: inline-block;
+
+            padding: 4px 9px;
+
+            border-radius: 20px;
+
+            background: #e7f8ed;
+
+            color: #13713a;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .line-no {
+
+            display: inline-block;
+
+            padding: 4px 9px;
+
+            border-radius: 20px;
+
+            background: #fff0f0;
+
+            color: #b02a2a;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+
+        .empty-row {
+
+            text-align: center;
+
+            padding: 35px;
+
+            color: #778191;
+
+        }
+
+
+        /* =================================================
+           MESSAGE
+        ================================================= */
+
+        .field {
+
+            margin-bottom: 22px;
+
+        }
+
+
+        label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: 700;
+
+        }
+
+
+        textarea {
+
+            min-height: 220px;
+
+            resize: vertical;
+
+            line-height: 1.65;
+
+        }
+
+
+        .hint {
+
+            margin-top: 7px;
+
+            color: #778191;
+
+            font-size: 12px;
+
+        }
+
+
+        .download-box {
+
+            padding: 14px;
+
+            border:
+                1px solid
+                #dce5ef;
+
+            border-radius: 9px;
+
+            background: #f5f8fc;
+
+            word-break: break-all;
+
+            font-size: 14px;
+
+        }
+
+
+        .actions {
+
+            display: flex;
+
+            gap: 12px;
+
+        }
+
+
+        /* =================================================
+           PREVIEW
+        ================================================= */
+
+        .preview {
+
+            display: none;
+
+            white-space: pre-wrap;
+
+            background: #f7f8fa;
+
+            padding: 20px;
+
+            border-radius: 10px;
+
+            line-height: 1.65;
+
+        }
+
+
+        /* =================================================
+           STATUS
+        ================================================= */
+
+        .status {
+
+            display: none;
+
+            margin-top: 18px;
+
+            padding: 14px 16px;
+
+            border-radius: 9px;
+
+            line-height: 1.5;
+
+        }
+
+
+        .status.success {
+
+            display: block;
+
+            background: #eaf8ef;
+
+            color: #176b38;
+
+        }
+
+
+        .status.error {
+
+            display: block;
+
+            background: #fff0f0;
+
+            color: #a62a2a;
+
+        }
+
+
+        .status.info {
+
+            display: block;
+
+            background: #eef5ff;
+
+            color: #175a9c;
+
+        }
+
+
+        /* =================================================
+           MOBILE
+        ================================================= */
+
+        @media(max-width: 700px) {
+
+            .card {
+
+                padding: 20px;
+
+            }
+
+
+            .summary {
+
+                grid-template-columns: 1fr;
+
+            }
+
+
+            .section-head {
+
+                align-items: flex-start;
+
+                flex-direction: column;
+
+            }
+
+
+            .actions {
+
+                flex-direction: column;
+
+            }
+
+
+            .send-btn {
+
+                width: 100%;
+
+            }
+
+        }
+
+    </style>
+
 </head>
+
 
 <body>
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <div class="header">
+
     <div class="header-inner">
 
         <div class="logo">
+
             ADT-PILE<span>FiX</span>
+
         </div>
 
+
         <div class="subtitle">
+
             Professional Notification Center
+
         </div>
 
     </div>
+
 </div>
+
 
 
 <div class="container">
 
+
+    <!-- =================================================
+         USERS
+    ================================================= -->
+
     <div class="card">
 
-        <h2>ส่งข้อความถึงผู้ใช้งาน</h2>
+
+        <div class="section-head">
+
+            <h2>
+                ผู้ใช้งาน ADT-PILEFiX
+            </h2>
 
 
-        <div class="field">
+            <button
+                id="reloadButton"
+                class="reload-btn"
+                type="button"
+            >
+                REFRESH USERS
+            </button>
 
-            <label for="recipientType">
-                ผู้รับข้อความ
-            </label>
+        </div>
 
-            <select id="recipientType">
 
-                <option value="all">
-                    ผู้ใช้งาน ADT-PILEFiX ทั้งหมด
-                </option>
 
-                <option value="single">
-                    ระบุ Booking No.
-                </option>
+        <!-- SUMMARY -->
 
-            </select>
+        <div class="summary">
+
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    ผู้ใช้งานทั้งหมด
+                </div>
+
+                <div
+                    class="summary-number"
+                    id="totalUsers"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    เชื่อม LINE แล้ว
+                </div>
+
+                <div
+                    class="summary-number"
+                    id="lineUsers"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="summary-box">
+
+                <div class="summary-label">
+                    เลือกส่งข้อความ
+                </div>
+
+                <div
+                    class="summary-number"
+                    id="selectedUsers"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- TOOLBAR -->
+
+        <div class="toolbar">
+
+
+            <div class="search">
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="ค้นหา PF หรือชื่อผู้ใช้งาน..."
+                >
+
+            </div>
+
+
+            <button
+                id="selectAllButton"
+                class="select-btn"
+                type="button"
+            >
+                SELECT ALL
+            </button>
+
+
+            <button
+                id="clearAllButton"
+                class="clear-btn"
+                type="button"
+            >
+                CLEAR
+            </button>
+
+
+        </div>
+
+
+
+        <!-- TABLE -->
+
+        <div class="table-wrap">
+
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th class="check-col">
+                            เลือก
+                        </th>
+
+                        <th>
+                            Booking No.
+                        </th>
+
+                        <th>
+                            ชื่อผู้ใช้งาน
+                        </th>
+
+                        <th>
+                            LINE
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="usersTableBody">
+
+                    <tr>
+
+                        <td
+                            colspan="4"
+                            class="empty-row"
+                        >
+                            กำลังโหลดข้อมูล...
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+
+            </table>
+
 
         </div>
 
 
         <div
-            class="field"
-            id="bookingField"
-            style="display:none;"
-        >
+            id="usersStatus"
+            class="status"
+        ></div>
 
-            <label for="bookingNo">
-                Booking No.
-            </label>
 
-            <input
-                id="bookingNo"
-                type="text"
-                placeholder="เช่น PF-038"
-            >
+    </div>
 
-        </div>
+
+
+    <!-- =================================================
+         MESSAGE
+    ================================================= -->
+
+    <div class="card">
+
+
+        <h2 style="margin-bottom:22px;">
+            ส่งข้อความ
+        </h2>
 
 
         <div class="field">
 
+
             <label for="message">
                 ข้อความ
             </label>
+
 
             <textarea id="message">📢 ADT-PILEFiX Professional
 
@@ -263,23 +971,38 @@ button {
 
 ดาวน์โหลดโปรแกรมได้จากลิงก์ด้านล่าง</textarea>
 
+
+            <div class="hint">
+                ระบบจะแนบลิงก์ดาวน์โหลดด้านล่างข้อความให้อัตโนมัติ
+            </div>
+
+
         </div>
 
 
+
         <div class="field">
+
 
             <label>
                 ลิงก์ดาวน์โหลด
             </label>
 
-            <div class="download-box" id="downloadUrl">
-https://adtspreadsheet.com/software/pilefix/download/
+
+            <div
+                class="download-box"
+                id="downloadUrl"
+            >
+                https://adtspreadsheet.com/software/pilefix/download/
             </div>
+
 
         </div>
 
 
+
         <div class="actions">
+
 
             <button
                 class="preview-btn"
@@ -289,6 +1012,7 @@ https://adtspreadsheet.com/software/pilefix/download/
                 PREVIEW
             </button>
 
+
             <button
                 class="send-btn"
                 id="sendButton"
@@ -297,159 +1021,753 @@ https://adtspreadsheet.com/software/pilefix/download/
                 SEND LINE MESSAGE
             </button>
 
+
         </div>
 
 
+
         <div
-            id="status"
+            id="sendStatus"
             class="status"
         ></div>
+
 
     </div>
 
 
+
+    <!-- =================================================
+         PREVIEW
+    ================================================= -->
+
     <div class="card">
 
-        <h2>ตัวอย่างข้อความ</h2>
+
+        <h2 style="margin-bottom:20px;">
+            ตัวอย่างข้อความ
+        </h2>
+
 
         <div
             id="preview"
             class="preview"
         ></div>
 
+
     </div>
+
 
 </div>
 
 
+
 <script>
 
-const API_URL =
-    "https://adt-website-api.onrender.com/api/pilefix/notification/send";
+
+/* ========================================================
+   API
+======================================================== */
+
+const API_BASE =
+    "https://adt-website-api.onrender.com";
+
+
+const USERS_API =
+    API_BASE +
+    "/api/pilefix/notification/users";
+
+
+const SEND_API =
+    API_BASE +
+    "/api/pilefix/notification/send";
+
 
 const DOWNLOAD_URL =
     "https://adtspreadsheet.com/software/pilefix/download/";
 
 
-const recipientType =
-    document.getElementById("recipientType");
 
-const bookingField =
-    document.getElementById("bookingField");
+/* ========================================================
+   ELEMENTS
+======================================================== */
 
-const bookingNo =
-    document.getElementById("bookingNo");
+const usersTableBody =
+    document.getElementById(
+        "usersTableBody"
+    );
 
-const message =
-    document.getElementById("message");
+
+const totalUsersElement =
+    document.getElementById(
+        "totalUsers"
+    );
+
+
+const lineUsersElement =
+    document.getElementById(
+        "lineUsers"
+    );
+
+
+const selectedUsersElement =
+    document.getElementById(
+        "selectedUsers"
+    );
+
+
+const searchInput =
+    document.getElementById(
+        "searchInput"
+    );
+
+
+const messageInput =
+    document.getElementById(
+        "message"
+    );
+
 
 const preview =
-    document.getElementById("preview");
+    document.getElementById(
+        "preview"
+    );
 
-const statusBox =
-    document.getElementById("status");
+
+const usersStatus =
+    document.getElementById(
+        "usersStatus"
+    );
+
+
+const sendStatus =
+    document.getElementById(
+        "sendStatus"
+    );
+
 
 const sendButton =
-    document.getElementById("sendButton");
+    document.getElementById(
+        "sendButton"
+    );
 
 
-recipientType.addEventListener(
-    "change",
-    function () {
+const reloadButton =
+    document.getElementById(
+        "reloadButton"
+    );
 
-        bookingField.style.display =
-            this.value === "single"
-                ? "block"
-                : "none";
+
+
+/* ========================================================
+   DATA
+======================================================== */
+
+let users = [];
+
+
+
+/* ========================================================
+   LOAD USERS
+======================================================== */
+
+async function loadUsers() {
+
+
+    setUsersStatus(
+        "กำลังโหลดข้อมูลผู้ใช้งาน...",
+        "info"
+    );
+
+
+    reloadButton.disabled =
+        true;
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                USERS_API,
+                {
+                    method: "GET",
+                    headers: {
+                        "Accept":
+                            "application/json"
+                    }
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.message ||
+                "ไม่สามารถโหลดข้อมูลผู้ใช้งานได้"
+            );
+
+        }
+
+
+        /*
+            Backend expected:
+
+            {
+                success: true,
+                users: [
+                    {
+                        booking_no: "PF-038",
+                        name: "Customer Name",
+                        has_line: true
+                    }
+                ]
+            }
+        */
+
+
+        users =
+            Array.isArray(data.users)
+                ? data.users
+                : [];
+
+
+        users =
+            users.map(
+                user => ({
+                    booking_no:
+                        String(
+                            user.booking_no || ""
+                        )
+                        .trim()
+                        .toUpperCase(),
+
+                    name:
+                        String(
+                            user.name || "-"
+                        ),
+
+                    has_line:
+                        user.has_line === true,
+
+                    selected:
+                        false
+                })
+            );
+
+
+        renderUsers();
+
+
+        setUsersStatus(
+            "โหลดข้อมูลผู้ใช้งานเรียบร้อยแล้ว",
+            "success"
+        );
+
+
+    } catch (error) {
+
+
+        users = [];
+
+
+        renderUsers();
+
+
+        setUsersStatus(
+            error.message,
+            "error"
+        );
+
+
+    } finally {
+
+
+        reloadButton.disabled =
+            false;
+
     }
-);
 
+}
+
+
+
+/* ========================================================
+   RENDER USERS
+======================================================== */
+
+function renderUsers() {
+
+
+    const keyword =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+
+    const filteredUsers =
+        users.filter(
+            user => {
+
+                if (!keyword) {
+                    return true;
+                }
+
+
+                return (
+                    user.booking_no
+                        .toLowerCase()
+                        .includes(keyword)
+                    ||
+                    user.name
+                        .toLowerCase()
+                        .includes(keyword)
+                );
+
+            }
+        );
+
+
+    usersTableBody.innerHTML =
+        "";
+
+
+    if (filteredUsers.length === 0) {
+
+
+        usersTableBody.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="4"
+                    class="empty-row"
+                >
+                    ไม่พบข้อมูลผู้ใช้งาน
+                </td>
+
+            </tr>
+
+        `;
+
+
+        updateSummary();
+
+        return;
+
+    }
+
+
+    filteredUsers.forEach(
+        user => {
+
+
+            const row =
+                document.createElement(
+                    "tr"
+                );
+
+
+            const checkboxDisabled =
+                !user.has_line;
+
+
+            row.innerHTML = `
+
+                <td class="check-col">
+
+                    <input
+                        type="checkbox"
+                        class="user-check"
+                        data-booking="${escapeHtml(user.booking_no)}"
+                        ${user.selected ? "checked" : ""}
+                        ${checkboxDisabled ? "disabled" : ""}
+                    >
+
+                </td>
+
+
+                <td>
+
+                    <span class="booking">
+                        ${escapeHtml(user.booking_no)}
+                    </span>
+
+                </td>
+
+
+                <td>
+
+                    ${escapeHtml(user.name)}
+
+                </td>
+
+
+                <td>
+
+                    ${
+                        user.has_line
+                        ?
+                        `<span class="line-ok">
+                            CONNECTED
+                         </span>`
+                        :
+                        `<span class="line-no">
+                            NO LINE
+                         </span>`
+                    }
+
+                </td>
+
+            `;
+
+
+            usersTableBody.appendChild(
+                row
+            );
+
+        }
+    );
+
+
+    document
+        .querySelectorAll(
+            ".user-check"
+        )
+        .forEach(
+            checkbox => {
+
+
+                checkbox.addEventListener(
+                    "change",
+                    function () {
+
+
+                        const booking =
+                            this.dataset.booking;
+
+
+                        const user =
+                            users.find(
+                                item =>
+                                    item.booking_no ===
+                                    booking
+                            );
+
+
+                        if (user) {
+
+                            user.selected =
+                                this.checked;
+
+                        }
+
+
+                        updateSummary();
+
+                    }
+                );
+
+            }
+        );
+
+
+    updateSummary();
+
+}
+
+
+
+/* ========================================================
+   SUMMARY
+======================================================== */
+
+function updateSummary() {
+
+
+    const totalUsers =
+        users.length;
+
+
+    const lineUsers =
+        users.filter(
+            user =>
+                user.has_line
+        ).length;
+
+
+    const selectedUsers =
+        users.filter(
+            user =>
+                user.has_line &&
+                user.selected
+        ).length;
+
+
+    totalUsersElement.textContent =
+        totalUsers;
+
+
+    lineUsersElement.textContent =
+        lineUsers;
+
+
+    selectedUsersElement.textContent =
+        selectedUsers;
+
+
+    sendButton.textContent =
+        selectedUsers > 0
+            ? `SEND LINE MESSAGE (${selectedUsers})`
+            : "SEND LINE MESSAGE";
+
+}
+
+
+
+/* ========================================================
+   SELECT ALL
+======================================================== */
 
 document
-    .getElementById("previewButton")
+    .getElementById(
+        "selectAllButton"
+    )
     .addEventListener(
         "click",
         function () {
 
-            preview.textContent =
-                message.value.trim() +
-                "\n\n" +
-                DOWNLOAD_URL;
 
-            preview.style.display =
-                "block";
+            const keyword =
+                searchInput.value
+                    .trim()
+                    .toLowerCase();
+
+
+            users.forEach(
+                user => {
+
+
+                    if (!user.has_line) {
+                        return;
+                    }
+
+
+                    const visible =
+                        !keyword ||
+                        user.booking_no
+                            .toLowerCase()
+                            .includes(keyword)
+                        ||
+                        user.name
+                            .toLowerCase()
+                            .includes(keyword);
+
+
+                    if (visible) {
+
+                        user.selected =
+                            true;
+
+                    }
+
+                }
+            );
+
+
+            renderUsers();
+
         }
     );
 
+
+
+/* ========================================================
+   CLEAR ALL
+======================================================== */
+
+document
+    .getElementById(
+        "clearAllButton"
+    )
+    .addEventListener(
+        "click",
+        function () {
+
+
+            users.forEach(
+                user => {
+
+                    user.selected =
+                        false;
+
+                }
+            );
+
+
+            renderUsers();
+
+        }
+    );
+
+
+
+/* ========================================================
+   SEARCH
+======================================================== */
+
+searchInput.addEventListener(
+    "input",
+    renderUsers
+);
+
+
+
+/* ========================================================
+   REFRESH
+======================================================== */
+
+reloadButton.addEventListener(
+    "click",
+    loadUsers
+);
+
+
+
+/* ========================================================
+   PREVIEW
+======================================================== */
+
+document
+    .getElementById(
+        "previewButton"
+    )
+    .addEventListener(
+        "click",
+        function () {
+
+
+            const text =
+                messageInput.value
+                    .trim();
+
+
+            if (!text) {
+
+                setSendStatus(
+                    "กรุณากรอกข้อความ",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            preview.textContent =
+                text +
+                "\n\n" +
+                DOWNLOAD_URL;
+
+
+            preview.style.display =
+                "block";
+
+
+            preview.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        }
+    );
+
+
+
+/* ========================================================
+   SEND LINE MESSAGE
+======================================================== */
 
 sendButton.addEventListener(
     "click",
     async function () {
 
-        statusBox.className =
-            "status";
 
-        statusBox.textContent =
-            "";
+        clearSendStatus();
 
 
-        const recipient =
-            recipientType.value;
+        const selectedBookings =
+            users
+                .filter(
+                    user =>
+                        user.has_line &&
+                        user.selected
+                )
+                .map(
+                    user =>
+                        user.booking_no
+                );
 
-        const pf =
-            bookingNo.value
-                .trim()
-                .toUpperCase();
 
         const text =
-            message.value.trim();
+            messageInput.value
+                .trim();
+
+
+        if (
+            selectedBookings.length === 0
+        ) {
+
+            setSendStatus(
+                "กรุณาเลือกผู้ใช้งานอย่างน้อย 1 คน",
+                "error"
+            );
+
+            return;
+
+        }
 
 
         if (!text) {
 
-            showError(
-                "กรุณากรอกข้อความที่ต้องการส่ง"
+            setSendStatus(
+                "กรุณากรอกข้อความที่ต้องการส่ง",
+                "error"
             );
 
             return;
+
         }
+
+
+        const confirmMessage =
+
+            "ยืนยันส่งข้อความ LINE ถึง " +
+            selectedBookings.length +
+            " คนหรือไม่?";
 
 
         if (
-            recipient === "single" &&
-            !pf
+            !window.confirm(
+                confirmMessage
+            )
         ) {
 
-            showError(
-                "กรุณากรอก Booking No."
-            );
-
             return;
+
         }
 
 
-        let confirmText;
-
-        if (recipient === "all") {
-
-            confirmText =
-                "ยืนยันส่งข้อความถึงผู้ใช้งาน ADT-PILEFiX ทั้งหมดหรือไม่?";
-
-        } else {
-
-            confirmText =
-                "ยืนยันส่งข้อความถึง " +
-                pf +
-                " หรือไม่?";
-        }
+        sendButton.disabled =
+            true;
 
 
-        if (!window.confirm(confirmText)) {
-            return;
-        }
+        reloadButton.disabled =
+            true;
 
-
-        sendButton.disabled = true;
 
         sendButton.textContent =
             "SENDING...";
@@ -457,32 +1775,56 @@ sendButton.addEventListener(
 
         try {
 
+
+            /*
+                Frontend sends ONLY Booking Numbers.
+
+                line_user_id stays inside Backend.
+
+                Request:
+
+                {
+                    booking_numbers: [
+                        "PF-038",
+                        "PF-042"
+                    ],
+                    message: "...",
+                    download_url: "..."
+                }
+            */
+
+
             const response =
                 await fetch(
-                    API_URL,
+                    SEND_API,
                     {
+
                         method: "POST",
 
                         headers: {
+
                             "Content-Type":
+                                "application/json",
+
+                            "Accept":
                                 "application/json"
+
                         },
 
-                        body: JSON.stringify({
-                            recipient_type:
-                                recipient,
+                        body:
+                            JSON.stringify({
 
-                            booking_no:
-                                recipient === "single"
-                                    ? pf
-                                    : null,
+                                booking_numbers:
+                                    selectedBookings,
 
-                            message:
-                                text,
+                                message:
+                                    text,
 
-                            download_url:
-                                DOWNLOAD_URL
-                        })
+                                download_url:
+                                    DOWNLOAD_URL
+
+                            })
+
                     }
                 );
 
@@ -495,56 +1837,182 @@ sendButton.addEventListener(
 
                 throw new Error(
                     data.message ||
-                    "ไม่สามารถส่งข้อความได้"
+                    "ไม่สามารถส่งข้อความ LINE ได้"
                 );
+
             }
 
 
-            showSuccess(
+            /*
+                Backend can return:
+
+                {
+                    success: true,
+                    sent: 20,
+                    failed: 1,
+                    message: "..."
+                }
+            */
+
+
+            let resultMessage =
                 data.message ||
-                "ส่งข้อความเรียบร้อยแล้ว"
+                "ส่งข้อความเรียบร้อยแล้ว";
+
+
+            if (
+                data.sent !== undefined
+            ) {
+
+                resultMessage +=
+                    "\nส่งสำเร็จ: " +
+                    data.sent +
+                    " คน";
+
+            }
+
+
+            if (
+                data.failed !== undefined
+            ) {
+
+                resultMessage +=
+                    "\nส่งไม่สำเร็จ: " +
+                    data.failed +
+                    " คน";
+
+            }
+
+
+            setSendStatus(
+                resultMessage,
+                "success"
             );
 
 
         } catch (error) {
 
-            showError(
-                error.message
+
+            setSendStatus(
+                error.message,
+                "error"
             );
 
+
         } finally {
+
 
             sendButton.disabled =
                 false;
 
-            sendButton.textContent =
-                "SEND LINE MESSAGE";
+
+            reloadButton.disabled =
+                false;
+
+
+            updateSummary();
+
         }
 
     }
 );
 
 
-function showSuccess(text) {
 
-    statusBox.className =
-        "status success";
+/* ========================================================
+   STATUS
+======================================================== */
 
-    statusBox.textContent =
+function setUsersStatus(
+    text,
+    type
+) {
+
+
+    usersStatus.className =
+        "status " + type;
+
+
+    usersStatus.textContent =
         text;
+
 }
 
 
-function showError(text) {
 
-    statusBox.className =
-        "status error";
+function setSendStatus(
+    text,
+    type
+) {
 
-    statusBox.textContent =
+
+    sendStatus.className =
+        "status " + type;
+
+
+    sendStatus.textContent =
         text;
+
 }
+
+
+
+function clearSendStatus() {
+
+
+    sendStatus.className =
+        "status";
+
+
+    sendStatus.textContent =
+        "";
+
+}
+
+
+
+/* ========================================================
+   HTML ESCAPE
+======================================================== */
+
+function escapeHtml(value) {
+
+
+    return String(value)
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+
+/* ========================================================
+   START
+======================================================== */
+
+loadUsers();
+
 
 </script>
+
 
 </body>
 </html>
