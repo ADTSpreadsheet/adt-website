@@ -3,721 +3,820 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <title>
-        ADT-PILEFiX | Admin Notification
-    </title>
+<title>
+    ADT-PILEFiX | Admin Notification
+</title>
 
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
 
-        body {
+body {
 
-            margin: 0;
+    margin: 0;
 
-            min-height: 100vh;
+    min-height: 100vh;
 
-            font-family:
-                "Segoe UI",
-                Tahoma,
-                Arial,
-                sans-serif;
+    font-family:
+        "Segoe UI",
+        Tahoma,
+        Arial,
+        sans-serif;
 
-            background: #f2f5f9;
+    background: #f2f5f9;
 
-            color: #172033;
+    color: #172033;
 
-        }
+}
 
 
-        /* =================================================
-           HEADER
-        ================================================= */
+/* =========================================================
+   HEADER
+========================================================= */
 
-        .header {
+.header {
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #031a38,
-                    #075196
-                );
+    background:
+        linear-gradient(
+            135deg,
+            #031a38,
+            #075196
+        );
 
-            color: white;
+    color: white;
 
-            padding: 26px 20px;
+    padding: 26px 20px;
 
-        }
+}
 
 
-        .header-inner {
+.header-inner {
 
-            max-width: 1100px;
+    max-width: 1100px;
 
-            margin: auto;
+    margin: auto;
 
-        }
+}
 
 
-        .logo {
+.logo {
 
-            font-size: 28px;
+    font-size: 28px;
 
-            font-weight: 800;
+    font-weight: 800;
 
-        }
+}
 
 
-        .logo span {
+.logo span {
 
-            color: #ffc83d;
+    color: #ffc83d;
 
-        }
+}
 
 
-        .subtitle {
+.subtitle {
 
-            margin-top: 4px;
+    margin-top: 4px;
 
-            color:
-                rgba(
-                    255,
-                    255,
-                    255,
-                    0.75
-                );
+    color:
+        rgba(
+            255,
+            255,
+            255,
+            0.75
+        );
 
-            font-size: 14px;
+    font-size: 14px;
 
-        }
+}
 
 
-        /* =================================================
-           PAGE
-        ================================================= */
+/* =========================================================
+   PAGE
+========================================================= */
 
-        .container {
+.container {
 
-            max-width: 1100px;
+    max-width: 1100px;
 
-            margin: 30px auto;
+    margin: 30px auto;
 
-            padding: 0 18px 40px;
+    padding: 0 18px 40px;
 
-        }
+}
 
 
-        .card {
+.card {
 
-            background: white;
+    background: white;
 
-            border-radius: 16px;
+    border-radius: 16px;
 
-            padding: 28px;
+    padding: 28px;
 
-            box-shadow:
-                0 8px 30px
-                rgba(
-                    0,
-                    0,
-                    0,
-                    0.08
-                );
+    box-shadow:
+        0 8px 30px
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
 
-            margin-bottom: 20px;
+    margin-bottom: 20px;
 
-        }
+}
 
 
-        h2 {
+h2 {
 
-            margin: 0;
+    margin: 0;
 
-            color: #082d59;
+    color: #082d59;
 
-            font-size: 21px;
+    font-size: 21px;
 
-        }
+}
 
 
-        .section-head {
+.section-head {
 
-            display: flex;
+    display: flex;
 
-            align-items: center;
+    align-items: center;
 
-            justify-content: space-between;
+    justify-content: space-between;
 
-            gap: 15px;
+    gap: 15px;
 
-            margin-bottom: 20px;
+    margin-bottom: 20px;
 
-        }
+}
 
 
-        /* =================================================
-           SUMMARY
-        ================================================= */
+/* =========================================================
+   SUMMARY
+========================================================= */
 
-        .summary {
+.summary {
 
-            display: grid;
+    display: grid;
 
-            grid-template-columns:
-                repeat(
-                    3,
-                    1fr
-                );
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
 
-            gap: 14px;
+    gap: 14px;
 
-            margin-bottom: 22px;
+    margin-bottom: 22px;
 
-        }
+}
 
 
-        .summary-box {
+.summary-box {
 
-            padding: 18px;
+    padding: 18px;
 
-            background: #f6f8fb;
+    background: #f6f8fb;
 
-            border:
-                1px solid
-                #e0e6ed;
+    border:
+        1px solid
+        #e0e6ed;
 
-            border-radius: 12px;
+    border-radius: 12px;
 
-        }
+}
 
 
-        .summary-label {
+.summary-label {
 
-            color: #6c7785;
+    color: #6c7785;
 
-            font-size: 13px;
+    font-size: 13px;
 
-        }
+}
 
 
-        .summary-number {
+.summary-number {
 
-            margin-top: 4px;
+    margin-top: 4px;
 
-            color: #082d59;
+    color: #082d59;
 
-            font-size: 25px;
+    font-size: 25px;
 
-            font-weight: 800;
+    font-weight: 800;
 
-        }
+}
 
 
-        /* =================================================
-           BUTTONS
-        ================================================= */
+/* =========================================================
+   BUTTONS
+========================================================= */
 
-        button {
+button {
 
-            border: 0;
+    border: 0;
 
-            border-radius: 9px;
+    border-radius: 9px;
 
-            padding: 12px 17px;
+    padding: 12px 17px;
 
-            font-family: inherit;
+    font-family: inherit;
 
-            font-size: 14px;
+    font-size: 14px;
 
-            font-weight: 700;
+    font-weight: 700;
 
-            cursor: pointer;
+    cursor: pointer;
 
-        }
+}
 
 
-        button:disabled {
+button:disabled {
 
-            opacity: 0.5;
+    opacity: 0.5;
 
-            cursor: not-allowed;
+    cursor: not-allowed;
 
-        }
+}
 
 
-        .reload-btn {
+.reload-btn {
 
-            background: #e8eef5;
+    background: #e8eef5;
 
-            color: #163b60;
+    color: #163b60;
 
-        }
+}
 
 
-        .select-btn {
+.select-btn {
 
-            background: #e9eef5;
+    background: #e9eef5;
 
-            color: #18344f;
+    color: #18344f;
 
-        }
+}
 
 
-        .clear-btn {
+.clear-btn {
 
-            background: #f1f2f4;
+    background: #f1f2f4;
 
-            color: #5a6570;
+    color: #5a6570;
 
-        }
+}
 
 
-        .preview-btn {
+.preview-btn {
 
-            background: #e9eef5;
+    background: #e9eef5;
 
-            color: #18344f;
+    color: #18344f;
 
-        }
+}
 
 
-        .send-btn {
+.send-btn {
 
-            flex: 1;
+    flex: 1;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #eeb31d,
-                    #ffd45a
-                );
+    background:
+        linear-gradient(
+            135deg,
+            #eeb31d,
+            #ffd45a
+        );
 
-            color: #08244a;
+    color: #08244a;
 
-            font-size: 15px;
+    font-size: 15px;
 
-            padding: 15px 22px;
+    padding: 15px 22px;
 
-        }
+}
 
 
-        /* =================================================
-           TOOLBAR
-        ================================================= */
+/* =========================================================
+   TOOLBAR
+========================================================= */
 
-        .toolbar {
+.toolbar {
 
-            display: flex;
+    display: flex;
 
-            gap: 10px;
+    gap: 10px;
 
-            align-items: center;
+    align-items: center;
 
-            margin-bottom: 16px;
+    margin-bottom: 16px;
 
-            flex-wrap: wrap;
+    flex-wrap: wrap;
 
-        }
+}
 
 
-        .search {
+.search {
 
-            flex: 1;
+    flex: 1;
 
-            min-width: 220px;
+    min-width: 220px;
 
-        }
+}
 
 
-        input,
-        textarea {
+input,
+textarea {
 
-            width: 100%;
+    width: 100%;
 
-            border:
-                1px solid
-                #ccd5df;
+    border:
+        1px solid
+        #ccd5df;
 
-            border-radius: 9px;
+    border-radius: 9px;
 
-            padding: 12px 14px;
+    padding: 12px 14px;
 
-            font-family: inherit;
+    font-family: inherit;
 
-            font-size: 14px;
+    font-size: 14px;
 
-            outline: none;
+    outline: none;
 
-        }
+}
 
 
-        input:focus,
-        textarea:focus {
+input:focus,
+textarea:focus {
 
-            border-color: #075196;
+    border-color: #075196;
 
-        }
+}
 
 
-        /* =================================================
-           USERS TABLE
-        ================================================= */
+/* =========================================================
+   USERS TABLE
+========================================================= */
 
-        .table-wrap {
+.table-wrap {
 
-            border:
-                1px solid
-                #e0e6ed;
+    border:
+        1px solid
+        #e0e6ed;
 
-            border-radius: 11px;
+    border-radius: 11px;
 
-            overflow: auto;
+    overflow: auto;
 
-            max-height: 430px;
+    max-height: 430px;
 
-        }
+}
 
 
-        table {
+table {
 
-            width: 100%;
+    width: 100%;
 
-            border-collapse: collapse;
+    border-collapse: collapse;
 
-            min-width: 680px;
+    min-width: 680px;
 
-        }
+}
 
 
-        thead {
+thead {
 
-            position: sticky;
+    position: sticky;
 
-            top: 0;
+    top: 0;
 
-            z-index: 2;
+    z-index: 2;
 
-        }
+}
 
 
-        th {
+th {
 
-            background: #f3f6fa;
+    background: #f3f6fa;
 
-            color: #425466;
+    color: #425466;
 
-            font-size: 13px;
+    font-size: 13px;
 
-            text-align: left;
+    text-align: left;
 
-            padding: 13px 12px;
+    padding: 13px 12px;
 
-            border-bottom:
-                1px solid
-                #dfe5ec;
+    border-bottom:
+        1px solid
+        #dfe5ec;
 
-        }
+}
 
 
-        td {
+td {
 
-            padding: 13px 12px;
+    padding: 13px 12px;
 
-            border-bottom:
-                1px solid
-                #edf0f3;
+    border-bottom:
+        1px solid
+        #edf0f3;
 
-            font-size: 14px;
+    font-size: 14px;
 
-        }
+}
 
 
-        tbody tr:hover {
+tbody tr:hover {
 
-            background: #fafbfd;
+    background: #fafbfd;
 
-        }
+}
 
 
-        .check-col {
+.check-col {
 
-            width: 55px;
+    width: 55px;
 
-            text-align: center;
+    text-align: center;
 
-        }
+}
 
 
-        .user-check {
+.user-check {
 
-            width: 18px;
+    width: 18px;
 
-            height: 18px;
+    height: 18px;
 
-            cursor: pointer;
+    cursor: pointer;
 
-        }
+}
 
 
-        .booking {
+.booking {
 
-            color: #075196;
+    color: #075196;
 
-            font-weight: 800;
+    font-weight: 800;
 
-        }
+}
 
 
-        .line-ok {
+.line-ok {
 
-            display: inline-block;
+    display: inline-block;
 
-            padding: 4px 9px;
+    padding: 4px 9px;
 
-            border-radius: 20px;
+    border-radius: 20px;
 
-            background: #e7f8ed;
+    background: #e7f8ed;
 
-            color: #13713a;
+    color: #13713a;
 
-            font-size: 12px;
+    font-size: 12px;
 
-            font-weight: 700;
+    font-weight: 700;
 
-        }
+}
 
 
-        .line-no {
+.line-no {
 
-            display: inline-block;
+    display: inline-block;
 
-            padding: 4px 9px;
+    padding: 4px 9px;
 
-            border-radius: 20px;
+    border-radius: 20px;
 
-            background: #fff0f0;
+    background: #fff0f0;
 
-            color: #b02a2a;
+    color: #b02a2a;
 
-            font-size: 12px;
+    font-size: 12px;
 
-            font-weight: 700;
+    font-weight: 700;
 
-        }
+}
 
 
-        .empty-row {
+.empty-row {
 
-            text-align: center;
+    text-align: center;
 
-            padding: 35px;
+    padding: 35px;
 
-            color: #778191;
+    color: #778191;
 
-        }
+}
 
 
-        /* =================================================
-           MESSAGE
-        ================================================= */
+/* =========================================================
+   MESSAGE
+========================================================= */
 
-        .field {
+.field {
 
-            margin-bottom: 22px;
+    margin-bottom: 22px;
 
-        }
+}
 
 
-        label {
+.field-label {
 
-            display: block;
+    display: block;
 
-            margin-bottom: 8px;
+    margin-bottom: 8px;
 
-            font-weight: 700;
+    font-weight: 700;
 
-        }
+}
 
 
-        textarea {
+textarea {
 
-            min-height: 220px;
+    min-height: 220px;
 
-            resize: vertical;
+    resize: vertical;
 
-            line-height: 1.65;
+    line-height: 1.65;
 
-        }
+}
 
 
-        .hint {
+.hint {
 
-            margin-top: 7px;
+    margin-top: 7px;
 
-            color: #778191;
+    color: #778191;
 
-            font-size: 12px;
+    font-size: 12px;
 
-        }
+}
 
 
-        .download-box {
+/* =========================================================
+   ATTACH DOWNLOAD LINK
+========================================================= */
 
-            padding: 14px;
+.attach-option {
 
-            border:
-                1px solid
-                #dce5ef;
+    display: flex;
 
-            border-radius: 9px;
+    align-items: center;
 
-            background: #f5f8fc;
+    gap: 10px;
 
-            word-break: break-all;
+    padding: 14px 16px;
 
-            font-size: 14px;
+    background: #f7f9fc;
 
-        }
+    border:
+        1px solid
+        #dce5ef;
 
+    border-radius: 10px;
 
-        .actions {
+    margin-bottom: 12px;
 
-            display: flex;
+    cursor: pointer;
 
-            gap: 12px;
+    user-select: none;
 
-        }
+}
 
 
-        /* =================================================
-           PREVIEW
-        ================================================= */
+.attach-option:hover {
 
-        .preview {
+    background: #f2f6fb;
 
-            display: none;
+}
 
-            white-space: pre-wrap;
 
-            background: #f7f8fa;
+.attach-option input {
 
-            padding: 20px;
+    width: 19px;
 
-            border-radius: 10px;
+    height: 19px;
 
-            line-height: 1.65;
+    margin: 0;
 
-        }
+    padding: 0;
 
+    cursor: pointer;
 
-        /* =================================================
-           STATUS
-        ================================================= */
+    accent-color: #075196;
 
-        .status {
+}
 
-            display: none;
 
-            margin-top: 18px;
+.attach-option-text {
 
-            padding: 14px 16px;
+    flex: 1;
 
-            border-radius: 9px;
+}
 
-            line-height: 1.5;
 
-        }
+.attach-title {
 
+    color: #082d59;
 
-        .status.success {
+    font-size: 14px;
 
-            display: block;
+    font-weight: 700;
 
-            background: #eaf8ef;
+}
 
-            color: #176b38;
 
-        }
+.attach-description {
 
+    margin-top: 3px;
 
-        .status.error {
+    color: #778191;
 
-            display: block;
+    font-size: 12px;
 
-            background: #fff0f0;
+}
 
-            color: #a62a2a;
 
-        }
+.download-box {
 
+    padding: 14px;
 
-        .status.info {
+    border:
+        1px solid
+        #dce5ef;
 
-            display: block;
+    border-radius: 9px;
 
-            background: #eef5ff;
+    background: #f5f8fc;
 
-            color: #175a9c;
+    word-break: break-all;
 
-        }
+    font-size: 14px;
 
+    transition:
+        opacity 0.2s ease,
+        background 0.2s ease;
 
-        /* =================================================
-           MOBILE
-        ================================================= */
+}
 
-        @media(max-width: 700px) {
 
-            .card {
+.download-box.disabled {
 
-                padding: 20px;
+    opacity: 0.4;
 
-            }
+    background: #f1f1f1;
 
+}
 
-            .summary {
 
-                grid-template-columns: 1fr;
+.actions {
 
-            }
+    display: flex;
 
+    gap: 12px;
 
-            .section-head {
+}
 
-                align-items: flex-start;
 
-                flex-direction: column;
+/* =========================================================
+   PREVIEW
+========================================================= */
 
-            }
+.preview {
 
+    display: none;
 
-            .actions {
+    white-space: pre-wrap;
 
-                flex-direction: column;
+    background: #f7f8fa;
 
-            }
+    padding: 20px;
 
+    border-radius: 10px;
 
-            .send-btn {
+    line-height: 1.65;
 
-                width: 100%;
+}
 
-            }
 
-        }
+/* =========================================================
+   STATUS
+========================================================= */
 
-    </style>
+.status {
+
+    display: none;
+
+    margin-top: 18px;
+
+    padding: 14px 16px;
+
+    border-radius: 9px;
+
+    line-height: 1.5;
+
+    white-space: pre-line;
+
+}
+
+
+.status.success {
+
+    display: block;
+
+    background: #eaf8ef;
+
+    color: #176b38;
+
+}
+
+
+.status.error {
+
+    display: block;
+
+    background: #fff0f0;
+
+    color: #a62a2a;
+
+}
+
+
+.status.info {
+
+    display: block;
+
+    background: #eef5ff;
+
+    color: #175a9c;
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width: 700px) {
+
+    .card {
+
+        padding: 20px;
+
+    }
+
+
+    .summary {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .section-head {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+    }
+
+
+    .actions {
+
+        flex-direction: column;
+
+    }
+
+
+    .send-btn {
+
+        width: 100%;
+
+    }
+
+}
+
+</style>
 
 </head>
 
@@ -734,16 +833,11 @@
     <div class="header-inner">
 
         <div class="logo">
-
             ADT-PILE<span>FiX</span>
-
         </div>
 
-
         <div class="subtitle">
-
             Professional Notification Center
-
         </div>
 
     </div>
@@ -780,8 +874,6 @@
         </div>
 
 
-
-        <!-- SUMMARY -->
 
         <div class="summary">
 
@@ -838,8 +930,6 @@
 
 
 
-        <!-- TOOLBAR -->
-
         <div class="toolbar">
 
 
@@ -875,8 +965,6 @@
         </div>
 
 
-
-        <!-- TABLE -->
 
         <div class="table-wrap">
 
@@ -953,10 +1041,14 @@
         </h2>
 
 
+
         <div class="field">
 
 
-            <label for="message">
+            <label
+                class="field-label"
+                for="message"
+            >
                 ข้อความ
             </label>
 
@@ -973,7 +1065,7 @@
 
 
             <div class="hint">
-                ระบบจะแนบลิงก์ดาวน์โหลดด้านล่างข้อความให้อัตโนมัติ
+                สามารถแก้ไขข้อความได้ก่อนส่ง
             </div>
 
 
@@ -981,12 +1073,41 @@
 
 
 
+        <!-- =============================================
+             ATTACH DOWNLOAD LINK
+        ============================================== -->
+
         <div class="field">
 
 
-            <label>
-                ลิงก์ดาวน์โหลด
+            <label
+                class="attach-option"
+                for="attachDownloadLink"
+            >
+
+
+                <input
+                    type="checkbox"
+                    id="attachDownloadLink"
+                    checked
+                >
+
+
+                <div class="attach-option-text">
+
+                    <div class="attach-title">
+                        แนบลิงก์ดาวน์โหลด ADT-PILEFiX
+                    </div>
+
+                    <div class="attach-description">
+                        หากไม่ต้องการส่งลิงก์ดาวน์โหลด ให้เอาเครื่องหมายถูกออก
+                    </div>
+
+                </div>
+
+
             </label>
+
 
 
             <div
@@ -1157,12 +1278,65 @@ const reloadButton =
     );
 
 
+const attachDownloadLink =
+    document.getElementById(
+        "attachDownloadLink"
+    );
+
+
+const downloadUrlBox =
+    document.getElementById(
+        "downloadUrl"
+    );
+
+
 
 /* ========================================================
    DATA
 ======================================================== */
 
 let users = [];
+
+
+
+/* ========================================================
+   ATTACH DOWNLOAD LINK
+======================================================== */
+
+function updateDownloadLinkState() {
+
+
+    if (
+        attachDownloadLink.checked
+    ) {
+
+        downloadUrlBox
+            .classList
+            .remove(
+                "disabled"
+            );
+
+    } else {
+
+        downloadUrlBox
+            .classList
+            .add(
+                "disabled"
+            );
+
+    }
+
+}
+
+
+attachDownloadLink.addEventListener(
+    "change",
+    function () {
+
+        updateDownloadLinkState();
+
+    }
+);
 
 
 
@@ -1191,6 +1365,7 @@ async function loadUsers() {
                 USERS_API,
                 {
                     method: "GET",
+
                     headers: {
                         "Accept":
                             "application/json"
@@ -1213,24 +1388,10 @@ async function loadUsers() {
         }
 
 
-        /*
-            Backend expected:
-
-            {
-                success: true,
-                users: [
-                    {
-                        booking_no: "PF-038",
-                        name: "Customer Name",
-                        has_line: true
-                    }
-                ]
-            }
-        */
-
-
         users =
-            Array.isArray(data.users)
+            Array.isArray(
+                data.users
+            )
                 ? data.users
                 : [];
 
@@ -1238,6 +1399,7 @@ async function loadUsers() {
         users =
             users.map(
                 user => ({
+
                     booking_no:
                         String(
                             user.booking_no || ""
@@ -1255,6 +1417,7 @@ async function loadUsers() {
 
                     selected:
                         false
+
                 })
             );
 
@@ -1268,7 +1431,8 @@ async function loadUsers() {
         );
 
 
-    } catch (error) {
+    }
+    catch (error) {
 
 
         users = [];
@@ -1283,7 +1447,8 @@ async function loadUsers() {
         );
 
 
-    } finally {
+    }
+    finally {
 
 
         reloadButton.disabled =
@@ -1312,19 +1477,30 @@ function renderUsers() {
         users.filter(
             user => {
 
+
                 if (!keyword) {
+
                     return true;
+
                 }
 
 
                 return (
+
                     user.booking_no
                         .toLowerCase()
-                        .includes(keyword)
+                        .includes(
+                            keyword
+                        )
+
                     ||
+
                     user.name
                         .toLowerCase()
-                        .includes(keyword)
+                        .includes(
+                            keyword
+                        )
+
                 );
 
             }
@@ -1335,7 +1511,9 @@ function renderUsers() {
         "";
 
 
-    if (filteredUsers.length === 0) {
+    if (
+        filteredUsers.length === 0
+    ) {
 
 
         usersTableBody.innerHTML = `
@@ -1355,6 +1533,7 @@ function renderUsers() {
 
 
         updateSummary();
+
 
         return;
 
@@ -1400,9 +1579,7 @@ function renderUsers() {
 
 
                 <td>
-
                     ${escapeHtml(user.name)}
-
                 </td>
 
 
@@ -1410,11 +1587,15 @@ function renderUsers() {
 
                     ${
                         user.has_line
+
                         ?
+
                         `<span class="line-ok">
                             CONNECTED
                          </span>`
+
                         :
+
                         `<span class="line-no">
                             NO LINE
                          </span>`
@@ -1425,9 +1606,10 @@ function renderUsers() {
             `;
 
 
-            usersTableBody.appendChild(
-                row
-            );
+            usersTableBody
+                .appendChild(
+                    row
+                );
 
         }
     );
@@ -1521,7 +1703,9 @@ function updateSummary() {
 
     sendButton.textContent =
         selectedUsers > 0
+
             ? `SEND LINE MESSAGE (${selectedUsers})`
+
             : "SEND LINE MESSAGE";
 
 }
@@ -1551,20 +1735,34 @@ document
                 user => {
 
 
-                    if (!user.has_line) {
+                    if (
+                        !user.has_line
+                    ) {
+
                         return;
+
                     }
 
 
                     const visible =
-                        !keyword ||
+
+                        !keyword
+
+                        ||
+
                         user.booking_no
                             .toLowerCase()
-                            .includes(keyword)
+                            .includes(
+                                keyword
+                            )
+
                         ||
+
                         user.name
                             .toLowerCase()
-                            .includes(keyword);
+                            .includes(
+                                keyword
+                            );
 
 
                     if (visible) {
@@ -1627,7 +1825,7 @@ searchInput.addEventListener(
 
 
 /* ========================================================
-   REFRESH
+   REFRESH USERS
 ======================================================== */
 
 reloadButton.addEventListener(
@@ -1657,20 +1855,35 @@ document
 
             if (!text) {
 
+
                 setSendStatus(
                     "กรุณากรอกข้อความ",
                     "error"
                 );
+
 
                 return;
 
             }
 
 
+            let previewText =
+                text;
+
+
+            if (
+                attachDownloadLink.checked
+            ) {
+
+                previewText +=
+                    "\n\n" +
+                    DOWNLOAD_URL;
+
+            }
+
+
             preview.textContent =
-                text +
-                "\n\n" +
-                DOWNLOAD_URL;
+                previewText;
 
 
             preview.style.display =
@@ -1678,8 +1891,11 @@ document
 
 
             preview.scrollIntoView({
-                behavior: "smooth",
-                block: "center"
+                behavior:
+                    "smooth",
+
+                block:
+                    "center"
             });
 
         }
@@ -1701,11 +1917,13 @@ sendButton.addEventListener(
 
         const selectedBookings =
             users
+
                 .filter(
                     user =>
                         user.has_line &&
                         user.selected
                 )
+
                 .map(
                     user =>
                         user.booking_no
@@ -1721,10 +1939,12 @@ sendButton.addEventListener(
             selectedBookings.length === 0
         ) {
 
+
             setSendStatus(
                 "กรุณาเลือกผู้ใช้งานอย่างน้อย 1 คน",
                 "error"
             );
+
 
             return;
 
@@ -1733,21 +1953,42 @@ sendButton.addEventListener(
 
         if (!text) {
 
+
             setSendStatus(
                 "กรุณากรอกข้อความที่ต้องการส่ง",
                 "error"
             );
+
 
             return;
 
         }
 
 
-        const confirmMessage =
+        let confirmMessage =
 
             "ยืนยันส่งข้อความ LINE ถึง " +
             selectedBookings.length +
-            " คนหรือไม่?";
+            " คน";
+
+
+        if (
+            attachDownloadLink.checked
+        ) {
+
+            confirmMessage +=
+                "\n\nพร้อมแนบลิงก์ดาวน์โหลด ADT-PILEFiX";
+
+        } else {
+
+            confirmMessage +=
+                "\n\nไม่แนบลิงก์ดาวน์โหลด";
+
+        }
+
+
+        confirmMessage +=
+            "\n\nต้องการดำเนินการต่อหรือไม่?";
 
 
         if (
@@ -1776,30 +2017,13 @@ sendButton.addEventListener(
         try {
 
 
-            /*
-                Frontend sends ONLY Booking Numbers.
-
-                line_user_id stays inside Backend.
-
-                Request:
-
-                {
-                    booking_numbers: [
-                        "PF-038",
-                        "PF-042"
-                    ],
-                    message: "...",
-                    download_url: "..."
-                }
-            */
-
-
             const response =
                 await fetch(
                     SEND_API,
                     {
 
-                        method: "POST",
+                        method:
+                            "POST",
 
                         headers: {
 
@@ -1811,6 +2035,7 @@ sendButton.addEventListener(
 
                         },
 
+
                         body:
                             JSON.stringify({
 
@@ -1821,7 +2046,9 @@ sendButton.addEventListener(
                                     text,
 
                                 download_url:
-                                    DOWNLOAD_URL
+                                    attachDownloadLink.checked
+                                        ? DOWNLOAD_URL
+                                        : ""
 
                             })
 
@@ -1833,7 +2060,10 @@ sendButton.addEventListener(
                 await response.json();
 
 
-            if (!response.ok) {
+            if (
+                !response.ok
+            ) {
+
 
                 throw new Error(
                     data.message ||
@@ -1843,25 +2073,14 @@ sendButton.addEventListener(
             }
 
 
-            /*
-                Backend can return:
-
-                {
-                    success: true,
-                    sent: 20,
-                    failed: 1,
-                    message: "..."
-                }
-            */
-
-
             let resultMessage =
                 data.message ||
                 "ส่งข้อความเรียบร้อยแล้ว";
 
 
             if (
-                data.sent !== undefined
+                data.sent !==
+                undefined
             ) {
 
                 resultMessage +=
@@ -1873,7 +2092,8 @@ sendButton.addEventListener(
 
 
             if (
-                data.failed !== undefined
+                data.failed !==
+                undefined
             ) {
 
                 resultMessage +=
@@ -1890,7 +2110,8 @@ sendButton.addEventListener(
             );
 
 
-        } catch (error) {
+        }
+        catch (error) {
 
 
             setSendStatus(
@@ -1899,7 +2120,8 @@ sendButton.addEventListener(
             );
 
 
-        } finally {
+        }
+        finally {
 
 
             sendButton.disabled =
@@ -1930,7 +2152,8 @@ function setUsersStatus(
 
 
     usersStatus.className =
-        "status " + type;
+        "status " +
+        type;
 
 
     usersStatus.textContent =
@@ -1947,7 +2170,8 @@ function setSendStatus(
 
 
     sendStatus.className =
-        "status " + type;
+        "status " +
+        type;
 
 
     sendStatus.textContent =
@@ -1979,22 +2203,27 @@ function escapeHtml(value) {
 
 
     return String(value)
+
         .replaceAll(
             "&",
             "&amp;"
         )
+
         .replaceAll(
             "<",
             "&lt;"
         )
+
         .replaceAll(
             ">",
             "&gt;"
         )
+
         .replaceAll(
             '"',
             "&quot;"
         )
+
         .replaceAll(
             "'",
             "&#039;"
@@ -2008,6 +2237,8 @@ function escapeHtml(value) {
    START
 ======================================================== */
 
+updateDownloadLinkState();
+
 loadUsers();
 
 
@@ -2015,4 +2246,5 @@ loadUsers();
 
 
 </body>
+
 </html>
