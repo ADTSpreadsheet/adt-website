@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ADT-PILEFiX | Admin Notification</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    background: #f2f5f9;
+    color: #172033;
+}
+
+.header {
+    background: linear-gradient(135deg, #031a38, #075196);
+    color: white;
+    padding: 26px 20px;
+}
+
+.header-inner {
+    max-width: 900px;
+    margin: auto;
+}
+
+.logo {
+    font-size: 26px;
+    font-weight: 800;
+}
+
+.logo span {
+    color: #ffc83d;
+}
+
+.subtitle {
+    margin-top: 4px;
+    color: rgba(255,255,255,.75);
+    font-size: 14px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 32px auto;
+    padding: 0 18px;
+}
+
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 8px 30px rgba(0,0,0,.08);
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin: 0 0 22px;
+    color: #082d59;
+}
+
+.field {
+    margin-bottom: 22px;
+}
+
+label {
+    display: block;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+select,
+input,
+textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #ccd5df;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
+    border-color: #075196;
+}
+
+textarea {
+    min-height: 210px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.hint {
+    margin-top: 7px;
+    color: #778191;
+    font-size: 13px;
+}
+
+.download-box {
+    padding: 15px;
+    border-radius: 10px;
+    background: #f5f8fc;
+    border: 1px solid #dce5ef;
+    word-break: break-all;
+    font-size: 14px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+    padding: 15px 22px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.preview-btn {
+    background: #e9eef5;
+    color: #18344f;
+}
+
+.send-btn {
+    flex: 1;
+    background: linear-gradient(135deg, #eeb31d, #ffd45a);
+    color: #08244a;
+}
+
+.send-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.preview {
+    white-space: pre-wrap;
+    background: #f7f8fa;
+    padding: 20px;
+    border-radius: 10px;
+    line-height: 1.65;
+    display: none;
+}
+
+.status {
+    display: none;
+    margin-top: 18px;
+    padding: 14px;
+    border-radius: 9px;
+}
+
+.status.success {
+    display: block;
+    background: #eaf8ef;
+    color: #176b38;
+}
+
+.status.error {
+    display: block;
+    background: #fff0f0;
+    color: #a62a2a;
+}
+
+@media(max-width:600px) {
+    .card {
+        padding: 22px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-inner">
+
+        <div class="logo">
+            ADT-PILE<span>FiX</span>
+        </div>
+
+        <div class="subtitle">
+            Professional Notification Center
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container">
+
+    <div class="card">
+
+        <h2>ส่งข้อความถึงผู้ใช้งาน</h2>
+
+
+        <div class="field">
+
+            <label for="recipientType">
+                ผู้รับข้อความ
+            </label>
+
+            <select id="recipientType">
+
+                <option value="all">
+                    ผู้ใช้งาน ADT-PILEFiX ทั้งหมด
+                </option>
+
+                <option value="single">
+                    ระบุ Booking No.
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div
+            class="field"
+            id="bookingField"
+            style="display:none;"
+        >
+
+            <label for="bookingNo">
+                Booking No.
+            </label>
+
+            <input
+                id="bookingNo"
+                type="text"
+                placeholder="เช่น PF-038"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label for="message">
+                ข้อความ
+            </label>
+
+            <textarea id="message">📢 ADT-PILEFiX Professional
+
+ขณะนี้มีโปรแกรมเวอร์ชันใหม่พร้อมให้ดาวน์โหลดแล้วครับ
+
+กรุณาดาวน์โหลดไฟล์เวอร์ชันล่าสุดเพื่อใช้งานแทนไฟล์เดิม
+
+หลังเปิดโปรแกรม ให้กรอกหมายเลข PF ของท่าน และกด REQUEST เพื่อรับรหัสเข้าใช้งานทาง LINE
+
+ดาวน์โหลดโปรแกรมได้จากลิงก์ด้านล่าง</textarea>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                ลิงก์ดาวน์โหลด
+            </label>
+
+            <div class="download-box" id="downloadUrl">
+https://adtspreadsheet.com/software/pilefix/download/
+            </div>
+
+        </div>
+
+
+        <div class="actions">
+
+            <button
+                class="preview-btn"
+                id="previewButton"
+                type="button"
+            >
+                PREVIEW
+            </button>
+
+            <button
+                class="send-btn"
+                id="sendButton"
+                type="button"
+            >
+                SEND LINE MESSAGE
+            </button>
+
+        </div>
+
+
+        <div
+            id="status"
+            class="status"
+        ></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>ตัวอย่างข้อความ</h2>
+
+        <div
+            id="preview"
+            class="preview"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+const API_URL =
+    "https://adt-website-api.onrender.com/api/pilefix/notification/send";
+
+const DOWNLOAD_URL =
+    "https://adtspreadsheet.com/software/pilefix/download/";
+
+
+const recipientType =
+    document.getElementById("recipientType");
+
+const bookingField =
+    document.getElementById("bookingField");
+
+const bookingNo =
+    document.getElementById("bookingNo");
+
+const message =
+    document.getElementById("message");
+
+const preview =
+    document.getElementById("preview");
+
+const statusBox =
+    document.getElementById("status");
+
+const sendButton =
+    document.getElementById("sendButton");
+
+
+recipientType.addEventListener(
+    "change",
+    function () {
+
+        bookingField.style.display =
+            this.value === "single"
+                ? "block"
+                : "none";
+    }
+);
+
+
+document
+    .getElementById("previewButton")
+    .addEventListener(
+        "click",
+        function () {
+
+            preview.textContent =
+                message.value.trim() +
+                "\n\n" +
+                DOWNLOAD_URL;
+
+            preview.style.display =
+                "block";
+        }
+    );
+
+
+sendButton.addEventListener(
+    "click",
+    async function () {
+
+        statusBox.className =
+            "status";
+
+        statusBox.textContent =
+            "";
+
+
+        const recipient =
+            recipientType.value;
+
+        const pf =
+            bookingNo.value
+                .trim()
+                .toUpperCase();
+
+        const text =
+            message.value.trim();
+
+
+        if (!text) {
+
+            showError(
+                "กรุณากรอกข้อความที่ต้องการส่ง"
+            );
+
+            return;
+        }
+
+
+        if (
+            recipient === "single" &&
+            !pf
+        ) {
+
+            showError(
+                "กรุณากรอก Booking No."
+            );
+
+            return;
+        }
+
+
+        let confirmText;
+
+        if (recipient === "all") {
+
+            confirmText =
+                "ยืนยันส่งข้อความถึงผู้ใช้งาน ADT-PILEFiX ทั้งหมดหรือไม่?";
+
+        } else {
+
+            confirmText =
+                "ยืนยันส่งข้อความถึง " +
+                pf +
+                " หรือไม่?";
+        }
+
+
+        if (!window.confirm(confirmText)) {
+            return;
+        }
+
+
+        sendButton.disabled = true;
+
+        sendButton.textContent =
+            "SENDING...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    API_URL,
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            recipient_type:
+                                recipient,
+
+                            booking_no:
+                                recipient === "single"
+                                    ? pf
+                                    : null,
+
+                            message:
+                                text,
+
+                            download_url:
+                                DOWNLOAD_URL
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    "ไม่สามารถส่งข้อความได้"
+                );
+            }
+
+
+            showSuccess(
+                data.message ||
+                "ส่งข้อความเรียบร้อยแล้ว"
+            );
+
+
+        } catch (error) {
+
+            showError(
+                error.message
+            );
+
+        } finally {
+
+            sendButton.disabled =
+                false;
+
+            sendButton.textContent =
+                "SEND LINE MESSAGE";
+        }
+
+    }
+);
+
+
+function showSuccess(text) {
+
+    statusBox.className =
+        "status success";
+
+    statusBox.textContent =
+        text;
+}
+
+
+function showError(text) {
+
+    statusBox.className =
+        "status error";
+
+    statusBox.textContent =
+        text;
+}
+
+</script>
+
+</body>
+</html>
