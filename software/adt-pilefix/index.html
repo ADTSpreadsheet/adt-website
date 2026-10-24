@@ -944,6 +944,13 @@
     .tour-stage[hidden]{display:none!important}
     /* Spotlight #2: document title selector and three real screenshots */
     .tour-hotspot-2{left:89%;top:3.3%}
+    .tour-hotspot-3{left:92.8%;top:11.2%;background:#f79009}
+    .tour-hotspot-3:hover,.tour-hotspot-3:focus-visible{background:#c65b00}
+    .tour-mode-note{padding:12px 15px;border:1px solid #ffdab0;background:#fff8ee;border-radius:12px;color:#744515;font-size:.84rem;line-height:1.7;margin-top:12px}
+    .tour-mode-note strong{color:#a84a00}
+    .tour-mode-tabs .tour-title-tab[aria-pressed="true"]{background:#e76f13;border-color:#e76f13}
+    .tour-lightbox-inner img.tour-mode-image{max-height:64dvh}
+    @media(max-width:780px){.tour-hotspot-3{left:92.8%;top:11.2%}.tour-lightbox-inner img.tour-mode-image{max-height:55dvh}}
     .tour-title-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0 12px}
     .tour-title-tab{padding:10px 13px;border:1px solid #bcd3f2;border-radius:10px;background:#eff6ff;color:#0d57bf;font-size:.82rem;font-weight:800;cursor:pointer}
     .tour-title-tab[aria-pressed="true"]{background:#1677ff;color:#fff;border-color:#1677ff}
@@ -1065,7 +1072,7 @@
           <p class="eyebrow">EXPLORE ADT-PILEFiX</p>
           <h2 id="tour-heading">เจาะลึกหน้าจอโปรแกรม ADT-PILEFiX</h2>
           <p>คลิกหมายเลขบนภาพเพื่อดูรายละเอียดแต่ละส่วนของโปรแกรม พร้อมเน้นตำแหน่งที่เกี่ยวข้อง</p>
-          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1 หรือ 2 เพื่อสำรวจการทำงานของโปรแกรม</p>
+          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1, 2 หรือ 3 เพื่อสำรวจการทำงานของโปรแกรม</p>
         </div>
         <div class="tour-layout">
           <div class="tour-image-card">
@@ -1079,6 +1086,7 @@
                 <div class="tour-highlight" aria-hidden="true"></div>
                 <button type="button" class="tour-hotspot" id="tour-hotspot-1" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 1 หัวกระดาษรายการคำนวณ">1</button>
                 <button type="button" class="tour-hotspot tour-hotspot-2" id="tour-hotspot-2" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 2 เปลี่ยนหัวข้อหลักเอกสาร">2</button>
+                <button type="button" class="tour-hotspot tour-hotspot-3" id="tour-hotspot-3" aria-controls="tour-mode-modal" aria-pressed="false" aria-label="หมายเลข 3 เปลี่ยนโหมดการกรอกข้อมูลเสาเข็ม">3</button>
               </div>
             </div>
             <p class="tour-caption">บนมือถือสามารถเลื่อนภาพในแนวนอนได้ เพื่อดูรายละเอียดโดยไม่บีบภาพจนตัวเลขเล็กเกินไป</p>
@@ -1087,7 +1095,7 @@
             <div class="tour-instruction" id="tour-instruction">
               <span class="tour-info-label">INTERACTIVE SOFTWARE TOUR</span>
               <h3>เลือกหมายเลขบนภาพ</h3>
-              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ หรือ <strong>หมายเลข 2</strong> เพื่อดูการเปลี่ยนหัวข้อเอกสารทั้ง 3 รูปแบบ</p>
+              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร หรือ <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม</p>
             </div>
             <div id="tour-detail" hidden>
               <span class="tour-info-label">01 / CALCULATION REPORT HEADER</span>
@@ -1104,12 +1112,6 @@
               <button type="button" class="tour-control" id="tour-reset">ปิดคำอธิบาย / แสดงภาพทั้งหมด</button>
             </div>
 
-              <div class="tour-title-preview">
-                <h4 id="tour-title-name">TITLE 1 — ก่อนปรับแก้ฐานราก</h4>
-                <p id="tour-title-description">FOOTING F1 DEVIATION CHECK CALCULATION REPORT — INITIAL CONDITION (BEFORE MODIFICATION) ใช้เป็นหัวข้อรายงานตรวจสอบสภาพฐานรากก่อนการปรับแก้</p>
-              </div>
-              <button type="button" class="tour-control" id="tour-reset-2">ปิดคำอธิบาย / แสดงภาพทั้งหมด</button>
-            </div>
           </aside>
         </div>
       </div>
@@ -1528,10 +1530,30 @@
       <p class="tour-modal-description" id="tour-modal-description"></p>
     </div>
   </div>
+  <div class="tour-lightbox" id="tour-mode-modal" role="dialog" aria-modal="true" aria-labelledby="tour-mode-heading" hidden>
+    <div class="tour-lightbox-inner" id="tour-mode-panel" tabindex="-1">
+      <div class="tour-lightbox-head">
+        <div>
+          <span class="tour-info-label">03 / CALCULATION MODE</span>
+          <h3 id="tour-mode-heading">เลือกรูปแบบการป้อนข้อมูลตำแหน่งเสาเข็ม</h3>
+          <p class="tour-modal-description">เปรียบเทียบการกรอกค่าพิกัดจากกล้องสำรวจ กับการกรอกระยะเยื้องที่วัดได้จริงจากหน้างาน</p>
+        </div>
+        <button type="button" class="tour-lightbox-close" id="tour-mode-close" aria-label="ปิดคำอธิบายโหมดการคำนวณ">✕ ปิด</button>
+      </div>
+      <div class="tour-title-tabs tour-mode-tabs" role="group" aria-label="เลือกโหมดการป้อนข้อมูล">
+        <button type="button" class="tour-title-tab" data-mode="1" aria-pressed="true">MODE 1 — COORDINATE</button>
+        <button type="button" class="tour-title-tab" data-mode="2" aria-pressed="false">MODE 2 — PILE DEVIATION</button>
+      </div>
+      <img class="tour-mode-image" id="tour-mode-image" src="/assets/slides/pilefix-mode-1-coordinate.png" alt="ภาพอธิบาย Mode 1 Coordinate Mode การกรอกพิกัด N E" loading="lazy">
+      <p class="tour-lightbox-caption" id="tour-mode-caption">MODE 1 — กรอกค่าพิกัด N, E จากงานสำรวจ</p>
+      <p class="tour-modal-description" id="tour-mode-description">กรอกค่าพิกัด N, E ของเสาเข็มแต่ละต้นที่สำรวจได้โดยตรง โดยใช้ระบบพิกัดเดียวกับโครงการ</p>
+      <div class="tour-mode-note" id="tour-mode-note" hidden><strong>ข้อควรทราบ:</strong> เมื่อเปลี่ยนเข้าสู่ Mode 2 โปรแกรมจะแสดงหน้าต่างยืนยัน หากกด Yes จะตั้ง CENTER FOOTING เป็น N = 0.000, E = 0.000 และล้างข้อมูลป้อนเข้าที่เกี่ยวข้องเดิม ผู้ใช้กรอกเฉพาะระยะเยื้อง ΔN, ΔE จากตำแหน่งตามแบบ (หน่วยเมตร) ไม่ใช่ค่าพิกัดจริง</div>
+    </div>
+  </div>
   <script>
     (() => {
       const stage = document.getElementById('tour-stage');
-      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2')];
+      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3')];
       const detail1 = document.getElementById('tour-detail');
       const instruction = document.getElementById('tour-instruction');
       const highlight = document.querySelector('.tour-highlight');
@@ -1539,13 +1561,18 @@
       const modal = document.getElementById('tour-lightbox');
       const closeButton = document.getElementById('tour-lightbox-close');
       const modalPanel = document.getElementById('tour-modal-panel');
-      if (!stage || buttons.some(b=>!b) || !detail1 || !instruction || !highlight || !maskHole || !modal) return;
+      const modeModal=document.getElementById('tour-mode-modal');
+      const modePanel=document.getElementById('tour-mode-panel');
+      const modeClose=document.getElementById('tour-mode-close');
+      if (!stage || buttons.some(b=>!b) || !detail1 || !instruction || !highlight || !maskHole || !modal || !modeModal || !modeClose) return;
       const titles = {
         1:{name:'TITLE 1 — ก่อนปรับแก้ฐานราก',desc:'FOOTING F1 DEVIATION CHECK CALCULATION REPORT — INITIAL CONDITION (BEFORE MODIFICATION) ใช้เป็นหัวข้อรายงานตรวจสอบสภาพฐานรากก่อนการปรับแก้'},
         2:{name:'TITLE 2 — หลังปรับแก้ฐานราก',desc:'FOOTING F1 DEVIATION RE-CHECK CALCULATION REPORT — AFTER MODIFICATION ใช้เป็นหัวข้อรายงานตรวจสอบฐานรากภายหลังการปรับแก้'},
         3:{name:'TITLE 3 — ออกแบบเหล็กเสริมฐานราก',desc:'FOOTING F1 CALCULATION DESIGN — PILE CAP REINFORCEMENT DESIGN ใช้เป็นหัวข้อรายการคำนวณออกแบบเหล็กเสริมฐานราก'}
       };
       let selectedTitle = 1;
+      let selectedMode = 1;
+      let activeModal = null;
       let returnFocus = null;
       function showTitle(n){
         selectedTitle=n;
@@ -1562,6 +1589,7 @@
         stage.classList.toggle('is-active',active);
         buttons[0].setAttribute('aria-pressed',String(active));
         buttons[1].setAttribute('aria-pressed','false');
+        buttons[2].setAttribute('aria-pressed','false');
         detail1.hidden=!active;
         instruction.hidden=active;
         if(active){
@@ -1577,31 +1605,68 @@
         showTitle(selectedTitle);
         modal.hidden=false;
         document.body.style.overflow='hidden';
+        activeModal=modal;
         closeButton.focus();
       }
       function closeModal(){
         modal.hidden=true;
+        activeModal=null;
         document.body.style.overflow='';
         buttons[1].setAttribute('aria-pressed','false');
         (returnFocus&&returnFocus.isConnected?returnFocus:buttons[1]).focus();
       }
+      function showMode(n){
+        selectedMode=n;
+        document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.mode)===n)));
+        const img=document.getElementById('tour-mode-image');
+        img.src=n===1?'/assets/slides/pilefix-mode-1-coordinate.png':'/assets/slides/pilefix-mode-2-deviation.png';
+        img.alt=n===1?'ภาพอธิบาย Mode 1 กรอกค่าพิกัด N E จากกล้องสำรวจ':'ภาพอธิบาย Mode 2 กรอกระยะเยื้องของเสาเข็มที่วัดจากหน้างาน';
+        document.getElementById('tour-mode-caption').textContent=n===1?'MODE 1 — COORDINATE MODE':'MODE 2 — PILE DEVIATION MODE';
+        document.getElementById('tour-mode-description').textContent=n===1
+          ?'ใช้ค่าพิกัด N, E ของเสาเข็มที่ได้จากงานสำรวจหรือ As-built มากรอกโดยตรง โดยอ้างอิงระบบพิกัดเดียวกัน'
+          :'ใช้ตลับเมตรวัดระยะเยื้องจากตำแหน่งเสาเข็มตามแบบ แล้วกรอกเฉพาะ ΔN, ΔE เป็นเมตร เช่น P1 เยื้องขึ้น 5 ซม. และขวา 5 ซม. กรอก N = +0.050, E = +0.050';
+        document.getElementById('tour-mode-note').hidden=n!==2;
+      }
+      function openModeModal(){
+        returnFocus=document.activeElement;
+        selectHotspot(0);
+        buttons[2].setAttribute('aria-pressed','true');
+        showMode(selectedMode);
+        modeModal.hidden=false;
+        activeModal=modeModal;
+        document.body.style.overflow='hidden';
+        modeClose.focus();
+      }
+      function closeModeModal(){
+        modeModal.hidden=true;
+        activeModal=null;
+        document.body.style.overflow='';
+        buttons[2].setAttribute('aria-pressed','false');
+        (returnFocus&&returnFocus.isConnected?returnFocus:buttons[2]).focus();
+      }
       buttons[0].addEventListener('click',()=>selectHotspot(buttons[0].getAttribute('aria-pressed')==='true'?0:1));
       buttons[1].addEventListener('click',openModal);
+      buttons[2].addEventListener('click',openModeModal);
+      document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>showMode(Number(b.dataset.mode))));
+      modeClose.addEventListener('click',closeModeModal);
+      modeModal.addEventListener('click',e=>{if(e.target===modeModal)closeModeModal();});
       document.getElementById('tour-reset').addEventListener('click',()=>selectHotspot(0));
       document.querySelectorAll('.tour-title-tab').forEach(b=>b.addEventListener('click',()=>showTitle(Number(b.dataset.title))));
       closeButton.addEventListener('click',closeModal);
       modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
       document.addEventListener('keydown',e=>{
-        if(modal.hidden)return;
-        if(e.key==='Escape'){e.preventDefault();closeModal();}
+        if(!activeModal)return;
+        if(e.key==='Escape'){e.preventDefault();activeModal===modal?closeModal():closeModeModal();}
         if(e.key==='Tab'){
-          const focusable=Array.from(modalPanel.querySelectorAll('button:not([disabled])'));
+          const panel=activeModal===modal?modalPanel:modePanel;
+          const focusable=Array.from(panel.querySelectorAll('button:not([disabled])'));
           const first=focusable[0],last=focusable[focusable.length-1];
           if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
           else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
         }
       });
       showTitle(1);
+      showMode(1);
       selectHotspot(1);
     })();
   </script>
