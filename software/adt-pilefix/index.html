@@ -941,6 +941,14 @@
     @media(max-width:780px){.tour-hotspot{width:42px;height:42px}.tour-info{padding:20px}.tour-image-scroll{scrollbar-width:thin}}
     @media(prefers-reduced-motion:reduce){.tour-shade{transition:none}}
 
+    /* Full-size TITLE preview in the main software display */
+    .tour-main-title[hidden], .tour-stage[hidden] {display:none !important}
+    .tour-main-title {background:#fff;border-radius:12px;overflow:hidden;min-height:260px}
+    .tour-main-title-toolbar {display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px;background:#f0f6ff;border-bottom:1px solid #dce6f3}
+    .tour-main-title-toolbar strong {font-size:.9rem;color:#0a2855}
+    .tour-main-title-toolbar button {border:1px solid #bdd5f4;border-radius:9px;padding:8px 12px;background:white;color:#0d57bf;font-weight:700;cursor:pointer}
+    .tour-main-title-image {display:block;width:100%;height:auto;object-fit:contain;background:white;cursor:zoom-in}
+    .tour-main-title-hint {padding:9px 16px;color:#52657e;font-size:.78rem;line-height:1.6}
     /* Spotlight #2: document title selector and three real screenshots */
     .tour-hotspot-2{left:89%;top:3.3%}
     .tour-title-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0 12px}
@@ -1065,6 +1073,17 @@
         <div class="tour-layout">
           <div class="tour-image-card">
             <div class="tour-image-scroll" id="tour-scroll" tabindex="0" aria-label="ภาพหน้าจอโปรแกรม เลื่อนซ้ายขวาเพื่อดูบนมือถือ">
+              <div class="tour-main-title" id="tour-main-title" hidden>
+                <div class="tour-main-title-toolbar">
+                  <strong id="tour-main-title-label">TITLE 1 — ก่อนปรับแก้ฐานราก</strong>
+                  <button type="button" id="tour-main-title-back">← กลับไปดูหน้าจอโปรแกรม</button>
+                </div>
+                <img class="tour-main-title-image" id="tour-main-title-image"
+                     src="/assets/slides/pilefix-title-1.png"
+                     alt="ภาพขยายหัวข้อรายการคำนวณ TITLE 1"
+                     title="คลิกเพื่อเปิดภาพเต็มหน้าจอ">
+                <div class="tour-main-title-hint">ภาพตัวอย่างจริง • เลือก TITLE 1–3 ทางด้านขวาเพื่อเปลี่ยนภาพ • คลิกภาพเพื่อขยายเต็มหน้าจอ</div>
+              </div>
               <div class="tour-stage" id="tour-stage">
                 <img src="/assets/slides/adt-pilefix-tour.png" alt="หน้าจอจริง ADT-PILEFiX แสดงแบบฐานราก ตารางคำนวณ และแผงควบคุม" loading="eager" decoding="async" onerror="this.alt='ไม่พบไฟล์ภาพ /assets/slides/adt-pilefix-tour.png กรุณาตรวจสอบชื่อไฟล์และตำแหน่งใน GitHub';this.style.minHeight='350px';">
                 <svg class="tour-shade" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
@@ -1108,10 +1127,6 @@
                 <button type="button" class="tour-title-tab" data-title="3" aria-pressed="false">TITLE 3</button>
               </div>
               <div class="tour-title-preview">
-                <button type="button" class="tour-preview-open" id="tour-preview-open" aria-label="คลิกเพื่อขยายภาพตัวอย่าง">
-                  <img id="tour-title-image" src="/assets/slides/pilefix-title-1.png" alt="ตัวอย่างหัวข้อเอกสาร TITLE 1" loading="lazy">
-                  <span>⤢ คลิกเพื่อดูภาพขยาย</span>
-                </button>
                 <h4 id="tour-title-name">TITLE 1 — ก่อนปรับแก้ฐานราก</h4>
                 <p id="tour-title-description">FOOTING F1 DEVIATION CHECK CALCULATION REPORT — INITIAL CONDITION (BEFORE MODIFICATION) ใช้เป็นหัวข้อรายงานตรวจสอบสภาพฐานรากก่อนการปรับแก้</p>
               </div>
@@ -1529,6 +1544,8 @@
       const detail1 = document.getElementById('tour-detail');
       const detail2 = document.getElementById('tour-detail-2');
       const instruction = document.getElementById('tour-instruction');
+      const mainTitle = document.getElementById('tour-main-title');
+      const mainTitleImage = document.getElementById('tour-main-title-image');
       const highlight = document.querySelector('.tour-highlight');
       const maskHole = document.getElementById('tour-mask-hole');
       if (!stage || buttons.some(b => !b) || !detail1 || !detail2 || !instruction || !highlight || !maskHole) return;
@@ -1538,7 +1555,9 @@
       };
       function selectHotspot(n) {
         const active = n === 1 || n === 2;
-        stage.classList.toggle('is-active', active);
+        stage.hidden = n === 2;
+        mainTitle.hidden = n !== 2;
+        stage.classList.toggle('is-active', active && n !== 2);
         buttons.forEach((b,i) => b.setAttribute('aria-pressed',String(active && i+1===n)));
         detail1.hidden = n !== 1;
         detail2.hidden = n !== 2;
@@ -1562,16 +1581,17 @@
         selectedTitle = n;
         const t=titles[n];
         document.querySelectorAll('.tour-title-tab').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.title)===n)));
-        const img=document.getElementById('tour-title-image');
-        img.src='/assets/slides/pilefix-title-'+n+'.png';
-        img.alt='ตัวอย่าง '+t.name;
+        mainTitleImage.src='/assets/slides/pilefix-title-'+n+'.png';
+        mainTitleImage.alt='ภาพขยาย '+t.name;
+        document.getElementById('tour-main-title-label').textContent=t.name;
         document.getElementById('tour-title-name').textContent=t.name;
         document.getElementById('tour-title-description').textContent=t.desc;
       }
       document.querySelectorAll('.tour-title-tab').forEach(b=>b.addEventListener('click',()=>showTitle(Number(b.dataset.title))));
       const lightbox=document.getElementById('tour-lightbox');
-      const closeLightbox=()=>{lightbox.hidden=true;document.body.style.overflow='';document.getElementById('tour-preview-open').focus();};
-      document.getElementById('tour-preview-open').addEventListener('click',()=>{
+      const closeLightbox=()=>{lightbox.hidden=true;document.body.style.overflow='';mainTitleImage.focus();};
+      document.getElementById('tour-main-title-back').addEventListener('click',()=>selectHotspot(0));
+      mainTitleImage.addEventListener('click',()=>{
         document.getElementById('tour-lightbox-image').src='/assets/slides/pilefix-title-'+selectedTitle+'.png';
         document.getElementById('tour-lightbox-caption').textContent=titles[selectedTitle].name;
         lightbox.hidden=false;document.body.style.overflow='hidden';document.getElementById('tour-lightbox-close').focus();
