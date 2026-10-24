@@ -1204,6 +1204,15 @@
     .adt-copy-account-btn:hover,.adt-copy-account-btn:focus-visible{background:#dcecff}
     #adt-copy-account-feedback{color:#13743c;font-size:.76rem}
   </style>
+  <style>
+    .adt-line-guide-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:start;margin:18px auto;max-width:560px}
+    .adt-line-guide-item{margin:0;min-width:0;padding:12px;background:#fff;border:1px solid #dce5ee;border-radius:14px}
+    .adt-order-line .adt-line-guide-item img{width:100%;max-width:240px;height:240px;object-fit:contain;margin:0 auto;padding:0;border-radius:8px;background:#fff}
+    .adt-line-guide-item figcaption{margin-top:10px;font-size:.78rem;line-height:1.65;color:#40506a;font-weight:600}
+    .adt-kbank-heading{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .adt-kbank-heading img{width:36px;height:36px;object-fit:contain;flex-shrink:0}
+    @media(max-width:480px){.adt-line-guide-grid{grid-template-columns:1fr;max-width:290px}.adt-order-line .adt-line-guide-item img{height:auto;max-height:250px}}
+  </style>
 </head>
 
 <body>
@@ -1605,7 +1614,16 @@
           <div id="adt-order-line" class="adt-order-line" hidden aria-live="polite">
             <h3>ขั้นตอนต่อไป: เพิ่มเพื่อน LINE Bot</h3>
             <p>สแกน QR Code เพื่อเปิด LINE Bot จากนั้นตอบ <strong>YES</strong> ในข้อความต้อนรับ เพื่อขอรหัส OTP สำหรับยืนยันการสั่งซื้อ</p>
-            <div id="adt-order-qr-container"><img src="/assets/line/line-oa-qrcode.png" width="240" height="240" loading="lazy" alt="QR Code สำหรับเพิ่มเพื่อน LINE Official Account ของ ADT-SOFTWARE"></div>
+            <div id="adt-order-qr-container" class="adt-line-guide-grid">
+              <figure class="adt-line-guide-item">
+                <img src="/assets/line/line-oa-qrcode.png" width="240" height="240" loading="lazy" alt="QR Code สำหรับเพิ่มเพื่อน LINE Official Account ของ ADT-SOFTWARE">
+                <figcaption>1. สแกน QR Code เพื่อเพิ่มเพื่อน LINE</figcaption>
+              </figure>
+              <figure class="adt-line-guide-item">
+                <img src="/assets/images/adt-line-yes.png" width="240" loading="lazy" alt="ตัวอย่างข้อความต้อนรับจาก ADT-SOFTWARE ให้กดปุ่ม YES">
+                <figcaption>2. กดปุ่ม <strong>YES</strong> ตามภาพ เพื่อรับรหัส OTP</figcaption>
+              </figure>
+            </div>
             <p class="adt-order-small">หมายเหตุ: การเพิ่มเพื่อนหรือกด YES เพียงอย่างเดียวยังไม่ยืนยันว่าชำระเงินแล้ว และยังไม่ออกสิทธิ์ใช้งานโปรแกรม</p>
             <div class="adt-order-field adt-otp-field">
               <label for="adt-order-otp">รหัส OTP ที่ได้รับทาง LINE</label>
@@ -1629,7 +1647,7 @@
               <label><input type="radio" name="adt-payment-method" value="BANK_TRANSFER" checked> โอนเงินผ่านบัญชีธนาคาร</label>
             </fieldset>
             <div class="adt-payment-instructions" id="adt-payment-instructions" aria-live="polite">
-              <strong>ธนาคารกสิกรไทย (KBank)</strong>
+              <div class="adt-kbank-heading"><img src="/assets/images/kbank-logo.png" alt="โลโก้ธนาคารกสิกรไทย" width="36" height="36" loading="lazy"><strong>ธนาคารกสิกรไทย (KBank)</strong></div>
               <p><b>ชื่อบัญชี:</b> บริษัท เอดีที ซีวิล บิวดิ้ง แอนด์เทคโนโลยี จำกัด</p>
               <p class="adt-bank-account-row"><b>เลขที่บัญชี:</b> <span style="font-weight:800;font-size:1.2rem;letter-spacing:.035em;user-select:all">226-2-59393-5</span> <button type="button" class="adt-copy-account-btn" id="adt-copy-bank-account" aria-label="คัดลอกเลขบัญชีธนาคาร">⧉ คัดลอก</button> <small id="adt-copy-account-feedback" role="status" aria-live="polite"></small></p>
               <p class="adt-order-small">หลังโอนเงินแล้ว กรุณาแนบภาพสลิปเพื่อให้ระบบตรวจสอบข้อมูล</p>
