@@ -1195,7 +1195,7 @@
     #adt-program-download-link[hidden]{display:none!important}
     .adt-payment-progress{height:9px;background:#e5edf5;border-radius:99px;overflow:hidden}
     .adt-payment-progress>span{display:block;width:0;height:100%;background:#1677ff;transition:width .2s ease}
-    .adt-payment-progress.is-processing>span{width:35%;animation:adt-ocr-loading 1.3s ease-in-out infinite alternate}
+    .adt-payment-progress.is-processing>span{animation:none}
     .adt-process-list{display:grid;gap:7px;margin:4px 0 10px;padding:0;list-style:none;font-size:.79rem;color:#65758a}
     .adt-process-list li::before{content:"○";display:inline-block;width:23px;color:#8b9bb0}
     .adt-process-list li.is-active{color:#946200;font-weight:700}
@@ -1661,7 +1661,8 @@
               <p class="adt-order-small">หลังโอนเงินแล้ว กรุณาแนบภาพสลิปเพื่อให้ระบบตรวจสอบข้อมูล</p>
             </div>
             <div class="adt-order-field"><label for="adt-payment-slip">แนบสลิปการชำระเงิน (JPG, PNG สูงสุด 10 MB)</label><input id="adt-payment-slip" type="file" accept="image/png,image/jpeg"></div>
-            <div class="adt-payment-progress" id="adt-payment-progress" hidden aria-label="ความคืบหน้าการอัปโหลดสลิป"><span></span></div>
+            <div class="adt-payment-progress" id="adt-payment-progress" hidden role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="ความคืบหน้าการอ่านสลิป"><span></span></div>
+            <div id="adt-ocr-progress-label" role="status" aria-live="polite" hidden style="margin-top:7px;font-weight:600;color:#24558a">กำลังอ่านสลิป 0%</div>
             <ol class="adt-process-list" id="adt-process-list" hidden aria-label="ขั้นตอนการลงทะเบียน">
               <li data-phase="upload">อัปโหลดสลิปเข้าสู่ระบบ</li>
               <li data-phase="ocr">อ่านสลิปและตรวจสอบยอดเงิน/บัญชีผู้รับ</li>
@@ -2087,7 +2088,7 @@
       const paymentInstructions=document.getElementById('adt-payment-instructions');
       if(!form || !panel || !verifyButton || !payment)return;
       // Backend proxy must authenticate the browser session; OCR_API_SECRET must stay server-side.
-      const CHECKOUT_SUBMIT_URL=API_BASE+'/api/pilefix/ocr/submit';
+      const CHECKOUT_SUBMIT_URL=API_BASE+'/api/pilefix/ocr/submit-stream';
       // Configure the genuine program URL before publishing. Never fabricate a download address.
       const PROGRAM_DOWNLOAD_URL='';
       let checkoutToken='';
@@ -2151,6 +2152,7 @@
       const submitButton=document.getElementById('adt-payment-submit');
       const paymentFeedback=document.getElementById('adt-payment-feedback');
       const progress=document.getElementById('adt-payment-progress');
+      const ocrProgressLabel=document.getElementById('adt-ocr-progress-label');
       const processList=document.getElementById('adt-process-list');
       const processPhases=['upload','ocr','booking','line'];
       function showPhase(phase, completed=[]){
@@ -2160,23 +2162,41 @@
           li.classList.toggle('is-done',completed.includes(li.dataset.phase));
         });
       }
-      // No intermediate Backend status endpoint exists yet. Never claim DB/LINE
-      // completion until the final response explicitly confirms both.
-      function submitWithUploadProgress(url, payload, timeoutMs, onUpload){
-        return new Promise((resolve,reject)=>{
-          const xhr=new XMLHttpRequest();
-          xhr.open('POST',url,true);
-          xhr.timeout=timeoutMs;
-          xhr.upload.onprogress=e=>{if(e.lengthComputable)onUpload(e.loaded/e.total);};
-          xhr.onload=()=>{
-            let result={};try{result=JSON.parse(xhr.responseText||'{}')}catch(_e){}
-            resolve({status:xhr.status,result});
-          };
-          xhr.onerror=()=>reject(new Error('NETWORK'));
-          xhr.ontimeout=()=>reject(new Error('TIMEOUT'));
-          xhr.onabort=()=>reject(new Error('ABORT'));
-          xhr.send(payload);
-        });
+      // Read real-time OCR progress and final JSON result from one authenticated request.
+      async function submitWithOcrProgress(url,payload,timeoutMs,onProgress){
+        const controller=new AbortController();
+        const timer=setTimeout(()=>controller.abort(),timeoutMs);
+        try{
+          const response=await fetch(url,{method:'POST',mode:'cors',body:payload,signal:controller.signal});
+          if(!response.ok){
+            const result=await response.json().catch(()=>({}));
+            return {status:response.status,result};
+          }
+          if(!response.body)throw new Error('STREAM_UNAVAILABLE');
+          const reader=response.body.getReader();
+          const decoder=new TextDecoder();
+          let buffer='';let finalResult=null;
+          function handleLine(line){
+            if(!line.trim())return;
+            const msg=JSON.parse(line);
+            if(msg.type==='progress')onProgress(msg.percent,msg.phase);
+            if(msg.type==='result')finalResult={status:msg.status,result:msg.result};
+          }
+          while(true){
+            const {done,value}=await reader.read();
+            if(done)break;
+            buffer+=decoder.decode(value,{stream:true});
+            let newline;
+            while((newline=buffer.indexOf('\n'))>=0){
+              const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);
+              handleLine(line);
+            }
+          }
+          buffer+=decoder.decode();
+          if(buffer.trim())handleLine(buffer);
+          if(!finalResult)throw new Error('STREAM_INCOMPLETE');
+          return finalResult;
+        }finally{clearTimeout(timer);}
       }
       // OCR response is a preliminary screening result, not payment confirmation.
       function formatOcrScreening(result){
@@ -2215,25 +2235,22 @@
         submitting=true;submitButton.disabled=true;progress.hidden=false;
         progress.classList.remove('is-processing');
         progress.querySelector('span').style.width='0%';
+        progress.setAttribute('aria-valuenow','0');
+        ocrProgressLabel.hidden=false;ocrProgressLabel.textContent='กำลังเริ่มอ่านสลิป 0%';
         showPhase('upload');
         submitButton.textContent='กำลังดำเนินการ...';
         paymentFeedback.textContent='กำลังอัปโหลดภาพสลิปเข้าสู่ระบบ';
         try{
-          const {status:responseStatus,result}=await submitWithUploadProgress(
-            CHECKOUT_SUBMIT_URL,payload,120000,ratio=>{
-              progress.querySelector('span').style.width=Math.round(ratio*100)+'%';
-              if(ratio>=1){
-                showPhase('ocr',['upload']);
-                progress.classList.add('is-processing');
-                paymentFeedback.textContent='อัปโหลดสำเร็จ กำลังรอ Backend อ่านสลิปและดำเนินการลงทะเบียน (ยังไม่มีสถานะย่อยจากเซิร์ฟเวอร์)';
-              }else{
-                paymentFeedback.textContent='กำลังอัปโหลดสลิป '+Math.round(ratio*100)+'%';
-              }
+          const {status:responseStatus,result}=await submitWithOcrProgress(
+            CHECKOUT_SUBMIT_URL,payload,240000,(pct,phase)=>{
+              progress.querySelector('span').style.width=pct+'%';
+              progress.setAttribute('aria-valuenow',String(pct));
+              showPhase('ocr',['upload']);
+              progress.classList.add('is-processing');
+              const stage=phase==='original'?'อ่านภาพต้นฉบับ':phase==='enhanced'?'อ่านภาพปรับแต่ง':phase==='complete'?'ประมวลผลเสร็จ':'กำลังเตรียม OCR';
+              ocrProgressLabel.textContent=stage+' '+pct+'%';
+              paymentFeedback.textContent='กำลังตรวจสอบสลิป '+pct+'%';
             });
-          if(!progress.classList.contains('is-processing')){
-            showPhase('ocr',['upload']);
-            progress.classList.add('is-processing');
-          }
           // New OCR backend returns a screening result; do not treat it as PF registration.
           if(responseStatus===200 && result.success===true &&
              result.status==='OCR_PRELIMINARY_PASS'){
@@ -2286,7 +2303,8 @@
             ? 'การเชื่อมต่อหมดเวลา โปรดลองใหม่ ระบบจะต้องใช้ Booking เดิมหากเคยบันทึกแล้ว'
             : 'เชื่อมต่อระบบตรวจสอบสลิปไม่ได้ กรุณาลองใหม่';
         }finally{
-          submitting=false;progress.classList.remove('is-processing');progress.hidden=true;
+          submitting=false;progress.classList.remove('is-processing');
+          if(progress.getAttribute('aria-valuenow')!=='100'){ocrProgressLabel.textContent='การประมวลผลไม่สมบูรณ์';}
           if(downloadPanel.hidden){processList.hidden=true;}
           if(downloadPanel.hidden){submitButton.disabled=false;submitButton.textContent='ตรวจสอบสลิปและลงทะเบียน';}
         }
