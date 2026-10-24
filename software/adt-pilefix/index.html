@@ -1170,6 +1170,24 @@
     @media(max-width:850px){.adt-order-layout{grid-template-columns:1fr}.adt-checkout-steps{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.adt-checkout-steps h3{grid-column:1/-1}.adt-step{margin:0}}
     @media(max-width:470px){.adt-checkout-steps{grid-template-columns:1fr}}
   </style>
+
+  <style>
+    .adt-payment-card{display:grid;gap:15px;background:#fff}
+    .adt-payment-card h3{margin:0;color:#071b38;font-size:1.5rem}
+    .adt-payment-card .eyebrow{margin:0}
+    .adt-payment-success{padding:11px 14px;background:#e9f8ee;color:#13743c;border:1px solid #b5e2c6;border-radius:10px;font-weight:700}
+    .adt-payment-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px;border:1px solid #dce5ee;background:#f6f9fc;border-radius:14px}
+    .adt-payment-summary small{display:block;color:#607187;margin-top:5px}
+    .adt-payment-summary>strong{font:800 1.45rem Inter,sans-serif;white-space:nowrap;color:#0d57bf}
+    .adt-payment-methods{display:grid;gap:11px;border:1px solid #dce5ee;border-radius:12px;padding:16px}
+    .adt-payment-methods legend{font-weight:700;padding:0 7px}
+    .adt-payment-methods label{display:flex;align-items:center;gap:9px;cursor:pointer}
+    .adt-payment-instructions{background:#fff7e8;border:1px solid #f5d88c;padding:15px;border-radius:12px;color:#77511a}
+    .adt-payment-instructions p{margin:7px 0 0;line-height:1.6}
+    .adt-payment-card .adt-order-field input{max-width:100%}
+    .adt-payment-card .btn:disabled{opacity:.55;cursor:not-allowed}
+    @media(max-width:560px){.adt-payment-summary{align-items:start;flex-direction:column}}
+  </style>
 </head>
 
 <body>
@@ -1575,18 +1593,35 @@
             <p class="adt-order-small">หมายเหตุ: การเพิ่มเพื่อนหรือกด YES เพียงอย่างเดียวยังไม่ยืนยันว่าชำระเงินแล้ว และยังไม่ออกสิทธิ์ใช้งานโปรแกรม</p>
             <div class="adt-order-field adt-otp-field">
               <label for="adt-order-otp">รหัส OTP ที่ได้รับทาง LINE</label>
-              <input id="adt-order-otp" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="กรอกรหัส OTP">
-              <button type="button" class="btn btn-gold" id="adt-verify-otp" disabled>ยืนยันรหัส OTP</button>
-              <p class="adt-order-small">รอเชื่อมต่อ API ตรวจสอบ OTP — ระบบยังไม่สามารถยืนยันรหัสจริงได้</p>
+              <input id="adt-order-otp" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" placeholder="กรอกรหัส OTP 6 หลัก">
+              <button type="button" class="btn btn-gold" id="adt-verify-otp">ยืนยันรหัส OTP</button>
+              <p id="adt-otp-feedback" class="adt-order-small" role="status" aria-live="polite">กรอกรหัส 6 หลักที่ได้รับทาง LINE แล้วกดยืนยัน</p>
             </div>
             <button id="adt-order-edit" type="button" class="btn btn-outline">แก้ไขข้อมูลติดต่อ</button>
           </div>
-          <div class="adt-order-next" id="adt-order-payment" hidden>
-            <h3>ขั้นตอนที่ 3: ชำระเงินและแนบสลิป</h3>
-            <p>เมื่อ API ยืนยัน OTP สำเร็จ ระบบจะแสดงข้อมูลชำระเงินและช่องแนบสลิปที่นี่</p>
-            <label for="adt-payment-slip">หลักฐานการชำระเงิน</label>
-            <input id="adt-payment-slip" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" disabled>
-            <button class="btn btn-gold" type="button" disabled>ส่งหลักฐานการชำระเงิน</button>
+          <div class="adt-order-next adt-payment-card" id="adt-order-payment" hidden>
+            <p class="eyebrow" style="color:#1677ff">STEP 3 / PAYMENT</p>
+            <h3>ชำระเงินและแจ้งหลักฐาน</h3>
+            <p id="adt-payment-verified" class="adt-payment-success">✓ ยืนยัน LINE OTP สำเร็จแล้ว</p>
+            <div class="adt-payment-summary">
+              <div><strong>ADT-PILEFiX Professional v1.2</strong><small>รหัสสินค้า PILEFIX · 1 License</small></div>
+              <strong>฿4,999</strong>
+            </div>
+            <p class="adt-order-small">ราคาที่แสดงเป็นข้อมูลประกอบการสั่งซื้อ โปรดรอข้อมูลบัญชีและยอดยืนยันจากระบบก่อนโอนเงินจริง</p>
+            <fieldset class="adt-payment-methods">
+              <legend>เลือกช่องทางการชำระเงิน</legend>
+              <label><input type="radio" name="adt-payment-method" value="BANK_TRANSFER" checked> โอนเงินผ่านบัญชีธนาคาร</label>
+              <label><input type="radio" name="adt-payment-method" value="PROMPTPAY"> QR PromptPay</label>
+            </fieldset>
+            <div class="adt-payment-instructions" id="adt-payment-instructions" aria-live="polite">
+              <strong>รอเปิดใช้งานบัญชีรับชำระเงิน</strong>
+              <p>ยังไม่ได้กำหนดเลขบัญชีหรือ QR รับเงินที่ยืนยันแล้ว กรุณาอย่าโอนเงินจากข้อมูลที่ไม่ได้ประกาศอย่างเป็นทางการ</p>
+            </div>
+            <div class="adt-order-field"><label for="adt-payment-date">วันและเวลาที่โอนเงิน</label><input type="datetime-local" id="adt-payment-date" disabled></div>
+            <div class="adt-order-field"><label for="adt-payment-reference">เลขอ้างอิงธุรกรรม (ถ้ามี)</label><input type="text" id="adt-payment-reference" maxlength="100" placeholder="เลขอ้างอิงจากธนาคาร" disabled></div>
+            <div class="adt-order-field"><label for="adt-payment-slip">แนบสลิปการชำระเงิน (JPG, PNG, PDF สูงสุด 5 MB)</label><input id="adt-payment-slip" type="file" accept="image/png,image/jpeg,application/pdf" disabled></div>
+            <p class="adt-order-small" id="adt-payment-feedback" role="status" aria-live="polite">ฟอร์มรับหลักฐานจะเปิดเมื่อ Backend มีระบบสร้างคำสั่งซื้อและรับสลิปที่ตรวจสอบได้</p>
+            <button class="btn btn-gold" id="adt-payment-submit" type="button" disabled>ส่งหลักฐานการชำระเงิน (ยังไม่เปิดใช้งาน)</button>
           </div>
           <div class="adt-order-next" id="adt-order-download" hidden>
             <h3>ขั้นตอนที่ 4: ดาวน์โหลด ADT-PILEFiX</h3>
@@ -1976,27 +2011,71 @@
 
   <script>
     (() => {
+      const API_BASE='https://adt-website-api.onrender.com';
+      const VERIFY_URL=API_BASE+'/api/orders/verify-line-otp';
       const form=document.getElementById('adt-order-contact');
       const panel=document.getElementById('adt-order-line');
       const edit=document.getElementById('adt-order-edit');
-      if(!form || !panel)return;
+      const verifyButton=document.getElementById('adt-verify-otp');
+      const otpInput=document.getElementById('adt-order-otp');
+      const feedback=document.getElementById('adt-otp-feedback');
+      const payment=document.getElementById('adt-order-payment');
+      const methods=document.querySelectorAll('input[name="adt-payment-method"]');
+      const paymentInstructions=document.getElementById('adt-payment-instructions');
+      if(!form || !panel || !verifyButton || !payment)return;
+      let verified=false;
+      const step=n=>document.getElementById('adt-step-'+n);
+      function setStep(n, state){step(n).classList.toggle('is-current',state==='current');step(n).classList.toggle('is-complete',state==='complete');}
+      function resetVerification(){
+        verified=false;payment.hidden=true;otpInput.value='';feedback.textContent='กรอกรหัส 6 หลักที่ได้รับทาง LINE แล้วกดยืนยัน';
+        verifyButton.disabled=false;verifyButton.textContent='ยืนยันรหัส OTP';
+        setStep(2,'current');setStep(3,'waiting');setStep(4,'waiting');
+      }
       form.addEventListener('submit',e=>{
-        e.preventDefault();
-        if(!form.reportValidity())return;
-        form.hidden=true;
-        panel.hidden=false;
-        document.getElementById('adt-step-1').classList.remove('is-current');
-        document.getElementById('adt-step-1').classList.add('is-complete');
-        document.getElementById('adt-step-2').classList.add('is-current');
+        e.preventDefault();if(!form.reportValidity())return;
+        form.hidden=true;panel.hidden=false;setStep(1,'complete');setStep(2,'current');
         panel.scrollIntoView({behavior:'smooth',block:'center'});
       });
       edit.addEventListener('click',()=>{
-        panel.hidden=true;form.hidden=false;
-        document.getElementById('adt-step-1').classList.remove('is-complete');
-        document.getElementById('adt-step-1').classList.add('is-current');
-        document.getElementById('adt-step-2').classList.remove('is-current');
-        form.querySelector('input').focus();
+        if(verified)return;resetVerification();panel.hidden=true;form.hidden=false;
+        setStep(1,'current');setStep(2,'waiting');form.querySelector('input').focus();
       });
+      otpInput.addEventListener('input',()=>{otpInput.value=otpInput.value.replace(/\D/g,'').slice(0,6);});
+      verifyButton.addEventListener('click',async()=>{
+        if(verified)return;
+        const otp=otpInput.value.trim();
+        if(!/^\d{6}$/.test(otp)){feedback.textContent='กรุณากรอก OTP เป็นตัวเลข 6 หลัก';otpInput.focus();return;}
+        if(!form.reportValidity()){feedback.textContent='กรุณาตรวจสอบข้อมูลติดต่อ';return;}
+        verifyButton.disabled=true;verifyButton.textContent='กำลังตรวจสอบ...';feedback.textContent='กำลังตรวจสอบรหัสกับ Backend';
+        try{
+          const controller=new AbortController();
+          const timeout=setTimeout(()=>controller.abort(),20000);
+          let response;
+          try{
+            response=await fetch(VERIFY_URL,{
+              method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},
+              body:JSON.stringify({product_id:'PILEFIX',customer_name:document.getElementById('adt-order-name').value.trim(),phone:document.getElementById('adt-order-phone').value.trim(),email:document.getElementById('adt-order-email').value.trim(),otp}),
+              signal:controller.signal
+            });
+          }finally{clearTimeout(timeout);}
+          const result=await response.json().catch(()=>({}));
+          if(response.status===200 && result.success===true && result.verified===true){
+            verified=true;feedback.textContent='✓ ยืนยันรหัสสำเร็จ';otpInput.disabled=true;
+            verifyButton.textContent='ยืนยันสำเร็จ';setStep(2,'complete');setStep(3,'current');
+            panel.hidden=true;payment.hidden=false;payment.scrollIntoView({behavior:'smooth',block:'start'});
+          }else{
+            feedback.textContent=result.message || 'ไม่สามารถยืนยัน OTP ได้ กรุณาตรวจสอบรหัสและลองอีกครั้ง';
+          }
+        }catch(error){
+          feedback.textContent=error.name==='AbortError'?'การเชื่อมต่อใช้เวลานานเกินไป กรุณาลองใหม่':'ไม่สามารถเชื่อมต่อ API ได้ กรุณาตรวจสอบเครือข่ายหรือการตั้งค่า CORS';
+        }finally{
+          if(!verified){verifyButton.disabled=false;verifyButton.textContent='ยืนยันรหัส OTP';}
+        }
+      });
+      methods.forEach(input=>input.addEventListener('change',()=>{
+        const selected=document.querySelector('input[name="adt-payment-method"]:checked')?.value;
+        paymentInstructions.querySelector('strong').textContent=selected==='PROMPTPAY'?'รอเปิดใช้งาน QR PromptPay':'รอเปิดใช้งานบัญชีรับชำระเงิน';
+      }));
     })();
   </script>
 
