@@ -1613,15 +1613,16 @@
               <div><strong>ADT-PILEFiX Professional v1.2</strong><small>รหัสสินค้า PILEFIX · 1 License</small></div>
               <strong>฿4,999</strong>
             </div>
-            <p class="adt-order-small">ราคาที่แสดงเป็นข้อมูลประกอบการสั่งซื้อ โปรดรอข้อมูลบัญชีและยอดยืนยันจากระบบก่อนโอนเงินจริง</p>
+            <p class="adt-order-small">ราคาที่แสดงเป็นข้อมูลประกอบการสั่งซื้อ โปรดยืนยันยอดและเลขคำสั่งซื้อกับ ADT ก่อนโอนเงินจริง</p>
             <fieldset class="adt-payment-methods">
               <legend>เลือกช่องทางการชำระเงิน</legend>
               <label><input type="radio" name="adt-payment-method" value="BANK_TRANSFER" checked> โอนเงินผ่านบัญชีธนาคาร</label>
-              <label><input type="radio" name="adt-payment-method" value="PROMPTPAY"> QR PromptPay</label>
             </fieldset>
             <div class="adt-payment-instructions" id="adt-payment-instructions" aria-live="polite">
-              <strong>รอเปิดใช้งานบัญชีรับชำระเงิน</strong>
-              <p>ยังไม่ได้กำหนดเลขบัญชีหรือ QR รับเงินที่ยืนยันแล้ว กรุณาอย่าโอนเงินจากข้อมูลที่ไม่ได้ประกาศอย่างเป็นทางการ</p>
+              <strong>ธนาคารกสิกรไทย (KBank)</strong>
+              <p><b>ชื่อบัญชี:</b> บริษัท เอดีที ซีวิล บิวดิ้ง แอนด์เทคโนโลยี จำกัด</p>
+              <p><b>เลขที่บัญชี:</b> <span style="font-weight:800;font-size:1.2rem;letter-spacing:.035em;user-select:all">226-2-59393-5</span></p>
+              <p class="adt-order-small">ขณะนี้แสดงข้อมูลบัญชีรับชำระเงินแล้ว แต่ระบบยังไม่บันทึกคำสั่งซื้อและรับสลิป กรุณาติดต่อ ADT เพื่อยืนยันยอดและเลขคำสั่งซื้อก่อนโอน</p>
             </div>
             <div class="adt-order-field"><label for="adt-payment-date">วันและเวลาที่โอนเงิน</label><input type="datetime-local" id="adt-payment-date" disabled></div>
             <div class="adt-order-field"><label for="adt-payment-reference">เลขอ้างอิงธุรกรรม (ถ้ามี)</label><input type="text" id="adt-payment-reference" maxlength="100" placeholder="เลขอ้างอิงจากธนาคาร" disabled></div>
@@ -2078,10 +2079,8 @@
           if(!verified){verifyButton.disabled=false;verifyButton.textContent='ยืนยันรหัส OTP';}
         }
       });
-      methods.forEach(input=>input.addEventListener('change',()=>{
-        const selected=document.querySelector('input[name="adt-payment-method"]:checked')?.value;
-        paymentInstructions.querySelector('strong').textContent=selected==='PROMPTPAY'?'รอเปิดใช้งาน QR PromptPay':'รอเปิดใช้งานบัญชีรับชำระเงิน';
-      }));
+      // Bank transfer only until an official PromptPay QR is provided.
+      // Keep payment evidence submission disabled until order/payment API exists.
     })();
   </script>
 
