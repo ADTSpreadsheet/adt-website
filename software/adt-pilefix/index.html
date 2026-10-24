@@ -998,6 +998,14 @@
     .tour-pile-focus img{display:block;width:100%;height:auto;max-height:40vh;object-fit:contain;background:#fff}
     .tour-pile-focus .tour-footing-dot.is-current{background:#7c3aed}
     @media(max-width:780px){.tour-hotspot-5{left:87%;top:16%}.tour-pile-focus{width:89%;left:3%;top:13%}.tour-pile-focus img{max-height:45vh}}
+    /* Spotlight #6: annotated footing input image in a readable popup */
+    .tour-hotspot-6{left:70%;top:12%;background:#0891b2}
+    .tour-hotspot-6:hover,.tour-hotspot-6:focus-visible{background:#0e7490}
+    .tour-lightbox-inner.tour-input-panel{width:min(96vw,1480px)}
+    .tour-lightbox-inner img.tour-input-image{width:100%;max-height:72dvh;object-fit:contain;cursor:zoom-in}
+    .tour-input-image.is-zoomed{max-height:none!important;width:auto!important;max-width:none!important;cursor:zoom-out!important}
+    .tour-input-scroll{overflow:auto;max-height:76dvh;border-radius:10px}
+    @media(max-width:780px){.tour-hotspot-6{left:70%;top:19%}.tour-lightbox-inner img.tour-input-image{max-height:65dvh}}
   </style>
 </head>
 
@@ -1115,6 +1123,7 @@
                 <button type="button" class="tour-hotspot tour-hotspot-3" id="tour-hotspot-3" aria-controls="tour-mode-modal" aria-pressed="false" aria-label="หมายเลข 3 เปลี่ยนโหมดการกรอกข้อมูลเสาเข็ม">3</button>
                 <button type="button" class="tour-hotspot tour-hotspot-4" id="tour-hotspot-4" aria-controls="tour-footing-focus" aria-pressed="false" aria-label="หมายเลข 4 แสดงภาพสไลด์ประเภทฐานราก F1 ถึง F5">4</button>
                 <button type="button" class="tour-hotspot tour-hotspot-5" id="tour-hotspot-5" aria-controls="tour-pile-focus" aria-pressed="false" aria-label="หมายเลข 5 แสดงภาพสไลด์ประเภทเสาเข็ม I-Pile, SQ-Pile, Hex Pile และ Circle Pile">5</button>
+                <button type="button" class="tour-hotspot tour-hotspot-6" id="tour-hotspot-6" aria-controls="tour-input-modal" aria-pressed="false" aria-label="หมายเลข 6 ภาพขยายช่องกรอกข้อมูลฐานราก">6</button>
                 <div class="tour-pile-focus" id="tour-pile-focus" aria-live="off" hidden>
                   <div class="tour-footing-head"><span>05 / PILE TYPE — <span id="tour-pile-type">I-PILE</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
                   <img id="tour-pile-image" src="/assets/slides/pilefix-pile-type-i.png" alt="ตัวอย่างเสาเข็มรูปตัวไอ I-Pile">
@@ -1588,10 +1597,26 @@
       <div class="tour-mode-note" id="tour-mode-note" hidden><strong>ข้อควรทราบ:</strong> เมื่อเปลี่ยนเข้าสู่ Mode 2 โปรแกรมจะแสดงหน้าต่างยืนยัน หากกด Yes จะตั้ง CENTER FOOTING เป็น N = 0.000, E = 0.000 และล้างข้อมูลป้อนเข้าที่เกี่ยวข้องเดิม ผู้ใช้กรอกเฉพาะระยะเยื้อง ΔN, ΔE จากตำแหน่งตามแบบ (หน่วยเมตร) ไม่ใช่ค่าพิกัดจริง</div>
     </div>
   </div>
+  <div class="tour-lightbox" id="tour-input-modal" role="dialog" aria-modal="true" aria-labelledby="tour-input-heading" hidden>
+    <div class="tour-lightbox-inner tour-input-panel" id="tour-input-panel" tabindex="-1">
+      <div class="tour-lightbox-head">
+        <div>
+          <span class="tour-info-label">06 / FOOTING DATA INPUT</span>
+          <h3 id="tour-input-heading">กำหนดข้อมูลพื้นฐานสำหรับการออกแบบฐานราก</h3>
+          <p class="tour-modal-description">ภาพอธิบายตำแหน่งกรอกข้อมูล: ประเภทและขนาดเสาเข็ม กำลังรับน้ำหนักปลอดภัย แนว Grid Line ขนาดตอม่อ ระยะห่างเสาเข็ม และแรงอัดตามแนวแกน</p>
+        </div>
+        <button type="button" class="tour-lightbox-close" id="tour-input-close" aria-label="ปิดภาพขยายข้อมูลฐานราก">✕ ปิด</button>
+      </div>
+      <div class="tour-input-scroll" id="tour-input-scroll">
+        <img class="tour-input-image" id="tour-input-image" src="/assets/slides/pilefix-footing-data-input.png" alt="ภาพขยายอธิบายช่องกรอกข้อมูล FOOTING DATA INPUT ทั้ง 7 ส่วน" title="คลิกเพื่อขยายหรือย่อภาพ" loading="lazy">
+      </div>
+      <p class="tour-modal-description">คลิกที่ภาพเพื่อขยายดูรายละเอียด แล้วคลิกอีกครั้งเพื่อย่อ · กด Esc เพื่อปิด</p>
+    </div>
+  </div>
   <script>
     (() => {
       const stage = document.getElementById('tour-stage');
-      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5')];
+      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6')];
       const detail1 = document.getElementById('tour-detail');
       const instruction = document.getElementById('tour-instruction');
       const highlight = document.querySelector('.tour-highlight');
@@ -1602,6 +1627,10 @@
       const modeModal=document.getElementById('tour-mode-modal');
       const modePanel=document.getElementById('tour-mode-panel');
       const modeClose=document.getElementById('tour-mode-close');
+      const inputModal=document.getElementById('tour-input-modal');
+      const inputPanel=document.getElementById('tour-input-panel');
+      const inputClose=document.getElementById('tour-input-close');
+      const inputImage=document.getElementById('tour-input-image');
       if (!stage || buttons.some(b=>!b) || !detail1 || !instruction || !highlight || !maskHole || !modal || !modeModal || !modeClose) return;
       const titles = {
         1:{name:'TITLE 1 — ก่อนปรับแก้ฐานราก',desc:'FOOTING F1 DEVIATION CHECK CALCULATION REPORT — INITIAL CONDITION (BEFORE MODIFICATION) ใช้เป็นหัวข้อรายงานตรวจสอบสภาพฐานรากก่อนการปรับแก้'},
@@ -1705,6 +1734,7 @@
         buttons[2].setAttribute('aria-pressed','false');
         buttons[3].setAttribute('aria-pressed','false');
         buttons[4].setAttribute('aria-pressed','false');
+        buttons[5].setAttribute('aria-pressed','false');
         detail1.hidden=!active;
         instruction.hidden=active;
         if(active){
@@ -1759,6 +1789,28 @@
         buttons[2].setAttribute('aria-pressed','false');
         (returnFocus&&returnFocus.isConnected?returnFocus:buttons[2]).focus();
       }
+      function openInputModal(){
+        returnFocus=document.activeElement;
+        selectHotspot(0);
+        buttons[5].setAttribute('aria-pressed','true');
+        inputImage.classList.remove('is-zoomed');
+        inputModal.hidden=false;
+        activeModal=inputModal;
+        document.body.style.overflow='hidden';
+        inputClose.focus();
+      }
+      function closeInputModal(){
+        inputModal.hidden=true;
+        activeModal=null;
+        document.body.style.overflow='';
+        inputImage.classList.remove('is-zoomed');
+        buttons[5].setAttribute('aria-pressed','false');
+        (returnFocus&&returnFocus.isConnected?returnFocus:buttons[5]).focus();
+      }
+      buttons[5].addEventListener('click',openInputModal);
+      inputClose.addEventListener('click',closeInputModal);
+      inputModal.addEventListener('click',e=>{if(e.target===inputModal)closeInputModal();});
+      inputImage.addEventListener('click',()=>inputImage.classList.toggle('is-zoomed'));
       buttons[0].addEventListener('click',()=>selectHotspot(buttons[0].getAttribute('aria-pressed')==='true'?0:1));
       buttons[1].addEventListener('click',openModal);
       buttons[2].addEventListener('click',openModeModal);
@@ -1777,9 +1829,9 @@
       modal.addEventListener('click',e=>{if(e.target===modal)closeModal();});
       document.addEventListener('keydown',e=>{
         if(!activeModal)return;
-        if(e.key==='Escape'){e.preventDefault();activeModal===modal?closeModal():closeModeModal();}
+        if(e.key==='Escape'){e.preventDefault();activeModal===modal?closeModal():activeModal===modeModal?closeModeModal():closeInputModal();}
         if(e.key==='Tab'){
-          const panel=activeModal===modal?modalPanel:modePanel;
+          const panel=activeModal===modal?modalPanel:activeModal===modeModal?modePanel:inputPanel;
           const focusable=Array.from(panel.querySelectorAll('button:not([disabled])'));
           const first=focusable[0],last=focusable[focusable.length-1];
           if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
