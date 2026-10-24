@@ -1086,6 +1086,16 @@
     .report-gallery-modal img{display:block;width:100%;max-height:79dvh;object-fit:contain}
     @media(max-width:780px){.report-gallery-frame{padding:10px 10px 62px}.report-gallery-arrow{top:auto;bottom:9px;transform:none}.report-gallery-prev{left:14px}.report-gallery-next{right:14px}.report-gallery-slide figcaption{font-size:.79rem}.report-gallery-placeholder strong{font-size:.92rem}}
     @media(prefers-reduced-motion:reduce){.report-gallery-track{transition:none}}
+
+    /* Official ADT-PILEFiX walkthrough video */
+    .pilefix-video-section{background:#fff}
+    .pilefix-video-shell{max-width:1080px;margin:0 auto}
+    .pilefix-video-frame{aspect-ratio:16/9;overflow:hidden;border-radius:22px;background:#06152d;border:1px solid #dce6f3;box-shadow:var(--shadow-md)}
+    .pilefix-video-frame iframe{display:block;width:100%;height:100%;border:0}
+    .pilefix-video-actions{display:flex;justify-content:center;margin-top:20px}
+    .pilefix-video-link{display:inline-flex;align-items:center;gap:8px;color:#0d57bf;font-weight:700;text-decoration:none}
+    .pilefix-video-link:hover{text-decoration:underline}
+    @media(max-width:780px){.pilefix-video-frame{border-radius:12px}}
   </style>
 </head>
 
@@ -1256,6 +1266,25 @@
             </div>
 
           </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video walkthrough of the 20 numbered software-tour controls -->
+    <section class="section pilefix-video-section" id="pilefix-video" aria-labelledby="pilefix-video-heading">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">ADT-PILEFiX VIDEO WALKTHROUGH</p>
+          <h2 id="pilefix-video-heading">วิดีโอแนะนำการใช้งาน ADT-PILEFiX</h2>
+          <p>ชมการอธิบายหน้าจอและเครื่องมือของโปรแกรมทั้ง 20 หมายเลข พร้อมตัวอย่างการทำงานจริง เพื่อให้เข้าใจขั้นตอนก่อนเริ่มใช้งาน</p>
+        </div>
+        <div class="pilefix-video-shell">
+          <div class="pilefix-video-frame">
+            <iframe src="https://www.youtube-nocookie.com/embed/wPKHDtmLQoA" title="วิดีโอแนะนำเครื่องมือ ADT-PILEFiX ทั้ง 20 หมายเลข" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          <div class="pilefix-video-actions">
+            <a class="pilefix-video-link" href="https://www.youtube.com/watch?v=wPKHDtmLQoA" target="_blank" rel="noopener noreferrer">รับชมวิดีโอบน YouTube ↗</a>
+          </div>
         </div>
       </div>
     </section>
