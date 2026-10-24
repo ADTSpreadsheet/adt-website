@@ -1172,6 +1172,12 @@
   </style>
 
   <style>
+    /* CRITICAL: hide payment until LINE OTP has been verified by Backend.
+       display:grid overrides the browser's default [hidden] rule otherwise. */
+    #adt-order-payment[hidden],
+    #adt-order-download[hidden],
+    #adt-order-line[hidden],
+    #adt-order-contact[hidden] { display:none !important; }
     .adt-payment-card{display:grid;gap:15px;background:#fff}
     .adt-payment-card h3{margin:0;color:#071b38;font-size:1.5rem}
     .adt-payment-card .eyebrow{margin:0}
