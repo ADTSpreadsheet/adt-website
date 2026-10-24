@@ -1194,7 +1194,15 @@
     .adt-payment-card .btn:disabled{opacity:.55;cursor:not-allowed}
     #adt-program-download-link[hidden]{display:none!important}
     .adt-payment-progress{height:9px;background:#e5edf5;border-radius:99px;overflow:hidden}
-    .adt-payment-progress>span{display:block;width:35%;height:100%;background:#1677ff;animation:adt-ocr-loading 1.3s ease-in-out infinite alternate}
+    .adt-payment-progress>span{display:block;width:0;height:100%;background:#1677ff;transition:width .2s ease}
+    .adt-payment-progress.is-processing>span{width:35%;animation:adt-ocr-loading 1.3s ease-in-out infinite alternate}
+    .adt-process-list{display:grid;gap:7px;margin:4px 0 10px;padding:0;list-style:none;font-size:.79rem;color:#65758a}
+    .adt-process-list li::before{content:"○";display:inline-block;width:23px;color:#8b9bb0}
+    .adt-process-list li.is-active{color:#946200;font-weight:700}
+    .adt-process-list li.is-active::before{content:"◉";color:#e9a900}
+    .adt-process-list li.is-done{color:#13743c}
+    .adt-process-list li.is-done::before{content:"✓";color:#168747}
+    .adt-image-fallback{font-size:.76rem;color:#9b3d1e;background:#fff2e8;border-radius:7px;padding:7px;margin-top:5px;text-align:center}
     @keyframes adt-ocr-loading{from{transform:translateX(-110%)}to{transform:translateX(300%)}}
     @media(max-width:560px){.adt-payment-summary{align-items:start;flex-direction:column}}
   </style>
@@ -1653,7 +1661,13 @@
               <p class="adt-order-small">หลังโอนเงินแล้ว กรุณาแนบภาพสลิปเพื่อให้ระบบตรวจสอบข้อมูล</p>
             </div>
             <div class="adt-order-field"><label for="adt-payment-slip">แนบสลิปการชำระเงิน (JPG, PNG สูงสุด 10 MB)</label><input id="adt-payment-slip" type="file" accept="image/png,image/jpeg"></div>
-            <div class="adt-payment-progress" id="adt-payment-progress" hidden aria-label="กำลังตรวจสอบสลิป"><span></span></div><p class="adt-order-small" id="adt-payment-feedback" role="status" aria-live="polite">แนบภาพสลิป JPG หรือ PNG ระบบจะตรวจสอบข้อมูลและดำเนินการลงทะเบียน</p>
+            <div class="adt-payment-progress" id="adt-payment-progress" hidden aria-label="ความคืบหน้าการอัปโหลดสลิป"><span></span></div>
+            <ol class="adt-process-list" id="adt-process-list" hidden aria-label="ขั้นตอนการลงทะเบียน">
+              <li data-phase="upload">อัปโหลดสลิปเข้าสู่ระบบ</li>
+              <li data-phase="ocr">อ่านสลิปและตรวจสอบยอดเงิน/บัญชีผู้รับ</li>
+              <li data-phase="booking">บันทึกข้อมูลและสร้างหมายเลข PF</li>
+              <li data-phase="line">ส่งหมายเลข PF ทาง LINE</li>
+            </ol><p class="adt-order-small" id="adt-payment-feedback" role="status" aria-live="polite">แนบภาพสลิป JPG หรือ PNG ระบบจะตรวจสอบข้อมูลและดำเนินการลงทะเบียน</p>
             <button class="btn btn-gold" id="adt-payment-submit" type="button">ตรวจสอบสลิปและลงทะเบียน</button>
           </div>
           <div class="adt-order-next" id="adt-order-download" hidden>
@@ -2044,6 +2058,22 @@
 
   <script>
     (() => {
+      // Asset paths are rooted at the public website, not the API service.
+      // If the host uses a subpath, retry a path relative to this HTML file.
+      document.querySelectorAll('img[src="/assets/images/kbank-logo.png"],img[src="/assets/images/adt-line-yes.png"]').forEach(img=>{
+        const original=img.getAttribute('src');
+        img.addEventListener('error',()=>{
+          if(!img.dataset.assetRetried){
+            img.dataset.assetRetried='1';
+            img.src='assets/images/'+original.split('/').pop();
+            return;
+          }
+          img.hidden=true;
+          const note=document.createElement('div');note.className='adt-image-fallback';
+          note.textContent='ไม่พบไฟล์ภาพ '+original.split('/').pop()+' — กรุณาตรวจสอบชื่อไฟล์ใน assets/images/';
+          img.insertAdjacentElement('afterend',note);
+        });
+      });
       const API_BASE='https://adt-website-api.onrender.com';
       const VERIFY_URL=API_BASE+'/api/orders/verify-line-otp';
       const form=document.getElementById('adt-order-contact');
@@ -2121,6 +2151,33 @@
       const submitButton=document.getElementById('adt-payment-submit');
       const paymentFeedback=document.getElementById('adt-payment-feedback');
       const progress=document.getElementById('adt-payment-progress');
+      const processList=document.getElementById('adt-process-list');
+      const processPhases=['upload','ocr','booking','line'];
+      function showPhase(phase, completed=[]){
+        processList.hidden=false;
+        processList.querySelectorAll('li').forEach(li=>{
+          li.classList.toggle('is-active',li.dataset.phase===phase);
+          li.classList.toggle('is-done',completed.includes(li.dataset.phase));
+        });
+      }
+      // No intermediate Backend status endpoint exists yet. Never claim DB/LINE
+      // completion until the final response explicitly confirms both.
+      function submitWithUploadProgress(url, payload, timeoutMs, onUpload){
+        return new Promise((resolve,reject)=>{
+          const xhr=new XMLHttpRequest();
+          xhr.open('POST',url,true);
+          xhr.timeout=timeoutMs;
+          xhr.upload.onprogress=e=>{if(e.lengthComputable)onUpload(e.loaded/e.total);};
+          xhr.onload=()=>{
+            let result={};try{result=JSON.parse(xhr.responseText||'{}')}catch(_e){}
+            resolve({status:xhr.status,result});
+          };
+          xhr.onerror=()=>reject(new Error('NETWORK'));
+          xhr.ontimeout=()=>reject(new Error('TIMEOUT'));
+          xhr.onabort=()=>reject(new Error('ABORT'));
+          xhr.send(payload);
+        });
+      }
       const downloadPanel=document.getElementById('adt-order-download');
       const bookingDisplay=document.getElementById('adt-booking-display');
       const downloadFeedback=document.getElementById('adt-download-feedback');
@@ -2136,18 +2193,29 @@
         payload.append('file',file);
         payload.append('checkout_token',checkoutToken);
         submitting=true;submitButton.disabled=true;progress.hidden=false;
-        submitButton.textContent='กำลังตรวจสอบ...';
-        paymentFeedback.textContent='กำลังตรวจสอบสลิป บันทึกสมาชิก และส่งหมายเลข PF ทาง LINE โปรดอย่าปิดหน้านี้';
+        progress.classList.remove('is-processing');
+        progress.querySelector('span').style.width='0%';
+        showPhase('upload');
+        submitButton.textContent='กำลังดำเนินการ...';
+        paymentFeedback.textContent='กำลังอัปโหลดภาพสลิปเข้าสู่ระบบ';
         try{
-          const controller=new AbortController();
-          const timeout=setTimeout(()=>controller.abort(),120000);
-          let response;
-          try{
-            response=await fetch(CHECKOUT_SUBMIT_URL,{method:'POST',mode:'cors',body:payload,signal:controller.signal});
-          }finally{clearTimeout(timeout);}
-          const result=await response.json().catch(()=>({}));
+          const {status:responseStatus,result}=await submitWithUploadProgress(
+            CHECKOUT_SUBMIT_URL,payload,120000,ratio=>{
+              progress.querySelector('span').style.width=Math.round(ratio*100)+'%';
+              if(ratio>=1){
+                showPhase('ocr',['upload']);
+                progress.classList.add('is-processing');
+                paymentFeedback.textContent='อัปโหลดสำเร็จ กำลังรอ Backend อ่านสลิปและดำเนินการลงทะเบียน (ยังไม่มีสถานะย่อยจากเซิร์ฟเวอร์)';
+              }else{
+                paymentFeedback.textContent='กำลังอัปโหลดสลิป '+Math.round(ratio*100)+'%';
+              }
+            });
+          if(!progress.classList.contains('is-processing')){
+            showPhase('ocr',['upload']);
+            progress.classList.add('is-processing');
+          }
           // HTTP 200 alone is insufficient: require persisted booking and LINE delivery.
-          const done=response.status===200 && result.success===true &&
+          const done=responseStatus===200 && result.success===true &&
             result.status==='BOOKING_SAVED_LINE_SENT' && result.line_sent===true &&
             /^PF-\\d+$/.test(String(result.booking_no||''));
           if(!done){
@@ -2162,7 +2230,9 @@
             })[result.code] || 'ยังไม่สามารถลงทะเบียนได้ กรุณาลองใหม่หรือติดต่อ ADT';
             return;
           }
-          paymentFeedback.textContent='✓ ลงทะเบียนสำเร็จและส่งหมายเลข PF ผ่าน LINE แล้ว';
+          showPhase('line',processPhases);
+          progress.classList.remove('is-processing');progress.querySelector('span').style.width='100%';
+          paymentFeedback.textContent='✓ ตรวจสอบสลิป บันทึกหมายเลข PF และส่ง LINE สำเร็จแล้ว';
           bookingDisplay.textContent='หมายเลขสมาชิกของคุณ: '+result.booking_no;
           downloadPanel.hidden=false;
           setStep(3,'complete');setStep(4,'complete');
@@ -2176,11 +2246,12 @@
           }
           downloadPanel.scrollIntoView({behavior:'smooth',block:'start'});
         }catch(error){
-          paymentFeedback.textContent=error.name==='AbortError'
+          paymentFeedback.textContent=(error.message==='TIMEOUT'||error.message==='ABORT')
             ? 'การเชื่อมต่อหมดเวลา โปรดลองใหม่ ระบบจะต้องใช้ Booking เดิมหากเคยบันทึกแล้ว'
             : 'เชื่อมต่อระบบตรวจสอบสลิปไม่ได้ กรุณาลองใหม่';
         }finally{
-          submitting=false;progress.hidden=true;
+          submitting=false;progress.classList.remove('is-processing');progress.hidden=true;
+          if(downloadPanel.hidden){processList.hidden=true;}
           if(downloadPanel.hidden){submitButton.disabled=false;submitButton.textContent='ตรวจสอบสลิปและลงทะเบียน';}
         }
       });
