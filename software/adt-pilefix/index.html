@@ -1031,11 +1031,18 @@
     @media(max-width:780px){.tour-hotspot-12{left:31%;top:44%}.tour-hotspot-13{left:31%;top:65%}.tour-hotspot-14{left:31%;top:81%}}
 
     /* Spotlight #15–16: reinforcement design and shear verification */
-    .tour-hotspot-15{left:75%;top:76%;background:#0d9488}
-    .tour-hotspot-16{left:75%;top:84%;background:#d97706}
+    .tour-hotspot-15{left:70%;top:76%;background:#0d9488}
+    .tour-hotspot-16{left:70%;top:84%;background:#d97706}
     .tour-hotspot-15:hover,.tour-hotspot-15:focus-visible{background:#0f766e}
     .tour-hotspot-16:hover,.tour-hotspot-16:focus-visible{background:#b45309}
     @media(max-width:780px){.tour-hotspot-15{left:76%;top:76%}.tour-hotspot-16{left:76%;top:84%}}
+
+    /* Spotlight #17–18: design check summary and engineering notes */
+    .tour-hotspot-17{left:48%;top:92%;background:#0d9488}
+    .tour-hotspot-18{left:90%;top:92%;background:#d97706}
+    .tour-hotspot-17:hover,.tour-hotspot-17:focus-visible{background:#0f766e}
+    .tour-hotspot-18:hover,.tour-hotspot-18:focus-visible{background:#b45309}
+    @media(max-width:780px){.tour-hotspot-17{left:48%;top:92%}.tour-hotspot-18{left:90%;top:92%}}
   </style>
 </head>
 
@@ -1164,6 +1171,8 @@
                 <button type="button" class="tour-hotspot tour-hotspot-14" id="tour-hotspot-14" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 14 ภาพรายละเอียดหน้าตัดเหล็กเสริมฐานราก">14</button>
                 <button type="button" class="tour-hotspot tour-hotspot-15" id="tour-hotspot-15" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 15 ตรวจสอบและเลือกเหล็กเสริมฐานราก">15</button>
                 <button type="button" class="tour-hotspot tour-hotspot-16" id="tour-hotspot-16" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 16 ตรวจสอบ Beam Shear และ Punching Shear">16</button>
+                <button type="button" class="tour-hotspot tour-hotspot-17" id="tour-hotspot-17" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 17 สรุปผลการตรวจสอบและข้อบกพร่องฐานราก">17</button>
+                <button type="button" class="tour-hotspot tour-hotspot-18" id="tour-hotspot-18" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 18 คำแนะนำเพิ่มเติมสำหรับการใช้งานโปรแกรม">18</button>
                 <div class="tour-pile-focus" id="tour-pile-focus" aria-live="off" hidden>
                   <div class="tour-footing-head"><span>05 / PILE TYPE — <span id="tour-pile-type">I-PILE</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
                   <img id="tour-pile-image" src="/assets/slides/pilefix-pile-type-i.png" alt="ตัวอย่างเสาเข็มรูปตัวไอ I-Pile">
@@ -1182,7 +1191,7 @@
             <div class="tour-instruction" id="tour-instruction">
               <span class="tour-info-label">INTERACTIVE SOFTWARE TOUR</span>
               <h3>เลือกหมายเลขบนภาพ</h3>
-              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม <strong>หมายเลข 4</strong> เพื่อชมภาพฐานราก F1–F5 หรือ <strong>หมายเลข 5</strong> เพื่อชมประเภทเสาเข็มทั้ง 4 รูปแบบ <strong>หมายเลข 6</strong> เพื่อดูช่องกรอกข้อมูลฐานราก และ <strong>หมายเลข 7–8</strong> เพื่อดูตารางพิกัดเสาเข็มตามแบบและตามตำแหน่งจริง</p>
+              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม <strong>หมายเลข 4</strong> เพื่อชมภาพฐานราก F1–F5 หรือ <strong>หมายเลข 5</strong> เพื่อชมประเภทเสาเข็มทั้ง 4 รูปแบบ <strong>หมายเลข 6</strong> เพื่อดูช่องกรอกข้อมูลฐานราก และ <strong>หมายเลข 7–18</strong> เพื่อดูตารางพิกัดเสาเข็มตามแบบและตามตำแหน่งจริง</p>
             </div>
             <div id="tour-detail" hidden>
               <span class="tour-info-label" id="tour-detail-label">01 / CALCULATION REPORT HEADER</span>
@@ -1656,7 +1665,7 @@
   <script>
     (() => {
       const stage = document.getElementById('tour-stage');
-      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6'),document.getElementById('tour-hotspot-7'),document.getElementById('tour-hotspot-8'),document.getElementById('tour-hotspot-9'),document.getElementById('tour-hotspot-10'),document.getElementById('tour-hotspot-11'),document.getElementById('tour-hotspot-12'),document.getElementById('tour-hotspot-13'),document.getElementById('tour-hotspot-14'),document.getElementById('tour-hotspot-15'),document.getElementById('tour-hotspot-16')];
+      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6'),document.getElementById('tour-hotspot-7'),document.getElementById('tour-hotspot-8'),document.getElementById('tour-hotspot-9'),document.getElementById('tour-hotspot-10'),document.getElementById('tour-hotspot-11'),document.getElementById('tour-hotspot-12'),document.getElementById('tour-hotspot-13'),document.getElementById('tour-hotspot-14'),document.getElementById('tour-hotspot-15'),document.getElementById('tour-hotspot-16'),document.getElementById('tour-hotspot-17'),document.getElementById('tour-hotspot-18')];
       const detail1 = document.getElementById('tour-detail');
       const instruction = document.getElementById('tour-instruction');
       const highlight = document.querySelector('.tour-highlight');
@@ -1775,7 +1784,9 @@
         13:{x:4.0,y:56.5,w:27.0,h:15.0,label:'13 / DESIGN PARAMETERS — WSD',heading:'ข้อมูลพารามิเตอร์สำหรับการออกแบบด้วยวิธี WSD',description:'แสดงกลุ่มข้อมูล Design Parameters ที่ใช้ในการคำนวณและออกแบบโครงสร้างคอนกรีตเสริมเหล็กด้วยวิธีหน่วยแรงใช้งาน (Working Stress Design: WSD)',items:['แสดงค่าคุณสมบัติและพารามิเตอร์ที่ใช้ในการออกแบบ','ใช้เป็นข้อมูลอ้างอิงในการคำนวณฐานราก']},
         14:{x:0.5,y:71.2,w:27.5,h:19.3,label:'14 / REINFORCEMENT SECTION DETAIL',heading:'ภาพรายละเอียดหน้าตัดเหล็กเสริมฐานราก',description:'แสดงภาพหน้าตัดฐานรากและรายละเอียดการจัดวางเหล็กเสริม (Reinforcement Section Detail) เพื่อประกอบการตรวจสอบและออกแบบเหล็กเสริมฐานราก',items:['แสดงรายละเอียดหน้าตัดและตำแหน่งเหล็กเสริม','ช่วยให้ตรวจสอบรายละเอียดเหล็กเสริมร่วมกับผลการคำนวณได้']},
         15:{x:25.8,y:71.5,w:46.1,h:9.4,label:'15 / PILE CAP REINFORCEMENT DESIGN',heading:'ตรวจสอบและเลือกเหล็กเสริมฐานราก',description:'แสดงผลการตรวจสอบปริมาณเหล็กเสริมที่ต้องการจากการคำนวณ เปรียบเทียบกับเหล็กเสริมที่เลือกใช้ เพื่อช่วยให้วิศวกรเลือกขนาดและปริมาณเหล็กเสริมที่เหมาะสมกับฐานราก',items:['เปรียบเทียบปริมาณเหล็กเสริมที่ต้องการกับเหล็กเสริมที่จัดให้','แสดงผลตรวจสอบความเพียงพอของเหล็กเสริมที่เลือกใช้']},
-        16:{x:25.8,y:79.8,w:46.1,h:10.4,label:'16 / BEAM SHEAR & PUNCHING SHEAR CHECK',heading:'ตรวจสอบกำลังรับแรงเฉือนของฐานราก',description:'แสดงผลการตรวจสอบแรงเฉือนทางเดียว (Beam Shear / One-Way Shear) และแรงเฉือนเจาะทะลุ (Punching Shear / Two-Way Shear) โดยเปรียบเทียบแรงเฉือนที่เกิดขึ้นกับกำลังรับแรงเฉือนที่ใช้ในการตรวจสอบ',items:['ตรวจสอบ Beam Shear หรือแรงเฉือนทางเดียว','ตรวจสอบ Punching Shear หรือแรงเฉือนเจาะทะลุ','แสดงผลการตรวจสอบว่าเป็นไปตามเกณฑ์หรือไม่']}
+        16:{x:25.8,y:79.8,w:46.1,h:10.4,label:'16 / BEAM SHEAR & PUNCHING SHEAR CHECK',heading:'ตรวจสอบกำลังรับแรงเฉือนของฐานราก',description:'แสดงผลการตรวจสอบแรงเฉือนทางเดียว (Beam Shear / One-Way Shear) และแรงเฉือนเจาะทะลุ (Punching Shear / Two-Way Shear) โดยเปรียบเทียบแรงเฉือนที่เกิดขึ้นกับกำลังรับแรงเฉือนที่ใช้ในการตรวจสอบ',items:['ตรวจสอบ Beam Shear หรือแรงเฉือนทางเดียว','ตรวจสอบ Punching Shear หรือแรงเฉือนเจาะทะลุ','แสดงผลการตรวจสอบว่าเป็นไปตามเกณฑ์หรือไม่']},
+        17:{x:1.5,y:86.3,w:70.0,h:12.0,label:'17 / DESIGN CHECK SUMMARY',heading:'สรุปผลการตรวจสอบและข้อบกพร่องของฐานราก',description:'แสดงรายการผลการตรวจสอบฐานราก เพื่อให้วิศวกรทราบว่ารายการใดผ่านเกณฑ์ และรายการใดไม่ผ่านเกณฑ์หรือจำเป็นต้องปรับแก้ ช่วยให้ตรวจสอบและแก้ไขการออกแบบได้ตรงจุด',items:['ตรวจสอบกำลังรับน้ำหนักของเสาเข็ม','ตรวจสอบระยะขอบฐานราก','ตรวจสอบความเพียงพอของเหล็กเสริมฐานราก']},
+        18:{x:72.0,y:86.2,w:27.0,h:11.9,label:'18 / ENGINEERING DESIGN RECOMMENDATIONS',heading:'คำแนะนำเพิ่มเติมสำหรับการตรวจสอบฐานรากเสาเข็ม',description:'แสดงหัวข้อคำแนะนำและข้อควรพิจารณาทางวิศวกรรมที่เกี่ยวข้องกับการออกแบบฐานรากเสาเข็ม เพื่อให้ผู้ใช้งานศึกษารายละเอียดประกอบการคำนวณ',items:['เกณฑ์การคลาดเคลื่อนและแนวทางการแก้ไขฐานรากเสาเข็ม','สมการคำนวณแรงปฏิกิริยาเสาเข็ม','คำแนะนำการป้อนค่าพิกัดเสาเข็ม','การตรวจสอบโมเมนต์แตกร้าวของเสาเข็ม']}
 
       };
       function selectHotspot(n){
@@ -1869,7 +1880,7 @@
       buttons[0].addEventListener('click',()=>selectHotspot(buttons[0].getAttribute('aria-pressed')==='true'?0:1));
       buttons[6].addEventListener('click',()=>selectHotspot(buttons[6].getAttribute('aria-pressed')==='true'?0:7));
       buttons[7].addEventListener('click',()=>selectHotspot(buttons[7].getAttribute('aria-pressed')==='true'?0:8));
-      [9,10,11,12,13,14,15,16].forEach(n=>buttons[n-1].addEventListener('click',()=>selectHotspot(buttons[n-1].getAttribute('aria-pressed')==='true'?0:n)));
+      [9,10,11,12,13,14,15,16,17,18].forEach(n=>buttons[n-1].addEventListener('click',()=>selectHotspot(buttons[n-1].getAttribute('aria-pressed')==='true'?0:n)));
       buttons[1].addEventListener('click',openModal);
       buttons[2].addEventListener('click',openModeModal);
       buttons[3].addEventListener('click',()=>footingFocus.hidden?startFooting():stopFooting());
