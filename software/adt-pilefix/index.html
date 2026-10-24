@@ -1541,9 +1541,7 @@
           <div id="adt-order-line" class="adt-order-line" hidden aria-live="polite">
             <h3>ขั้นตอนต่อไป: เพิ่มเพื่อน LINE Bot</h3>
             <p>สแกน QR Code เพื่อเปิด LINE Bot จากนั้นตอบ <strong>YES</strong> ในข้อความต้อนรับ เพื่อขอรหัส OTP สำหรับยืนยันการสั่งซื้อ</p>
-            <div id="adt-order-qr-container"></div>
-            <a id="adt-order-line-link" class="btn btn-gold" target="_blank" rel="noopener noreferrer" hidden>เปิด LINE Bot</a>
-            <p id="adt-order-setup-warning" class="adt-order-warning" hidden>รอเชื่อมต่อ URL ของ LINE Bot จริง: กรุณากำหนดค่า ADT_LINE_BOT_URL ในโค้ดก่อนเปิดรับคำสั่งซื้อ</p>
+            <div id="adt-order-qr-container"><img src="/assets/line/line-oa-qrcode.png" width="240" height="240" loading="lazy" alt="QR Code สำหรับเพิ่มเพื่อน LINE Official Account ของ ADT-SOFTWARE"></div>
             <p class="adt-order-small">หมายเหตุ: การเพิ่มเพื่อนหรือกด YES เพียงอย่างเดียวยังไม่ยืนยันว่าชำระเงินแล้ว และยังไม่ออกสิทธิ์ใช้งานโปรแกรม</p>
             <button id="adt-order-edit" type="button" class="btn btn-outline">แก้ไขข้อมูลติดต่อ</button>
           </div>
@@ -1930,14 +1928,8 @@
 
   <script>
     (() => {
-      // TODO: Replace with the official LINE Bot friend/add URL (e.g. https://lin.ee/xxxxxx).
-      // A normal add-friend QR alone does not tell LINE which product page the user came from.
-      const ADT_LINE_BOT_URL = '';
       const form=document.getElementById('adt-order-contact');
       const panel=document.getElementById('adt-order-line');
-      const qr=document.getElementById('adt-order-qr-container');
-      const link=document.getElementById('adt-order-line-link');
-      const warning=document.getElementById('adt-order-setup-warning');
       const edit=document.getElementById('adt-order-edit');
       if(!form || !panel)return;
       form.addEventListener('submit',e=>{
@@ -1945,19 +1937,6 @@
         if(!form.reportValidity())return;
         form.hidden=true;
         panel.hidden=false;
-        const validBot=/^https:\/\/(lin\.ee|line\.me)\//i.test(ADT_LINE_BOT_URL);
-        if(validBot){
-          const img=document.createElement('img');
-          img.alt='QR Code สำหรับเพิ่มเพื่อน LINE Bot ของ ADT-SOFTWARE';
-          img.width=240;img.height=240;
-          img.src='https://api.qrserver.com/v1/create-qr-code/?size=240x240&data='+encodeURIComponent(ADT_LINE_BOT_URL);
-          qr.replaceChildren(img);
-          link.href=ADT_LINE_BOT_URL;
-          link.hidden=false;warning.hidden=true;
-        } else {
-          qr.replaceChildren();
-          link.hidden=true;warning.hidden=false;
-        }
         panel.scrollIntoView({behavior:'smooth',block:'center'});
       });
       edit.addEventListener('click',()=>{
