@@ -1135,6 +1135,19 @@
     .adt-order-small{font-size:.85rem;color:#607187;line-height:1.6}
     .adt-order-warning{color:#a13f15;font-weight:600}
   </style>
+
+  <style>
+    html{scroll-behavior:smooth}
+    #software-tour,#pilefix-video,#pilefix-shorts,#calculation-reports,#buy,#adt-order-form{scroll-margin-top:135px}
+    .adt-section-nav{position:sticky;top:0;z-index:90;background:rgba(255,255,255,.97);border-bottom:1px solid #dce4ec;box-shadow:0 4px 18px rgba(0,0,0,.06);backdrop-filter:blur(10px)}
+    .adt-section-nav-inner{max-width:1200px;margin:auto;display:flex;align-items:center;gap:6px;overflow-x:auto;white-space:nowrap;padding:9px 16px;scrollbar-width:thin}
+    .adt-section-nav a{flex:0 0 auto;display:inline-flex;align-items:center;padding:10px 13px;border-radius:10px;color:#26374c;text-decoration:none;font-size:.91rem;font-weight:650;transition:background .2s,color .2s}
+    .adt-section-nav a:hover,.adt-section-nav a:focus-visible,.adt-section-nav a.is-active{background:#edf3f8;color:#145b94}
+    .adt-section-nav a.adt-section-nav-buy{background:#d99020;color:#fff;margin-left:auto}
+    .adt-section-nav a.adt-section-nav-buy:hover,.adt-section-nav a.adt-section-nav-buy:focus-visible,.adt-section-nav a.adt-section-nav-buy.is-active{background:#b87917;color:#fff}
+    @media(max-width:700px){.adt-section-nav-inner{padding:7px 10px;gap:2px}.adt-section-nav a{padding:9px 11px;font-size:.83rem}.adt-section-nav a.adt-section-nav-buy{margin-left:0}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
 </head>
 
 <body>
@@ -1163,6 +1176,18 @@
     </div>
   </header>
 
+  
+  <!-- Sticky in-page section navigation -->
+  <nav class="adt-section-nav" aria-label="เมนูลัดหัวข้อภายในหน้านี้">
+    <div class="adt-section-nav-inner">
+      <a href="#software-tour">เครื่องมือ 20 จุด</a>
+      <a href="#pilefix-video">วิดีโอแนะนำ</a>
+      <a href="#pilefix-shorts">วิดีโอสั้น</a>
+      <a href="#calculation-reports">ตัวอย่างรายการคำนวณ</a>
+      <a href="#buy">ราคาโปรแกรม</a>
+      <a class="adt-section-nav-buy" href="#adt-order-form">สั่งซื้อโปรแกรม</a>
+    </div>
+  </nav>
   <main>
     <section class="hero">
       <div class="container hero-grid">
@@ -1189,7 +1214,7 @@
           </div>
 
           <div class="hero-actions">
-            <a class="btn btn-gold" href="#buy">
+            <a class="btn btn-gold" href="#adt-order-form">
               ซื้อโปรแกรม 4,999 บาท
             </a>
             <a class="btn btn-outline" href="#software-tour">
@@ -1541,7 +1566,7 @@
     </div>
   </footer>
 
-  <a class="floating-buy" href="#buy">
+  <a class="floating-buy" href="#adt-order-form">
     ซื้อ <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> · 4,999 บาท
   </a>
 
@@ -1938,6 +1963,40 @@
       edit.addEventListener('click',()=>{
         panel.hidden=true;form.hidden=false;
         form.querySelector('input').focus();
+      });
+    })();
+  </script>
+
+  <script>
+    (()=>{
+      const nav=document.querySelector('.adt-section-nav');
+      if(!nav)return;
+      const links=Array.from(nav.querySelectorAll('a[href^="#"]'));
+      const sections=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      const activate=id=>links.forEach(a=>{
+        const active=a.getAttribute('href')==='#'+id;
+        a.classList.toggle('is-active',active);
+        if(active)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');
+      });
+      if('IntersectionObserver' in window){
+        const observer=new IntersectionObserver(entries=>{
+          const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>a.boundingClientRect.top-b.boundingClientRect.top);
+          if(visible.length)activate(visible[0].target.id);
+        },{rootMargin:'-145px 0px -55% 0px',threshold:0});
+        sections.forEach(section=>observer.observe(section));
+      }
+      document.querySelectorAll('a[href="#adt-order-form"]').forEach(a=>{
+        a.addEventListener('click',()=>{
+          activate('adt-order-form');
+          // After scroll, place keyboard focus on first contact field without moving the viewport again.
+          setTimeout(()=>{
+            const form=document.getElementById('adt-order-contact');
+            if(form && !form.hidden){
+              const field=document.getElementById('adt-order-name');
+              if(field)field.focus({preventScroll:true});
+            }
+          },500);
+        });
       });
     })();
   </script>
