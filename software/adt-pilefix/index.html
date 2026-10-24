@@ -1044,14 +1044,14 @@
     .tour-hotspot-18:hover,.tour-hotspot-18:focus-visible{background:#b45309}
     @media(max-width:780px){.tour-hotspot-17{left:48%;top:92%}.tour-hotspot-18{left:90%;top:92%}}
     /* Spotlight #19: dual focus + connecting line, scaled with the original screenshot */
-    .tour-hotspot-19{left:87%;top:65%;background:#155eef}
+    .tour-hotspot-19{left:87%;top:58%;background:#155eef}
     .tour-hotspot-19:hover,.tour-hotspot-19:focus-visible{background:#0847b5}
     .tour-highlight-secondary{position:absolute;z-index:2;pointer-events:none;display:none;border:3px dashed #1677ff;background:rgba(255,255,255,.04);box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 24px rgba(22,119,255,.3)}
     .tour-stage.is-dual-focus .tour-highlight-secondary{display:block}
     .tour-connector{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;display:none;overflow:visible}
     .tour-stage.is-dual-focus .tour-connector{display:block}
     .tour-connector path{fill:none;stroke:#1677ff;stroke-width:.48;stroke-dasharray:1.15 .65;vector-effect:non-scaling-stroke;stroke-width:3px;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px white)}
-    @media(max-width:780px){.tour-hotspot-19{left:87%;top:65%}}
+    @media(max-width:780px){.tour-hotspot-19{left:87%;top:58%}}
 
   </style>
 </head>
@@ -1166,7 +1166,7 @@
                 </svg>
                 <div class="tour-highlight" aria-hidden="true"></div>
                 <div class="tour-highlight-secondary" aria-hidden="true"></div>
-                <svg class="tour-connector" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M 27 39 H 48 V 51 H 69"/></svg>
+                <svg class="tour-connector" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M 27 39 H 48 V 48.5 H 69"/></svg>
                 <button type="button" class="tour-hotspot" id="tour-hotspot-1" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 1 หัวกระดาษรายการคำนวณ">1</button>
                 <button type="button" class="tour-hotspot tour-hotspot-2" id="tour-hotspot-2" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 2 เปลี่ยนหัวข้อหลักเอกสาร">2</button>
                 <button type="button" class="tour-hotspot tour-hotspot-3" id="tour-hotspot-3" aria-controls="tour-mode-modal" aria-pressed="false" aria-label="หมายเลข 3 เปลี่ยนโหมดการกรอกข้อมูลเสาเข็ม">3</button>
@@ -1802,7 +1802,7 @@
         16:{x:25.8,y:79.8,w:46.1,h:10.4,label:'16 / BEAM SHEAR & PUNCHING SHEAR CHECK',heading:'ตรวจสอบกำลังรับแรงเฉือนของฐานราก',description:'แสดงผลการตรวจสอบแรงเฉือนทางเดียว (Beam Shear / One-Way Shear) และแรงเฉือนเจาะทะลุ (Punching Shear / Two-Way Shear) โดยเปรียบเทียบแรงเฉือนที่เกิดขึ้นกับกำลังรับแรงเฉือนที่ใช้ในการตรวจสอบ',items:['ตรวจสอบ Beam Shear หรือแรงเฉือนทางเดียว','ตรวจสอบ Punching Shear หรือแรงเฉือนเจาะทะลุ','แสดงผลการตรวจสอบว่าเป็นไปตามเกณฑ์หรือไม่']},
         17:{x:1.5,y:86.3,w:70.0,h:12.0,label:'17 / DESIGN CHECK SUMMARY',heading:'สรุปผลการตรวจสอบและข้อบกพร่องของฐานราก',description:'แสดงรายการผลการตรวจสอบฐานราก เพื่อให้วิศวกรทราบว่ารายการใดผ่านเกณฑ์ และรายการใดไม่ผ่านเกณฑ์หรือจำเป็นต้องปรับแก้ ช่วยให้ตรวจสอบและแก้ไขการออกแบบได้ตรงจุด',items:['ตรวจสอบกำลังรับน้ำหนักของเสาเข็ม','ตรวจสอบระยะขอบฐานราก','ตรวจสอบความเพียงพอของเหล็กเสริมฐานราก']},
         18:{x:72.0,y:86.2,w:27.0,h:11.9,label:'18 / ENGINEERING DESIGN RECOMMENDATIONS',heading:'คำแนะนำเพิ่มเติมสำหรับการตรวจสอบฐานรากเสาเข็ม',description:'แสดงหัวข้อคำแนะนำและข้อควรพิจารณาทางวิศวกรรมที่เกี่ยวข้องกับการออกแบบฐานรากเสาเข็ม เพื่อให้ผู้ใช้งานศึกษารายละเอียดประกอบการคำนวณ',items:['เกณฑ์การคลาดเคลื่อนและแนวทางการแก้ไขฐานรากเสาเข็ม','สมการคำนวณแรงปฏิกิริยาเสาเข็ม','คำแนะนำการป้อนค่าพิกัดเสาเข็ม','การตรวจสอบโมเมนต์แตกร้าวของเสาเข็ม']},
-        19:{x:2.0,y:30.0,w:25.0,h:21.0,secondary:{x:69.0,y:51.0,w:30.0,h:17.0},label:'19 / PILE CAP CURSOR CONTROL',heading:'เครื่องมือ Cursor Node สำหรับขยายขอบฐานราก',description:'ชุดเครื่องมือสำหรับปรับแนวขอบฐานรากผ่าน Cursor Node โดยเลือกจุดควบคุมที่ต้องการ แล้วใช้ปุ่มลูกศรบนแป้นพิมพ์เลื่อนตำแหน่งเส้นขอบฐานราก ภาพด้านซ้ายแสดงผลการปรับแนว และแผงด้านขวาแสดงเครื่องมือควบคุม',items:['เลือก Cursor Node ของแนวขอบฐานรากที่ต้องการปรับ','ใช้ปุ่มลูกศรบนแป้นพิมพ์เพื่อเลื่อนแนวเส้นตามระยะที่ตั้งค่า','ตรวจสอบรูปทรงและระยะขอบฐานรากจากภาพ MODIFY X:Y']}
+        19:{x:2.0,y:30.0,w:25.0,h:21.0,secondary:{x:69.0,y:48.5,w:30.0,h:14.0},label:'19 / PILE CAP CURSOR CONTROL',heading:'เครื่องมือ Cursor Node สำหรับขยายขอบฐานราก',description:'ชุดเครื่องมือสำหรับปรับแนวขอบฐานรากผ่าน Cursor Node โดยเลือกจุดควบคุมที่ต้องการ แล้วใช้ปุ่มลูกศรบนแป้นพิมพ์เลื่อนตำแหน่งเส้นขอบฐานราก ภาพด้านซ้ายแสดงผลการปรับแนว และแผงด้านขวาแสดงเครื่องมือควบคุม',items:['เลือก Cursor Node ของแนวขอบฐานรากที่ต้องการปรับ','ใช้ปุ่มลูกศรบนแป้นพิมพ์เพื่อเลื่อนแนวเส้นตามระยะที่ตั้งค่า','ตรวจสอบรูปทรงและระยะขอบฐานรากจากภาพ MODIFY X:Y']}
 
       };
       function selectHotspot(n){
