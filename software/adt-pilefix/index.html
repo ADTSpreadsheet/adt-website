@@ -1148,6 +1148,28 @@
     @media(max-width:700px){.adt-section-nav-inner{padding:7px 10px;gap:2px}.adt-section-nav a{padding:9px 11px;font-size:.83rem}.adt-section-nav a.adt-section-nav-buy{margin-left:0}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
+
+  <style>
+    .adt-order-layout{display:grid;grid-template-columns:265px minmax(0,1fr);gap:20px;align-items:start;max-width:1140px;margin:auto}
+    .adt-order-layout .adt-order-panel{width:100%;max-width:none;box-sizing:border-box}
+    .adt-checkout-steps{position:sticky;top:125px;padding:20px 14px;border-radius:16px;background:#fff;border:1px solid #dce5ee}
+    .adt-checkout-steps h3{font-size:1.05rem;margin:0 8px 16px;color:#182d45}
+    .adt-step{display:flex;align-items:flex-start;gap:10px;padding:13px 9px;border-radius:11px;color:#68798c;font-size:.88rem;font-weight:700;margin-bottom:6px;border:1px solid transparent}
+    .adt-step small{display:block;font-size:.73rem;font-weight:400;margin-top:4px;line-height:1.5}
+    .adt-step-num{flex:0 0 25px;height:25px;border-radius:50%;display:grid;place-items:center;background:#e7edf4;color:#63768a}
+    .adt-step-check{display:none;margin-left:auto;font-size:1.05rem}
+    .adt-step.is-current{background:#fff6df;border-color:#f5d88c;color:#28394d}
+    .adt-step.is-current .adt-step-num{background:#f9c743;color:#202b35}
+    .adt-step.is-complete{background:#e9f8ee;color:#13743c;border-color:#b5e2c6}
+    .adt-step.is-complete .adt-step-num{background:#198a4a;color:#fff}
+    .adt-step.is-complete .adt-step-check{display:block}
+    .adt-otp-field{margin:18px auto;max-width:410px;text-align:left}
+    .adt-otp-field .btn{margin:8px 0 0;width:100%}
+    .adt-order-next{margin-top:20px;padding:20px;border:1px solid #dce5ee;border-radius:14px}
+    .adt-order-next input{display:block;margin:12px 0}
+    @media(max-width:850px){.adt-order-layout{grid-template-columns:1fr}.adt-checkout-steps{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.adt-checkout-steps h3{grid-column:1/-1}.adt-step{margin:0}}
+    @media(max-width:470px){.adt-checkout-steps{grid-template-columns:1fr}}
+  </style>
 </head>
 
 <body>
@@ -1518,6 +1540,14 @@
     <!-- ADT Order registration / LINE onboarding -->
     <section class="section adt-order-section" id="adt-order-form">
       <div class="container">
+        <div class="adt-order-layout">
+        <aside class="adt-checkout-steps" aria-label="สถานะการสั่งซื้อ">
+          <h3>ขั้นตอนสั่งซื้อ</h3>
+          <div class="adt-step is-current" id="adt-step-1"><span class="adt-step-num">1</span><span>กรอกข้อมูลติดต่อ<small>ชื่อ เบอร์โทร อีเมล</small></span><span class="adt-step-check">✓</span></div>
+          <div class="adt-step" id="adt-step-2"><span class="adt-step-num">2</span><span>ยืนยันตัวตนผ่าน LINE<small>สแกน QR และกรอก OTP</small></span><span class="adt-step-check">✓</span></div>
+          <div class="adt-step" id="adt-step-3"><span class="adt-step-num">3</span><span>ชำระเงินและแนบสลิป<small>รอตรวจสอบการชำระเงิน</small></span><span class="adt-step-check">✓</span></div>
+          <div class="adt-step" id="adt-step-4"><span class="adt-step-num">4</span><span>ดาวน์โหลดโปรแกรม<small>หลังอนุมัติคำสั่งซื้อ</small></span><span class="adt-step-check">✓</span></div>
+        </aside>
         <div class="adt-order-panel">
           <p class="eyebrow">ORDER REGISTRATION</p>
           <h2>ลงทะเบียนสั่งซื้อ ADT-PILEFiX</h2>
@@ -1543,8 +1573,26 @@
             <p>สแกน QR Code เพื่อเปิด LINE Bot จากนั้นตอบ <strong>YES</strong> ในข้อความต้อนรับ เพื่อขอรหัส OTP สำหรับยืนยันการสั่งซื้อ</p>
             <div id="adt-order-qr-container"><img src="/assets/line/line-oa-qrcode.png" width="240" height="240" loading="lazy" alt="QR Code สำหรับเพิ่มเพื่อน LINE Official Account ของ ADT-SOFTWARE"></div>
             <p class="adt-order-small">หมายเหตุ: การเพิ่มเพื่อนหรือกด YES เพียงอย่างเดียวยังไม่ยืนยันว่าชำระเงินแล้ว และยังไม่ออกสิทธิ์ใช้งานโปรแกรม</p>
+            <div class="adt-order-field adt-otp-field">
+              <label for="adt-order-otp">รหัส OTP ที่ได้รับทาง LINE</label>
+              <input id="adt-order-otp" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="กรอกรหัส OTP">
+              <button type="button" class="btn btn-gold" id="adt-verify-otp" disabled>ยืนยันรหัส OTP</button>
+              <p class="adt-order-small">รอเชื่อมต่อ API ตรวจสอบ OTP — ระบบยังไม่สามารถยืนยันรหัสจริงได้</p>
+            </div>
             <button id="adt-order-edit" type="button" class="btn btn-outline">แก้ไขข้อมูลติดต่อ</button>
           </div>
+          <div class="adt-order-next" id="adt-order-payment" hidden>
+            <h3>ขั้นตอนที่ 3: ชำระเงินและแนบสลิป</h3>
+            <p>เมื่อ API ยืนยัน OTP สำเร็จ ระบบจะแสดงข้อมูลชำระเงินและช่องแนบสลิปที่นี่</p>
+            <label for="adt-payment-slip">หลักฐานการชำระเงิน</label>
+            <input id="adt-payment-slip" type="file" accept="image/png,image/jpeg,image/webp,application/pdf" disabled>
+            <button class="btn btn-gold" type="button" disabled>ส่งหลักฐานการชำระเงิน</button>
+          </div>
+          <div class="adt-order-next" id="adt-order-download" hidden>
+            <h3>ขั้นตอนที่ 4: ดาวน์โหลด ADT-PILEFiX</h3>
+            <p>ลิงก์ดาวน์โหลดจะแสดงหลังระบบตรวจสอบและอนุมัติการชำระเงินสำเร็จ</p>
+          </div>
+        </div>
         </div>
       </div>
     </section>
@@ -1937,10 +1985,16 @@
         if(!form.reportValidity())return;
         form.hidden=true;
         panel.hidden=false;
+        document.getElementById('adt-step-1').classList.remove('is-current');
+        document.getElementById('adt-step-1').classList.add('is-complete');
+        document.getElementById('adt-step-2').classList.add('is-current');
         panel.scrollIntoView({behavior:'smooth',block:'center'});
       });
       edit.addEventListener('click',()=>{
         panel.hidden=true;form.hidden=false;
+        document.getElementById('adt-step-1').classList.remove('is-complete');
+        document.getElementById('adt-step-1').classList.add('is-current');
+        document.getElementById('adt-step-2').classList.remove('is-current');
         form.querySelector('input').focus();
       });
     })();
