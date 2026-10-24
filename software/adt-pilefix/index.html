@@ -1663,6 +1663,13 @@
             <div class="adt-order-field"><label for="adt-payment-slip">แนบสลิปการชำระเงิน (JPG, PNG สูงสุด 10 MB)</label><input id="adt-payment-slip" type="file" accept="image/png,image/jpeg"></div>
             <div class="adt-payment-progress" id="adt-payment-progress" hidden role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="ความคืบหน้าการอ่านสลิป"><span></span></div>
             <div id="adt-ocr-progress-label" role="status" aria-live="polite" hidden style="margin-top:7px;font-weight:600;color:#24558a">กำลังอ่านสลิป 0%</div>
+            <div id="adt-ocr-lines-panel" hidden style="margin-top:12px;padding:14px;border:1px solid #d5e2f0;border-radius:12px;background:#f8fbff">
+              <div style="font-weight:700;color:#24558a;margin-bottom:8px">ข้อความที่ OCR อ่านได้ทีละบรรทัด (เฉพาะสลิปนี้)</div>
+              <div id="adt-ocr-lines-stage" style="font-size:12px;color:#65758b;margin-bottom:8px"></div>
+              <ol id="adt-ocr-lines-list" style="margin:0;padding-left:26px;max-height:250px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:13px/1.65 monospace"></ol>
+              <div id="adt-ocr-lines-format" style="margin-top:12px;font-size:13px;line-height:1.7"></div>
+              <div style="margin-top:8px;font-size:11px;color:#64748b">การจัดหมวดหมู่บนหน้าเว็บเป็นเพียงตัวอย่างเพื่อช่วยตรวจอ่าน Backend เป็นผู้ให้คะแนนจริง และต้องยืนยันการรับเงินจริงอีกครั้ง</div>
+            </div>
             <ol class="adt-process-list" id="adt-process-list" hidden aria-label="ขั้นตอนการลงทะเบียน">
               <li data-phase="upload">อัปโหลดสลิปเข้าสู่ระบบ</li>
               <li data-phase="ocr">อ่านสลิปและตรวจสอบยอดเงิน/บัญชีผู้รับ</li>
@@ -2153,6 +2160,31 @@
       const paymentFeedback=document.getElementById('adt-payment-feedback');
       const progress=document.getElementById('adt-payment-progress');
       const ocrProgressLabel=document.getElementById('adt-ocr-progress-label');
+      const ocrLinesPanel=document.getElementById('adt-ocr-lines-panel');
+      const ocrLinesList=document.getElementById('adt-ocr-lines-list');
+      const ocrLinesStage=document.getElementById('adt-ocr-lines-stage');
+      const ocrLinesFormat=document.getElementById('adt-ocr-lines-format');
+      function renderOcrLines(msg){
+        ocrLinesPanel.hidden=false;
+        ocrLinesList.replaceChildren();
+        const lines=Array.isArray(msg.lines)?msg.lines:[];
+        ocrLinesStage.textContent=(msg.pass==='original'?'อ่านภาพต้นฉบับเสร็จ':'อ่านภาพปรับแต่งเสร็จ')+' — '+lines.length+' บรรทัด';
+        lines.forEach(line=>{
+          const li=document.createElement('li');
+          li.textContent=String(line.text||'');
+          ocrLinesList.appendChild(li);
+        });
+        // Frontend formats only the observed lines; it does not authorize payment.
+        const nameLine=lines.find(x=>/(เอดีที|\bADT\b)/i.test(x.text||''));
+        const accountLine=lines.find(x=>/[xX*•●][xX*•●\d-]*\d{4}[xX*•●\d-]*/.test(x.text||''));
+        const moneyLine=lines.find(x=>/(?:\d{1,3}(?:,\d{3})+|\d{4,})(?:\.\d{2})?\s*(?:บาท|THB|฿)/i.test(x.text||''));
+        ocrLinesFormat.replaceChildren();
+        [['ชื่อที่อ่านพบ',nameLine],['เลขบัญชีที่อ่านพบ',accountLine],['จำนวนเงินที่อ่านพบ',moneyLine]].forEach(([label,item])=>{
+          const div=document.createElement('div');
+          div.textContent=label+': '+(item?item.text:'ยังแยกไม่พบ');
+          ocrLinesFormat.appendChild(div);
+        });
+      }
       const processList=document.getElementById('adt-process-list');
       const processPhases=['upload','ocr','booking','line'];
       function showPhase(phase, completed=[]){
@@ -2163,7 +2195,7 @@
         });
       }
       // Read real-time OCR progress and final JSON result from one authenticated request.
-      async function submitWithOcrProgress(url,payload,timeoutMs,onProgress){
+      async function submitWithOcrProgress(url,payload,timeoutMs,onProgress,onLines){
         const controller=new AbortController();
         const timer=setTimeout(()=>controller.abort(),timeoutMs);
         try{
@@ -2180,6 +2212,7 @@
             if(!line.trim())return;
             const msg=JSON.parse(line);
             if(msg.type==='progress')onProgress(msg.percent,msg.phase);
+            if(msg.type==='ocr_lines')onLines(msg);
             if(msg.type==='result')finalResult={status:msg.status,result:msg.result};
           }
           while(true){
@@ -2237,6 +2270,7 @@
         progress.querySelector('span').style.width='0%';
         progress.setAttribute('aria-valuenow','0');
         ocrProgressLabel.hidden=false;ocrProgressLabel.textContent='กำลังเริ่มอ่านสลิป 0%';
+        ocrLinesPanel.hidden=true;ocrLinesList.replaceChildren();ocrLinesFormat.replaceChildren();
         showPhase('upload');
         submitButton.textContent='กำลังดำเนินการ...';
         paymentFeedback.textContent='กำลังอัปโหลดภาพสลิปเข้าสู่ระบบ';
@@ -2250,7 +2284,7 @@
               const stage=phase==='original'?'อ่านภาพต้นฉบับ':phase==='enhanced'?'อ่านภาพปรับแต่ง':phase==='complete'?'ประมวลผลเสร็จ':'กำลังเตรียม OCR';
               ocrProgressLabel.textContent=stage+' '+pct+'%';
               paymentFeedback.textContent='กำลังตรวจสอบสลิป '+pct+'%';
-            });
+            },renderOcrLines);
           // New OCR backend returns a screening result; do not treat it as PF registration.
           if(responseStatus===200 && result.success===true &&
              result.status==='OCR_PRELIMINARY_PASS'){
