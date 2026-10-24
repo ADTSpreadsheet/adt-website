@@ -1096,12 +1096,19 @@
     .pilefix-video-link{display:inline-flex;align-items:center;gap:8px;color:#0d57bf;font-weight:700;text-decoration:none}
     .pilefix-video-link:hover{text-decoration:underline}
     @media(max-width:780px){.pilefix-video-frame{border-radius:12px}}
+
+    /* Keep the ADT-PILEFiX product name together at every visible location. */
+    .adt-brand-nowrap { display:inline-block; white-space:nowrap; max-width:100%; vertical-align:baseline; }
+    .adt-brand-pilefix { color:inherit; }
+    /* Long Thai headline wraps before the product name, never within it. */
+    #tour-heading { max-width:1100px; margin-inline:auto; font-size:clamp(1.65rem,3.5vw,3.25rem); overflow-wrap:normal; }
+    @media(max-width:480px) { #tour-heading { font-size:clamp(1.35rem,5.5vw,1.9rem); } }
   </style>
 </head>
 
 <body>
   <div class="topbar">
-    ADT-PILEFiX Professional — Engineering Software for Structural Engineers
+    <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> Professional — Engineering Software for Structural Engineers
   </div>
 
   <header class="site-header">
@@ -1132,7 +1139,7 @@
           <p class="eyebrow">ADT SOFTWARE · PROFESSIONAL VERSION</p>
 
           <h1>
-            ADT-PILEFiX<br>
+            <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span><br>
             <span>Professional v1.2</span>
           </h1>
 
@@ -1193,8 +1200,8 @@
     <section class="section tour-section" id="software-tour" aria-labelledby="tour-heading">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">EXPLORE ADT-PILEFiX</p>
-          <h2 id="tour-heading">เจาะลึกหน้าจอโปรแกรม ADT-PILEFiX</h2>
+          <p class="eyebrow">EXPLORE <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span></p>
+          <h2 id="tour-heading">เจาะลึกหน้าจอโปรแกรม <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span></h2>
           <p>คลิกหมายเลขบนภาพเพื่อดูรายละเอียดแต่ละส่วนของโปรแกรม พร้อมเน้นตำแหน่งที่เกี่ยวข้อง</p>
           <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1–20 เพื่อสำรวจการทำงานของโปรแกรม</p>
         </div>
@@ -1274,8 +1281,8 @@
     <section class="section pilefix-video-section" id="pilefix-video" aria-labelledby="pilefix-video-heading">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow">ADT-PILEFiX VIDEO WALKTHROUGH</p>
-          <h2 id="pilefix-video-heading">วิดีโอแนะนำการใช้งาน ADT-PILEFiX</h2>
+          <p class="eyebrow"><span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> VIDEO WALKTHROUGH</p>
+          <h2 id="pilefix-video-heading">วิดีโอแนะนำการใช้งาน <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span></h2>
           <p>ชมการอธิบายหน้าจอและเครื่องมือของโปรแกรมทั้ง 20 หมายเลข พร้อมตัวอย่างการทำงานจริง เพื่อให้เข้าใจขั้นตอนก่อนเริ่มใช้งาน</p>
         </div>
         <div class="pilefix-video-shell">
@@ -1294,7 +1301,7 @@
       <div class="container">
         <div class="section-head">
           <p class="eyebrow">CALCULATION REPORT GALLERY</p>
-          <h2 id="report-gallery-heading">ตัวอย่างเอกสารรายการคำนวณที่ได้จากโปรแกรม ADT-PILEFiX</h2>
+          <h2 id="report-gallery-heading">ตัวอย่างเอกสารรายการคำนวณที่ได้จากโปรแกรม <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span></h2>
           <p>ชมรูปแบบการนำเสนอเอกสารรายการคำนวณและรายละเอียดการตรวจสอบฐานรากจากโปรแกรม เลื่อนดูภาพตัวอย่างทั้ง 5 ภาพ และคลิกเพื่อขยายดูรายละเอียด</p>
         </div>
         <div class="report-gallery-shell">
@@ -1369,7 +1376,7 @@
           <p class="eyebrow">THE PROBLEM</p>
           <h2>งานฐานรากเยื้องศูนย์ ไม่ควรเสียเวลาไปกับการคำนวณซ้ำ</h2>
           <p>
-            ADT-PILEFiX ถูกพัฒนาขึ้นจากปัญหาที่วิศวกรเจอจริง
+            <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> ถูกพัฒนาขึ้นจากปัญหาที่วิศวกรเจอจริง
             ทั้งการวางตำแหน่งเสาเข็ม ตรวจแรงปฏิกิริยา
             ตรวจแรงเฉือน และจัดทำรายงานประกอบการออกแบบ
           </p>
@@ -1545,7 +1552,7 @@
       <div class="container pricing-grid">
         <div class="pricing-copy">
           <p class="eyebrow">CURRENT PRICE</p>
-          <h2>ADT-PILEFiX Professional ราคา 4,999 บาท</h2>
+          <h2><span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> Professional ราคา 4,999 บาท</h2>
           <p>
             ซื้อครั้งเดียว ไม่มีค่ารายเดือน
             เหมาะสำหรับวิศวกร ผู้ออกแบบ ผู้ตรวจสอบ
@@ -1584,7 +1591,7 @@
           <div class="pricing-actions">
             <!-- เปลี่ยน URL นี้เป็นหน้าชำระเงินจริงภายหลัง -->
             <a class="btn btn-gold" href="/purchase/adt-pilefix/">
-              สั่งซื้อ ADT-PILEFiX
+              สั่งซื้อ <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span>
             </a>
 
             <a class="btn btn-outline" href="/contact/">
@@ -1660,7 +1667,7 @@
           <strong>6 CPD</strong>
           <span>
             โฟกัสการออกแบบ ตรวจสอบ และใช้งาน
-            ADT-PILEFiX กับกรณีงานจริง
+            <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> กับกรณีงานจริง
           </span>
         </div>
       </div>
@@ -1675,7 +1682,7 @@
 
         <div class="faq">
           <details>
-            <summary>ADT-PILEFiX ใช้กับงานประเภทใด?</summary>
+            <summary><span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> ใช้กับงานประเภทใด?</summary>
             <p>
               โปรแกรมเน้นงานฐานรากเสาเข็มเยื้องศูนย์
               รวมถึงการตรวจแรงปฏิกิริยา Beam Shear
@@ -1713,7 +1720,7 @@
             <summary>บุคคลทั่วไปสมัครสัมมนาได้หรือไม่?</summary>
             <p>
               สมัครได้ในราคา 399 บาท
-              ส่วนเจ้าของ ADT-PILEFiX Professional
+              ส่วนเจ้าของ <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> Professional
               เข้าร่วมตามสิทธิ์ที่ประกาศในหน้าสัมมนา
             </p>
           </details>
@@ -1726,7 +1733,7 @@
         <div>
           <h2>พร้อมลดเวลาการทำงานฐานรากเยื้องศูนย์หรือยัง?</h2>
           <p>
-            เริ่มต้นใช้งาน ADT-PILEFiX Professional
+            เริ่มต้นใช้งาน <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> Professional
             ในราคา 4,999 บาท
           </p>
         </div>
@@ -1753,7 +1760,7 @@
   </footer>
 
   <a class="floating-buy" href="#buy">
-    ซื้อ ADT-PILEFiX · 4,999 บาท
+    ซื้อ <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span> · 4,999 บาท
   </a>
 
   <div class="tour-lightbox" id="tour-lightbox" role="dialog" aria-modal="true" aria-labelledby="tour-modal-heading" hidden>
