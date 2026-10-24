@@ -1103,6 +1103,19 @@
     /* Long Thai headline wraps before the product name, never within it. */
     #tour-heading { max-width:1100px; margin-inline:auto; font-size:clamp(1.65rem,3.5vw,3.25rem); overflow-wrap:normal; }
     @media(max-width:480px) { #tour-heading { font-size:clamp(1.35rem,5.5vw,1.9rem); } }
+
+    /* ADT-PILEFiX three YouTube Shorts */
+    .pilefix-shorts-section{background:linear-gradient(180deg,#f1f6fc,#fff)}
+    .pilefix-shorts-grid{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start}
+    .pilefix-short-card{min-width:0;padding:12px;border:1px solid #dce6f3;border-radius:20px;background:#fff;box-shadow:var(--shadow-sm)}
+    .pilefix-short-frame{width:100%;aspect-ratio:9/16;overflow:hidden;border-radius:13px;background:#06152d}
+    .pilefix-short-frame iframe{display:block;width:100%;height:100%;border:0}
+    .pilefix-short-card h3{font-size:1rem;line-height:1.5;margin:14px 4px 7px;color:#06152d}
+    .pilefix-short-card p{font-size:.82rem;line-height:1.65;margin:0 4px 12px;color:#52657e}
+    .pilefix-short-card a{display:inline-block;margin:0 4px 8px;color:#0d57bf;font-size:.82rem;font-weight:700;text-decoration:none}
+    .pilefix-short-card a:hover{text-decoration:underline}
+    @media(max-width:700px){.pilefix-shorts-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.pilefix-short-card{padding:8px}.pilefix-short-card h3{font-size:.85rem}}
+    @media(max-width:420px){.pilefix-shorts-grid{grid-template-columns:1fr;max-width:340px}.pilefix-short-card{padding:12px}}
   </style>
 </head>
 
@@ -1292,6 +1305,37 @@
           <div class="pilefix-video-actions">
             <a class="pilefix-video-link" href="https://www.youtube.com/watch?v=wPKHDtmLQoA" target="_blank" rel="noopener noreferrer">รับชมวิดีโอบน YouTube ↗</a>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Three official ADT-PILEFiX YouTube Shorts -->
+    <section class="section pilefix-shorts-section" id="pilefix-shorts" aria-labelledby="pilefix-shorts-heading">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">ADT-PILEFiX SHORT VIDEOS</p>
+          <h2 id="pilefix-shorts-heading">วิดีโอสั้นเจาะลึกฟังก์ชัน <span class="adt-brand-nowrap">ADT-<span class="adt-brand-pilefix">PILEFiX</span></span></h2>
+          <p>ชมตัวอย่างการใช้งานโปรแกรมในหัวข้อสำคัญ ผ่านวิดีโอสั้นทั้ง 3 คลิป</p>
+        </div>
+        <div class="pilefix-shorts-grid">
+          <article class="pilefix-short-card">
+            <div class="pilefix-short-frame"><iframe src="https://www.youtube-nocookie.com/embed/FxcrUibnWjk" title="ADT-PILEFiX Shorts 1 — ออกแบบฐานราก F1 ถึง F5" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            <h3>ออกแบบและคำนวณฐานราก F1–F5</h3>
+            <p>แนะนำความสามารถในการออกแบบฐานรากด้วยโปรแกรม</p>
+            <a href="https://www.youtube.com/shorts/FxcrUibnWjk" target="_blank" rel="noopener noreferrer">ดูบน YouTube ↗</a>
+          </article>
+          <article class="pilefix-short-card">
+            <div class="pilefix-short-frame"><iframe src="https://www.youtube-nocookie.com/embed/JmeLdokN_Qw" title="ADT-PILEFiX Shorts 2 — เพิ่มเสาเข็มตอกแซม" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            <h3>การเพิ่มเสาเข็มตอกแซม</h3>
+            <p>ตัวอย่างการเพิ่มเสาเข็มเพื่อช่วยรับน้ำหนักฐานราก</p>
+            <a href="https://www.youtube.com/shorts/JmeLdokN_Qw" target="_blank" rel="noopener noreferrer">ดูบน YouTube ↗</a>
+          </article>
+          <article class="pilefix-short-card">
+            <div class="pilefix-short-frame"><iframe src="https://www.youtube-nocookie.com/embed/UHlaLRFKJLU" title="ADT-PILEFiX Shorts 3 — ขยายขอบฐานรากเสาเข็มเยื้องศูนย์" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>
+            <h3>การขยายขอบฐานรากเสาเข็มเยื้องศูนย์</h3>
+            <p>สาธิตฟังก์ชันการปรับขยายขอบฐานราก</p>
+            <a href="https://www.youtube.com/shorts/UHlaLRFKJLU" target="_blank" rel="noopener noreferrer">ดูบน YouTube ↗</a>
+          </article>
         </div>
       </div>
     </section>
