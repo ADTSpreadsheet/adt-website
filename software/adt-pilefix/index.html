@@ -1012,6 +1012,14 @@
     .tour-hotspot-8{left:70%;top:36%;background:#f79009}
     .tour-hotspot-8:hover,.tour-hotspot-8:focus-visible{background:#c65b00}
     @media(max-width:780px){.tour-hotspot-7{left:73%;top:22%}.tour-hotspot-8{left:73%;top:36%}}
+    /* Spotlight #9–11: CG, pile reaction equation and reaction table */
+    .tour-hotspot-9{left:71%;top:48%;background:#0d9488}
+    .tour-hotspot-10{left:72%;top:55%;background:#d97706}
+    .tour-hotspot-11{left:72%;top:66%;background:#7c3aed}
+    .tour-hotspot-9:hover,.tour-hotspot-9:focus-visible{background:#0f766e}
+    .tour-hotspot-10:hover,.tour-hotspot-10:focus-visible{background:#b45309}
+    .tour-hotspot-11:hover,.tour-hotspot-11:focus-visible{background:#5b21b6}
+    @media(max-width:780px){.tour-hotspot-9{left:73%;top:48%}.tour-hotspot-10{left:74%;top:55%}.tour-hotspot-11{left:74%;top:66%}}
   </style>
 </head>
 
@@ -1132,6 +1140,9 @@
                 <button type="button" class="tour-hotspot tour-hotspot-6" id="tour-hotspot-6" aria-controls="tour-input-modal" aria-pressed="false" aria-label="หมายเลข 6 ภาพขยายช่องกรอกข้อมูลฐานราก">6</button>
                 <button type="button" class="tour-hotspot tour-hotspot-7" id="tour-hotspot-7" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 7 ตารางพิกัดเสาเข็มตามแบบ Design Drawing">7</button>
                 <button type="button" class="tour-hotspot tour-hotspot-8" id="tour-hotspot-8" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 8 ตารางพิกัดเสาเข็มตามตำแหน่งจริง">8</button>
+                <button type="button" class="tour-hotspot tour-hotspot-9" id="tour-hotspot-9" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 9 คำนวณจุดศูนย์ถ่วงกลุ่มเสาเข็ม CG">9</button>
+                <button type="button" class="tour-hotspot tour-hotspot-10" id="tour-hotspot-10" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 10 สมการแรงปฏิกิริยาเสาเข็มและโมเมนต์ Mx My">10</button>
+                <button type="button" class="tour-hotspot tour-hotspot-11" id="tour-hotspot-11" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 11 ตารางแรงปฏิกิริยาเสาเข็ม">11</button>
                 <div class="tour-pile-focus" id="tour-pile-focus" aria-live="off" hidden>
                   <div class="tour-footing-head"><span>05 / PILE TYPE — <span id="tour-pile-type">I-PILE</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
                   <img id="tour-pile-image" src="/assets/slides/pilefix-pile-type-i.png" alt="ตัวอย่างเสาเข็มรูปตัวไอ I-Pile">
@@ -1624,7 +1635,7 @@
   <script>
     (() => {
       const stage = document.getElementById('tour-stage');
-      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6'),document.getElementById('tour-hotspot-7'),document.getElementById('tour-hotspot-8')];
+      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6'),document.getElementById('tour-hotspot-7'),document.getElementById('tour-hotspot-8'),document.getElementById('tour-hotspot-9'),document.getElementById('tour-hotspot-10'),document.getElementById('tour-hotspot-11')];
       const detail1 = document.getElementById('tour-detail');
       const instruction = document.getElementById('tour-instruction');
       const highlight = document.querySelector('.tour-highlight');
@@ -1735,7 +1746,10 @@
       const spotlightDetails={
         1:{x:1.5,y:2.7,w:72,h:5.3,label:'01 / CALCULATION REPORT HEADER',heading:'หัวกระดาษรายการคำนวณ',description:'ใช้สำหรับกรอกข้อมูลโครงการและชื่อวิศวกรผู้ออกแบบ โดยตัวอักษรสีน้ำเงินคือข้อมูลที่ผู้ใช้งานกรอกหรือแก้ไขได้',items:['Project: ชื่อโครงการ','Owner: เจ้าของโครงการ','Location: สถานที่ตั้งโครงการ','Engineering Design: ชื่อวิศวกรผู้ออกแบบ','Description: รายละเอียดฐานราก','Date: วันที่จัดทำรายการคำนวณ']},
         7:{x:25.8,y:20.4,w:46.1,h:11.1,label:'07 / PILE COORDINATE DRAWING DESIGN',heading:'ตารางพิกัดเสาเข็มตามแบบออกแบบ',description:'ตารางนี้ใช้คำนวณและแสดงตำแหน่งพิกัดเสาเข็มตาม Design Drawing เพื่อเป็นข้อมูลอ้างอิงของตำแหน่งเสาเข็มที่กำหนดไว้ในแบบ',items:['แสดงหมายเลขเสาเข็มและตำแหน่งพิกัดตามแบบ','ใช้เป็นข้อมูลอ้างอิงสำหรับเปรียบเทียบกับตำแหน่งเสาเข็มจริง']},
-        8:{x:25.8,y:33.2,w:46.1,h:13.2,label:'08 / ACTUAL PILE COORDINATES',heading:'ตารางพิกัดเสาเข็มตามตำแหน่งจริง',description:'ตารางนี้แสดงค่าพิกัดเสาเข็มตามข้อมูลตำแหน่งจริง เพื่อใช้ตรวจสอบและเปรียบเทียบกับตำแหน่งที่กำหนดไว้ใน Design Drawing',items:['แสดงข้อมูลตำแหน่งจริงของเสาเข็มแต่ละต้น','ใช้ตรวจสอบความแตกต่างระหว่างตำแหน่งตามแบบกับตำแหน่งจริง']}
+        8:{x:25.8,y:33.2,w:46.1,h:13.2,label:'08 / ACTUAL PILE COORDINATES',heading:'ตารางพิกัดเสาเข็มตามตำแหน่งจริง',description:'ตารางนี้แสดงค่าพิกัดเสาเข็มตามข้อมูลตำแหน่งจริง เพื่อใช้ตรวจสอบและเปรียบเทียบกับตำแหน่งที่กำหนดไว้ใน Design Drawing',items:['แสดงข้อมูลตำแหน่งจริงของเสาเข็มแต่ละต้น','ใช้ตรวจสอบความแตกต่างระหว่างตำแหน่งตามแบบกับตำแหน่งจริง']},
+        9:{x:25.8,y:46.5,w:46.1,h:8.6,label:'09 / PILE GROUP CENTER OF GRAVITY',heading:'คำนวณจุดศูนย์ถ่วง (CG) ของกลุ่มเสาเข็ม',description:'แสดงการคำนวณหาตำแหน่งจุดศูนย์ถ่วง (CG) ของกลุ่มเสาเข็มภายหลังเกิดการเยื้องตำแหน่ง เพื่อใช้เป็นข้อมูลในการวิเคราะห์ผลของการเยื้องศูนย์',items:['คำนวณตำแหน่ง CG ของกลุ่มเสาเข็มตามพิกัดจริง','แสดงค่าความเยื้องศูนย์ในทิศทางที่เกี่ยวข้อง']},
+        10:{x:25.8,y:54.5,w:46.1,h:7.0,label:'10 / PILE REACTION FORCE CALCULATION',heading:'สมการแรงปฏิกิริยาและโมเมนต์จากการเยื้องศูนย์',description:'แสดงสมการสำหรับคำนวณแรงปฏิกิริยาที่เสาเข็มต้องรับ พร้อมค่าโมเมนต์ที่เกิดจากการเยื้องศูนย์ของกลุ่มเสาเข็มในทิศทาง Mx และ My',items:['แสดงสมการคำนวณแรงปฏิกิริยาในเสาเข็ม','แสดงค่าโมเมนต์ Mx และ My จากการเยื้องศูนย์']},
+        11:{x:25.8,y:61.0,w:46.1,h:18.0,label:'11 / PILE REACTION FORCE CALCULATION TABLE',heading:'ตารางคำนวณแรงปฏิกิริยาเสาเข็มแต่ละต้น',description:'แสดงผลการคำนวณแรงปฏิกิริยาที่เกิดขึ้นในเสาเข็มแต่ละต้น เพื่อใช้ตรวจสอบแรงที่เสาเข็มต้องรับตามตำแหน่งจริง',items:['แสดงแรงปฏิกิริยาของเสาเข็มแต่ละต้น','ใช้ประกอบการตรวจสอบเทียบกับกำลังรับน้ำหนักที่กำหนด']}
       };
       function selectHotspot(n){
         stopFooting();
@@ -1828,6 +1842,7 @@
       buttons[0].addEventListener('click',()=>selectHotspot(buttons[0].getAttribute('aria-pressed')==='true'?0:1));
       buttons[6].addEventListener('click',()=>selectHotspot(buttons[6].getAttribute('aria-pressed')==='true'?0:7));
       buttons[7].addEventListener('click',()=>selectHotspot(buttons[7].getAttribute('aria-pressed')==='true'?0:8));
+      [9,10,11].forEach(n=>buttons[n-1].addEventListener('click',()=>selectHotspot(buttons[n-1].getAttribute('aria-pressed')==='true'?0:n)));
       buttons[1].addEventListener('click',openModal);
       buttons[2].addEventListener('click',openModeModal);
       buttons[3].addEventListener('click',()=>footingFocus.hidden?startFooting():stopFooting());
