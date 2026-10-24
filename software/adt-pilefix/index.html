@@ -1634,8 +1634,6 @@
               <p class="adt-bank-account-row"><b>เลขที่บัญชี:</b> <span style="font-weight:800;font-size:1.2rem;letter-spacing:.035em;user-select:all">226-2-59393-5</span> <button type="button" class="adt-copy-account-btn" id="adt-copy-bank-account" aria-label="คัดลอกเลขบัญชีธนาคาร">⧉ คัดลอก</button> <small id="adt-copy-account-feedback" role="status" aria-live="polite"></small></p>
               <p class="adt-order-small">หลังโอนเงินแล้ว กรุณาแนบภาพสลิปเพื่อให้ระบบตรวจสอบข้อมูล</p>
             </div>
-            <div class="adt-order-field"><label for="adt-payment-date">วันและเวลาที่โอนเงิน</label><input type="datetime-local" id="adt-payment-date"></div>
-            <div class="adt-order-field"><label for="adt-payment-reference">เลขอ้างอิงธุรกรรม (ถ้ามี)</label><input type="text" id="adt-payment-reference" maxlength="100" placeholder="เลขอ้างอิงจากธนาคาร"></div>
             <div class="adt-order-field"><label for="adt-payment-slip">แนบสลิปการชำระเงิน (JPG, PNG สูงสุด 10 MB)</label><input id="adt-payment-slip" type="file" accept="image/png,image/jpeg"></div>
             <div class="adt-payment-progress" id="adt-payment-progress" hidden aria-label="กำลังตรวจสอบสลิป"><span></span></div><p class="adt-order-small" id="adt-payment-feedback" role="status" aria-live="polite">แนบภาพสลิป JPG หรือ PNG ระบบจะตรวจสอบข้อมูลและดำเนินการลงทะเบียน</p>
             <button class="btn btn-gold" id="adt-payment-submit" type="button">ตรวจสอบสลิปและลงทะเบียน</button>
@@ -2119,9 +2117,6 @@
         const payload=new FormData();
         payload.append('file',file);
         payload.append('checkout_token',checkoutToken);
-        // Optional metadata, never used as proof of payment.
-        payload.append('payment_date',document.getElementById('adt-payment-date').value);
-        payload.append('payment_reference',document.getElementById('adt-payment-reference').value.trim());
         submitting=true;submitButton.disabled=true;progress.hidden=false;
         submitButton.textContent='กำลังตรวจสอบ...';
         paymentFeedback.textContent='กำลังตรวจสอบสลิป บันทึกสมาชิก และส่งหมายเลข PF ทาง LINE โปรดอย่าปิดหน้านี้';
