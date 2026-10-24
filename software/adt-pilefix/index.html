@@ -912,6 +912,34 @@
       object-fit: contain;
       border-radius: 16px;
     }
+
+    /* Interactive software tour: one original PNG, CSS/SVG spotlight */
+    .tour-section { background: linear-gradient(180deg,#f2f7fd,#fff); }
+    .tour-layout { display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,.7fr);gap:24px;align-items:start; }
+    .tour-image-card { min-width:0;padding:14px;border:1px solid #d9e5f2;border-radius:22px;background:#e9f0f8;box-shadow:var(--shadow-md); }
+    .tour-image-scroll { overflow-x:auto;overscroll-behavior-x:contain;border-radius:12px;background:#fff; }
+    .tour-stage { position:relative;width:100%;min-width:0;line-height:0;isolation:isolate; }
+    .tour-stage img { width:100%;height:auto;display:block;user-select:none; }
+    .tour-shade { position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;transition:opacity .2s; }
+    .tour-stage.is-active .tour-shade {opacity:1;}
+    .tour-highlight { position:absolute;left:1.5%;top:2.7%;width:72%;height:5.3%;border:3px dashed #1677ff;background:rgba(255,255,255,.04);box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 24px rgba(22,119,255,.3);z-index:2;pointer-events:none;display:none; }
+    .tour-stage.is-active .tour-highlight {display:block;}
+    .tour-hotspot {position:absolute;left:76%;top:3%;z-index:3;transform:translate(-50%,-5%);width:42px;height:42px;border:3px solid #fff;border-radius:50%;background:#1677ff;color:#fff;box-shadow:0 5px 20px #001a4d88;font-weight:800;cursor:pointer;line-height:1;}
+    .tour-hotspot:hover,.tour-hotspot:focus-visible {background:#0049aa;outline:3px solid #ffc928;outline-offset:2px;}
+    .tour-hotspot[aria-pressed=true] {background:#ffc928;color:#071a3a;}
+    .tour-caption {font-size:.77rem;color:#52657e;margin:12px 3px 0;line-height:1.6;}
+    .tour-info {padding:26px;border:1px solid #dce6f3;border-radius:22px;background:#fff;box-shadow:var(--shadow-sm);position:sticky;top:115px;}
+    .tour-info-label {color:#1677ff;font-size:.8rem;font-weight:800;letter-spacing:.05em;}
+    .tour-info h3 {margin:10px 0;font-size:1.4rem;color:#06152d;line-height:1.4;}
+    .tour-info p {color:#40506a;font-size:.91rem;line-height:1.85;}
+    .tour-info ul {padding-left:22px;color:#40506a;font-size:.88rem;line-height:1.9;}
+    .tour-info .tour-blue {color:#1677ff;font-weight:700;}
+    .tour-control {margin-top:15px;border:1px solid #bdd5f4;border-radius:10px;padding:10px 14px;background:#eff6ff;color:#0d57bf;font-weight:700;cursor:pointer;}
+    .tour-control:hover {background:#dcecff;}
+    .tour-info[hidden],.tour-instruction[hidden] {display:none;}
+    @media(max-width:960px){.tour-layout{grid-template-columns:1fr}.tour-info{position:static}.tour-stage{min-width:680px}.tour-image-card{padding:9px}}
+    @media(max-width:780px){.tour-hotspot{width:42px;height:42px}.tour-info{padding:20px}.tour-image-scroll{scrollbar-width:thin}}
+    @media(prefers-reduced-motion:reduce){.tour-shade{transition:none}}
   </style>
 </head>
 
@@ -998,6 +1026,54 @@
 
             <span>ซื้อครั้งเดียว<br>ไม่มีค่ารายเดือน</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Software Tour: add more hotspots after approving their explanations -->
+    <section class="section tour-section" id="software-tour" aria-labelledby="tour-heading">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">EXPLORE ADT-PILEFiX</p>
+          <h2 id="tour-heading">รู้จักโปรแกรมผ่านหน้าจอการทำงานจริง</h2>
+          <p>คลิกหมายเลขบนภาพเพื่อดูรายละเอียดแต่ละส่วนของโปรแกรม พร้อมเน้นตำแหน่งที่เกี่ยวข้อง</p>
+        </div>
+        <div class="tour-layout">
+          <div class="tour-image-card">
+            <div class="tour-image-scroll" id="tour-scroll" tabindex="0" aria-label="ภาพหน้าจอโปรแกรม เลื่อนซ้ายขวาเพื่อดูบนมือถือ">
+              <div class="tour-stage" id="tour-stage">
+                <img src="/assets/slides/adt-pilefix-tour.png" alt="หน้าจอจริง ADT-PILEFiX แสดงแบบฐานราก ตารางคำนวณ และแผงควบคุม" loading="lazy" decoding="async">
+                <svg class="tour-shade" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                  <defs><mask id="tour-mask"><rect width="100" height="100" fill="white"/><rect x="1.5" y="2.7" width="72" height="5.3" fill="black"/></mask></defs>
+                  <rect width="100" height="100" fill="rgba(255,255,255,.83)" mask="url(#tour-mask)"/>
+                </svg>
+                <div class="tour-highlight" aria-hidden="true"></div>
+                <button type="button" class="tour-hotspot" id="tour-hotspot-1" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 1 หัวกระดาษรายการคำนวณ">1</button>
+              </div>
+            </div>
+            <p class="tour-caption">บนมือถือสามารถเลื่อนภาพในแนวนอนได้ เพื่อดูรายละเอียดโดยไม่บีบภาพจนตัวเลขเล็กเกินไป</p>
+          </div>
+          <aside class="tour-info" id="tour-info" aria-live="polite">
+            <div class="tour-instruction" id="tour-instruction">
+              <span class="tour-info-label">INTERACTIVE SOFTWARE TOUR</span>
+              <h3>เลือกหมายเลขบนภาพ</h3>
+              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูคำอธิบายส่วนหัวกระดาษรายการคำนวณ และดูพื้นที่ที่เกี่ยวข้องบนหน้าจอจริง</p>
+            </div>
+            <div id="tour-detail" hidden>
+              <span class="tour-info-label">01 / CALCULATION REPORT HEADER</span>
+              <h3>หัวกระดาษรายการคำนวณ</h3>
+              <p>ใช้สำหรับกรอกข้อมูลโครงการและชื่อวิศวกรผู้ออกแบบ โดย<strong class="tour-blue">ตัวอักษรสีน้ำเงินคือข้อมูลที่ผู้ใช้งานกรอกหรือแก้ไขได้</strong></p>
+              <ul>
+                <li><strong>Project:</strong> ชื่อโครงการ</li>
+                <li><strong>Owner:</strong> เจ้าของโครงการ</li>
+                <li><strong>Location:</strong> สถานที่ตั้งโครงการ</li>
+                <li><strong>Engineering Design:</strong> ชื่อวิศวกรผู้ออกแบบ</li>
+                <li><strong>Description:</strong> รายละเอียดฐานราก</li>
+                <li><strong>Date:</strong> วันที่จัดทำรายการคำนวณ</li>
+              </ul>
+              <button type="button" class="tour-control" id="tour-reset">ปิดคำอธิบาย / แสดงภาพทั้งหมด</button>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
@@ -1461,5 +1537,25 @@
   <a class="floating-buy" href="#buy">
     ซื้อ ADT-PILEFiX · 4,999 บาท
   </a>
+
+  <script>
+    (() => {
+      const stage = document.getElementById('tour-stage');
+      const button = document.getElementById('tour-hotspot-1');
+      const detail = document.getElementById('tour-detail');
+      const instruction = document.getElementById('tour-instruction');
+      const reset = document.getElementById('tour-reset');
+      if (!stage || !button || !detail || !instruction || !reset) return;
+      const setActive = (active) => {
+        stage.classList.toggle('is-active', active);
+        button.setAttribute('aria-pressed', String(active));
+        detail.hidden = !active;
+        instruction.hidden = active;
+      };
+      button.addEventListener('click', () => setActive(button.getAttribute('aria-pressed') !== 'true'));
+      reset.addEventListener('click', () => { setActive(false); button.focus(); });
+      setActive(false);
+    })();
+  </script>
 </body>
 </html>
