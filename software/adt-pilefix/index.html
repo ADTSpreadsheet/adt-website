@@ -2164,26 +2164,116 @@
       const ocrLinesList=document.getElementById('adt-ocr-lines-list');
       const ocrLinesStage=document.getElementById('adt-ocr-lines-stage');
       const ocrLinesFormat=document.getElementById('adt-ocr-lines-format');
+      // Client-side OCR preview only. Never use these guesses as payment authorization.
+      function parseSlipLines(rawLines){
+        const lines=(Array.isArray(rawLines)?rawLines:[]).map((item,i)=>({
+          index:Number(item.index)||i+1,
+          text:String(item.text||'').trim(),
+          confidence:Number.isFinite(Number(item.confidence))?Number(item.confidence):null,
+          bbox:item.bbox&&Number.isFinite(Number(item.bbox.y0))?item.bbox:null
+        })).filter(x=>x.text);
+        const compact=t=>String(t||'').normalize('NFKC').replace(/\s+/g,'').toUpperCase();
+        const nameRe=/(เอดีที|เอดี.?ที|ADT|[AＡ][DＤ][TＴ])/i;
+        const accountRe=/(?:[Xx*×•●#]{1,}[\dXx*×•●#\s-]{4,}|\d[\d\s-]{7,}\d)/g;
+        const moneyRe=/(\d{1,3}(?:,\d{3})+(?:\.\d{1,2})?|\d{4,}(?:\.\d{1,2})?)/g;
+        const accountCandidates=[];
+        lines.forEach((line,i)=>{
+          const matches=[...line.text.matchAll(accountRe)];
+          matches.forEach(m=>{
+            const candidate=m[0].replace(/\s+/g,'').trim();
+            const digits=candidate.replace(/\D/g,'');
+            if(digits.length<4||digits.length>14)return;
+            accountCandidates.push({line,i,value:candidate,digits});
+          });
+        });
+        const nameIndex=lines.findIndex(x=>nameRe.test(compact(x.text)));
+        const name=nameIndex>=0?lines[nameIndex]:null;
+        const isReceiverLabel=t=>/(ผู้รับ|บัญชีผู้รับ|ไปยัง|ถึงบัญชี|to account|recipient)/i.test(t);
+        const isSenderLabel=t=>/(ผู้โอน|จากบัญชี|บัญชีต้นทาง|from account|sender)/i.test(t);
+        // Anchor receiver account to the merchant name, never select the first account in the slip.
+        const scored=accountCandidates.map(c=>{
+          let score=0;
+          if(nameIndex>=0){
+            const distance=c.i-nameIndex;
+            if(distance>=0&&distance<=5)score+=65-distance*9;
+            else if(distance<0&&distance>=-2)score+=12+distance*5;
+            else score-=30;
+          }
+          if(/9393/.test(c.digits))score+=28; // Merchant account visible tail; supporting clue, not proof.
+          if(isReceiverLabel(c.line.text))score+=30;
+          if(isSenderLabel(c.line.text))score-=90;
+          for(let j=Math.max(0,c.i-2);j<c.i;j++){
+            if(isReceiverLabel(lines[j].text))score+=16;
+            if(isSenderLabel(lines[j].text))score-=32;
+          }
+          if(nameIndex>=0&&c.i<nameIndex-1)score-=35;
+          return {...c,score};
+        }).sort((a,b)=>b.score-a.score||a.i-b.i);
+        const account=scored.length&&scored[0].score>=20?scored[0]:null;
+        const amounts=[];
+        lines.forEach((line,i)=>{
+          for(const match of line.text.matchAll(moneyRe)){
+            const value=Number(match[0].replace(/,/g,''));
+            if(!Number.isFinite(value)||value<1||value>100000000)return;
+            const context=line.text.toLowerCase();
+            let score=0;
+            if(/บาท|thb|฿/i.test(context))score+=25;
+            if(/จำนวนเงิน|ยอดโอน|โอนเงิน|amount|total/i.test(context))score+=35;
+            if(/ค่าธรรมเนียม|fee|คงเหลือ|balance/i.test(context))score-=70;
+            if(value>=4999)score+=12;
+            if(nameIndex>=0&&i>nameIndex)score+=8;
+            amounts.push({line,i,value,score});
+          }
+        });
+        amounts.sort((a,b)=>b.score-a.score||b.value-a.value);
+        const amount=amounts.length&&amounts[0].score>=15?amounts[0]:null;
+        return {lines,name,account,amount,accountCandidates:scored};
+      }
       function renderOcrLines(msg){
         ocrLinesPanel.hidden=false;
         ocrLinesList.replaceChildren();
-        const lines=Array.isArray(msg.lines)?msg.lines:[];
+        const parsed=parseSlipLines(msg.lines);
+        const lines=parsed.lines;
         ocrLinesStage.textContent=(msg.pass==='original'?'อ่านภาพต้นฉบับเสร็จ':'อ่านภาพปรับแต่งเสร็จ')+' — '+lines.length+' บรรทัด';
         lines.forEach(line=>{
           const li=document.createElement('li');
-          li.textContent=String(line.text||'');
+          li.textContent=line.text;
+          li.dataset.ocrLine=String(line.index);
           ocrLinesList.appendChild(li);
         });
-        // Frontend formats only the observed lines; it does not authorize payment.
-        const nameLine=lines.find(x=>/(เอดีที|\bADT\b)/i.test(x.text||''));
-        const accountLine=lines.find(x=>/[xX*•●][xX*•●\d-]*\d{4}[xX*•●\d-]*/.test(x.text||''));
-        const moneyLine=lines.find(x=>/(?:\d{1,3}(?:,\d{3})+|\d{4,})(?:\.\d{2})?\s*(?:บาท|THB|฿)/i.test(x.text||''));
         ocrLinesFormat.replaceChildren();
-        [['ชื่อที่อ่านพบ',nameLine],['เลขบัญชีที่อ่านพบ',accountLine],['จำนวนเงินที่อ่านพบ',moneyLine]].forEach(([label,item])=>{
+        const heading=document.createElement('div');
+        heading.style.cssText='font-weight:700;color:#24558a;margin-bottom:6px';
+        heading.textContent='จัดหมวดหมู่โดยอ้างอิงตำแหน่งบรรทัด';
+        ocrLinesFormat.appendChild(heading);
+        function addField(label,value,line,detail){
           const div=document.createElement('div');
-          div.textContent=label+': '+(item?item.text:'ยังแยกไม่พบ');
+          div.style.cssText='padding:6px 0;border-bottom:1px solid #e2e8f0';
+          const title=document.createElement('strong');title.textContent=label+': ';
+          const body=document.createElement('span');body.textContent=value||'ยังระบุไม่ได้';
+          div.append(title,body);
+          if(line){
+            const meta=document.createElement('div');
+            meta.style.cssText='font-size:11px;color:#64748b';
+            meta.textContent='อ้างอิงบรรทัด '+line.index+(detail?' · '+detail:'');
+            div.appendChild(meta);
+          }
           ocrLinesFormat.appendChild(div);
-        });
+        }
+        addField('ชื่อบัญชีผู้รับ (คาดว่า)',parsed.name?.text,parsed.name,'ค้นจากชื่อ ADT/เอดีที');
+        addField('เลขบัญชีผู้รับ (คาดว่า)',parsed.account?.value,parsed.account?.line,
+          parsed.account?'อยู่ใกล้ชื่อผู้รับ / เลขท้ายที่คาดหวัง':'ไม่เลือกบัญชีผู้โอนแทน');
+        addField('ยอดเงินโอน (คาดว่า)',parsed.amount?parsed.amount.value.toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})+' บาท':null,parsed.amount?.line,'คัดออกยอดค่าธรรมเนียม/ยอดคงเหลือ');
+        if(parsed.accountCandidates.length>1){
+          const note=document.createElement('div');
+          note.style.cssText='font-size:11px;color:#92400e;margin-top:8px';
+          note.textContent='พบเลขบัญชีหลายรายการ ('+parsed.accountCandidates.length+') ระบบเลือกโดยอ้างอิงตำแหน่งชื่อผู้รับ กรุณาตรวจเทียบภาพสลิป';
+          ocrLinesFormat.appendChild(note);
+        }
+        const disclaimer=document.createElement('div');
+        disclaimer.style.cssText='font-size:11px;color:#64748b;margin-top:8px';
+        disclaimer.textContent='ผลจัดหมวดหมู่นี้เป็นการคาดเดาบนหน้าเว็บ ไม่ใช่คะแนนตรวจสอบหรือหลักฐานยืนยันการรับเงิน';
+        ocrLinesFormat.appendChild(disclaimer);
       }
       const processList=document.getElementById('adt-process-list');
       const processPhases=['upload','ocr','booking','line'];
