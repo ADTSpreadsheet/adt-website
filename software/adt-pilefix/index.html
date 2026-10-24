@@ -1057,6 +1057,35 @@
     .tour-hotspot-20:hover,.tour-hotspot-20:focus-visible{background:#5b21b6}
     @media(max-width:780px){.tour-hotspot-20{left:77%;top:70%}}
 
+
+    /* Five-image calculation report gallery */
+    .report-gallery-section{background:linear-gradient(180deg,#fff,#f0f6fd)}
+    .report-gallery-shell{max-width:1120px;margin:auto}
+    .report-gallery-frame{position:relative;padding:18px 68px 15px;border:1px solid #dce6f3;border-radius:24px;background:#fff;box-shadow:var(--shadow-md)}
+    .report-gallery-viewport{overflow:hidden;border-radius:16px}
+    .report-gallery-track{display:flex;transition:transform .35s ease;will-change:transform}
+    .report-gallery-slide{min-width:100%;margin:0}
+    .report-gallery-image-button{width:100%;padding:0;border:0;border-radius:13px;overflow:hidden;background:#eaf1f9;cursor:zoom-in;display:block}
+    .report-gallery-media{position:relative;aspect-ratio:3/2;display:grid;place-items:center;background:linear-gradient(135deg,#eaf3ff,#f7fafc)}
+    .report-gallery-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#f7fafc}
+    .report-gallery-placeholder{display:grid;place-items:center;gap:12px;padding:25px;text-align:center;color:#52657e}
+    .report-gallery-placeholder strong{font-size:1.15rem;color:#0a2855}
+    .report-gallery-placeholder small{font:600 .85rem Inter,sans-serif;overflow-wrap:anywhere}
+    .report-gallery-slide figcaption{padding:15px 8px 4px;text-align:center;color:#40506a;font-size:.92rem}
+    .report-gallery-slide figcaption strong{color:#06152d}
+    .report-gallery-arrow{position:absolute;top:44%;transform:translateY(-50%);width:44px;height:44px;border:1px solid #c7d9ef;border-radius:50%;background:#eff6ff;color:#0d57bf;font-size:1.7rem;cursor:pointer}
+    .report-gallery-arrow:hover{background:#dbeafe}.report-gallery-prev{left:13px}.report-gallery-next{right:13px}
+    .report-gallery-bottom{display:flex;justify-content:center;align-items:center;gap:16px;margin-top:18px}
+    .report-gallery-dots{display:flex;gap:9px}.report-gallery-dot{width:11px;height:11px;padding:0;border:0;border-radius:50%;background:#b5c8df;cursor:pointer}.report-gallery-dot[aria-current=true]{background:#1677ff;box-shadow:0 0 0 3px #dcecff}
+    .report-gallery-count{color:#52657e;font:700 .83rem Inter,sans-serif}
+    .report-gallery-help{text-align:center;color:#6c7a90;font-size:.81rem;margin:15px 0 0}
+    .report-gallery-modal[hidden]{display:none!important}.report-gallery-modal{position:fixed;inset:0;z-index:3500;display:grid;place-items:center;padding:20px;background:rgba(3,16,37,.85)}
+    .report-gallery-modal-content{width:min(1300px,96vw);max-height:95dvh;overflow:auto;background:#fff;padding:16px;border-radius:16px}
+    .report-gallery-modal-head{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:12px;font-weight:700;color:#06152d}
+    .report-gallery-modal-close{padding:8px 15px;border:1px solid #bdd5f4;border-radius:9px;background:#eff6ff;color:#0d57bf;font-weight:700;cursor:pointer}
+    .report-gallery-modal img{display:block;width:100%;max-height:79dvh;object-fit:contain}
+    @media(max-width:780px){.report-gallery-frame{padding:10px 10px 62px}.report-gallery-arrow{top:auto;bottom:9px;transform:none}.report-gallery-prev{left:14px}.report-gallery-next{right:14px}.report-gallery-slide figcaption{font-size:.79rem}.report-gallery-placeholder strong{font-size:.92rem}}
+    @media(prefers-reduced-motion:reduce){.report-gallery-track{transition:none}}
   </style>
 </head>
 
@@ -1230,6 +1259,80 @@
         </div>
       </div>
     </section>
+
+    <!-- Calculation Report Gallery: images may be uploaded later to /assets/slides/ -->
+    <section class="section report-gallery-section" id="calculation-reports" aria-labelledby="report-gallery-heading">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">CALCULATION REPORT GALLERY</p>
+          <h2 id="report-gallery-heading">ตัวอย่างเอกสารรายการคำนวณที่ได้จากโปรแกรม ADT-PILEFiX</h2>
+          <p>ชมรูปแบบการนำเสนอเอกสารรายการคำนวณและรายละเอียดการตรวจสอบฐานรากจากโปรแกรม เลื่อนดูภาพตัวอย่างทั้ง 5 ภาพ และคลิกเพื่อขยายดูรายละเอียด</p>
+        </div>
+        <div class="report-gallery-shell">
+          <div class="report-gallery-frame" aria-roledescription="carousel" aria-label="ตัวอย่างเอกสารรายการคำนวณ">
+            <button class="report-gallery-arrow report-gallery-prev" type="button" aria-label="ภาพก่อนหน้า">‹</button>
+            <div class="report-gallery-viewport"><div class="report-gallery-track" id="report-gallery-track">
+            <figure class="report-gallery-slide" aria-label="ภาพที่ 1 จาก 5">
+              <button type="button" class="report-gallery-image-button" aria-label="ขยายภาพที่ 1: ภาพรวมชุดรายการคำนวณจากโครงการจริง">
+                <span class="report-gallery-media">
+                  <span class="report-gallery-placeholder"><strong>ตัวอย่างเอกสารรายการคำนวณ · ภาพที่ 01</strong><span>รอเพิ่มภาพประกอบ</span><small>pilefix-report-01.png</small></span>
+                  <img src="/assets/slides/pilefix-report-01.png" alt="ภาพรวมชุดรายการคำนวณจากโครงการจริง" loading="lazy" onerror="this.hidden=true" onload="this.hidden=false">
+                </span>
+              </button>
+              <figcaption><strong>01 / 05</strong> — ภาพรวมชุดรายการคำนวณจากโครงการจริง</figcaption>
+            </figure>
+            <figure class="report-gallery-slide" aria-label="ภาพที่ 2 จาก 5">
+              <button type="button" class="report-gallery-image-button" aria-label="ขยายภาพที่ 2: ตารางข้อมูลและรายละเอียดการคำนวณ">
+                <span class="report-gallery-media">
+                  <span class="report-gallery-placeholder"><strong>ตัวอย่างเอกสารรายการคำนวณ · ภาพที่ 02</strong><span>รอเพิ่มภาพประกอบ</span><small>pilefix-report-02.png</small></span>
+                  <img src="/assets/slides/pilefix-report-02.png" alt="ตารางข้อมูลและรายละเอียดการคำนวณ" loading="lazy" onerror="this.hidden=true" onload="this.hidden=false">
+                </span>
+              </button>
+              <figcaption><strong>02 / 05</strong> — ตารางข้อมูลและรายละเอียดการคำนวณ</figcaption>
+            </figure>
+            <figure class="report-gallery-slide" aria-label="ภาพที่ 3 จาก 5">
+              <button type="button" class="report-gallery-image-button" aria-label="ขยายภาพที่ 3: รายงานตรวจสอบฐานรากเสาเข็มเยื้องศูนย์">
+                <span class="report-gallery-media">
+                  <span class="report-gallery-placeholder"><strong>ตัวอย่างเอกสารรายการคำนวณ · ภาพที่ 03</strong><span>รอเพิ่มภาพประกอบ</span><small>pilefix-report-03.png</small></span>
+                  <img src="/assets/slides/pilefix-report-03.png" alt="รายงานตรวจสอบฐานรากเสาเข็มเยื้องศูนย์" loading="lazy" onerror="this.hidden=true" onload="this.hidden=false">
+                </span>
+              </button>
+              <figcaption><strong>03 / 05</strong> — รายงานตรวจสอบฐานรากเสาเข็มเยื้องศูนย์</figcaption>
+            </figure>
+            <figure class="report-gallery-slide" aria-label="ภาพที่ 4 จาก 5">
+              <button type="button" class="report-gallery-image-button" aria-label="ขยายภาพที่ 4: รายการคำนวณและออกแบบเหล็กเสริมฐานราก">
+                <span class="report-gallery-media">
+                  <span class="report-gallery-placeholder"><strong>ตัวอย่างเอกสารรายการคำนวณ · ภาพที่ 04</strong><span>รอเพิ่มภาพประกอบ</span><small>pilefix-report-04.png</small></span>
+                  <img src="/assets/slides/pilefix-report-04.png" alt="รายการคำนวณและออกแบบเหล็กเสริมฐานราก" loading="lazy" onerror="this.hidden=true" onload="this.hidden=false">
+                </span>
+              </button>
+              <figcaption><strong>04 / 05</strong> — รายการคำนวณและออกแบบเหล็กเสริมฐานราก</figcaption>
+            </figure>
+            <figure class="report-gallery-slide" aria-label="ภาพที่ 5 จาก 5">
+              <button type="button" class="report-gallery-image-button" aria-label="ขยายภาพที่ 5: ภาพรวมชุดเอกสารรายการคำนวณที่จัดพิมพ์">
+                <span class="report-gallery-media">
+                  <span class="report-gallery-placeholder"><strong>ตัวอย่างเอกสารรายการคำนวณ · ภาพที่ 05</strong><span>รอเพิ่มภาพประกอบ</span><small>pilefix-report-05.png</small></span>
+                  <img src="/assets/slides/pilefix-report-05.png" alt="ภาพรวมชุดเอกสารรายการคำนวณที่จัดพิมพ์" loading="lazy" onerror="this.hidden=true" onload="this.hidden=false">
+                </span>
+              </button>
+              <figcaption><strong>05 / 05</strong> — ภาพรวมชุดเอกสารรายการคำนวณที่จัดพิมพ์</figcaption>
+            </figure>
+            </div></div>
+            <button class="report-gallery-arrow report-gallery-next" type="button" aria-label="ภาพถัดไป">›</button>
+          </div>
+          <div class="report-gallery-bottom"><div class="report-gallery-dots" id="report-gallery-dots" aria-label="เลือกภาพ"></div><span class="report-gallery-count" id="report-gallery-count">01 / 05</span></div>
+          <p class="report-gallery-help">ใช้ลูกศรเพื่อเลื่อนภาพ · คลิกภาพเพื่อดูขนาดใหญ่</p>
+        </div>
+      </div>
+    </section>
+    <div class="report-gallery-modal" id="report-gallery-modal" role="dialog" aria-modal="true" aria-label="ขยายภาพตัวอย่างเอกสาร" hidden>
+      <div class="report-gallery-modal-content">
+        <div class="report-gallery-modal-head"><span id="report-gallery-modal-title"></span><button class="report-gallery-modal-close" id="report-gallery-modal-close" type="button">✕ ปิดภาพ</button></div>
+        <img id="report-gallery-modal-image" alt="" onerror="this.hidden=true" onload="this.hidden=false">
+        <p id="report-gallery-modal-fallback" style="text-align:center;color:#52657e" hidden>ภาพนี้ยังไม่ได้อัปโหลด</p>
+      </div>
+    </div>
+
 
     <section class="section white">
       <div class="container">
@@ -1942,6 +2045,43 @@
       showTitle(1);
       showMode(1);
       selectHotspot(0);
+    })();
+  </script>
+
+  <script>
+    (() => {
+      const track=document.getElementById('report-gallery-track');
+      if(!track)return;
+      const slides=[...track.querySelectorAll('.report-gallery-slide')];
+      const dots=document.getElementById('report-gallery-dots');
+      const count=document.getElementById('report-gallery-count');
+      const modal=document.getElementById('report-gallery-modal');
+      const modalImg=document.getElementById('report-gallery-modal-image');
+      const fallback=document.getElementById('report-gallery-modal-fallback');
+      const modalTitle=document.getElementById('report-gallery-modal-title');
+      const closeBtn=document.getElementById('report-gallery-modal-close');
+      let index=0,lastFocus=null;
+      const dotButtons=slides.map((_,i)=>{
+        const b=document.createElement('button');b.type='button';b.className='report-gallery-dot';b.setAttribute('aria-label',`ภาพที่ ${i+1}`);b.addEventListener('click',()=>go(i));dots.appendChild(b);return b;
+      });
+      function go(n){index=(n+slides.length)%slides.length;track.style.transform=`translateX(-${index*100}%)`;count.textContent=`${String(index+1).padStart(2,'0')} / 05`;dotButtons.forEach((b,i)=>b.setAttribute('aria-current',String(i===index)));}
+      document.querySelector('.report-gallery-prev').addEventListener('click',()=>go(index-1));
+      document.querySelector('.report-gallery-next').addEventListener('click',()=>go(index+1));
+      slides.forEach((slide,i)=>slide.querySelector('button').addEventListener('click',()=>{
+        lastFocus=document.activeElement;
+        const original=slide.querySelector('img');
+        modalImg.hidden=true;fallback.hidden=false;
+        modalImg.onload=()=>{modalImg.hidden=false;fallback.hidden=true};
+        modalImg.onerror=()=>{modalImg.hidden=true;fallback.hidden=false};
+        modalImg.src=original.getAttribute('src');modalImg.alt=original.alt;
+        modalTitle.textContent=`ภาพที่ ${i+1} / 5 — ${original.alt}`;
+        modal.hidden=false;document.body.style.overflow='hidden';closeBtn.focus();
+      }));
+      function close(){modal.hidden=true;document.body.style.overflow='';if(lastFocus)lastFocus.focus();}
+      closeBtn.addEventListener('click',close);
+      modal.addEventListener('click',e=>{if(e.target===modal)close();});
+      document.addEventListener('keydown',e=>{if(!modal.hidden&&e.key==='Escape')close();else if(modal.hidden&&document.activeElement?.closest('.report-gallery-shell')){if(e.key==='ArrowRight')go(index+1);if(e.key==='ArrowLeft')go(index-1);}});
+      go(0);
     })();
   </script>
 </body>
