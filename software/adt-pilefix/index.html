@@ -2178,6 +2178,26 @@
           xhr.send(payload);
         });
       }
+      // OCR response is a preliminary screening result, not payment confirmation.
+      function formatOcrScreening(result){
+        const account=result.account || {};
+        const amount=result.amount || {};
+        const receiver=result.receiver || {};
+        const states=[
+          ['เลขบัญชีผู้รับ',account.match,account.code],
+          ['ยอดเงินโอน',amount.match,amount.code],
+          ['ชื่อบัญชีผู้รับ',receiver.match,receiver.code]
+        ];
+        const score=Number.isInteger(result.matched_fields)
+          ? result.matched_fields : states.filter(row=>row[1]===true).length;
+        const labels=states.map(([label,matched,code])=>
+          `${label}: ${matched===true?'ตรง':code==='ACCOUNT_NOT_CONFIGURED'?'ยังไม่ได้ตั้งค่าบัญชี':'ไม่ยืนยัน/ไม่ตรง'}`);
+        console.groupCollapsed('[ADT-PILEFiX] OCR screening');
+        console.table(states.map(([field,match,code])=>({field,match:match===true,code:code||''})));
+        console.log('score:',score,'status:',result.status,'payment_verified:',result.payment_verified===true);
+        console.groupEnd();
+        return `ผลอ่านสลิปเบื้องต้น ${score}/3 รายการ — ${labels.join(' | ')}. ผ่านเกณฑ์ OCR แต่ยังรอตรวจสอบการรับเงินจริงและอนุมัติการลงทะเบียน`;
+      }
       const downloadPanel=document.getElementById('adt-order-download');
       const bookingDisplay=document.getElementById('adt-booking-display');
       const downloadFeedback=document.getElementById('adt-download-feedback');
@@ -2214,13 +2234,29 @@
             showPhase('ocr',['upload']);
             progress.classList.add('is-processing');
           }
+          // New OCR backend returns a screening result; do not treat it as PF registration.
+          if(responseStatus===200 && result.success===true &&
+             result.status==='OCR_PRELIMINARY_PASS'){
+            showPhase('ocr',['upload','ocr']);
+            paymentFeedback.textContent=formatOcrScreening(result);
+            return;
+          }
+          // Debug a failed OCR screening without exposing raw slip/customer data.
+          if(result.status==='OCR_REVIEW'){
+            const score=[result.account?.match,result.amount?.match,result.receiver?.match]
+              .filter(Boolean).length;
+            console.info('[ADT-PILEFiX] OCR needs review',{
+              score,account_code:result.account?.code,
+              amount_code:result.amount?.code,receiver_code:result.receiver?.code
+            });
+          }
           // HTTP 200 alone is insufficient: require persisted booking and LINE delivery.
           const done=responseStatus===200 && result.success===true &&
             result.status==='BOOKING_SAVED_LINE_SENT' && result.line_sent===true &&
-            /^PF-\\d+$/.test(String(result.booking_no||''));
+            /^PF-\d+$/.test(String(result.booking_no||''));
           if(!done){
             paymentFeedback.textContent=result.message || ({
-              OCR_IMPORTANT_DATA_NOT_CONFIRMED:'ระบบอ่านยอดเงินหรือชื่อผู้รับไม่ชัดเจน กรุณาตรวจสอบสลิป',
+              OCR_IMPORTANT_DATA_NOT_CONFIRMED:'ผลตรวจสลิปยังไม่ถึงเกณฑ์ 2 ใน 3 กรุณาตรวจสอบสลิป',
               OCR_TEXT_EMPTY:'ไม่สามารถอ่านข้อความจากสลิปได้',
               VERIFIED_CHECKOUT_REQUIRED:'กรุณายืนยัน LINE OTP อีกครั้ง',
               CHECKOUT_SESSION_INVALID:'เซสชันหมดอายุ กรุณาเริ่มใหม่',
