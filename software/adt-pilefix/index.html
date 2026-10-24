@@ -1198,6 +1198,12 @@
     @keyframes adt-ocr-loading{from{transform:translateX(-110%)}to{transform:translateX(300%)}}
     @media(max-width:560px){.adt-payment-summary{align-items:start;flex-direction:column}}
   </style>
+  <style>
+    .adt-bank-account-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+    .adt-copy-account-btn{border:1px solid #b8d2ef;border-radius:8px;padding:5px 10px;background:#eff6ff;color:#0d57bf;font-size:.78rem;font-weight:700;cursor:pointer}
+    .adt-copy-account-btn:hover,.adt-copy-account-btn:focus-visible{background:#dcecff}
+    #adt-copy-account-feedback{color:#13743c;font-size:.76rem}
+  </style>
 </head>
 
 <body>
@@ -1625,7 +1631,7 @@
             <div class="adt-payment-instructions" id="adt-payment-instructions" aria-live="polite">
               <strong>ธนาคารกสิกรไทย (KBank)</strong>
               <p><b>ชื่อบัญชี:</b> บริษัท เอดีที ซีวิล บิวดิ้ง แอนด์เทคโนโลยี จำกัด</p>
-              <p><b>เลขที่บัญชี:</b> <span style="font-weight:800;font-size:1.2rem;letter-spacing:.035em;user-select:all">226-2-59393-5</span></p>
+              <p class="adt-bank-account-row"><b>เลขที่บัญชี:</b> <span style="font-weight:800;font-size:1.2rem;letter-spacing:.035em;user-select:all">226-2-59393-5</span> <button type="button" class="adt-copy-account-btn" id="adt-copy-bank-account" aria-label="คัดลอกเลขบัญชีธนาคาร">⧉ คัดลอก</button> <small id="adt-copy-account-feedback" role="status" aria-live="polite"></small></p>
               <p class="adt-order-small">หลังโอนเงินแล้ว กรุณาแนบภาพสลิปเพื่อให้ระบบตรวจสอบข้อมูล</p>
             </div>
             <div class="adt-order-field"><label for="adt-payment-date">วันและเวลาที่โอนเงิน</label><input type="datetime-local" id="adt-payment-date"></div>
@@ -2198,6 +2204,29 @@
             }
           },500);
         });
+      });
+    })();
+  </script>
+  <script>
+    (()=>{
+      const button=document.getElementById('adt-copy-bank-account');
+      const feedback=document.getElementById('adt-copy-account-feedback');
+      if(!button || !feedback)return;
+      button.addEventListener('click',async()=>{
+        const account='2262593935'; // No hyphens: ready to paste into banking apps.
+        try{
+          if(navigator.clipboard && window.isSecureContext){
+            await navigator.clipboard.writeText(account);
+          }else{
+            const field=document.createElement('textarea');
+            field.value=account;field.setAttribute('readonly','');
+            field.style.position='fixed';field.style.opacity='0';
+            document.body.appendChild(field);field.select();
+            const ok=document.execCommand('copy');field.remove();
+            if(!ok)throw new Error('COPY_FAILED');
+          }
+          feedback.textContent='✓ คัดลอกแล้ว';
+        }catch(_error){feedback.textContent='คัดลอกไม่ได้ กรุณาเลือกเลขบัญชีด้วยตนเอง';}
       });
     })();
   </script>
