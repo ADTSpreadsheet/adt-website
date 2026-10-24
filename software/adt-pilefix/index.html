@@ -1192,6 +1192,10 @@
     .adt-payment-instructions p{margin:7px 0 0;line-height:1.6}
     .adt-payment-card .adt-order-field input{max-width:100%}
     .adt-payment-card .btn:disabled{opacity:.55;cursor:not-allowed}
+    #adt-program-download-link[hidden]{display:none!important}
+    .adt-payment-progress{height:9px;background:#e5edf5;border-radius:99px;overflow:hidden}
+    .adt-payment-progress>span{display:block;width:35%;height:100%;background:#1677ff;animation:adt-ocr-loading 1.3s ease-in-out infinite alternate}
+    @keyframes adt-ocr-loading{from{transform:translateX(-110%)}to{transform:translateX(300%)}}
     @media(max-width:560px){.adt-payment-summary{align-items:start;flex-direction:column}}
   </style>
 </head>
@@ -1570,7 +1574,7 @@
           <div class="adt-step is-current" id="adt-step-1"><span class="adt-step-num">1</span><span>กรอกข้อมูลติดต่อ<small>ชื่อ เบอร์โทร อีเมล</small></span><span class="adt-step-check">✓</span></div>
           <div class="adt-step" id="adt-step-2"><span class="adt-step-num">2</span><span>ยืนยันตัวตนผ่าน LINE<small>สแกน QR และกรอก OTP</small></span><span class="adt-step-check">✓</span></div>
           <div class="adt-step" id="adt-step-3"><span class="adt-step-num">3</span><span>ชำระเงินและแนบสลิป<small>รอตรวจสอบการชำระเงิน</small></span><span class="adt-step-check">✓</span></div>
-          <div class="adt-step" id="adt-step-4"><span class="adt-step-num">4</span><span>ดาวน์โหลดโปรแกรม<small>หลังอนุมัติคำสั่งซื้อ</small></span><span class="adt-step-check">✓</span></div>
+          <div class="adt-step" id="adt-step-4"><span class="adt-step-num">4</span><span>ดาวน์โหลดโปรแกรม<small>หลังระบบยืนยันการลงทะเบียนและส่ง LINE</small></span><span class="adt-step-check">✓</span></div>
         </aside>
         <div class="adt-order-panel">
           <p class="eyebrow">ORDER REGISTRATION</p>
@@ -1590,7 +1594,7 @@
               <input id="adt-order-email" name="email" autocomplete="email" type="email" required maxlength="254" placeholder="example@email.com">
             </div>
             <button class="btn btn-gold" type="submit">ดำเนินการต่อเพื่อเชื่อม LINE Bot</button>
-            <p class="adt-order-small">ข้อมูลในฟอร์มนี้ยังไม่ถูกส่งไปยังฐานข้อมูลจนกว่าจะเชื่อมต่อ API สั่งซื้อจริง</p>
+            <p class="adt-order-small">ข้อมูลจะถูกบันทึกเมื่อยืนยัน LINE และดำเนินการสั่งซื้อสำเร็จ</p>
           </form>
           <div id="adt-order-line" class="adt-order-line" hidden aria-live="polite">
             <h3>ขั้นตอนต่อไป: เพิ่มเพื่อน LINE Bot</h3>
@@ -1613,7 +1617,7 @@
               <div><strong>ADT-PILEFiX Professional v1.2</strong><small>รหัสสินค้า PILEFIX · 1 License</small></div>
               <strong>฿4,999</strong>
             </div>
-            <p class="adt-order-small">ราคาที่แสดงเป็นข้อมูลประกอบการสั่งซื้อ โปรดยืนยันยอดและเลขคำสั่งซื้อกับ ADT ก่อนโอนเงินจริง</p>
+            <p class="adt-order-small">ยอดชำระสำหรับ ADT-PILEFiX Professional คือ 4,999 บาท กรุณาตรวจสอบบัญชีผู้รับก่อนโอน</p>
             <fieldset class="adt-payment-methods">
               <legend>เลือกช่องทางการชำระเงิน</legend>
               <label><input type="radio" name="adt-payment-method" value="BANK_TRANSFER" checked> โอนเงินผ่านบัญชีธนาคาร</label>
@@ -1622,17 +1626,17 @@
               <strong>ธนาคารกสิกรไทย (KBank)</strong>
               <p><b>ชื่อบัญชี:</b> บริษัท เอดีที ซีวิล บิวดิ้ง แอนด์เทคโนโลยี จำกัด</p>
               <p><b>เลขที่บัญชี:</b> <span style="font-weight:800;font-size:1.2rem;letter-spacing:.035em;user-select:all">226-2-59393-5</span></p>
-              <p class="adt-order-small">ขณะนี้แสดงข้อมูลบัญชีรับชำระเงินแล้ว แต่ระบบยังไม่บันทึกคำสั่งซื้อและรับสลิป กรุณาติดต่อ ADT เพื่อยืนยันยอดและเลขคำสั่งซื้อก่อนโอน</p>
+              <p class="adt-order-small">หลังโอนเงินแล้ว กรุณาแนบภาพสลิปเพื่อให้ระบบตรวจสอบข้อมูล</p>
             </div>
-            <div class="adt-order-field"><label for="adt-payment-date">วันและเวลาที่โอนเงิน</label><input type="datetime-local" id="adt-payment-date" disabled></div>
-            <div class="adt-order-field"><label for="adt-payment-reference">เลขอ้างอิงธุรกรรม (ถ้ามี)</label><input type="text" id="adt-payment-reference" maxlength="100" placeholder="เลขอ้างอิงจากธนาคาร" disabled></div>
-            <div class="adt-order-field"><label for="adt-payment-slip">แนบสลิปการชำระเงิน (JPG, PNG, PDF สูงสุด 5 MB)</label><input id="adt-payment-slip" type="file" accept="image/png,image/jpeg,application/pdf" disabled></div>
-            <p class="adt-order-small" id="adt-payment-feedback" role="status" aria-live="polite">ฟอร์มรับหลักฐานจะเปิดเมื่อ Backend มีระบบสร้างคำสั่งซื้อและรับสลิปที่ตรวจสอบได้</p>
-            <button class="btn btn-gold" id="adt-payment-submit" type="button" disabled>ส่งหลักฐานการชำระเงิน (ยังไม่เปิดใช้งาน)</button>
+            <div class="adt-order-field"><label for="adt-payment-date">วันและเวลาที่โอนเงิน</label><input type="datetime-local" id="adt-payment-date"></div>
+            <div class="adt-order-field"><label for="adt-payment-reference">เลขอ้างอิงธุรกรรม (ถ้ามี)</label><input type="text" id="adt-payment-reference" maxlength="100" placeholder="เลขอ้างอิงจากธนาคาร"></div>
+            <div class="adt-order-field"><label for="adt-payment-slip">แนบสลิปการชำระเงิน (JPG, PNG สูงสุด 10 MB)</label><input id="adt-payment-slip" type="file" accept="image/png,image/jpeg"></div>
+            <div class="adt-payment-progress" id="adt-payment-progress" hidden aria-label="กำลังตรวจสอบสลิป"><span></span></div><p class="adt-order-small" id="adt-payment-feedback" role="status" aria-live="polite">แนบภาพสลิป JPG หรือ PNG ระบบจะตรวจสอบข้อมูลและดำเนินการลงทะเบียน</p>
+            <button class="btn btn-gold" id="adt-payment-submit" type="button">ตรวจสอบสลิปและลงทะเบียน</button>
           </div>
           <div class="adt-order-next" id="adt-order-download" hidden>
             <h3>ขั้นตอนที่ 4: ดาวน์โหลด ADT-PILEFiX</h3>
-            <p>ลิงก์ดาวน์โหลดจะแสดงหลังระบบตรวจสอบและอนุมัติการชำระเงินสำเร็จ</p>
+            <p id="adt-download-feedback">กำลังรอผลการลงทะเบียน</p><p id="adt-booking-display"></p><a id="adt-program-download-link" class="btn btn-primary" hidden rel="noopener noreferrer">ดาวน์โหลด ADT-PILEFiX</a>
           </div>
         </div>
         </div>
@@ -2030,11 +2034,17 @@
       const methods=document.querySelectorAll('input[name="adt-payment-method"]');
       const paymentInstructions=document.getElementById('adt-payment-instructions');
       if(!form || !panel || !verifyButton || !payment)return;
+      // Backend proxy must authenticate the browser session; OCR_API_SECRET must stay server-side.
+      const CHECKOUT_SUBMIT_URL=API_BASE+'/api/pilefix/checkout/submit';
+      // Configure the genuine program URL before publishing. Never fabricate a download address.
+      const PROGRAM_DOWNLOAD_URL='';
+      let checkoutToken='';
+      let submitting=false;
       let verified=false;
       const step=n=>document.getElementById('adt-step-'+n);
       function setStep(n, state){step(n).classList.toggle('is-current',state==='current');step(n).classList.toggle('is-complete',state==='complete');}
       function resetVerification(){
-        verified=false;payment.hidden=true;otpInput.value='';feedback.textContent='กรอกรหัส 6 หลักที่ได้รับทาง LINE แล้วกดยืนยัน';
+        verified=false;checkoutToken='';payment.hidden=true;otpInput.value='';feedback.textContent='กรอกรหัส 6 หลักที่ได้รับทาง LINE แล้วกดยืนยัน';
         verifyButton.disabled=false;verifyButton.textContent='ยืนยันรหัส OTP';
         setStep(2,'current');setStep(3,'waiting');setStep(4,'waiting');
       }
@@ -2067,6 +2077,12 @@
           }finally{clearTimeout(timeout);}
           const result=await response.json().catch(()=>({}));
           if(response.status===200 && result.success===true && result.verified===true){
+            // A signed checkout token is required for the OCR registration flow.
+            checkoutToken=typeof result.checkout_token==='string' ? result.checkout_token : '';
+            if(!checkoutToken){
+              feedback.textContent='Backend ยืนยัน OTP แล้ว แต่ยังไม่ส่ง checkout_token กรุณาอัปเดต API ยืนยัน OTP';
+              return;
+            }
             verified=true;feedback.textContent='✓ ยืนยันรหัสสำเร็จ';otpInput.disabled=true;
             verifyButton.textContent='ยืนยันสำเร็จ';setStep(2,'complete');setStep(3,'current');
             panel.hidden=true;payment.hidden=false;payment.scrollIntoView({behavior:'smooth',block:'start'});
@@ -2079,8 +2095,76 @@
           if(!verified){verifyButton.disabled=false;verifyButton.textContent='ยืนยันรหัส OTP';}
         }
       });
-      // Bank transfer only until an official PromptPay QR is provided.
-      // Keep payment evidence submission disabled until order/payment API exists.
+      const slipInput=document.getElementById('adt-payment-slip');
+      const submitButton=document.getElementById('adt-payment-submit');
+      const paymentFeedback=document.getElementById('adt-payment-feedback');
+      const progress=document.getElementById('adt-payment-progress');
+      const downloadPanel=document.getElementById('adt-order-download');
+      const bookingDisplay=document.getElementById('adt-booking-display');
+      const downloadFeedback=document.getElementById('adt-download-feedback');
+      const downloadLink=document.getElementById('adt-program-download-link');
+      submitButton.addEventListener('click',async()=>{
+        if(!verified || !checkoutToken || submitting)return;
+        const file=slipInput.files?.[0];
+        if(!file){paymentFeedback.textContent='กรุณาแนบภาพสลิปก่อนดำเนินการ';return;}
+        if(!['image/jpeg','image/png'].includes(file.type) || file.size>10*1024*1024){
+          paymentFeedback.textContent='รองรับเฉพาะ JPG/PNG ขนาดไม่เกิน 10 MB';return;
+        }
+        const payload=new FormData();
+        payload.append('file',file);
+        payload.append('checkout_token',checkoutToken);
+        // Optional metadata, never used as proof of payment.
+        payload.append('payment_date',document.getElementById('adt-payment-date').value);
+        payload.append('payment_reference',document.getElementById('adt-payment-reference').value.trim());
+        submitting=true;submitButton.disabled=true;progress.hidden=false;
+        submitButton.textContent='กำลังตรวจสอบ...';
+        paymentFeedback.textContent='กำลังตรวจสอบสลิป บันทึกสมาชิก และส่งหมายเลข PF ทาง LINE โปรดอย่าปิดหน้านี้';
+        try{
+          const controller=new AbortController();
+          const timeout=setTimeout(()=>controller.abort(),120000);
+          let response;
+          try{
+            response=await fetch(CHECKOUT_SUBMIT_URL,{method:'POST',mode:'cors',body:payload,signal:controller.signal});
+          }finally{clearTimeout(timeout);}
+          const result=await response.json().catch(()=>({}));
+          // HTTP 200 alone is insufficient: require persisted booking and LINE delivery.
+          const done=response.status===200 && result.success===true &&
+            result.status==='BOOKING_SAVED_LINE_SENT' && result.line_sent===true &&
+            /^PF-\\d+$/.test(String(result.booking_no||''));
+          if(!done){
+            paymentFeedback.textContent=result.message || ({
+              OCR_IMPORTANT_DATA_NOT_CONFIRMED:'ระบบอ่านยอดเงินหรือชื่อผู้รับไม่ชัดเจน กรุณาตรวจสอบสลิป',
+              OCR_TEXT_EMPTY:'ไม่สามารถอ่านข้อความจากสลิปได้',
+              VERIFIED_CHECKOUT_REQUIRED:'กรุณายืนยัน LINE OTP อีกครั้ง',
+              CHECKOUT_SESSION_INVALID:'เซสชันหมดอายุ กรุณาเริ่มใหม่',
+              SLIP_ALREADY_USED:'สลิปนี้เคยใช้ลงทะเบียนแล้ว',
+              LINE_SEND_FAILED:'บันทึก PF แล้ว แต่ส่ง LINE ไม่สำเร็จ กรุณากดส่งซ้ำ',
+              FORBIDDEN:'Backend ยังไม่เปิดช่องทางส่งสลิปจากเว็บไซต์',
+            })[result.code] || 'ยังไม่สามารถลงทะเบียนได้ กรุณาลองใหม่หรือติดต่อ ADT';
+            return;
+          }
+          paymentFeedback.textContent='✓ ลงทะเบียนสำเร็จและส่งหมายเลข PF ผ่าน LINE แล้ว';
+          bookingDisplay.textContent='หมายเลขสมาชิกของคุณ: '+result.booking_no;
+          downloadPanel.hidden=false;
+          setStep(3,'complete');setStep(4,'complete');
+          payment.hidden=true;
+          if(PROGRAM_DOWNLOAD_URL){
+            downloadLink.href=PROGRAM_DOWNLOAD_URL;
+            downloadLink.hidden=false;
+            downloadFeedback.textContent='ลงทะเบียนสำเร็จ สามารถดาวน์โหลดโปรแกรมได้';
+          }else{
+            downloadFeedback.textContent='ลงทะเบียนสำเร็จแล้ว กรุณารับลิงก์ดาวน์โหลดจาก ADT (ยังไม่ได้กำหนด URL ดาวน์โหลดในหน้าเว็บ)';
+          }
+          downloadPanel.scrollIntoView({behavior:'smooth',block:'start'});
+        }catch(error){
+          paymentFeedback.textContent=error.name==='AbortError'
+            ? 'การเชื่อมต่อหมดเวลา โปรดลองใหม่ ระบบจะต้องใช้ Booking เดิมหากเคยบันทึกแล้ว'
+            : 'เชื่อมต่อระบบตรวจสอบสลิปไม่ได้ กรุณาลองใหม่';
+        }finally{
+          submitting=false;progress.hidden=true;
+          if(downloadPanel.hidden){submitButton.disabled=false;submitButton.textContent='ตรวจสอบสลิปและลงทะเบียน';}
+        }
+      });
     })();
   </script>
 
