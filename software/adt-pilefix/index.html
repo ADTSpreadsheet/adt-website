@@ -972,6 +972,22 @@
     .tour-modal-description{color:#40506a;font-size:.9rem;line-height:1.7;margin:7px 0 0}
     .tour-lightbox .tour-title-tabs{margin:12px 0 16px}
     @media(max-width:780px){.tour-hotspot-2{left:89%}.tour-lightbox{padding:8px;align-items:center}.tour-lightbox-inner{padding:14px;max-height:96dvh}.tour-lightbox-inner img{max-height:52dvh}.tour-lightbox-close{padding:8px 10px}}
+
+    /* Spotlight #4: five footing types, automatic one-second carousel */
+    .tour-hotspot-4{left:75%;top:16%;background:#16a34a}
+    .tour-hotspot-4:hover,.tour-hotspot-4:focus-visible{background:#08783a}
+    .tour-stage.is-footing .tour-shade{opacity:1}
+    .tour-footing-focus[hidden]{display:none!important}
+    .tour-footing-focus{position:absolute;left:3%;top:11%;width:79%;z-index:5;line-height:normal;background:#fff;border:3px solid #1677ff;border-radius:12px;box-shadow:0 15px 45px rgba(3,16,37,.38);overflow:hidden}
+    .tour-footing-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;background:#eaf3ff;color:#0a2855;font-size:clamp(10px,1.25vw,15px);font-weight:800}
+    .tour-footing-focus img{display:block;width:100%;height:auto;max-height:40vh;object-fit:contain;background:white}
+    .tour-footing-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 12px;background:#f6faff;color:#40506a;font-size:clamp(9px,1vw,13px)}
+    .tour-footing-exit{border:1px solid #9bbde8;border-radius:7px;padding:3px 9px;background:white;color:#0d57bf;cursor:pointer;font-weight:700}
+    .tour-footing-dots{display:flex;gap:5px;align-items:center}
+    .tour-footing-dot{width:7px;height:7px;border-radius:50%;background:#b4c8de}
+    .tour-footing-dot.is-current{background:#1677ff}
+    @media(max-width:780px){.tour-hotspot-4{left:75%;top:16%}.tour-footing-focus{width:89%;left:3%;top:13%}.tour-footing-focus img{max-height:45vh}}
+    @media(prefers-reduced-motion:reduce){.tour-footing-focus{transition:none}}
   </style>
 </head>
 
@@ -1072,7 +1088,7 @@
           <p class="eyebrow">EXPLORE ADT-PILEFiX</p>
           <h2 id="tour-heading">เจาะลึกหน้าจอโปรแกรม ADT-PILEFiX</h2>
           <p>คลิกหมายเลขบนภาพเพื่อดูรายละเอียดแต่ละส่วนของโปรแกรม พร้อมเน้นตำแหน่งที่เกี่ยวข้อง</p>
-          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1, 2 หรือ 3 เพื่อสำรวจการทำงานของโปรแกรม</p>
+          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1, 2, 3 หรือ 4 เพื่อสำรวจการทำงานของโปรแกรม</p>
         </div>
         <div class="tour-layout">
           <div class="tour-image-card">
@@ -1087,6 +1103,12 @@
                 <button type="button" class="tour-hotspot" id="tour-hotspot-1" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 1 หัวกระดาษรายการคำนวณ">1</button>
                 <button type="button" class="tour-hotspot tour-hotspot-2" id="tour-hotspot-2" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 2 เปลี่ยนหัวข้อหลักเอกสาร">2</button>
                 <button type="button" class="tour-hotspot tour-hotspot-3" id="tour-hotspot-3" aria-controls="tour-mode-modal" aria-pressed="false" aria-label="หมายเลข 3 เปลี่ยนโหมดการกรอกข้อมูลเสาเข็ม">3</button>
+                <button type="button" class="tour-hotspot tour-hotspot-4" id="tour-hotspot-4" aria-controls="tour-footing-focus" aria-pressed="false" aria-label="หมายเลข 4 แสดงภาพสไลด์ประเภทฐานราก F1 ถึง F5">4</button>
+                <div class="tour-footing-focus" id="tour-footing-focus" aria-live="off" hidden>
+                  <div class="tour-footing-head"><span>04 / FOOTING TYPE — <span id="tour-footing-type">F1</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
+                  <img id="tour-footing-image" src="/assets/slides/pilefix-footing-f1.png" alt="ตัวอย่างฐานราก F1 เสาเข็ม 1 ต้น">
+                  <div class="tour-footing-foot"><span id="tour-footing-description">F1 — ฐานรากเสาเข็ม 1 ต้น</span><span class="tour-footing-dots" id="tour-footing-dots" aria-hidden="true"></span><button type="button" class="tour-footing-exit" id="tour-footing-exit">✕ ปิด</button></div>
+                </div>
               </div>
             </div>
             <p class="tour-caption">บนมือถือสามารถเลื่อนภาพในแนวนอนได้ เพื่อดูรายละเอียดโดยไม่บีบภาพจนตัวเลขเล็กเกินไป</p>
@@ -1095,7 +1117,7 @@
             <div class="tour-instruction" id="tour-instruction">
               <span class="tour-info-label">INTERACTIVE SOFTWARE TOUR</span>
               <h3>เลือกหมายเลขบนภาพ</h3>
-              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร หรือ <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม</p>
+              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม หรือ <strong>หมายเลข 4</strong> เพื่อชมภาพสไลด์ประเภทฐานราก F1–F5</p>
             </div>
             <div id="tour-detail" hidden>
               <span class="tour-info-label">01 / CALCULATION REPORT HEADER</span>
@@ -1553,7 +1575,7 @@
   <script>
     (() => {
       const stage = document.getElementById('tour-stage');
-      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3')];
+      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4')];
       const detail1 = document.getElementById('tour-detail');
       const instruction = document.getElementById('tour-instruction');
       const highlight = document.querySelector('.tour-highlight');
@@ -1570,6 +1592,45 @@
         2:{name:'TITLE 2 — หลังปรับแก้ฐานราก',desc:'FOOTING F1 DEVIATION RE-CHECK CALCULATION REPORT — AFTER MODIFICATION ใช้เป็นหัวข้อรายงานตรวจสอบฐานรากภายหลังการปรับแก้'},
         3:{name:'TITLE 3 — ออกแบบเหล็กเสริมฐานราก',desc:'FOOTING F1 CALCULATION DESIGN — PILE CAP REINFORCEMENT DESIGN ใช้เป็นหัวข้อรายการคำนวณออกแบบเหล็กเสริมฐานราก'}
       };
+      const footingFocus=document.getElementById('tour-footing-focus');
+      const footingImage=document.getElementById('tour-footing-image');
+      const footingTypes=[
+        {id:'F1',desc:'ฐานรากเสาเข็ม 1 ต้น'},
+        {id:'F2',desc:'ฐานรากเสาเข็ม 2 ต้น'},
+        {id:'F3',desc:'ฐานรากเสาเข็ม 3 ต้น'},
+        {id:'F4',desc:'ฐานรากเสาเข็ม 4 ต้น'},
+        {id:'F5',desc:'ฐานรากเสาเข็ม 5 ต้น'}
+      ];
+      let footingIndex=0,footingTimer=null;
+      function renderFooting(){
+        const f=footingTypes[footingIndex];
+        footingImage.src='/assets/slides/pilefix-footing-'+f.id.toLowerCase()+'.png';
+        footingImage.alt='ภาพหน้าจอ ADT-PILEFiX '+f.id+' '+f.desc;
+        document.getElementById('tour-footing-type').textContent=f.id;
+        document.getElementById('tour-footing-description').textContent=f.id+' — '+f.desc;
+        document.getElementById('tour-footing-dots').innerHTML=footingTypes.map((_,i)=>'<span class="tour-footing-dot'+(i===footingIndex?' is-current':'')+'"></span>').join('');
+      }
+      function stopFooting(){
+        if(footingTimer!==null){clearInterval(footingTimer);footingTimer=null;}
+        footingFocus.hidden=true;
+        stage.classList.remove('is-footing');
+        buttons[3].setAttribute('aria-pressed','false');
+      }
+      function startFooting(){
+        selectHotspot(0);
+        footingIndex=0;
+        renderFooting();
+        footingFocus.hidden=false;
+        stage.classList.add('is-footing');
+        buttons[3].setAttribute('aria-pressed','true');
+        if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+          footingTimer=setInterval(()=>{
+            if(document.hidden)return;
+            footingIndex=(footingIndex+1)%footingTypes.length;
+            renderFooting();
+          },1000);
+        }
+      }
       let selectedTitle = 1;
       let selectedMode = 1;
       let activeModal = null;
@@ -1585,11 +1646,13 @@
         document.getElementById('tour-modal-description').textContent=t.desc;
       }
       function selectHotspot(n){
+        stopFooting();
         const active=n===1;
         stage.classList.toggle('is-active',active);
         buttons[0].setAttribute('aria-pressed',String(active));
         buttons[1].setAttribute('aria-pressed','false');
         buttons[2].setAttribute('aria-pressed','false');
+        buttons[3].setAttribute('aria-pressed','false');
         detail1.hidden=!active;
         instruction.hidden=active;
         if(active){
@@ -1647,6 +1710,9 @@
       buttons[0].addEventListener('click',()=>selectHotspot(buttons[0].getAttribute('aria-pressed')==='true'?0:1));
       buttons[1].addEventListener('click',openModal);
       buttons[2].addEventListener('click',openModeModal);
+      buttons[3].addEventListener('click',()=>footingFocus.hidden?startFooting():stopFooting());
+      document.getElementById('tour-footing-exit').addEventListener('click',stopFooting);
+      document.addEventListener('visibilitychange',()=>{if(document.hidden&&footingTimer!==null){clearInterval(footingTimer);footingTimer=null;}else if(!document.hidden&&!footingFocus.hidden&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&footingTimer===null){footingTimer=setInterval(()=>{footingIndex=(footingIndex+1)%footingTypes.length;renderFooting();},1000);}});
       document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>showMode(Number(b.dataset.mode))));
       modeClose.addEventListener('click',closeModeModal);
       modeModal.addEventListener('click',e=>{if(e.target===modeModal)closeModeModal();});
