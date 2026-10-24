@@ -1006,6 +1006,12 @@
     .tour-input-image.is-zoomed{max-height:none!important;width:auto!important;max-width:none!important;cursor:zoom-out!important}
     .tour-input-scroll{overflow:auto;max-height:76dvh;border-radius:10px}
     @media(max-width:780px){.tour-hotspot-6{left:70%;top:19%}.tour-lightbox-inner img.tour-input-image{max-height:65dvh}}
+
+    /* Spotlight #7–8: editable positions in percentages of the original screenshot */
+    .tour-hotspot-7{left:73%;top:22%;background:#1677ff}
+    .tour-hotspot-8{left:73%;top:36%;background:#f79009}
+    .tour-hotspot-8:hover,.tour-hotspot-8:focus-visible{background:#c65b00}
+    @media(max-width:780px){.tour-hotspot-7{left:73%;top:22%}.tour-hotspot-8{left:73%;top:36%}}
   </style>
 </head>
 
@@ -1106,7 +1112,7 @@
           <p class="eyebrow">EXPLORE ADT-PILEFiX</p>
           <h2 id="tour-heading">เจาะลึกหน้าจอโปรแกรม ADT-PILEFiX</h2>
           <p>คลิกหมายเลขบนภาพเพื่อดูรายละเอียดแต่ละส่วนของโปรแกรม พร้อมเน้นตำแหน่งที่เกี่ยวข้อง</p>
-          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1–5 เพื่อสำรวจการทำงานของโปรแกรม</p>
+          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1–8 เพื่อสำรวจการทำงานของโปรแกรม</p>
         </div>
         <div class="tour-layout">
           <div class="tour-image-card">
@@ -1124,6 +1130,8 @@
                 <button type="button" class="tour-hotspot tour-hotspot-4" id="tour-hotspot-4" aria-controls="tour-footing-focus" aria-pressed="false" aria-label="หมายเลข 4 แสดงภาพสไลด์ประเภทฐานราก F1 ถึง F5">4</button>
                 <button type="button" class="tour-hotspot tour-hotspot-5" id="tour-hotspot-5" aria-controls="tour-pile-focus" aria-pressed="false" aria-label="หมายเลข 5 แสดงภาพสไลด์ประเภทเสาเข็ม I-Pile, SQ-Pile, Hex Pile และ Circle Pile">5</button>
                 <button type="button" class="tour-hotspot tour-hotspot-6" id="tour-hotspot-6" aria-controls="tour-input-modal" aria-pressed="false" aria-label="หมายเลข 6 ภาพขยายช่องกรอกข้อมูลฐานราก">6</button>
+                <button type="button" class="tour-hotspot tour-hotspot-7" id="tour-hotspot-7" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 7 ตารางพิกัดเสาเข็มตามแบบ Design Drawing">7</button>
+                <button type="button" class="tour-hotspot tour-hotspot-8" id="tour-hotspot-8" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 8 ตารางพิกัดเสาเข็มตามตำแหน่งจริง">8</button>
                 <div class="tour-pile-focus" id="tour-pile-focus" aria-live="off" hidden>
                   <div class="tour-footing-head"><span>05 / PILE TYPE — <span id="tour-pile-type">I-PILE</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
                   <img id="tour-pile-image" src="/assets/slides/pilefix-pile-type-i.png" alt="ตัวอย่างเสาเข็มรูปตัวไอ I-Pile">
@@ -1142,13 +1150,13 @@
             <div class="tour-instruction" id="tour-instruction">
               <span class="tour-info-label">INTERACTIVE SOFTWARE TOUR</span>
               <h3>เลือกหมายเลขบนภาพ</h3>
-              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม <strong>หมายเลข 4</strong> เพื่อชมภาพฐานราก F1–F5 หรือ <strong>หมายเลข 5</strong> เพื่อชมประเภทเสาเข็มทั้ง 4 รูปแบบ</p>
+              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม <strong>หมายเลข 4</strong> เพื่อชมภาพฐานราก F1–F5 หรือ <strong>หมายเลข 5</strong> เพื่อชมประเภทเสาเข็มทั้ง 4 รูปแบบ <strong>หมายเลข 6</strong> เพื่อดูช่องกรอกข้อมูลฐานราก และ <strong>หมายเลข 7–8</strong> เพื่อดูตารางพิกัดเสาเข็มตามแบบและตามตำแหน่งจริง</p>
             </div>
             <div id="tour-detail" hidden>
-              <span class="tour-info-label">01 / CALCULATION REPORT HEADER</span>
-              <h3>หัวกระดาษรายการคำนวณ</h3>
-              <p>ใช้สำหรับกรอกข้อมูลโครงการและชื่อวิศวกรผู้ออกแบบ โดย<strong class="tour-blue">ตัวอักษรสีน้ำเงินคือข้อมูลที่ผู้ใช้งานกรอกหรือแก้ไขได้</strong></p>
-              <ul>
+              <span class="tour-info-label" id="tour-detail-label">01 / CALCULATION REPORT HEADER</span>
+              <h3 id="tour-detail-heading">หัวกระดาษรายการคำนวณ</h3>
+              <p id="tour-detail-description">ใช้สำหรับกรอกข้อมูลโครงการและชื่อวิศวกรผู้ออกแบบ โดย<strong class="tour-blue">ตัวอักษรสีน้ำเงินคือข้อมูลที่ผู้ใช้งานกรอกหรือแก้ไขได้</strong></p>
+              <ul id="tour-detail-list">
                 <li><strong>Project:</strong> ชื่อโครงการ</li>
                 <li><strong>Owner:</strong> เจ้าของโครงการ</li>
                 <li><strong>Location:</strong> สถานที่ตั้งโครงการ</li>
@@ -1616,7 +1624,7 @@
   <script>
     (() => {
       const stage = document.getElementById('tour-stage');
-      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6')];
+      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6'),document.getElementById('tour-hotspot-7'),document.getElementById('tour-hotspot-8')];
       const detail1 = document.getElementById('tour-detail');
       const instruction = document.getElementById('tour-instruction');
       const highlight = document.querySelector('.tour-highlight');
@@ -1724,23 +1732,29 @@
         document.getElementById('tour-lightbox-caption').textContent=t.name;
         document.getElementById('tour-modal-description').textContent=t.desc;
       }
+      const spotlightDetails={
+        1:{x:1.5,y:2.7,w:72,h:5.3,label:'01 / CALCULATION REPORT HEADER',heading:'หัวกระดาษรายการคำนวณ',description:'ใช้สำหรับกรอกข้อมูลโครงการและชื่อวิศวกรผู้ออกแบบ โดยตัวอักษรสีน้ำเงินคือข้อมูลที่ผู้ใช้งานกรอกหรือแก้ไขได้',items:['Project: ชื่อโครงการ','Owner: เจ้าของโครงการ','Location: สถานที่ตั้งโครงการ','Engineering Design: ชื่อวิศวกรผู้ออกแบบ','Description: รายละเอียดฐานราก','Date: วันที่จัดทำรายการคำนวณ']},
+        7:{x:25.8,y:20.4,w:46.1,h:11.1,label:'07 / PILE COORDINATE DRAWING DESIGN',heading:'ตารางพิกัดเสาเข็มตามแบบออกแบบ',description:'ตารางนี้ใช้คำนวณและแสดงตำแหน่งพิกัดเสาเข็มตาม Design Drawing เพื่อเป็นข้อมูลอ้างอิงของตำแหน่งเสาเข็มที่กำหนดไว้ในแบบ',items:['แสดงหมายเลขเสาเข็มและตำแหน่งพิกัดตามแบบ','ใช้เป็นข้อมูลอ้างอิงสำหรับเปรียบเทียบกับตำแหน่งเสาเข็มจริง']},
+        8:{x:25.8,y:33.2,w:46.1,h:13.2,label:'08 / ACTUAL PILE COORDINATES',heading:'ตารางพิกัดเสาเข็มตามตำแหน่งจริง',description:'ตารางนี้แสดงค่าพิกัดเสาเข็มตามข้อมูลตำแหน่งจริง เพื่อใช้ตรวจสอบและเปรียบเทียบกับตำแหน่งที่กำหนดไว้ใน Design Drawing',items:['แสดงข้อมูลตำแหน่งจริงของเสาเข็มแต่ละต้น','ใช้ตรวจสอบความแตกต่างระหว่างตำแหน่งตามแบบกับตำแหน่งจริง']}
+      };
       function selectHotspot(n){
         stopFooting();
         stopPile();
-        const active=n===1;
+        const active=Object.prototype.hasOwnProperty.call(spotlightDetails,n);
         stage.classList.toggle('is-active',active);
-        buttons[0].setAttribute('aria-pressed',String(active));
-        buttons[1].setAttribute('aria-pressed','false');
-        buttons[2].setAttribute('aria-pressed','false');
-        buttons[3].setAttribute('aria-pressed','false');
-        buttons[4].setAttribute('aria-pressed','false');
-        buttons[5].setAttribute('aria-pressed','false');
+        buttons.forEach((button,index)=>button.setAttribute('aria-pressed',String(active&&(index+1)===n)));
         detail1.hidden=!active;
         instruction.hidden=active;
         if(active){
-          const r={x:1.5,y:2.7,w:72,h:5.3};
+          const r=spotlightDetails[n];
           Object.entries({x:r.x,y:r.y,width:r.w,height:r.h}).forEach(([k,v])=>maskHole.setAttribute(k,v));
           Object.assign(highlight.style,{left:r.x+'%',top:r.y+'%',width:r.w+'%',height:r.h+'%'});
+          document.getElementById('tour-detail-label').textContent=r.label;
+          document.getElementById('tour-detail-heading').textContent=r.heading;
+          document.getElementById('tour-detail-description').textContent=r.description;
+          const list=document.getElementById('tour-detail-list');
+          list.replaceChildren();
+          r.items.forEach(item=>{const li=document.createElement('li');li.textContent=item;list.appendChild(li);});
         }
       }
       function openModal(){
@@ -1812,6 +1826,8 @@
       inputModal.addEventListener('click',e=>{if(e.target===inputModal)closeInputModal();});
       inputImage.addEventListener('click',()=>inputImage.classList.toggle('is-zoomed'));
       buttons[0].addEventListener('click',()=>selectHotspot(buttons[0].getAttribute('aria-pressed')==='true'?0:1));
+      buttons[6].addEventListener('click',()=>selectHotspot(buttons[6].getAttribute('aria-pressed')==='true'?0:7));
+      buttons[7].addEventListener('click',()=>selectHotspot(buttons[7].getAttribute('aria-pressed')==='true'?0:8));
       buttons[1].addEventListener('click',openModal);
       buttons[2].addEventListener('click',openModeModal);
       buttons[3].addEventListener('click',()=>footingFocus.hidden?startFooting():stopFooting());
