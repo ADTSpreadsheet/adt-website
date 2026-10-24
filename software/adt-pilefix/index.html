@@ -2187,64 +2187,47 @@
         apply(/(\d{1,3}(?:,\d{3})+|\d{4,})\s+(\d{2})(?=\s*(?:บาท|THB|฿))/gi,'$1.$2','จัดรูปทศนิยมจำนวนเงิน');
         return {raw,value,changes};
       }
+      // Independent three-field OCR screening. Never infer receiver from line order.
+      // This is browser-side preview only; the backend is authoritative.
       function parseSlipLines(rawLines){
         const lines=(Array.isArray(rawLines)?rawLines:[]).map((item,i)=>{
           const fixed=normalizeOcrLine(item.text);
           return {index:Number(item.index)||i+1,text:fixed.value,raw:fixed.raw,changes:fixed.changes,
             bbox:item.bbox&&Number.isFinite(Number(item.bbox.y0))?item.bbox:null};
         }).filter(x=>x.text);
-        const compact=t=>String(t||'').replace(/\s+/g,'').toUpperCase();
-        const nameRe=/(เอดีที|เอดี.?ที|ADT)/i;
-        const isReceiver=t=>/(ผู้รับ|บัญชีผู้รับ|ไปยัง|ถึงบัญชี|recipient|to account)/i.test(t);
-        const isSender=t=>/(ผู้โอน|จากบัญชี|บัญชีต้นทาง|sender|from account)/i.test(t);
-        const nameIndex=lines.findIndex(x=>nameRe.test(compact(x.text)));
-        const name=nameIndex>=0?lines[nameIndex]:null;
+        const normalized=t=>String(t||'').normalize('NFKC').replace(/[\s.\-_]/g,'').toUpperCase();
+        const name=lines.find(x=>/(เอดีที|เอดี.?ที|ADT)/i.test(normalized(x.text)))||null;
+        // Account 226-2-59393-5: compare digits in their original 10 positions.
+        // Masked digits are allowed; at least four visible digits must agree.
+        const expected='2262593935';
         const candidates=[];
-        const accountPattern=/(?:[Xx*×•●#Oo0-9%]{2,}[\s-]*){2,}/g;
-        lines.forEach((line,i)=>{
-          for(const match of line.text.matchAll(accountPattern)){
-            const value=match[0].trim();
-            const digits=value.replace(/\D/g,'');
-            if(digits.length<4||digits.length>13)continue;
-            if(!/[Xx*×•●#%]/.test(value)&&digits.length<9)continue;
-            const tail=digits.includes('9393');
-            let score=0;
-            if(nameIndex>=0){
-              const delta=i-nameIndex;
-              if(delta>=0&&delta<=7)score+=75-delta*7;
-              else if(delta<0&&delta>=-2)score+=8;
-              else score-=35;
-            }
-            if(tail)score+=25;
-            if(isReceiver(line.text))score+=30;
-            if(isSender(line.text))score-=100;
-            for(let j=Math.max(0,i-3);j<i;j++){
-              if(isReceiver(lines[j].text))score+=12;
-              if(isSender(lines[j].text))score-=25;
-            }
-            if(nameIndex>=0&&i<nameIndex)score-=40;
-            candidates.push({line,i,value,digits,score});
+        const pattern=/(?:[0-9Xx*×•●#%OoＯ]{1,}[\s-]*){2,}/g;
+        lines.forEach(line=>{
+          for(const m of line.text.matchAll(pattern)){
+            const token=m[0].trim();
+            const compact=token.replace(/[\s-]/g,'').replace(/[OoＯ]/g,'0').replace(/[×•●#%]/g,'X').toUpperCase();
+            if(compact.length!==10||!/^[0-9X*]{10}$/.test(compact))continue;
+            const visible=[...compact].filter(c=>/\d/.test(c)).length;
+            if(visible<4)continue;
+            const consistent=[...compact].every((c,i)=>!/[0-9]/.test(c)||c===expected[i]);
+            candidates.push({line,value:token,visible,match:consistent});
           }
         });
-        candidates.sort((a,b)=>b.score-a.score||a.i-b.i);
-        const account=candidates.length&&candidates[0].score>=20?candidates[0]:null;
+        const account=candidates.find(c=>c.match)||null;
         const amounts=[];
-        const moneyRe=/(\d{1,3}(?:,\d{3})+(?:\.\d{1,2})?|\d{4,}(?:\.\d{1,2})?)/g;
-        lines.forEach((line,i)=>{
+        const moneyRe=/(?:\d{1,3}(?:,\d{3})+|\d{4,})(?:\.\d{1,2})?/g;
+        lines.forEach(line=>{
+          if(/ค่าธรรมเนียม|fee|คงเหลือ|balance|ยอดคงเหลือ/i.test(line.text))return;
           for(const m of line.text.matchAll(moneyRe)){
             const value=Number(m[0].replace(/,/g,''));
-            if(!Number.isFinite(value)||value<1||value>100000000)continue;
-            let score=0;
-            if(/บาท|THB|฿/i.test(line.text))score+=25;
-            if(/จำนวนเงิน|ยอดโอน|โอนเงิน|amount|total/i.test(line.text))score+=35;
-            if(/ค่าธรรมเนียม|fee|คงเหลือ|balance/i.test(line.text))score-=90;
-            if(value>=4999)score+=12;
-            if(nameIndex>=0&&i>nameIndex)score+=8;
-            amounts.push({line,i,value,score});
+            if(!Number.isFinite(value)||value<4999||value>100000000)continue;
+            const context=/(?:บาท|THB|฿|จำนวนเงิน|ยอดโอน|โอนเงิน|amount|total)/i.test(line.text);
+            if(context)amounts.push({line,value});
           }
         });
-        amounts.sort((a,b)=>b.score-a.score||b.value-a.value);
-        return {lines,name,account,amount:amounts[0]?.score>=15?amounts[0]:null,accountCandidates:candidates};
+        amounts.sort((a,b)=>a.value-b.value);
+        return {lines,name,account,amount:amounts[0]||null,accountCandidates:candidates,
+          previewScore:Number(!!name)+Number(!!account)+Number(amounts.length>0)};
       }
       function renderOcrLines(msg){
         ocrLinesPanel.hidden=false;
@@ -2267,7 +2250,7 @@
         correctionNote.textContent='ปรับข้อความอัตโนมัติ '+count+' บรรทัดจาก '+lines.length+' บรรทัด · ไม่เติมเลขบัญชีที่อ่านไม่ออก · ผลนี้ใช้เพื่อแสดงและจัดหมวดหมู่เท่านั้น';
         ocrLinesFormat.replaceChildren();
         const heading=document.createElement('div');heading.style.cssText='font-weight:700;color:#24558a;margin-bottom:6px';
-        heading.textContent='จัดหมวดหมู่จากข้อความที่ปรับแล้ว';ocrLinesFormat.appendChild(heading);
+        heading.textContent='ตรวจ 3 เงื่อนไขอิสระจากทุกบรรทัด (ไม่สนใจลำดับ)';ocrLinesFormat.appendChild(heading);
         function addField(label,value,line,detail){
           const div=document.createElement('div');div.style.cssText='padding:6px 0;border-bottom:1px solid #e2e8f0';
           const title=document.createElement('strong');title.textContent=label+': ';
@@ -2276,16 +2259,17 @@
             meta.textContent='อ้างอิงบรรทัด '+line.index+(detail?' · '+detail:'');div.appendChild(meta);}
           ocrLinesFormat.appendChild(div);
         }
-        addField('ชื่อบัญชีผู้รับ (คาดว่า)',parsed.name?.text,parsed.name,'ค้นจากชื่อ ADT/เอดีที');
-        addField('เลขบัญชีผู้รับ (คาดว่า)',parsed.account?.value,parsed.account?.line,'เลือกจากตำแหน่งใกล้ชื่อผู้รับ ไม่ใช่เลขท้ายอย่างเดียว');
-        addField('ยอดเงินโอน (คาดว่า)',parsed.amount?parsed.amount.value.toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})+' บาท':null,parsed.amount?.line,'ตัดยอดค่าธรรมเนียม/คงเหลือ');
+        addField('ชื่อบัญชีผู้รับ (คาดว่า)',parsed.name?.text,parsed.name,'ค้นทุกบรรทัด: ADT/เอดีที');
+        addField('เลขบัญชีผู้รับ (คาดว่า)',parsed.account?.value,parsed.account?.line,'ตรวจตัวเลขที่มองเห็นอย่างน้อย 4 หลัก และตำแหน่งตรงกับบัญชีบริษัท');
+        addField('ยอดเงินโอน (คาดว่า)',parsed.amount?parsed.amount.value.toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2})+' บาท':null,parsed.amount?.line,'ยอดอย่างน้อย 4,999 บาท และมีบริบทจำนวนเงิน');
+        addField('คะแนน OCR เบื้องต้น',parsed.previewScore+'/3 คะแนน',null,'คะแนนฝั่งหน้าเว็บเท่านั้น');
         if(parsed.accountCandidates.length>1){
           const note=document.createElement('div');note.style.cssText='font-size:11px;color:#92400e;margin-top:8px';
-          note.textContent='พบเลขบัญชีที่เป็นไปได้ '+parsed.accountCandidates.length+' รายการ ต้องตรวจเทียบกับสลิปจริง';
+          note.textContent='พบรูปแบบเลขบัญชี '+parsed.accountCandidates.length+' รายการ ระบบเลือกเฉพาะรายการที่ตัวเลขตรงตำแหน่ง';
           ocrLinesFormat.appendChild(note);
         }
         const disclaimer=document.createElement('div');disclaimer.style.cssText='font-size:11px;color:#64748b;margin-top:8px';
-        disclaimer.textContent='ข้อความปรับแก้และการจัดหมวดหมู่เป็นตัวอย่างบนหน้าเว็บ Backend ตรวจสอบข้อมูลต้นฉบับอย่างอิสระ และยังต้องยืนยันการรับเงินจริง';
+        disclaimer.textContent='คะแนนนี้เป็นเพียงตัวอย่างการตรวจข้อความ OCR บนหน้าเว็บ ไม่ใช่ผลยืนยันจาก Backend หรือหลักฐานว่าเงินเข้าบัญชีจริง';
         ocrLinesFormat.appendChild(disclaimer);
       }
       const processList=document.getElementById('adt-process-list');
