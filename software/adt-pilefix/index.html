@@ -2039,7 +2039,7 @@
       const paymentInstructions=document.getElementById('adt-payment-instructions');
       if(!form || !panel || !verifyButton || !payment)return;
       // Backend proxy must authenticate the browser session; OCR_API_SECRET must stay server-side.
-      const CHECKOUT_SUBMIT_URL=API_BASE+'/api/pilefix/checkout/submit';
+      const CHECKOUT_SUBMIT_URL=API_BASE+'/api/pilefix/ocr/submit';
       // Configure the genuine program URL before publishing. Never fabricate a download address.
       const PROGRAM_DOWNLOAD_URL='';
       let checkoutToken='';
