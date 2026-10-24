@@ -1052,6 +1052,10 @@
     .tour-stage.is-dual-focus .tour-connector{display:block}
     .tour-connector path{fill:none;stroke:#1677ff;stroke-width:.48;stroke-dasharray:1.15 .65;vector-effect:non-scaling-stroke;stroke-width:3px;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 2px white)}
     @media(max-width:780px){.tour-hotspot-19{left:87%;top:58%}}
+    /* Spotlight #20: F1 reinforcement cage orientation (dual focus) */
+    .tour-hotspot-20{left:77%;top:70%;background:#7c3aed}
+    .tour-hotspot-20:hover,.tour-hotspot-20:focus-visible{background:#5b21b6}
+    @media(max-width:780px){.tour-hotspot-20{left:77%;top:70%}}
 
   </style>
 </head>
@@ -1153,7 +1157,7 @@
           <p class="eyebrow">EXPLORE ADT-PILEFiX</p>
           <h2 id="tour-heading">เจาะลึกหน้าจอโปรแกรม ADT-PILEFiX</h2>
           <p>คลิกหมายเลขบนภาพเพื่อดูรายละเอียดแต่ละส่วนของโปรแกรม พร้อมเน้นตำแหน่งที่เกี่ยวข้อง</p>
-          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1–8 เพื่อสำรวจการทำงานของโปรแกรม</p>
+          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1–20 เพื่อสำรวจการทำงานของโปรแกรม</p>
         </div>
         <div class="tour-layout">
           <div class="tour-image-card">
@@ -1166,7 +1170,7 @@
                 </svg>
                 <div class="tour-highlight" aria-hidden="true"></div>
                 <div class="tour-highlight-secondary" aria-hidden="true"></div>
-                <svg class="tour-connector" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M 27 39 H 48 V 48.5 H 69"/></svg>
+                <svg class="tour-connector" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path id="tour-connector-path" d="M 27 39 H 48 V 48.5 H 69"/></svg>
                 <button type="button" class="tour-hotspot" id="tour-hotspot-1" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 1 หัวกระดาษรายการคำนวณ">1</button>
                 <button type="button" class="tour-hotspot tour-hotspot-2" id="tour-hotspot-2" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 2 เปลี่ยนหัวข้อหลักเอกสาร">2</button>
                 <button type="button" class="tour-hotspot tour-hotspot-3" id="tour-hotspot-3" aria-controls="tour-mode-modal" aria-pressed="false" aria-label="หมายเลข 3 เปลี่ยนโหมดการกรอกข้อมูลเสาเข็ม">3</button>
@@ -1186,6 +1190,7 @@
                 <button type="button" class="tour-hotspot tour-hotspot-17" id="tour-hotspot-17" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 17 สรุปผลการตรวจสอบและข้อบกพร่องฐานราก">17</button>
                 <button type="button" class="tour-hotspot tour-hotspot-18" id="tour-hotspot-18" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 18 คำแนะนำเพิ่มเติมสำหรับการใช้งานโปรแกรม">18</button>
                 <button type="button" class="tour-hotspot tour-hotspot-19" id="tour-hotspot-19" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 19 เครื่องมือ Cursor Node สำหรับขยายขอบฐานราก">19</button>
+                <button type="button" class="tour-hotspot tour-hotspot-20" id="tour-hotspot-20" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 20 เลือกตะกร้อเหล็กเสริมคว่ำหรือหงายสำหรับฐานราก F1">20</button>
                 <div class="tour-pile-focus" id="tour-pile-focus" aria-live="off" hidden>
                   <div class="tour-footing-head"><span>05 / PILE TYPE — <span id="tour-pile-type">I-PILE</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
                   <img id="tour-pile-image" src="/assets/slides/pilefix-pile-type-i.png" alt="ตัวอย่างเสาเข็มรูปตัวไอ I-Pile">
@@ -1678,13 +1683,14 @@
   <script>
     (() => {
       const stage = document.getElementById('tour-stage');
-      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6'),document.getElementById('tour-hotspot-7'),document.getElementById('tour-hotspot-8'),document.getElementById('tour-hotspot-9'),document.getElementById('tour-hotspot-10'),document.getElementById('tour-hotspot-11'),document.getElementById('tour-hotspot-12'),document.getElementById('tour-hotspot-13'),document.getElementById('tour-hotspot-14'),document.getElementById('tour-hotspot-15'),document.getElementById('tour-hotspot-16'),document.getElementById('tour-hotspot-17'),document.getElementById('tour-hotspot-18'),document.getElementById('tour-hotspot-19')];
+      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5'),document.getElementById('tour-hotspot-6'),document.getElementById('tour-hotspot-7'),document.getElementById('tour-hotspot-8'),document.getElementById('tour-hotspot-9'),document.getElementById('tour-hotspot-10'),document.getElementById('tour-hotspot-11'),document.getElementById('tour-hotspot-12'),document.getElementById('tour-hotspot-13'),document.getElementById('tour-hotspot-14'),document.getElementById('tour-hotspot-15'),document.getElementById('tour-hotspot-16'),document.getElementById('tour-hotspot-17'),document.getElementById('tour-hotspot-18'),document.getElementById('tour-hotspot-19'),document.getElementById('tour-hotspot-20')];
       const detail1 = document.getElementById('tour-detail');
       const instruction = document.getElementById('tour-instruction');
       const highlight = document.querySelector('.tour-highlight');
       const maskHole = document.getElementById('tour-mask-hole');
       const maskHoleSecondary = document.getElementById('tour-mask-hole-secondary');
       const highlightSecondary = document.querySelector('.tour-highlight-secondary');
+      const connectorPath = document.getElementById('tour-connector-path');
       const modal = document.getElementById('tour-lightbox');
       const closeButton = document.getElementById('tour-lightbox-close');
       const modalPanel = document.getElementById('tour-modal-panel');
@@ -1802,7 +1808,8 @@
         16:{x:25.8,y:79.8,w:46.1,h:10.4,label:'16 / BEAM SHEAR & PUNCHING SHEAR CHECK',heading:'ตรวจสอบกำลังรับแรงเฉือนของฐานราก',description:'แสดงผลการตรวจสอบแรงเฉือนทางเดียว (Beam Shear / One-Way Shear) และแรงเฉือนเจาะทะลุ (Punching Shear / Two-Way Shear) โดยเปรียบเทียบแรงเฉือนที่เกิดขึ้นกับกำลังรับแรงเฉือนที่ใช้ในการตรวจสอบ',items:['ตรวจสอบ Beam Shear หรือแรงเฉือนทางเดียว','ตรวจสอบ Punching Shear หรือแรงเฉือนเจาะทะลุ','แสดงผลการตรวจสอบว่าเป็นไปตามเกณฑ์หรือไม่']},
         17:{x:1.5,y:86.3,w:70.0,h:12.0,label:'17 / DESIGN CHECK SUMMARY',heading:'สรุปผลการตรวจสอบและข้อบกพร่องของฐานราก',description:'แสดงรายการผลการตรวจสอบฐานราก เพื่อให้วิศวกรทราบว่ารายการใดผ่านเกณฑ์ และรายการใดไม่ผ่านเกณฑ์หรือจำเป็นต้องปรับแก้ ช่วยให้ตรวจสอบและแก้ไขการออกแบบได้ตรงจุด',items:['ตรวจสอบกำลังรับน้ำหนักของเสาเข็ม','ตรวจสอบระยะขอบฐานราก','ตรวจสอบความเพียงพอของเหล็กเสริมฐานราก']},
         18:{x:72.0,y:86.2,w:27.0,h:11.9,label:'18 / ENGINEERING DESIGN RECOMMENDATIONS',heading:'คำแนะนำเพิ่มเติมสำหรับการตรวจสอบฐานรากเสาเข็ม',description:'แสดงหัวข้อคำแนะนำและข้อควรพิจารณาทางวิศวกรรมที่เกี่ยวข้องกับการออกแบบฐานรากเสาเข็ม เพื่อให้ผู้ใช้งานศึกษารายละเอียดประกอบการคำนวณ',items:['เกณฑ์การคลาดเคลื่อนและแนวทางการแก้ไขฐานรากเสาเข็ม','สมการคำนวณแรงปฏิกิริยาเสาเข็ม','คำแนะนำการป้อนค่าพิกัดเสาเข็ม','การตรวจสอบโมเมนต์แตกร้าวของเสาเข็ม']},
-        19:{x:2.0,y:30.0,w:25.0,h:21.0,secondary:{x:69.0,y:48.5,w:30.0,h:14.0},label:'19 / PILE CAP CURSOR CONTROL',heading:'เครื่องมือ Cursor Node สำหรับขยายขอบฐานราก',description:'ชุดเครื่องมือสำหรับปรับแนวขอบฐานรากผ่าน Cursor Node โดยเลือกจุดควบคุมที่ต้องการ แล้วใช้ปุ่มลูกศรบนแป้นพิมพ์เลื่อนตำแหน่งเส้นขอบฐานราก ภาพด้านซ้ายแสดงผลการปรับแนว และแผงด้านขวาแสดงเครื่องมือควบคุม',items:['เลือก Cursor Node ของแนวขอบฐานรากที่ต้องการปรับ','ใช้ปุ่มลูกศรบนแป้นพิมพ์เพื่อเลื่อนแนวเส้นตามระยะที่ตั้งค่า','ตรวจสอบรูปทรงและระยะขอบฐานรากจากภาพ MODIFY X:Y']}
+        19:{x:2.0,y:30.0,w:25.0,h:21.0,secondary:{x:69.0,y:48.5,w:30.0,h:14.0},label:'19 / PILE CAP CURSOR CONTROL',heading:'เครื่องมือ Cursor Node สำหรับขยายขอบฐานราก',description:'ชุดเครื่องมือสำหรับปรับแนวขอบฐานรากผ่าน Cursor Node โดยเลือกจุดควบคุมที่ต้องการ แล้วใช้ปุ่มลูกศรบนแป้นพิมพ์เลื่อนตำแหน่งเส้นขอบฐานราก ภาพด้านซ้ายแสดงผลการปรับแนว และแผงด้านขวาแสดงเครื่องมือควบคุม',items:['เลือก Cursor Node ของแนวขอบฐานรากที่ต้องการปรับ','ใช้ปุ่มลูกศรบนแป้นพิมพ์เพื่อเลื่อนแนวเส้นตามระยะที่ตั้งค่า','ตรวจสอบรูปทรงและระยะขอบฐานรากจากภาพ MODIFY X:Y']},
+        20:{x:3.0,y:70.5,w:25.0,h:18.0,secondary:{x:70.0,y:67.0,w:29.0,h:6.5},label:'20 / F1 REINFORCEMENT CAGE SELECTION',heading:'เลือกรูปแบบตะกร้อเหล็กเสริมฐานราก F1',description:'เครื่องมือสำหรับเลือกรูปแบบการจัดวางเหล็กเสริมฐานราก F1 ระหว่างตะกร้อคว่ำและตะกร้อหงาย โดยภาพด้านซ้ายแสดงรายละเอียดหน้าตัดเหล็กเสริมที่สัมพันธ์กับตัวเลือกด้านขวา ฟังก์ชันนี้ใช้เฉพาะฐานราก F1',items:['เลือกรูปแบบตะกร้อคว่ำหรือตะกร้อหงายใน REINFORCEMENT TYPE FOOTING F1','ดูรายละเอียดหน้าตัดและแนวเหล็กเสริมจากภาพด้านซ้าย','ใช้เฉพาะฐานรากประเภท F1']}
 
       };
       function selectHotspot(n){
@@ -1810,9 +1817,10 @@
         stopPile();
         const active=Object.prototype.hasOwnProperty.call(spotlightDetails,n);
         stage.classList.toggle('is-active',active);
-        stage.classList.toggle('is-dual-focus',n===19);
-        maskHoleSecondary.setAttribute('width',n===19?'30':'0');
-        maskHoleSecondary.setAttribute('height',n===19?'17':'0');
+        stage.classList.toggle('is-dual-focus',n===19||n===20);
+        if(connectorPath) connectorPath.setAttribute('d',n===20?'M 28 79.5 H 53 V 70.25 H 70':'M 27 39 H 48 V 48.5 H 69');
+        maskHoleSecondary.setAttribute('width','0');
+        maskHoleSecondary.setAttribute('height','0');
         buttons.forEach((button,index)=>button.setAttribute('aria-pressed',String(active&&(index+1)===n)));
         detail1.hidden=!active;
         instruction.hidden=active;
@@ -1904,7 +1912,7 @@
       buttons[0].addEventListener('click',()=>selectHotspot(buttons[0].getAttribute('aria-pressed')==='true'?0:1));
       buttons[6].addEventListener('click',()=>selectHotspot(buttons[6].getAttribute('aria-pressed')==='true'?0:7));
       buttons[7].addEventListener('click',()=>selectHotspot(buttons[7].getAttribute('aria-pressed')==='true'?0:8));
-      [9,10,11,12,13,14,15,16,17,18,19].forEach(n=>buttons[n-1].addEventListener('click',()=>selectHotspot(buttons[n-1].getAttribute('aria-pressed')==='true'?0:n)));
+      [9,10,11,12,13,14,15,16,17,18,19,20].forEach(n=>buttons[n-1].addEventListener('click',()=>selectHotspot(buttons[n-1].getAttribute('aria-pressed')==='true'?0:n)));
       buttons[1].addEventListener('click',openModal);
       buttons[2].addEventListener('click',openModeModal);
       buttons[3].addEventListener('click',()=>footingFocus.hidden?startFooting():stopFooting());
