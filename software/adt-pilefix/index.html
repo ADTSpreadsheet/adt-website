@@ -988,6 +988,16 @@
     .tour-footing-dot.is-current{background:#1677ff}
     @media(max-width:780px){.tour-hotspot-4{left:75%;top:16%}.tour-footing-focus{width:89%;left:3%;top:13%}.tour-footing-focus img{max-height:45vh}}
     @media(prefers-reduced-motion:reduce){.tour-footing-focus{transition:none}}
+    /* Spotlight #5: automatic pile cross-section slideshow */
+    .tour-hotspot-5{left:63%;top:8%;background:#7c3aed}
+    .tour-hotspot-5:hover,.tour-hotspot-5:focus-visible{background:#5b21b6}
+    .tour-stage.is-pile .tour-shade{opacity:1}
+    .tour-pile-focus[hidden]{display:none!important}
+    .tour-pile-focus{position:absolute;left:3%;top:11%;width:79%;z-index:5;line-height:normal;background:#fff;border:3px solid #7c3aed;border-radius:12px;box-shadow:0 15px 45px rgba(3,16,37,.38);overflow:hidden}
+    .tour-pile-focus .tour-footing-head{background:#f3e8ff;color:#4c1d95}
+    .tour-pile-focus img{display:block;width:100%;height:auto;max-height:40vh;object-fit:contain;background:#fff}
+    .tour-pile-focus .tour-footing-dot.is-current{background:#7c3aed}
+    @media(max-width:780px){.tour-hotspot-5{left:87%;top:16%}.tour-pile-focus{width:89%;left:3%;top:13%}.tour-pile-focus img{max-height:45vh}}
   </style>
 </head>
 
@@ -1088,7 +1098,7 @@
           <p class="eyebrow">EXPLORE ADT-PILEFiX</p>
           <h2 id="tour-heading">เจาะลึกหน้าจอโปรแกรม ADT-PILEFiX</h2>
           <p>คลิกหมายเลขบนภาพเพื่อดูรายละเอียดแต่ละส่วนของโปรแกรม พร้อมเน้นตำแหน่งที่เกี่ยวข้อง</p>
-          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1, 2, 3 หรือ 4 เพื่อสำรวจการทำงานของโปรแกรม</p>
+          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เลือกหมายเลข 1–5 เพื่อสำรวจการทำงานของโปรแกรม</p>
         </div>
         <div class="tour-layout">
           <div class="tour-image-card">
@@ -1104,6 +1114,12 @@
                 <button type="button" class="tour-hotspot tour-hotspot-2" id="tour-hotspot-2" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 2 เปลี่ยนหัวข้อหลักเอกสาร">2</button>
                 <button type="button" class="tour-hotspot tour-hotspot-3" id="tour-hotspot-3" aria-controls="tour-mode-modal" aria-pressed="false" aria-label="หมายเลข 3 เปลี่ยนโหมดการกรอกข้อมูลเสาเข็ม">3</button>
                 <button type="button" class="tour-hotspot tour-hotspot-4" id="tour-hotspot-4" aria-controls="tour-footing-focus" aria-pressed="false" aria-label="หมายเลข 4 แสดงภาพสไลด์ประเภทฐานราก F1 ถึง F5">4</button>
+                <button type="button" class="tour-hotspot tour-hotspot-5" id="tour-hotspot-5" aria-controls="tour-pile-focus" aria-pressed="false" aria-label="หมายเลข 5 แสดงภาพสไลด์ประเภทเสาเข็ม I-Pile, SQ-Pile, Hex Pile และ Circle Pile">5</button>
+                <div class="tour-pile-focus" id="tour-pile-focus" aria-live="off" hidden>
+                  <div class="tour-footing-head"><span>05 / PILE TYPE — <span id="tour-pile-type">I-PILE</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
+                  <img id="tour-pile-image" src="/assets/slides/pilefix-pile-type-i.png" alt="ตัวอย่างเสาเข็มรูปตัวไอ I-Pile">
+                  <div class="tour-footing-foot"><span id="tour-pile-description">I-Pile — เสาเข็มรูปตัวไอ</span><span class="tour-footing-dots" id="tour-pile-dots" aria-hidden="true"></span><button type="button" class="tour-footing-exit" id="tour-pile-exit">✕ ปิด</button></div>
+                </div>
                 <div class="tour-footing-focus" id="tour-footing-focus" aria-live="off" hidden>
                   <div class="tour-footing-head"><span>04 / FOOTING TYPE — <span id="tour-footing-type">F1</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
                   <img id="tour-footing-image" src="/assets/slides/pilefix-footing-f1.png" alt="ตัวอย่างฐานราก F1 เสาเข็ม 1 ต้น">
@@ -1117,7 +1133,7 @@
             <div class="tour-instruction" id="tour-instruction">
               <span class="tour-info-label">INTERACTIVE SOFTWARE TOUR</span>
               <h3>เลือกหมายเลขบนภาพ</h3>
-              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม หรือ <strong>หมายเลข 4</strong> เพื่อชมภาพสไลด์ประเภทฐานราก F1–F5</p>
+              <p>แตะหรือคลิก <strong>หมายเลข 1</strong> เพื่อดูข้อมูลหัวกระดาษ <strong>หมายเลข 2</strong> เพื่อดูหัวข้อเอกสาร <strong>หมายเลข 3</strong> เพื่อเปรียบเทียบโหมดการกรอกตำแหน่งเสาเข็ม <strong>หมายเลข 4</strong> เพื่อชมภาพฐานราก F1–F5 หรือ <strong>หมายเลข 5</strong> เพื่อชมประเภทเสาเข็มทั้ง 4 รูปแบบ</p>
             </div>
             <div id="tour-detail" hidden>
               <span class="tour-info-label">01 / CALCULATION REPORT HEADER</span>
@@ -1575,7 +1591,7 @@
   <script>
     (() => {
       const stage = document.getElementById('tour-stage');
-      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4')];
+      const buttons = [document.getElementById('tour-hotspot-1'),document.getElementById('tour-hotspot-2'),document.getElementById('tour-hotspot-3'),document.getElementById('tour-hotspot-4'),document.getElementById('tour-hotspot-5')];
       const detail1 = document.getElementById('tour-detail');
       const instruction = document.getElementById('tour-instruction');
       const highlight = document.querySelector('.tour-highlight');
@@ -1601,6 +1617,40 @@
         {id:'F4',desc:'ฐานรากเสาเข็ม 4 ต้น'},
         {id:'F5',desc:'ฐานรากเสาเข็ม 5 ต้น'}
       ];
+      const pileFocus=document.getElementById('tour-pile-focus');
+      const pileImage=document.getElementById('tour-pile-image');
+      const pileTypes=[
+        {id:'I-PILE',desc:'เสาเข็มรูปตัวไอ',file:'pilefix-pile-type-i.png'},
+        {id:'SQ-PILE',desc:'เสาเข็มสี่เหลี่ยม',file:'pilefix-pile-type-sq.png'},
+        {id:'HEX PILE',desc:'เสาเข็มหกเหลี่ยม',file:'pilefix-pile-type-hex.png'},
+        {id:'CIRCLE PILE',desc:'เสาเข็มกลม',file:'pilefix-pile-type-circle.png'}
+      ];
+      let pileIndex=0,pileTimer=null;
+      function renderPile(){
+        const p=pileTypes[pileIndex];
+        pileImage.src='/assets/slides/'+p.file;
+        pileImage.alt='ภาพหน้าจอ ADT-PILEFiX '+p.desc;
+        document.getElementById('tour-pile-type').textContent=p.id;
+        document.getElementById('tour-pile-description').textContent=p.id+' — '+p.desc;
+        document.getElementById('tour-pile-dots').innerHTML=pileTypes.map((_,i)=>'<span class="tour-footing-dot'+(i===pileIndex?' is-current':'')+'"></span>').join('');
+      }
+      function stopPile(){
+        if(pileTimer!==null){clearInterval(pileTimer);pileTimer=null;}
+        pileFocus.hidden=true;
+        stage.classList.remove('is-pile');
+        buttons[4].setAttribute('aria-pressed','false');
+      }
+      function startPile(){
+        selectHotspot(0);
+        pileIndex=0;
+        renderPile();
+        pileFocus.hidden=false;
+        stage.classList.add('is-pile');
+        buttons[4].setAttribute('aria-pressed','true');
+        if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+          pileTimer=setInterval(()=>{if(document.hidden)return;pileIndex=(pileIndex+1)%pileTypes.length;renderPile();},1000);
+        }
+      }
       let footingIndex=0,footingTimer=null;
       function renderFooting(){
         const f=footingTypes[footingIndex];
@@ -1647,12 +1697,14 @@
       }
       function selectHotspot(n){
         stopFooting();
+        stopPile();
         const active=n===1;
         stage.classList.toggle('is-active',active);
         buttons[0].setAttribute('aria-pressed',String(active));
         buttons[1].setAttribute('aria-pressed','false');
         buttons[2].setAttribute('aria-pressed','false');
         buttons[3].setAttribute('aria-pressed','false');
+        buttons[4].setAttribute('aria-pressed','false');
         detail1.hidden=!active;
         instruction.hidden=active;
         if(active){
@@ -1712,7 +1764,10 @@
       buttons[2].addEventListener('click',openModeModal);
       buttons[3].addEventListener('click',()=>footingFocus.hidden?startFooting():stopFooting());
       document.getElementById('tour-footing-exit').addEventListener('click',stopFooting);
+      buttons[4].addEventListener('click',()=>pileFocus.hidden?startPile():stopPile());
+      document.getElementById('tour-pile-exit').addEventListener('click',stopPile);
       document.addEventListener('visibilitychange',()=>{if(document.hidden&&footingTimer!==null){clearInterval(footingTimer);footingTimer=null;}else if(!document.hidden&&!footingFocus.hidden&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&footingTimer===null){footingTimer=setInterval(()=>{footingIndex=(footingIndex+1)%footingTypes.length;renderFooting();},1000);}});
+      document.addEventListener('visibilitychange',()=>{if(document.hidden&&pileTimer!==null){clearInterval(pileTimer);pileTimer=null;}else if(!document.hidden&&!pileFocus.hidden&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches&&pileTimer===null){pileTimer=setInterval(()=>{pileIndex=(pileIndex+1)%pileTypes.length;renderPile();},1000);}});
       document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>showMode(Number(b.dataset.mode))));
       modeClose.addEventListener('click',closeModeModal);
       modeModal.addEventListener('click',e=>{if(e.target===modeModal)closeModeModal();});
