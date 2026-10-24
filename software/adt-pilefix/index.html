@@ -1020,6 +1020,15 @@
     .tour-hotspot-10:hover,.tour-hotspot-10:focus-visible{background:#b45309}
     .tour-hotspot-11:hover,.tour-hotspot-11:focus-visible{background:#5b21b6}
     @media(max-width:780px){.tour-hotspot-9{left:73%;top:48%}.tour-hotspot-10{left:74%;top:55%}.tour-hotspot-11{left:74%;top:66%}}
+
+    /* Spotlight #12–14: pile cap edge, WSD parameters, reinforcement detail */
+    .tour-hotspot-12{left:29%;top:44%;background:#0d9488}
+    .tour-hotspot-13{left:29%;top:65%;background:#d97706}
+    .tour-hotspot-14{left:29%;top:81%;background:#7c3aed}
+    .tour-hotspot-12:hover,.tour-hotspot-12:focus-visible{background:#0f766e}
+    .tour-hotspot-13:hover,.tour-hotspot-13:focus-visible{background:#b45309}
+    .tour-hotspot-14:hover,.tour-hotspot-14:focus-visible{background:#5b21b6}
+    @media(max-width:780px){.tour-hotspot-12{left:31%;top:44%}.tour-hotspot-13{left:31%;top:65%}.tour-hotspot-14{left:31%;top:81%}}
   </style>
 </head>
 
@@ -1143,6 +1152,9 @@
                 <button type="button" class="tour-hotspot tour-hotspot-9" id="tour-hotspot-9" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 9 คำนวณจุดศูนย์ถ่วงกลุ่มเสาเข็ม CG">9</button>
                 <button type="button" class="tour-hotspot tour-hotspot-10" id="tour-hotspot-10" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 10 สมการแรงปฏิกิริยาเสาเข็มและโมเมนต์ Mx My">10</button>
                 <button type="button" class="tour-hotspot tour-hotspot-11" id="tour-hotspot-11" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 11 ตารางแรงปฏิกิริยาเสาเข็ม">11</button>
+                <button type="button" class="tour-hotspot tour-hotspot-12" id="tour-hotspot-12" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 12 ภาพขยายขอบฐานรากและตรวจสอบระยะขอบ">12</button>
+                <button type="button" class="tour-hotspot tour-hotspot-13" id="tour-hotspot-13" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 13 ข้อมูล Design Parameters วิธี WSD">13</button>
+                <button type="button" class="tour-hotspot tour-hotspot-14" id="tour-hotspot-14" aria-controls="tour-info" aria-pressed="false" aria-label="หมายเลข 14 ภาพรายละเอียดหน้าตัดเหล็กเสริมฐานราก">14</button>
                 <div class="tour-pile-focus" id="tour-pile-focus" aria-live="off" hidden>
                   <div class="tour-footing-head"><span>05 / PILE TYPE — <span id="tour-pile-type">I-PILE</span></span><span>เปลี่ยนภาพทุก 1 วินาที</span></div>
                   <img id="tour-pile-image" src="/assets/slides/pilefix-pile-type-i.png" alt="ตัวอย่างเสาเข็มรูปตัวไอ I-Pile">
@@ -1749,7 +1761,11 @@
         8:{x:25.8,y:33.2,w:46.1,h:13.2,label:'08 / ACTUAL PILE COORDINATES',heading:'ตารางพิกัดเสาเข็มตามตำแหน่งจริง',description:'ตารางนี้แสดงค่าพิกัดเสาเข็มตามข้อมูลตำแหน่งจริง เพื่อใช้ตรวจสอบและเปรียบเทียบกับตำแหน่งที่กำหนดไว้ใน Design Drawing',items:['แสดงข้อมูลตำแหน่งจริงของเสาเข็มแต่ละต้น','ใช้ตรวจสอบความแตกต่างระหว่างตำแหน่งตามแบบกับตำแหน่งจริง']},
         9:{x:25.8,y:46.5,w:46.1,h:8.6,label:'09 / PILE GROUP CENTER OF GRAVITY',heading:'คำนวณจุดศูนย์ถ่วง (CG) ของกลุ่มเสาเข็ม',description:'แสดงการคำนวณหาตำแหน่งจุดศูนย์ถ่วง (CG) ของกลุ่มเสาเข็มภายหลังเกิดการเยื้องตำแหน่ง เพื่อใช้เป็นข้อมูลในการวิเคราะห์ผลของการเยื้องศูนย์',items:['คำนวณตำแหน่ง CG ของกลุ่มเสาเข็มตามพิกัดจริง','แสดงค่าความเยื้องศูนย์ในทิศทางที่เกี่ยวข้อง']},
         10:{x:25.8,y:54.5,w:46.1,h:7.0,label:'10 / PILE REACTION FORCE CALCULATION',heading:'สมการแรงปฏิกิริยาและโมเมนต์จากการเยื้องศูนย์',description:'แสดงสมการสำหรับคำนวณแรงปฏิกิริยาที่เสาเข็มต้องรับ พร้อมค่าโมเมนต์ที่เกิดจากการเยื้องศูนย์ของกลุ่มเสาเข็มในทิศทาง Mx และ My',items:['แสดงสมการคำนวณแรงปฏิกิริยาในเสาเข็ม','แสดงค่าโมเมนต์ Mx และ My จากการเยื้องศูนย์']},
-        11:{x:25.8,y:61.0,w:46.1,h:18.0,label:'11 / PILE REACTION FORCE CALCULATION TABLE',heading:'ตารางคำนวณแรงปฏิกิริยาเสาเข็มแต่ละต้น',description:'แสดงผลการคำนวณแรงปฏิกิริยาที่เกิดขึ้นในเสาเข็มแต่ละต้น เพื่อใช้ตรวจสอบแรงที่เสาเข็มต้องรับตามตำแหน่งจริง',items:['แสดงแรงปฏิกิริยาของเสาเข็มแต่ละต้น','ใช้ประกอบการตรวจสอบเทียบกับกำลังรับน้ำหนักที่กำหนด']}
+        11:{x:25.8,y:61.0,w:46.1,h:18.0,label:'11 / PILE REACTION FORCE CALCULATION TABLE',heading:'ตารางคำนวณแรงปฏิกิริยาเสาเข็มแต่ละต้น',description:'แสดงผลการคำนวณแรงปฏิกิริยาที่เกิดขึ้นในเสาเข็มแต่ละต้น เพื่อใช้ตรวจสอบแรงที่เสาเข็มต้องรับตามตำแหน่งจริง',items:['แสดงแรงปฏิกิริยาของเสาเข็มแต่ละต้น','ใช้ประกอบการตรวจสอบเทียบกับกำลังรับน้ำหนักที่กำหนด']},
+        12:{x:3.0,y:31.0,w:27.2,h:28.8,label:'12 / PILE CAP EDGE DISTANCE CHECK',heading:'ภาพขยายขอบฐานรากและตรวจสอบระยะขอบ',description:'แสดงภาพเส้นการขยายขอบฐานราก และส่วนตรวจสอบระยะขอบฐานรากโดยรอบ เพื่อใช้พิจารณาระยะขอบฐานรากที่กำหนด',items:['แสดงแนวขอบฐานรากหลังการขยาย','ตรวจสอบระยะขอบฐานรากโดยรอบฐาน']},
+        13:{x:4.0,y:56.5,w:27.0,h:15.0,label:'13 / DESIGN PARAMETERS — WSD',heading:'ข้อมูลพารามิเตอร์สำหรับการออกแบบด้วยวิธี WSD',description:'แสดงกลุ่มข้อมูล Design Parameters ที่ใช้ในการคำนวณและออกแบบโครงสร้างคอนกรีตเสริมเหล็กด้วยวิธีหน่วยแรงใช้งาน (Working Stress Design: WSD)',items:['แสดงค่าคุณสมบัติและพารามิเตอร์ที่ใช้ในการออกแบบ','ใช้เป็นข้อมูลอ้างอิงในการคำนวณฐานราก']},
+        14:{x:0.5,y:71.2,w:27.5,h:19.3,label:'14 / REINFORCEMENT SECTION DETAIL',heading:'ภาพรายละเอียดหน้าตัดเหล็กเสริมฐานราก',description:'แสดงภาพหน้าตัดฐานรากและรายละเอียดการจัดวางเหล็กเสริม (Reinforcement Section Detail) เพื่อประกอบการตรวจสอบและออกแบบเหล็กเสริมฐานราก',items:['แสดงรายละเอียดหน้าตัดและตำแหน่งเหล็กเสริม','ช่วยให้ตรวจสอบรายละเอียดเหล็กเสริมร่วมกับผลการคำนวณได้']}
+
       };
       function selectHotspot(n){
         stopFooting();
@@ -1842,7 +1858,7 @@
       buttons[0].addEventListener('click',()=>selectHotspot(buttons[0].getAttribute('aria-pressed')==='true'?0:1));
       buttons[6].addEventListener('click',()=>selectHotspot(buttons[6].getAttribute('aria-pressed')==='true'?0:7));
       buttons[7].addEventListener('click',()=>selectHotspot(buttons[7].getAttribute('aria-pressed')==='true'?0:8));
-      [9,10,11].forEach(n=>buttons[n-1].addEventListener('click',()=>selectHotspot(buttons[n-1].getAttribute('aria-pressed')==='true'?0:n)));
+      [9,10,11,12,13,14].forEach(n=>buttons[n-1].addEventListener('click',()=>selectHotspot(buttons[n-1].getAttribute('aria-pressed')==='true'?0:n)));
       buttons[1].addEventListener('click',openModal);
       buttons[2].addEventListener('click',openModeModal);
       buttons[3].addEventListener('click',()=>footingFocus.hidden?startFooting():stopFooting());
