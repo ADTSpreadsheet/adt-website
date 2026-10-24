@@ -1002,6 +1002,9 @@
             <a class="btn btn-outline" href="#trial">
               ดาวน์โหลดทดลองใช้ฟรี
             </a>
+            <a class="btn btn-outline" href="#software-tour">
+              ดูการทำงานของโปรแกรม ↓
+            </a>
           </div>
         </div>
 
@@ -1037,12 +1040,13 @@
           <p class="eyebrow">EXPLORE ADT-PILEFiX</p>
           <h2 id="tour-heading">รู้จักโปรแกรมผ่านหน้าจอการทำงานจริง</h2>
           <p>คลิกหมายเลขบนภาพเพื่อดูรายละเอียดแต่ละส่วนของโปรแกรม พร้อมเน้นตำแหน่งที่เกี่ยวข้อง</p>
+          <p style="margin-top:10px;font-weight:700;color:#0d57bf;">เริ่มต้นที่หมายเลข 1 — หัวกระดาษรายการคำนวณ</p>
         </div>
         <div class="tour-layout">
           <div class="tour-image-card">
             <div class="tour-image-scroll" id="tour-scroll" tabindex="0" aria-label="ภาพหน้าจอโปรแกรม เลื่อนซ้ายขวาเพื่อดูบนมือถือ">
               <div class="tour-stage" id="tour-stage">
-                <img src="/assets/slides/adt-pilefix-tour.png" alt="หน้าจอจริง ADT-PILEFiX แสดงแบบฐานราก ตารางคำนวณ และแผงควบคุม" loading="lazy" decoding="async">
+                <img src="/assets/slides/adt-pilefix-tour.png" alt="หน้าจอจริง ADT-PILEFiX แสดงแบบฐานราก ตารางคำนวณ และแผงควบคุม" loading="eager" decoding="async" onerror="this.alt='ไม่พบไฟล์ภาพ /assets/slides/adt-pilefix-tour.png กรุณาตรวจสอบชื่อไฟล์และตำแหน่งใน GitHub';this.style.minHeight='350px';">
                 <svg class="tour-shade" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
                   <defs><mask id="tour-mask"><rect width="100" height="100" fill="white"/><rect x="1.5" y="2.7" width="72" height="5.3" fill="black"/></mask></defs>
                   <rect width="100" height="100" fill="rgba(255,255,255,.83)" mask="url(#tour-mask)"/>
@@ -1554,7 +1558,7 @@
       };
       button.addEventListener('click', () => setActive(button.getAttribute('aria-pressed') !== 'true'));
       reset.addEventListener('click', () => { setActive(false); button.focus(); });
-      setActive(false);
+      setActive(true);
     })();
   </script>
 </body>
