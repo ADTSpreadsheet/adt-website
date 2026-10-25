@@ -2111,6 +2111,7 @@
       const PF_DOWNLOAD_URL=API_BASE+'/api/pilefix/download/file';
       let checkoutToken='';
       let submitting=false;
+      let lineUiConfirmed=false;
       let verified=false;
       const step=n=>document.getElementById('adt-step-'+n);
       function setStep(n, state){step(n).classList.toggle('is-current',state==='current');step(n).classList.toggle('is-complete',state==='complete');}
@@ -2346,6 +2347,21 @@
           downloadFeedback.textContent=error.message||'ดาวน์โหลดไม่สำเร็จ กรุณาลองอีกครั้ง';
         }finally{downloadBusy=false;downloadLink.style.pointerEvents='';}
       });
+      function completeLineCheckoutUI(){
+        if(lineUiConfirmed)return;
+        lineUiConfirmed=true;
+        showPhase('line',processPhases);
+        progress.classList.remove('is-processing');
+        progress.querySelector('span').style.width='100%';
+        paymentFeedback.textContent='✓ ตรวจสอบสลิป บันทึกหมายเลข PF และส่ง LINE สำเร็จแล้ว';
+        bookingDisplay.textContent='ระบบส่งหมายเลข PF ไปยัง LINE ของท่านแล้ว';
+        downloadPanel.hidden=false;
+        setStep(3,'complete');setStep(4,'current');
+        payment.hidden=true;
+        downloadLink.hidden=true;
+        downloadFeedback.textContent='กรุณานำหมายเลข PF ที่ได้รับทาง LINE มากรอกเพื่อตรวจสอบสิทธิ์';
+        downloadPanel.scrollIntoView({behavior:'smooth',block:'start'});
+      }
       submitButton.addEventListener('click',async()=>{
         if(!verified || !checkoutToken || submitting)return;
         const file=slipInput.files?.[0];
@@ -2356,7 +2372,7 @@
         const payload=new FormData();
         payload.append('file',file);
         payload.append('checkout_token',checkoutToken);
-        submitting=true;submitButton.disabled=true;progress.hidden=false;
+        lineUiConfirmed=false;submitting=true;submitButton.disabled=true;progress.hidden=false;
         progress.classList.remove('is-processing');
         progress.querySelector('span').style.width='0%';
         progress.setAttribute('aria-valuenow','0');
@@ -2376,6 +2392,13 @@
               ocrProgressLabel.textContent=stage+' '+pct+'%';
               paymentFeedback.textContent='กำลังตรวจสอบสลิป '+pct+'%';
             },renderBackendChecks,(event)=>{
+              // This event is emitted only AFTER LINE push API responds successfully.
+              if(event.stage==='line' && event.state==='done' &&
+                 event.status==='BOOKING_SAVED_LINE_SENT' && event.line_sent===true &&
+                 /^PF-\d+$/.test(String(event.booking_no||''))){
+                completeLineCheckoutUI();
+                return;
+              }
               if(event.state==='working'){
                 const completed=processPhases.slice(0,processPhases.indexOf(event.stage));
                 showPhase(event.stage,completed);
@@ -2405,6 +2428,7 @@
             result.status==='BOOKING_SAVED_LINE_SENT' && result.line_sent===true &&
             /^PF-\d+$/.test(String(result.booking_no||''));
           if(!done){
+            if(lineUiConfirmed)return;
             paymentFeedback.textContent=result.message || ({
               OCR_IMPORTANT_DATA_NOT_CONFIRMED:'ผลตรวจสลิปยังไม่ถึงเกณฑ์ 2 ใน 3 กรุณาตรวจสอบสลิป',
               OCR_TEXT_EMPTY:'ไม่สามารถอ่านข้อความจากสลิปได้',
@@ -2416,18 +2440,9 @@
             })[result.code] || 'ยังไม่สามารถลงทะเบียนได้ กรุณาลองใหม่หรือติดต่อ ADT';
             return;
           }
-          showPhase('line',processPhases);
-          progress.classList.remove('is-processing');progress.querySelector('span').style.width='100%';
-          paymentFeedback.textContent='✓ ตรวจสอบสลิป บันทึกหมายเลข PF และส่ง LINE สำเร็จแล้ว';
-          // Never display the PF number from Backend here: customer must read it from LINE.
-          bookingDisplay.textContent='ระบบส่งหมายเลข PF ไปยัง LINE ของท่านแล้ว';
-          downloadPanel.hidden=false;
-          setStep(3,'complete');setStep(4,'current');
-          payment.hidden=true;
-          downloadLink.hidden=true;
-          downloadFeedback.textContent='กรุณานำหมายเลข PF ที่ได้รับทาง LINE มากรอกเพื่อตรวจสอบสิทธิ์';
-          downloadPanel.scrollIntoView({behavior:'smooth',block:'start'});
+          completeLineCheckoutUI();
         }catch(error){
+          if(lineUiConfirmed)return; // Never replace confirmed LINE success with a stream error.
           paymentFeedback.textContent=(error.message==='TIMEOUT'||error.message==='ABORT')
             ? 'การเชื่อมต่อหมดเวลา โปรดลองใหม่ ระบบจะต้องใช้ Booking เดิมหากเคยบันทึกแล้ว'
             : 'เชื่อมต่อระบบตรวจสอบสลิปไม่ได้ กรุณาลองใหม่';
