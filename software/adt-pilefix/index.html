@@ -2105,6 +2105,7 @@
       if(!form || !panel || !verifyButton || !payment)return;
       // Backend proxy must authenticate the browser session; OCR_API_SECRET must stay server-side.
       const CHECKOUT_SUBMIT_URL=API_BASE+'/api/pilefix/ocr/submit-stream';
+      const REVIEW_STATUS_URL=API_BASE+'/api/pilefix/payment-review/status';
       // These two authenticated routes must be implemented on Backend.
       // Never expose the XLSM public GitHub URL as an authorization mechanism.
       const PF_VERIFY_URL=API_BASE+'/api/pilefix/download/verify';
@@ -2113,9 +2114,13 @@
       let submitting=false;
       let lineUiConfirmed=false;
       let verified=false;
+      let reviewPollingTimer=null;
+      let reviewState='OCR_NOT_STARTED';
+      let reviewAttempts=0;
       const step=n=>document.getElementById('adt-step-'+n);
       function setStep(n, state){step(n).classList.toggle('is-current',state==='current');step(n).classList.toggle('is-complete',state==='complete');}
       function resetVerification(){
+        stopReviewPolling();reviewState='OCR_NOT_STARTED';reviewAttempts=0;
         verified=false;checkoutToken='';payment.hidden=true;document.getElementById('adt-order-download').hidden=true;otpInput.value='';feedback.textContent='กรอกรหัส 6 หลักที่ได้รับทาง LINE แล้วกดยืนยัน';
         verifyButton.disabled=false;verifyButton.textContent='ยืนยันรหัส OTP';
         setStep(2,'current');setStep(3,'waiting');setStep(4,'waiting');
@@ -2158,6 +2163,7 @@
             verified=true;feedback.textContent='✓ ยืนยันรหัสสำเร็จ';otpInput.disabled=true;
             verifyButton.textContent='ยืนยันสำเร็จ';setStep(2,'complete');setStep(3,'current');
             panel.hidden=true;payment.hidden=false;payment.scrollIntoView({behavior:'smooth',block:'start'});
+            checkReviewStatus();
           }else{
             feedback.textContent=result.message || 'ไม่สามารถยืนยัน OTP ได้ กรุณาตรวจสอบรหัสและลองอีกครั้ง';
           }
@@ -2187,6 +2193,92 @@
           ['receiver','account','amount'].filter(k=>checks[k]?.match===true).length;
         document.getElementById('adt-check-score').textContent='ผลตรวจ OCR '+score+'/3 คะแนน';
       }
+      // Manual-review status is always derived from the authenticated Backend.
+      const retryStatus=document.createElement('div');
+      retryStatus.id='adt-ocr-retry-status';
+      retryStatus.hidden=true;
+      retryStatus.setAttribute('role','status');
+      retryStatus.setAttribute('aria-live','polite');
+      retryStatus.style.cssText='margin:12px 0;padding:14px;border:1px solid #f4c76b;border-radius:12px;background:#fff8e6;color:#795100;font-weight:650;line-height:1.6';
+      paymentFeedback.insertAdjacentElement('afterend',retryStatus);
+      function stopReviewPolling(){
+        if(reviewPollingTimer!==null){clearInterval(reviewPollingTimer);reviewPollingTimer=null;}
+      }
+      function lockSlipSubmission(lock){
+        slipInput.disabled=lock;
+        submitButton.disabled=lock || submitting;
+        if(lock)submitButton.textContent='อยู่ระหว่างตรวจสอบโดยเจ้าหน้าที่';
+        else submitButton.textContent='ตรวจสอบสลิปและลงทะเบียน';
+      }
+      function applyReviewStatus(data){
+        if(!data || typeof data!=='object')return;
+        const status=String(data.status||'');
+        const attempts=Number(data.attempt_count);
+        if(Number.isFinite(attempts))reviewAttempts=Math.max(0,Math.min(3,Math.trunc(attempts)));
+        if(status)reviewState=status;
+        if(status==='OCR_RETRY_REQUIRED'){
+          stopReviewPolling();
+          retryStatus.hidden=false;
+          retryStatus.textContent=`ตรวจสลิปไม่ผ่านครั้งที่ ${reviewAttempts} จาก 3 ครั้ง — สามารถอัปโหลดใหม่ได้อีก ${Math.max(0,3-reviewAttempts)} ครั้ง`;
+          paymentFeedback.textContent='ระบบยังยืนยันข้อมูลสลิปไม่ได้ กรุณาแนบสลิปที่ชัดเจนแล้วตรวจสอบใหม่';
+          lockSlipSubmission(false);
+          setStep(3,'current');
+          return;
+        }
+        if(status==='PAYMENT_REVIEW' || status==='APPROVING'){
+          retryStatus.hidden=false;
+          retryStatus.textContent=status==='APPROVING'
+            ? 'เจ้าหน้าที่อนุมัติรายการแล้ว ระบบกำลังออกหมายเลข PF และส่งทาง LINE กรุณารอสักครู่'
+            : 'ตรวจสลิปไม่ผ่านครบ 3 ครั้งแล้ว — ได้รับหลักฐานแล้ว อยู่ระหว่างรอเจ้าหน้าที่ ADT-SOFTWARE ตรวจสอบ';
+          paymentFeedback.textContent=status==='APPROVING'?'กำลังดำเนินการอนุมัติและส่ง PF':'สถานะ: รอเจ้าหน้าที่ตรวจสอบหลักฐานการชำระเงิน';
+          lockSlipSubmission(true);
+          setStep(3,'current');
+          startReviewPolling();
+          return;
+        }
+        if(status==='REJECTED'){
+          stopReviewPolling();
+          retryStatus.hidden=false;
+          retryStatus.textContent='การชำระเงินไม่ผ่านการตรวจสอบ กรุณาติดต่อทีมงาน ADT-SOFTWARE';
+          retryStatus.style.borderColor='#e6a2a2';retryStatus.style.background='#fff2f2';retryStatus.style.color='#a12020';
+          paymentFeedback.textContent='เจ้าหน้าที่ไม่อนุมัติหลักฐานการชำระเงิน';
+          lockSlipSubmission(true);
+          setStep(3,'current');
+          return;
+        }
+        if(status==='APPROVED' && data.line_sent===true && /^PF-\d+$/.test(String(data.booking_no||''))){
+          stopReviewPolling();
+          retryStatus.hidden=true;
+          completeLineCheckoutUI();
+          return;
+        }
+        if(status==='APPROVED'){
+          retryStatus.hidden=false;
+          retryStatus.textContent='รายการได้รับอนุมัติแล้ว กำลังยืนยันการส่งหมายเลข PF ทาง LINE';
+          lockSlipSubmission(true);startReviewPolling();
+        }
+      }
+      async function checkReviewStatus(){
+        if(!verified || !checkoutToken || lineUiConfirmed)return;
+        try{
+          const response=await fetch(REVIEW_STATUS_URL,{
+            method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({checkout_token:checkoutToken}),cache:'no-store'
+          });
+          if(!response.ok)return;
+          const data=await response.json();
+          if(data.success===true)applyReviewStatus(data);
+        }catch(error){console.warn('[ADT-PILEFiX] Review status temporarily unavailable',error?.message);}
+      }
+      function startReviewPolling(){
+        if(reviewPollingTimer!==null)return;
+        reviewPollingTimer=setInterval(()=>{
+          if(document.visibilityState==='visible')checkReviewStatus();
+        },5000);
+      }
+      document.addEventListener('visibilitychange',()=>{
+        if(document.visibilityState==='visible' && verified && !lineUiConfirmed)checkReviewStatus();
+      });
       const processList=document.getElementById('adt-process-list');
       const processPhases=['upload','ocr','payment','booking','line'];
       function showPhase(phase, completed=[]){
@@ -2349,6 +2441,7 @@
       });
       function completeLineCheckoutUI(){
         if(lineUiConfirmed)return;
+        stopReviewPolling();reviewState='APPROVED';
         lineUiConfirmed=true;
         showPhase('line',processPhases);
         progress.classList.remove('is-processing');
@@ -2363,7 +2456,7 @@
         downloadPanel.scrollIntoView({behavior:'smooth',block:'start'});
       }
       submitButton.addEventListener('click',async()=>{
-        if(!verified || !checkoutToken || submitting)return;
+        if(!verified || !checkoutToken || submitting || ['PAYMENT_REVIEW','APPROVING','APPROVED','REJECTED'].includes(reviewState))return;
         const file=slipInput.files?.[0];
         if(!file){paymentFeedback.textContent='กรุณาแนบภาพสลิปก่อนดำเนินการ';return;}
         if(!['image/jpeg','image/png'].includes(file.type) || file.size>10*1024*1024){
@@ -2410,6 +2503,16 @@
               }
             });
           if(result.account && result.receiver && result.amount)renderBackendChecks(result);
+          if(['OCR_RETRY_REQUIRED','PAYMENT_REVIEW','APPROVING','REJECTED','APPROVED'].includes(result.status)){
+            applyReviewStatus(result);
+            return;
+          }
+          if(result.code==='REVIEW_ESCALATION_PENDING'){
+            // Database has already entered PAYMENT_REVIEW, even if Bot 2 could not be notified.
+            applyReviewStatus({...result,status:'PAYMENT_REVIEW'});
+            paymentFeedback.textContent='ได้รับหลักฐานแล้ว แต่การแจ้งเจ้าหน้าที่ขัดข้อง ทีมงานกำลังตรวจสอบ';
+            return;
+          }
           if(['PAYMENT_VERIFICATION_PENDING','FULFILLMENT_PENDING','LINE_SEND_PENDING'].includes(result.status)){
             paymentFeedback.textContent=result.message||'บันทึกผลตรวจแล้ว กรุณาติดต่อ ADT';
             return;
@@ -2430,7 +2533,7 @@
           if(!done){
             if(lineUiConfirmed)return;
             paymentFeedback.textContent=result.message || ({
-              OCR_IMPORTANT_DATA_NOT_CONFIRMED:'ผลตรวจสลิปยังไม่ถึงเกณฑ์ 2 ใน 3 กรุณาตรวจสอบสลิป',
+              OCR_IMPORTANT_DATA_NOT_CONFIRMED:'ผลตรวจสลิปไม่ผ่านเกณฑ์ 3 ใน 3 กรุณาตรวจสอบสลิป',
               OCR_TEXT_EMPTY:'ไม่สามารถอ่านข้อความจากสลิปได้',
               VERIFIED_CHECKOUT_REQUIRED:'กรุณายืนยัน LINE OTP อีกครั้ง',
               CHECKOUT_SESSION_INVALID:'เซสชันหมดอายุ กรุณาเริ่มใหม่',
@@ -2450,7 +2553,7 @@
           submitting=false;progress.classList.remove('is-processing');
           if(progress.getAttribute('aria-valuenow')!=='100'){ocrProgressLabel.textContent='การประมวลผลไม่สมบูรณ์';}
           // Preserve completed stage indicators and any pending verification state.
-          if(downloadPanel.hidden){submitButton.disabled=false;submitButton.textContent='ตรวจสอบสลิปและลงทะเบียน';}
+          if(downloadPanel.hidden)lockSlipSubmission(['PAYMENT_REVIEW','APPROVING','APPROVED','REJECTED'].includes(reviewState));
         }
       });
     })();
