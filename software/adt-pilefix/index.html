@@ -1685,7 +1685,7 @@
             <p id="adt-download-feedback" role="status" aria-live="polite">กรุณานำหมายเลข PF ที่ได้รับทาง LINE มากรอกเพื่อตรวจสอบสิทธิ์</p>
             <div class="adt-order-field">
               <label for="adt-download-pf">หมายเลข PF จาก LINE</label>
-              <input id="adt-download-pf" type="text" inputmode="text" autocomplete="off" maxlength="24" placeholder="PF-038" aria-describedby="adt-download-feedback">
+              <input id="adt-download-pf" type="text" inputmode="text" autocomplete="off" maxlength="24" placeholder="PF-XXX" aria-describedby="adt-download-feedback">
             </div>
             <button id="adt-download-verify" type="button" class="btn btn-gold">ตรวจสอบหมายเลข PF</button>
             <a id="adt-program-download-link" class="btn btn-primary" href="#adt-order-download" hidden>ดาวน์โหลด ADT-PILEFiX Professional v1.2</a>
@@ -2304,7 +2304,7 @@
             body:JSON.stringify({checkout_token:checkoutToken,booking_no:pf})
           });
           const data=await response.json().catch(()=>({}));
-          if(response.ok && data.success===true && data.verified===true &&
+          if(response.ok && data.success===true && data.status==='PF_VERIFIED' && data.verified===true &&
               data.booking_no===pf){
             authorizedPf=pf;
             downloadLink.hidden=false;
@@ -2354,7 +2354,7 @@
         progress.classList.remove('is-processing');
         progress.querySelector('span').style.width='100%';
         paymentFeedback.textContent='✓ ตรวจสอบสลิป บันทึกหมายเลข PF และส่ง LINE สำเร็จแล้ว';
-        bookingDisplay.textContent='ระบบส่งหมายเลข PF ไปยัง LINE ของท่านแล้ว';
+        if(bookingDisplay)bookingDisplay.textContent='ระบบส่งหมายเลข PF ไปยัง LINE ของท่านแล้ว';
         downloadPanel.hidden=false;
         setStep(3,'complete');setStep(4,'current');
         payment.hidden=true;
