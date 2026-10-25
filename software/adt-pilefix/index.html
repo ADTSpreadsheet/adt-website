@@ -2208,29 +2208,49 @@
           if(!response.body)throw new Error('STREAM_UNAVAILABLE');
           const reader=response.body.getReader();
           const decoder=new TextDecoder();
-          let buffer='';let finalResult=null;
+          let buffer='';let finalResult=null;let lineDoneResult=null;
           function handleLine(line){
             if(!line.trim())return;
-            const msg=JSON.parse(line);
+            let msg;
+            try{msg=JSON.parse(line);}catch(e){console.warn('[ADT-PILEFiX] Invalid NDJSON line',e);return;}
             if(msg.type==='progress')onProgress(msg.percent,msg.phase);
             if(msg.type==='checks')onChecks(msg);
-            if(msg.type==='stage')onStage(msg);
-            if(msg.type==='result')finalResult={status:msg.status,result:msg.result};
-          }
-          while(true){
-            const {done,value}=await reader.read();
-            if(done)break;
-            buffer+=decoder.decode(value,{stream:true});
-            let newline;
-            while((newline=buffer.indexOf('\n'))>=0){
-              const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);
-              handleLine(line);
+            if(msg.type==='stage'){
+              onStage(msg);
+              // LINE done is emitted by Backend ONLY after the LINE API accepted the message.
+              if(msg.stage==='line' && msg.state==='done' &&
+                 msg.status==='BOOKING_SAVED_LINE_SENT' && msg.line_sent===true &&
+                 /^PF-\d+$/.test(String(msg.booking_no||''))){
+                lineDoneResult={success:true,status:'BOOKING_SAVED_LINE_SENT',
+                  line_sent:true,booking_no:msg.booking_no};
+              }
+            }
+            if(msg.type==='result'){
+              const payload=msg.result && typeof msg.result==='object' ? msg.result : msg;
+              const code=Number(msg.http_status ?? (typeof msg.status==='number'?msg.status:response.status));
+              finalResult={status:code,result:payload};
             }
           }
-          buffer+=decoder.decode();
-          if(buffer.trim())handleLine(buffer);
-          if(!finalResult)throw new Error('STREAM_INCOMPLETE');
-          return finalResult;
+          try{
+            while(true){
+              const {done,value}=await reader.read();
+              if(done)break;
+              buffer+=decoder.decode(value,{stream:true});
+              let newline;
+              while((newline=buffer.indexOf('\n'))>=0){
+                const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);
+                handleLine(line);
+              }
+            }
+            buffer+=decoder.decode();
+            if(buffer.trim())handleLine(buffer);
+          }catch(streamError){
+            if(!lineDoneResult && !finalResult)throw streamError;
+            console.warn('[ADT-PILEFiX] Stream closed after confirmed result',streamError);
+          }
+          if(finalResult)return finalResult;
+          if(lineDoneResult)return {status:200,result:lineDoneResult};
+          throw new Error('STREAM_INCOMPLETE');
         }finally{clearTimeout(timer);}
       }
       // OCR response is a preliminary screening result, not payment confirmation.
@@ -2270,7 +2290,7 @@
       pfVerifyButton.addEventListener('click',async()=>{
         const pf=pfInput.value.trim().toUpperCase();
         if(!/^PF-\d{1,12}$/.test(pf)){
-          downloadFeedback.textContent='กรุณากรอกหมายเลข PF ให้ถูกต้อง เช่น PF-038';return;
+          downloadFeedback.textContent='กรุณากรอกหมายเลข PF ที่ได้รับทาง LINE ให้ถูกต้อง';return;
         }
         if(!verified || !checkoutToken || downloadPanel.hidden){
           downloadFeedback.textContent='กรุณายืนยัน LINE และชำระเงินให้สำเร็จก่อน';return;
@@ -2383,7 +2403,7 @@
           // HTTP 200 alone is insufficient: require persisted booking and LINE delivery.
           const done=responseStatus===200 && result.success===true &&
             result.status==='BOOKING_SAVED_LINE_SENT' && result.line_sent===true &&
-            /^PF-[A-Za-z0-9-]+$/.test(String(result.booking_no||''));
+            /^PF-\d+$/.test(String(result.booking_no||''));
           if(!done){
             paymentFeedback.textContent=result.message || ({
               OCR_IMPORTANT_DATA_NOT_CONFIRMED:'ผลตรวจสลิปยังไม่ถึงเกณฑ์ 2 ใน 3 กรุณาตรวจสอบสลิป',
