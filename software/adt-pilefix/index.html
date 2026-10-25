@@ -2207,7 +2207,11 @@
       function lockSlipSubmission(lock){
         slipInput.disabled=lock;
         submitButton.disabled=lock || submitting;
-        if(lock)submitButton.textContent='อยู่ระหว่างตรวจสอบโดยเจ้าหน้าที่';
+        if(lock)submitButton.textContent=reviewState==='REJECTED'
+          ? 'รายการไม่ผ่านการตรวจสอบ — กรุณาติดต่อเจ้าหน้าที่'
+          : reviewState==='APPROVING' ? 'กำลังอนุมัติและออกหมายเลข PF'
+          : reviewState==='APPROVED' ? 'อนุมัติแล้ว'
+          : 'อยู่ระหว่างตรวจสอบโดยเจ้าหน้าที่';
         else submitButton.textContent='ตรวจสอบสลิปและลงทะเบียน';
       }
       function applyReviewStatus(data){
@@ -2216,6 +2220,10 @@
         const attempts=Number(data.attempt_count);
         if(Number.isFinite(attempts))reviewAttempts=Math.max(0,Math.min(3,Math.trunc(attempts)));
         if(status)reviewState=status;
+        // Clear stale rejection styling when a different status arrives.
+        retryStatus.style.borderColor='#f4c76b';
+        retryStatus.style.background='#fff8e6';
+        retryStatus.style.color='#795100';
         if(status==='OCR_RETRY_REQUIRED'){
           stopReviewPolling();
           retryStatus.hidden=false;
@@ -2246,7 +2254,10 @@
           setStep(3,'current');
           return;
         }
-        if(status==='APPROVED' && data.line_sent===true && /^PF-\d+$/.test(String(data.booking_no||''))){
+        // An admin-approved checkout must use the same Step 4 UI as an OCR-approved checkout.
+        // Do not depend on the PF format here: the download endpoint verifies it separately.
+        if(status==='APPROVED' && data.line_sent===true && typeof data.booking_no==='string'
+           && data.booking_no.trim().length>0){
           stopReviewPolling();
           retryStatus.hidden=true;
           completeLineCheckoutUI();
@@ -2254,7 +2265,8 @@
         }
         if(status==='APPROVED'){
           retryStatus.hidden=false;
-          retryStatus.textContent='รายการได้รับอนุมัติแล้ว กำลังยืนยันการส่งหมายเลข PF ทาง LINE';
+          retryStatus.textContent='รายการได้รับอนุมัติแล้ว แต่ยังรอยืนยันการส่งหมายเลข PF ทาง LINE กรุณาติดต่อเจ้าหน้าที่หากรอนานผิดปกติ';
+          paymentFeedback.textContent='อนุมัติแล้ว — กำลังตรวจสอบการส่ง PF';
           lockSlipSubmission(true);startReviewPolling();
         }
       }
@@ -2272,6 +2284,7 @@
       }
       function startReviewPolling(){
         if(reviewPollingTimer!==null)return;
+        checkReviewStatus(); // Do not wait five seconds for the first check.
         reviewPollingTimer=setInterval(()=>{
           if(document.visibilityState==='visible')checkReviewStatus();
         },5000);
