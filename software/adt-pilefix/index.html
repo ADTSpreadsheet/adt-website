@@ -1177,7 +1177,8 @@
     #adt-order-payment[hidden],
     #adt-order-download[hidden],
     #adt-order-line[hidden],
-    #adt-order-contact[hidden] { display:none !important; }
+    #adt-order-contact[hidden],
+    #adt-download-complete[hidden] { display:none !important; }
     .adt-payment-card{display:grid;gap:15px;background:#fff}
     .adt-payment-card h3{margin:0;color:#071b38;font-size:1.5rem}
     .adt-payment-card .eyebrow{margin:0}
@@ -1597,7 +1598,7 @@
           <div class="adt-step is-current" id="adt-step-1"><span class="adt-step-num">1</span><span>กรอกข้อมูลติดต่อ<small>ชื่อ เบอร์โทร อีเมล</small></span><span class="adt-step-check">✓</span></div>
           <div class="adt-step" id="adt-step-2"><span class="adt-step-num">2</span><span>ยืนยันตัวตนผ่าน LINE<small>สแกน QR และกรอก OTP</small></span><span class="adt-step-check">✓</span></div>
           <div class="adt-step" id="adt-step-3"><span class="adt-step-num">3</span><span>ชำระเงินและแนบสลิป<small>รอตรวจสอบการชำระเงิน</small></span><span class="adt-step-check">✓</span></div>
-          <div class="adt-step" id="adt-step-4"><span class="adt-step-num">4</span><span>ดาวน์โหลดโปรแกรม<small>หลังระบบยืนยันการลงทะเบียนและส่ง LINE</small></span><span class="adt-step-check">✓</span></div>
+          <div class="adt-step" id="adt-step-4"><span class="adt-step-num">4</span><span>ดาวน์โหลดโปรแกรม<small>กรอก PF ตรวจสอบสิทธิ์ และดาวน์โหลด</small></span><span class="adt-step-check">✓</span></div>
         </aside>
         <div class="adt-order-panel">
           <p class="eyebrow">ORDER REGISTRATION</p>
@@ -1681,7 +1682,14 @@
           </div>
           <div class="adt-order-next" id="adt-order-download" hidden>
             <h3>ขั้นตอนที่ 4: ดาวน์โหลด ADT-PILEFiX</h3>
-            <p id="adt-download-feedback">กำลังรอผลการลงทะเบียน</p><p id="adt-booking-display"></p><a id="adt-program-download-link" class="btn btn-primary" hidden rel="noopener noreferrer">ดาวน์โหลด ADT-PILEFiX</a>
+            <p id="adt-download-feedback" role="status" aria-live="polite">กรุณานำหมายเลข PF ที่ได้รับทาง LINE มากรอกเพื่อตรวจสอบสิทธิ์</p>
+            <div class="adt-order-field">
+              <label for="adt-download-pf">หมายเลข PF จาก LINE</label>
+              <input id="adt-download-pf" type="text" inputmode="text" autocomplete="off" maxlength="24" placeholder="PF-038" aria-describedby="adt-download-feedback">
+            </div>
+            <button id="adt-download-verify" type="button" class="btn btn-gold">ตรวจสอบหมายเลข PF</button>
+            <a id="adt-program-download-link" class="btn btn-primary" href="#adt-order-download" hidden>ดาวน์โหลด ADT-PILEFiX Professional v1.2</a>
+            <p id="adt-download-complete" class="adt-payment-success" hidden>✓ ระบบส่งไฟล์ดาวน์โหลดสำเร็จแล้ว</p>
           </div>
         </div>
         </div>
@@ -2097,15 +2105,17 @@
       if(!form || !panel || !verifyButton || !payment)return;
       // Backend proxy must authenticate the browser session; OCR_API_SECRET must stay server-side.
       const CHECKOUT_SUBMIT_URL=API_BASE+'/api/pilefix/ocr/submit-stream';
-      // Configure the genuine program URL before publishing. Never fabricate a download address.
-      const PROGRAM_DOWNLOAD_URL='';
+      // These two authenticated routes must be implemented on Backend.
+      // Never expose the XLSM public GitHub URL as an authorization mechanism.
+      const PF_VERIFY_URL=API_BASE+'/api/pilefix/download/verify';
+      const PF_DOWNLOAD_URL=API_BASE+'/api/pilefix/download/file';
       let checkoutToken='';
       let submitting=false;
       let verified=false;
       const step=n=>document.getElementById('adt-step-'+n);
       function setStep(n, state){step(n).classList.toggle('is-current',state==='current');step(n).classList.toggle('is-complete',state==='complete');}
       function resetVerification(){
-        verified=false;checkoutToken='';payment.hidden=true;otpInput.value='';feedback.textContent='กรอกรหัส 6 หลักที่ได้รับทาง LINE แล้วกดยืนยัน';
+        verified=false;checkoutToken='';payment.hidden=true;document.getElementById('adt-order-download').hidden=true;otpInput.value='';feedback.textContent='กรอกรหัส 6 หลักที่ได้รับทาง LINE แล้วกดยืนยัน';
         verifyButton.disabled=false;verifyButton.textContent='ยืนยันรหัส OTP';
         setStep(2,'current');setStep(3,'waiting');setStep(4,'waiting');
       }
@@ -2247,6 +2257,75 @@
       const bookingDisplay=document.getElementById('adt-booking-display');
       const downloadFeedback=document.getElementById('adt-download-feedback');
       const downloadLink=document.getElementById('adt-program-download-link');
+      const pfInput=document.getElementById('adt-download-pf');
+      const pfVerifyButton=document.getElementById('adt-download-verify');
+      const downloadComplete=document.getElementById('adt-download-complete');
+      let authorizedPf='';
+      let downloadBusy=false;
+      pfInput.addEventListener('input',()=>{
+        pfInput.value=pfInput.value.toUpperCase().replace(/[^A-Z0-9-]/g,'');
+        authorizedPf='';downloadLink.hidden=true;downloadComplete.hidden=true;
+        if(!downloadPanel.hidden)setStep(4,'current');
+      });
+      pfVerifyButton.addEventListener('click',async()=>{
+        const pf=pfInput.value.trim().toUpperCase();
+        if(!/^PF-\d{1,12}$/.test(pf)){
+          downloadFeedback.textContent='กรุณากรอกหมายเลข PF ให้ถูกต้อง เช่น PF-038';return;
+        }
+        if(!verified || !checkoutToken || downloadPanel.hidden){
+          downloadFeedback.textContent='กรุณายืนยัน LINE และชำระเงินให้สำเร็จก่อน';return;
+        }
+        pfVerifyButton.disabled=true;downloadLink.hidden=true;
+        downloadFeedback.textContent='กำลังตรวจสอบหมายเลข PF กับ Backend...';
+        try{
+          const response=await fetch(PF_VERIFY_URL,{
+            method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({checkout_token:checkoutToken,booking_no:pf})
+          });
+          const data=await response.json().catch(()=>({}));
+          if(response.ok && data.success===true && data.verified===true &&
+              data.booking_no===pf){
+            authorizedPf=pf;
+            downloadLink.hidden=false;
+            downloadFeedback.textContent='✓ หมายเลข PF ถูกต้อง กดปุ่มดาวน์โหลดโปรแกรมได้เลย';
+          }else{
+            authorizedPf='';
+            downloadFeedback.textContent=data.message||'ไม่พบสิทธิ์ดาวน์โหลดสำหรับหมายเลข PF นี้';
+          }
+        }catch(error){
+          downloadFeedback.textContent='ไม่สามารถเชื่อมต่อระบบตรวจสอบ PF ได้ กรุณาลองใหม่';
+        }finally{pfVerifyButton.disabled=false;}
+      });
+      downloadLink.addEventListener('click',async(event)=>{
+        event.preventDefault();
+        if(downloadBusy || !authorizedPf || authorizedPf!==pfInput.value.trim().toUpperCase())return;
+        downloadBusy=true;downloadLink.style.pointerEvents='none';
+        downloadFeedback.textContent='กำลังเตรียมไฟล์และบันทึกการดาวน์โหลด...';
+        try{
+          const response=await fetch(PF_DOWNLOAD_URL,{
+            method:'POST',mode:'cors',headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({checkout_token:checkoutToken,booking_no:authorizedPf})
+          });
+          if(!response.ok){
+            const data=await response.json().catch(()=>({}));
+            throw new Error(data.message||'Backend ไม่อนุญาตให้ดาวน์โหลด');
+          }
+          const contentType=response.headers.get('content-type')||'';
+          if(contentType.includes('application/json'))throw new Error('Backend ยังไม่ส่งไฟล์โปรแกรม');
+          const blob=await response.blob();
+          if(!blob.size)throw new Error('ไฟล์ดาวน์โหลดว่างเปล่า');
+          const blobUrl=URL.createObjectURL(blob);
+          const anchor=document.createElement('a');
+          anchor.href=blobUrl;anchor.download='ADT-PILEFiX-Professional-v1.2.xlsm';
+          document.body.appendChild(anchor);anchor.click();anchor.remove();
+          setTimeout(()=>URL.revokeObjectURL(blobUrl),60000);
+          downloadComplete.hidden=false;
+          setStep(4,'complete');
+          downloadFeedback.textContent='✓ ระบบส่งไฟล์ดาวน์โหลดสำเร็จแล้ว';
+        }catch(error){
+          downloadFeedback.textContent=error.message||'ดาวน์โหลดไม่สำเร็จ กรุณาลองอีกครั้ง';
+        }finally{downloadBusy=false;downloadLink.style.pointerEvents='';}
+      });
       submitButton.addEventListener('click',async()=>{
         if(!verified || !checkoutToken || submitting)return;
         const file=slipInput.files?.[0];
@@ -2304,7 +2383,7 @@
           // HTTP 200 alone is insufficient: require persisted booking and LINE delivery.
           const done=responseStatus===200 && result.success===true &&
             result.status==='BOOKING_SAVED_LINE_SENT' && result.line_sent===true &&
-            /^PF-[A-Za-z0-9-]+$/.test(String(result.booking_no||'')) && result.payment_verified===true;
+            /^PF-[A-Za-z0-9-]+$/.test(String(result.booking_no||''));
           if(!done){
             paymentFeedback.textContent=result.message || ({
               OCR_IMPORTANT_DATA_NOT_CONFIRMED:'ผลตรวจสลิปยังไม่ถึงเกณฑ์ 2 ใน 3 กรุณาตรวจสอบสลิป',
@@ -2320,17 +2399,13 @@
           showPhase('line',processPhases);
           progress.classList.remove('is-processing');progress.querySelector('span').style.width='100%';
           paymentFeedback.textContent='✓ ตรวจสอบสลิป บันทึกหมายเลข PF และส่ง LINE สำเร็จแล้ว';
-          bookingDisplay.textContent='หมายเลขสมาชิกของคุณ: '+result.booking_no;
+          // Never display the PF number from Backend here: customer must read it from LINE.
+          bookingDisplay.textContent='ระบบส่งหมายเลข PF ไปยัง LINE ของท่านแล้ว';
           downloadPanel.hidden=false;
-          setStep(3,'complete');setStep(4,'complete');
+          setStep(3,'complete');setStep(4,'current');
           payment.hidden=true;
-          if(PROGRAM_DOWNLOAD_URL){
-            downloadLink.href=PROGRAM_DOWNLOAD_URL;
-            downloadLink.hidden=false;
-            downloadFeedback.textContent='ลงทะเบียนสำเร็จ สามารถดาวน์โหลดโปรแกรมได้';
-          }else{
-            downloadFeedback.textContent='ลงทะเบียนสำเร็จแล้ว กรุณารับลิงก์ดาวน์โหลดจาก ADT (ยังไม่ได้กำหนด URL ดาวน์โหลดในหน้าเว็บ)';
-          }
+          downloadLink.hidden=true;
+          downloadFeedback.textContent='กรุณานำหมายเลข PF ที่ได้รับทาง LINE มากรอกเพื่อตรวจสอบสิทธิ์';
           downloadPanel.scrollIntoView({behavior:'smooth',block:'start'});
         }catch(error){
           paymentFeedback.textContent=(error.message==='TIMEOUT'||error.message==='ABORT')
